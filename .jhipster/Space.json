@@ -20,10 +20,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "class",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "maxPhotos",
       "fieldType": "Integer"
     },
@@ -57,5 +53,5 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["stl"],
-  "changelogDate": "20210624170200"
+  "changelogDate": "20210624182208"
 }

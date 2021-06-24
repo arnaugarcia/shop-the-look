@@ -1,0 +1,39 @@
+{
+  "stlApp": {
+    "googleFeedProduct": {
+      "home": {
+        "title": "Google Feed Products",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Google Feed Product",
+        "createOrEditLabel": "Crear o editar Google Feed Product",
+        "notFound": "Ningún Google Feed Products encontrado"
+      },
+      "created": "Un nuevo Google Feed Product ha sido creado con el identificador {{ param }}",
+      "updated": "Un Google Feed Product ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Google Feed Product ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Google Feed Product {{ id }}?"
+      },
+      "detail": {
+        "title": "Google Feed Product"
+      },
+      "id": "ID",
+      "sku": "Sku",
+      "name": "Name",
+      "description": "Description",
+      "link": "Link",
+      "imageLink": "Image Link",
+      "aditionalImageLink": "Aditional Image Link",
+      "mobileLink": "Mobile Link",
+      "availability": "Availability",
+      "availabilityDate": "Availability Date",
+      "price": "Price",
+      "salePrice": "Sale Price",
+      "brand": "Brand",
+      "condition": "Condition",
+      "adult": "Adult",
+      "ageGroup": "Age Group",
+      "company": "Company"
+    }
+  }
+}

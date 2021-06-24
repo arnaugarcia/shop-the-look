@@ -1,0 +1,10 @@
+{
+  "stlApp": {
+    "CompanyIndustry": {
+      "null": "",
+      "AUTOMOTIVE": "AUTOMOTIVE",
+      "CLOTHES": "CLOTHES",
+      "IT": "IT"
+    }
+  }
+}

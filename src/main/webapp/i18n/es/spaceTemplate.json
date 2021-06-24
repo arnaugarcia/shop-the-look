@@ -1,0 +1,29 @@
+{
+  "stlApp": {
+    "spaceTemplate": {
+      "home": {
+        "title": "Space Templates",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Space Template",
+        "createOrEditLabel": "Crear o editar Space Template",
+        "notFound": "Ningún Space Templates encontrado"
+      },
+      "created": "Un nuevo Space Template ha sido creado con el identificador {{ param }}",
+      "updated": "Un Space Template ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Space Template ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Space Template {{ id }}?"
+      },
+      "detail": {
+        "title": "Space Template"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "maxProducts": "Max Products",
+      "maxPhotos": "Max Photos",
+      "active": "Active",
+      "photo": "Photo"
+    }
+  }
+}

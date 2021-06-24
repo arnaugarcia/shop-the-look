@@ -1,0 +1,12 @@
+{
+  "stlApp": {
+    "GoogleFeedAgeGroup": {
+      "null": "",
+      "NEWBORN": "NEWBORN",
+      "INFANT": "INFANT",
+      "TODDLER": "TODDLER",
+      "KIDS": "KIDS",
+      "ADULT": "ADULT"
+    }
+  }
+}

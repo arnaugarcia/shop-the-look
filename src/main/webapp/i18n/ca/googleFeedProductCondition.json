@@ -1,0 +1,10 @@
+{
+  "stlApp": {
+    "GoogleFeedProductCondition": {
+      "null": "",
+      "NEW": "NEW",
+      "REFURBISHED": "REFURBISHED",
+      "USED": "USED"
+    }
+  }
+}

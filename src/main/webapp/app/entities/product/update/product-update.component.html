@@ -1,0 +1,178 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="stl-product-heading" data-cy="ProductCreateUpdateHeading" stlTranslate="stlApp.product.home.createOrEditLabel">
+        Create or edit a Product
+      </h2>
+
+      <div>
+        <stl-alert-error></stl-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" stlTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.sku" for="field_sku">Sku</label>
+          <input type="text" class="form-control" name="sku" id="field_sku" data-cy="sku" formControlName="sku" />
+          <div *ngIf="editForm.get('sku')!.invalid && (editForm.get('sku')!.dirty || editForm.get('sku')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('sku')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.description" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+          <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('description')?.errors?.required"
+              stlTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.link" for="field_link">Link</label>
+          <input type="text" class="form-control" name="link" id="field_link" data-cy="link" formControlName="link" />
+          <div *ngIf="editForm.get('link')!.invalid && (editForm.get('link')!.dirty || editForm.get('link')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('link')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.imageLink" for="field_imageLink">Image Link</label>
+          <input type="text" class="form-control" name="imageLink" id="field_imageLink" data-cy="imageLink" formControlName="imageLink" />
+          <div *ngIf="editForm.get('imageLink')!.invalid && (editForm.get('imageLink')!.dirty || editForm.get('imageLink')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('imageLink')?.errors?.required"
+              stlTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.aditionalImageLink" for="field_aditionalImageLink"
+            >Aditional Image Link</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="aditionalImageLink"
+            id="field_aditionalImageLink"
+            data-cy="aditionalImageLink"
+            formControlName="aditionalImageLink"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.availability" for="field_availability">Availability</label>
+          <select class="form-control" name="availability" formControlName="availability" id="field_availability" data-cy="availability">
+            <option [ngValue]="null">{{ 'stlApp.ProductAvailability.null' | translate }}</option>
+            <option value="IN_STOCK">{{ 'stlApp.ProductAvailability.IN_STOCK' | translate }}</option>
+            <option value="OUT_OF_STOCK">{{ 'stlApp.ProductAvailability.OUT_OF_STOCK' | translate }}</option>
+            <option value="PREORDER">{{ 'stlApp.ProductAvailability.PREORDER' | translate }}</option>
+            <option value="BACKORDER">{{ 'stlApp.ProductAvailability.BACKORDER' | translate }}</option>
+          </select>
+          <div
+            *ngIf="editForm.get('availability')!.invalid && (editForm.get('availability')!.dirty || editForm.get('availability')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('availability')?.errors?.required"
+              stlTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.price" for="field_price">Price</label>
+          <input type="text" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+          <div *ngIf="editForm.get('price')!.invalid && (editForm.get('price')!.dirty || editForm.get('price')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('price')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.category" for="field_category">Category</label>
+          <input type="text" class="form-control" name="category" id="field_category" data-cy="category" formControlName="category" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.company" for="field_company">Company</label>
+          <select class="form-control" id="field_company" data-cy="company" name="company" formControlName="company">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="companyOption.id === editForm.get('company')!.value?.id ? editForm.get('company')!.value : companyOption"
+              *ngFor="let companyOption of companiesSharedCollection; trackBy: trackCompanyById"
+            >
+              {{ companyOption.cif }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="stlApp.product.coordinate" for="field_coordinate">Coordinate</label>
+          <select class="form-control" id="field_coordinate" data-cy="coordinate" name="coordinate" formControlName="coordinate">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                coordinateOption.id === editForm.get('coordinate')!.value?.id ? editForm.get('coordinate')!.value : coordinateOption
+              "
+              *ngFor="let coordinateOption of coordinatesSharedCollection; trackBy: trackCoordinateById"
+            >
+              {{ coordinateOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span stlTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span stlTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

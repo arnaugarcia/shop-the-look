@@ -109,6 +109,7 @@
   },
   "defaultProject": "stl",
   "cli": {
+    "analytics": "6416631f-60f9-4d68-ba93-2a213d4fd997",
     "packageManager": "npm"
   }
 }
