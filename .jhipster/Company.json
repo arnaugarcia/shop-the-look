@@ -18,7 +18,7 @@
     {
       "fieldName": "industry",
       "fieldType": "CompanyIndustry",
-      "fieldValues": "AUTOMOTIVE,COTHES,IT"
+      "fieldValues": "AUTOMOTIVE,CLOTHES,IT"
     },
     {
       "fieldName": "companySize",
@@ -73,5 +73,5 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["stl"],
-  "changelogDate": "20210624170100"
+  "changelogDate": "20210624182108"
 }

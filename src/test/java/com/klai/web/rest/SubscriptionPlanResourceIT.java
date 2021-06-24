@@ -38,7 +38,7 @@ class SubscriptionPlanResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final SubscriptionCategory DEFAULT_CATEGORY = SubscriptionCategory.BRONCE;
+    private static final SubscriptionCategory DEFAULT_CATEGORY = SubscriptionCategory.BRONZE;
     private static final SubscriptionCategory UPDATED_CATEGORY = SubscriptionCategory.SILVER;
 
     private static final Integer DEFAULT_MAX_PRODUCTS = 1;
