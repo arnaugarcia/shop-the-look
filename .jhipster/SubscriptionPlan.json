@@ -1,0 +1,54 @@
+{
+  "name": "SubscriptionPlan",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "category",
+      "fieldType": "SubscriptionCategory",
+      "fieldValues": "BRONCE,SILVER,GOLD,PLATINUM",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "maxProducts",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "maxSpaces",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "maxRequests",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "company",
+      "otherEntityRelationshipName": "subscriptionPlan",
+      "relationshipName": "company",
+      "otherEntityField": "cif"
+    }
+  ],
+  "entityTableName": "subscription_plan",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["stl"],
+  "changelogDate": "20210624170500"
+}

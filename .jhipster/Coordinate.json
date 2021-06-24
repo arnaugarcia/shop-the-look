@@ -1,0 +1,38 @@
+{
+  "name": "Coordinate",
+  "fields": [
+    {
+      "fieldName": "x",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "y",
+      "fieldType": "Double"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "coordinate",
+      "relationshipName": "product",
+      "otherEntityField": "sku"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "photo",
+      "otherEntityRelationshipName": "coordinate",
+      "relationshipName": "photo"
+    }
+  ],
+  "entityTableName": "coordinate",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["stl"],
+  "changelogDate": "20210624170800"
+}

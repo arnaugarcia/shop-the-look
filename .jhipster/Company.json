@@ -1,0 +1,77 @@
+{
+  "name": "Company",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "cif",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "token",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "industry",
+      "fieldType": "CompanyIndustry",
+      "fieldValues": "AUTOMOTIVE,COTHES,IT"
+    },
+    {
+      "fieldName": "companySize",
+      "fieldType": "CompanySize",
+      "fieldValues": "STARTUP,SMALL,MEDIUM,LARGE,INTERNATIONAL"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "company",
+      "relationshipName": "product",
+      "otherEntityField": "sku"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "googleFeedProduct",
+      "otherEntityRelationshipName": "company",
+      "relationshipName": "importedProduct",
+      "otherEntityField": "sku"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "space",
+      "otherEntityRelationshipName": "company",
+      "relationshipName": "space",
+      "otherEntityField": "reference"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "company",
+      "relationshipName": "user",
+      "otherEntityField": "login",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "subscriptionPlan",
+      "otherEntityRelationshipName": "company",
+      "relationshipName": "subscriptionPlan",
+      "otherEntityField": "name"
+    }
+  ],
+  "entityTableName": "company",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["stl"],
+  "changelogDate": "20210624170100"
+}

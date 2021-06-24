@@ -1,0 +1,95 @@
+{
+  "name": "GoogleFeedProduct",
+  "fields": [
+    {
+      "fieldName": "sku",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "imageLink",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "aditionalImageLink",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobileLink",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "availability",
+      "fieldType": "GoogleFeedProductAvailability",
+      "fieldValues": "IN_STOCK,OUT_OF_STOCK,PREORDER,BACKORDER",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "availabilityDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "salePrice",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "brand",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "condition",
+      "fieldType": "GoogleFeedProductCondition",
+      "fieldValues": "NEW,REFURBISHED,USED"
+    },
+    {
+      "fieldName": "adult",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "ageGroup",
+      "fieldType": "GoogleFeedAgeGroup",
+      "fieldValues": "NEWBORN,INFANT,TODDLER,KIDS,ADULT"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "company",
+      "otherEntityRelationshipName": "importedProduct",
+      "relationshipName": "company",
+      "otherEntityField": "cif"
+    }
+  ],
+  "entityTableName": "google_feed_product",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["stl"],
+  "changelogDate": "20210624170700"
+}
