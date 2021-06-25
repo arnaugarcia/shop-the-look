@@ -27,4 +27,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findOneWithEagerRelationships(@Param("id") Long id);
 
     Optional<Company> findByToken(String token);
+
+    Optional<Company> findByCif(String cif);
 }
