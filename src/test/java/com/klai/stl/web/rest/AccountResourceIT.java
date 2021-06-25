@@ -157,6 +157,7 @@ class AccountResourceIT {
         companyUserVM.setFirstName("Alice");
         companyUserVM.setLastName("Test");
         companyUserVM.setCif(COMPANY_CIF);
+        companyUserVM.setName("Company");
         companyUserVM.setIndustry(CompanyIndustry.AUTOMOTIVE);
         companyUserVM.setSize(CompanySize.INTERNATIONAL);
         companyUserVM.setEmail("company-test-register-valid@example.com");
