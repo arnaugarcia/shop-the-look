@@ -1,0 +1,39 @@
+{
+  "shopTheLookApp": {
+    "googleFeedProduct": {
+      "home": {
+        "title": "Google Feed Products",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Google Feed Product",
+        "createOrEditLabel": "Create or edit a Google Feed Product",
+        "notFound": "No Google Feed Products found"
+      },
+      "created": "A new Google Feed Product is created with identifier {{ param }}",
+      "updated": "A Google Feed Product is updated with identifier {{ param }}",
+      "deleted": "A Google Feed Product is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Google Feed Product {{ id }}?"
+      },
+      "detail": {
+        "title": "Google Feed Product"
+      },
+      "id": "ID",
+      "sku": "Sku",
+      "name": "Name",
+      "description": "Description",
+      "link": "Link",
+      "imageLink": "Image Link",
+      "additionalImageLink": "Additional Image Link",
+      "mobileLink": "Mobile Link",
+      "availability": "Availability",
+      "availabilityDate": "Availability Date",
+      "price": "Price",
+      "salePrice": "Sale Price",
+      "brand": "Brand",
+      "condition": "Condition",
+      "adult": "Adult",
+      "ageGroup": "Age Group",
+      "company": "Company"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "shopTheLookApp": {
+    "CompanyIndustry": {
+      "null": "",
+      "AUTOMOTIVE": "AUTOMOTIVE",
+      "CLOTHES": "CLOTHES",
+      "IT": "IT"
+    }
+  }
+}

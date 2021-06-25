@@ -1,0 +1,94 @@
+<div>
+  <h2 id="page-heading" data-cy="PhotoHeading">
+    <span stlTranslate="shopTheLookApp.photo.home.title">Photos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span stlTranslate="shopTheLookApp.photo.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-photo"
+        [routerLink]="['/photo/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span stlTranslate="shopTheLookApp.photo.home.createLabel"> Create a new Photo </span>
+      </button>
+    </div>
+  </h2>
+
+  <stl-alert-error></stl-alert-error>
+
+  <stl-alert></stl-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="photos?.length === 0">
+    <span stlTranslate="shopTheLookApp.photo.home.notFound">No photos found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="photos && photos.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span stlTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.name">Name</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.description">Description</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.link">Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.order">Order</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.height">Height</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.width">Width</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.orientation">Orientation</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.demo">Demo</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.space">Space</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.photo.spaceTemplate">Space Template</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let photo of photos; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/photo', photo.id, 'view']">{{ photo.id }}</a>
+          </td>
+          <td>{{ photo.name }}</td>
+          <td>{{ photo.description }}</td>
+          <td>{{ photo.link }}</td>
+          <td>{{ photo.order }}</td>
+          <td>{{ photo.height }}</td>
+          <td>{{ photo.width }}</td>
+          <td stlTranslate="{{ 'shopTheLookApp.PhotoOrientation.' + photo.orientation }}">{{ photo.orientation }}</td>
+          <td>{{ photo.demo }}</td>
+          <td>
+            <div *ngIf="photo.space">
+              <a [routerLink]="['/space', photo.space?.id, 'view']">{{ photo.space?.reference }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="photo.spaceTemplate">
+              <a [routerLink]="['/space-template', photo.spaceTemplate?.id, 'view']">{{ photo.spaceTemplate?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/photo', photo.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/photo', photo.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(photo)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

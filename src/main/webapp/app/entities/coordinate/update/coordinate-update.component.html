@@ -1,0 +1,66 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="stl-coordinate-heading"
+        data-cy="CoordinateCreateUpdateHeading"
+        stlTranslate="shopTheLookApp.coordinate.home.createOrEditLabel"
+      >
+        Create or edit a Coordinate
+      </h2>
+
+      <div>
+        <stl-alert-error></stl-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" stlTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.coordinate.x" for="field_x">X</label>
+          <input type="number" class="form-control" name="x" id="field_x" data-cy="x" formControlName="x" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.coordinate.y" for="field_y">Y</label>
+          <input type="number" class="form-control" name="y" id="field_y" data-cy="y" formControlName="y" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.coordinate.photo" for="field_photo">Photo</label>
+          <select class="form-control" id="field_photo" data-cy="photo" name="photo" formControlName="photo">
+            <option *ngIf="!editForm.get('photo')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="photoOption.id === editForm.get('photo')!.value?.id ? editForm.get('photo')!.value : photoOption"
+              *ngFor="let photoOption of photosSharedCollection; trackBy: trackPhotoById"
+            >
+              {{ photoOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['photo'])!.invalid && (editForm.get(['photo'])!.dirty || editForm.get(['photo'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['photo'])?.errors?.required" stlTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span stlTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span stlTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

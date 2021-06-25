@@ -1,0 +1,106 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductHeading">
+    <span stlTranslate="shopTheLookApp.product.home.title">Products</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span stlTranslate="shopTheLookApp.product.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-product"
+        [routerLink]="['/product/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span stlTranslate="shopTheLookApp.product.home.createLabel"> Create a new Product </span>
+      </button>
+    </div>
+  </h2>
+
+  <stl-alert-error></stl-alert-error>
+
+  <stl-alert></stl-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
+    <span stlTranslate="shopTheLookApp.product.home.notFound">No products found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="products && products.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span stlTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.sku">Sku</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.name">Name</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.description">Description</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.link">Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.imageLink">Image Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.aditionalImageLink">Aditional Image Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.availability">Availability</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.price">Price</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.category">Category</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.company">Company</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.product.coordinate">Coordinate</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/product', product.id, 'view']">{{ product.id }}</a>
+          </td>
+          <td>{{ product.sku }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.link }}</td>
+          <td>{{ product.imageLink }}</td>
+          <td>{{ product.aditionalImageLink }}</td>
+          <td stlTranslate="{{ 'shopTheLookApp.ProductAvailability.' + product.availability }}">{{ product.availability }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.category }}</td>
+          <td>
+            <div *ngIf="product.company">
+              <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.cif }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="product.coordinate">
+              <a [routerLink]="['/coordinate', product.coordinate?.id, 'view']">{{ product.coordinate?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/product', product.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/product', product.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

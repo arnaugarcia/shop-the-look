@@ -48,6 +48,23 @@ public class CacheConfiguration {
             createCache(cm, com.klai.domain.User.class.getName());
             createCache(cm, com.klai.domain.Authority.class.getName());
             createCache(cm, com.klai.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.klai.domain.Company.class.getName());
+            createCache(cm, com.klai.domain.Company.class.getName() + ".products");
+            createCache(cm, com.klai.domain.Company.class.getName() + ".importedProducts");
+            createCache(cm, com.klai.domain.Company.class.getName() + ".spaces");
+            createCache(cm, com.klai.domain.Company.class.getName() + ".users");
+            createCache(cm, com.klai.domain.Space.class.getName());
+            createCache(cm, com.klai.domain.Space.class.getName() + ".photos");
+            createCache(cm, com.klai.domain.SpaceTemplate.class.getName());
+            createCache(cm, com.klai.domain.SpaceTemplate.class.getName() + ".photos");
+            createCache(cm, com.klai.domain.Photo.class.getName());
+            createCache(cm, com.klai.domain.Photo.class.getName() + ".coordinates");
+            createCache(cm, com.klai.domain.SubscriptionPlan.class.getName());
+            createCache(cm, com.klai.domain.SubscriptionPlan.class.getName() + ".companies");
+            createCache(cm, com.klai.domain.Product.class.getName());
+            createCache(cm, com.klai.domain.GoogleFeedProduct.class.getName());
+            createCache(cm, com.klai.domain.Coordinate.class.getName());
+            createCache(cm, com.klai.domain.Coordinate.class.getName() + ".products");
             // jhipster-needle-ehcache-add-entry
         };
     }

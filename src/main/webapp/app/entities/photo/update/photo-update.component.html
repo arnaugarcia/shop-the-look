@@ -1,0 +1,152 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="stl-photo-heading" data-cy="PhotoCreateUpdateHeading" stlTranslate="shopTheLookApp.photo.home.createOrEditLabel">
+        Create or edit a Photo
+      </h2>
+
+      <div>
+        <stl-alert-error></stl-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" stlTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.description" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.link" for="field_link">Link</label>
+          <input type="text" class="form-control" name="link" id="field_link" data-cy="link" formControlName="link" />
+          <div *ngIf="editForm.get('link')!.invalid && (editForm.get('link')!.dirty || editForm.get('link')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('link')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.order" for="field_order">Order</label>
+          <input type="number" class="form-control" name="order" id="field_order" data-cy="order" formControlName="order" />
+          <div *ngIf="editForm.get('order')!.invalid && (editForm.get('order')!.dirty || editForm.get('order')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('order')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('order')?.errors?.number" stlTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.height" for="field_height">Height</label>
+          <input type="number" class="form-control" name="height" id="field_height" data-cy="height" formControlName="height" />
+          <div *ngIf="editForm.get('height')!.invalid && (editForm.get('height')!.dirty || editForm.get('height')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('height')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('height')?.errors?.number" stlTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.width" for="field_width">Width</label>
+          <input type="number" class="form-control" name="width" id="field_width" data-cy="width" formControlName="width" />
+          <div *ngIf="editForm.get('width')!.invalid && (editForm.get('width')!.dirty || editForm.get('width')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('width')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('width')?.errors?.number" stlTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.orientation" for="field_orientation">Orientation</label>
+          <select class="form-control" name="orientation" formControlName="orientation" id="field_orientation" data-cy="orientation">
+            <option [ngValue]="null">{{ 'shopTheLookApp.PhotoOrientation.null' | translate }}</option>
+            <option value="VERTICAL">{{ 'shopTheLookApp.PhotoOrientation.VERTICAL' | translate }}</option>
+            <option value="HORIZONTAL">{{ 'shopTheLookApp.PhotoOrientation.HORIZONTAL' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.demo" for="field_demo">Demo</label>
+          <input type="checkbox" class="form-check" name="demo" id="field_demo" data-cy="demo" formControlName="demo" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.space" for="field_space">Space</label>
+          <select class="form-control" id="field_space" data-cy="space" name="space" formControlName="space">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="spaceOption.id === editForm.get('space')!.value?.id ? editForm.get('space')!.value : spaceOption"
+              *ngFor="let spaceOption of spacesSharedCollection; trackBy: trackSpaceById"
+            >
+              {{ spaceOption.reference }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.photo.spaceTemplate" for="field_spaceTemplate"
+            >Space Template</label
+          >
+          <select
+            class="form-control"
+            id="field_spaceTemplate"
+            data-cy="spaceTemplate"
+            name="spaceTemplate"
+            formControlName="spaceTemplate"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                spaceTemplateOption.id === editForm.get('spaceTemplate')!.value?.id
+                  ? editForm.get('spaceTemplate')!.value
+                  : spaceTemplateOption
+              "
+              *ngFor="let spaceTemplateOption of spaceTemplatesSharedCollection; trackBy: trackSpaceTemplateById"
+            >
+              {{ spaceTemplateOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span stlTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span stlTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

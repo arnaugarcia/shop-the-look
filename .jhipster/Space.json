@@ -54,6 +54,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": ["stl"],
-  "changelogDate": "20210624182208"
+  "applications": ["ShopTheLook"],
+  "changelogDate": "20210625091937"
 }

@@ -91,6 +91,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "applications": ["stl"],
-  "changelogDate": "20210624182708"
+  "applications": ["ShopTheLook"],
+  "changelogDate": "20210625091942"
 }

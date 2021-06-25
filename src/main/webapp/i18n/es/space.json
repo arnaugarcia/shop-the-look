@@ -1,0 +1,31 @@
+{
+  "shopTheLookApp": {
+    "space": {
+      "home": {
+        "title": "Spaces",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Space",
+        "createOrEditLabel": "Crear o editar Space",
+        "notFound": "Ningún Spaces encontrado"
+      },
+      "created": "Un nuevo Space ha sido creado con el identificador {{ param }}",
+      "updated": "Un Space ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Space ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Space {{ id }}?"
+      },
+      "detail": {
+        "title": "Space"
+      },
+      "id": "ID",
+      "name": "Name",
+      "active": "Active",
+      "reference": "Reference",
+      "description": "Description",
+      "maxPhotos": "Max Photos",
+      "visible": "Visible",
+      "photo": "Photo",
+      "company": "Company"
+    }
+  }
+}

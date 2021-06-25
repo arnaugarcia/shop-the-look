@@ -1,0 +1,116 @@
+<div>
+  <h2 id="page-heading" data-cy="GoogleFeedProductHeading">
+    <span stlTranslate="shopTheLookApp.googleFeedProduct.home.title">Google Feed Products</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span stlTranslate="shopTheLookApp.googleFeedProduct.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-google-feed-product"
+        [routerLink]="['/google-feed-product/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span stlTranslate="shopTheLookApp.googleFeedProduct.home.createLabel"> Create a new Google Feed Product </span>
+      </button>
+    </div>
+  </h2>
+
+  <stl-alert-error></stl-alert-error>
+
+  <stl-alert></stl-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="googleFeedProducts?.length === 0">
+    <span stlTranslate="shopTheLookApp.googleFeedProduct.home.notFound">No googleFeedProducts found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="googleFeedProducts && googleFeedProducts.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span stlTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.sku">Sku</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.name">Name</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.description">Description</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.link">Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.imageLink">Image Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.additionalImageLink">Additional Image Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.mobileLink">Mobile Link</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.availability">Availability</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.availabilityDate">Availability Date</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.price">Price</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.salePrice">Sale Price</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.brand">Brand</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.condition">Condition</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.adult">Adult</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.ageGroup">Age Group</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.company">Company</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let googleFeedProduct of googleFeedProducts; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/google-feed-product', googleFeedProduct.id, 'view']">{{ googleFeedProduct.id }}</a>
+          </td>
+          <td>{{ googleFeedProduct.sku }}</td>
+          <td>{{ googleFeedProduct.name }}</td>
+          <td>{{ googleFeedProduct.description }}</td>
+          <td>{{ googleFeedProduct.link }}</td>
+          <td>{{ googleFeedProduct.imageLink }}</td>
+          <td>{{ googleFeedProduct.additionalImageLink }}</td>
+          <td>{{ googleFeedProduct.mobileLink }}</td>
+          <td stlTranslate="{{ 'shopTheLookApp.GoogleFeedProductAvailability.' + googleFeedProduct.availability }}">
+            {{ googleFeedProduct.availability }}
+          </td>
+          <td>{{ googleFeedProduct.availabilityDate | formatMediumDatetime }}</td>
+          <td>{{ googleFeedProduct.price }}</td>
+          <td>{{ googleFeedProduct.salePrice }}</td>
+          <td>{{ googleFeedProduct.brand }}</td>
+          <td stlTranslate="{{ 'shopTheLookApp.GoogleFeedProductCondition.' + googleFeedProduct.condition }}">
+            {{ googleFeedProduct.condition }}
+          </td>
+          <td>{{ googleFeedProduct.adult }}</td>
+          <td stlTranslate="{{ 'shopTheLookApp.GoogleFeedAgeGroup.' + googleFeedProduct.ageGroup }}">{{ googleFeedProduct.ageGroup }}</td>
+          <td>
+            <div *ngIf="googleFeedProduct.company">
+              <a [routerLink]="['/company', googleFeedProduct.company?.id, 'view']">{{ googleFeedProduct.company?.cif }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/google-feed-product', googleFeedProduct.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/google-feed-product', googleFeedProduct.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(googleFeedProduct)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" stlTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

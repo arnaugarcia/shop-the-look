@@ -1,0 +1,11 @@
+{
+  "shopTheLookApp": {
+    "SubscriptionCategory": {
+      "null": "",
+      "BRONZE": "BRONZE",
+      "SILVER": "SILVER",
+      "GOLD": "GOLD",
+      "PLATINUM": "PLATINUM"
+    }
+  }
+}

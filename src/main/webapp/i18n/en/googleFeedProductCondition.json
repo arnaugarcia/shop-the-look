@@ -1,0 +1,10 @@
+{
+  "shopTheLookApp": {
+    "GoogleFeedProductCondition": {
+      "null": "",
+      "NEW": "NEW",
+      "REFURBISHED": "REFURBISHED",
+      "USED": "USED"
+    }
+  }
+}
