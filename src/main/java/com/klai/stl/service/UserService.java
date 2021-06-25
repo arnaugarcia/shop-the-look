@@ -2,13 +2,16 @@ package com.klai.stl.service;
 
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Authority;
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.AuthorityRepository;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.web.rest.vm.CompanyUserVM;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -35,22 +38,30 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final CompanyRepository companyRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
 
+    private final TokenService tokenService;
+
     public UserService(
         UserRepository userRepository,
+        CompanyRepository companyRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        TokenService tokenService
     ) {
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.tokenService = tokenService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -143,6 +154,19 @@ public class UserService {
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
+    }
+
+    public User registerCompany(CompanyUserVM companyUserVM, String password) {
+        final User user = registerUser(companyUserVM, password);
+        Company company = new Company();
+        company.setName(companyUserVM.getName());
+        company.setCif(companyUserVM.getCif());
+        company.companySize(companyUserVM.getSize());
+        company.setIndustry(companyUserVM.getIndustry());
+        company.setToken(tokenService.generateRandomToken());
+        company.addUser(user);
+        companyRepository.save(company);
+        return user;
     }
 
     private boolean removeNonActivatedUser(User existingUser) {
