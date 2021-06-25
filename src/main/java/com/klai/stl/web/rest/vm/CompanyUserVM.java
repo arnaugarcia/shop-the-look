@@ -3,6 +3,7 @@ package com.klai.stl.web.rest.vm;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.service.dto.AdminUserDTO;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.*;
 
@@ -15,8 +16,10 @@ import lombok.*;
 @ToString
 public class CompanyUserVM extends ManagedUserVM {
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String cif;
 
     private CompanyIndustry industry;
