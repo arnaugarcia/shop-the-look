@@ -1,0 +1,158 @@
+application {
+  config {
+    baseName ShopTheLook,
+    applicationType monolith,
+    packageName com.klai,
+    databaseType sql,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+    devDatabaseType mysql,
+    clientFramework angularX,
+    jhiPrefix stl,
+    languages [en, es, ca],
+    nativeLanguage en,
+    testFrameworks [protractor, cucumber, gatling]
+  }
+  entities *
+}
+
+entity Company {
+	name String required,
+    cif String required unique,
+    token String,
+    industry CompanyIndustry,
+    companySize CompanySize
+}
+
+enum CompanySize {
+	STARTUP, SMALL, MEDIUM, LARGE, INTERNATIONAL
+}
+
+enum CompanyIndustry {
+	AUTOMOTIVE, CLOTHES, IT
+}
+
+entity Space {
+	name String required, 
+    active Boolean,
+    reference String required unique,
+    description String,
+	maxPhotos Integer,
+    visible Boolean
+}
+
+entity SpaceTemplate {
+	name String required,
+    description String,
+    maxProducts Integer required,
+    maxPhotos Integer required,
+    active Boolean
+}
+
+entity Photo {
+	name String,
+    description String,
+    link String required,
+  	order Integer required,
+    height Integer required,
+    width Integer required,
+    orientation PhotoOrientation,
+    demo Boolean
+}
+
+entity SubscriptionPlan {
+	name String required,
+    description String,
+    category SubscriptionCategory required,
+    maxProducts Integer required,
+    maxSpaces Integer required,
+    maxRequests Integer required
+}
+
+enum PhotoOrientation {
+	VERTICAL, HORIZONTAL
+}
+
+enum SubscriptionCategory {
+	BRONZE, SILVER, GOLD, PLATINUM
+}
+
+entity Product {
+	sku String required,
+    name String required,
+    description String required,
+    link String required,
+    imageLink String required,
+    aditionalImageLink String,
+    availability ProductAvailability required,
+    price String required,
+    category String
+}
+
+entity GoogleFeedProduct {
+	sku String required,
+    name String required,
+    description String required,
+    link String required,
+    imageLink String required,
+    additionalImageLink String,
+    mobileLink String,
+    availability GoogleFeedProductAvailability required,
+    availabilityDate ZonedDateTime,
+    price String required,
+    salePrice String required,
+    brand String,
+    condition GoogleFeedProductCondition,
+    adult Boolean,
+    ageGroup GoogleFeedAgeGroup
+}
+
+entity Coordinate {
+	x Double,
+    y Double
+}
+
+enum GoogleFeedAgeGroup {
+	NEWBORN, INFANT, TODDLER, KIDS, ADULT
+}
+
+enum ProductAvailability {
+	IN_STOCK, OUT_OF_STOCK, PREORDER, BACKORDER
+}
+
+enum GoogleFeedProductCondition {
+	NEW, REFURBISHED, USED
+}
+
+enum GoogleFeedProductAvailability {
+	IN_STOCK, OUT_OF_STOCK, PREORDER, BACKORDER
+}
+
+relationship OneToMany {
+    Company{product(sku) required} to Product{company(cif) required},
+    Company{importedProduct(sku) required} to GoogleFeedProduct{company(cif) required},
+    
+    Company{space(reference)} to Space{company(cif) required},
+    
+    Space{photo(name) required} to Photo{space(reference)},
+    
+    SpaceTemplate{photo(name) required} to Photo{spaceTemplate},
+    
+    Photo{coordinate} to Coordinate{photo required},
+    
+    SubscriptionPlan{company(cif) required} to Company{subscriptionPlan(name) required},
+    
+    Coordinate{product(sku) required} to Product{coordinate}
+}
+
+relationship ManyToMany {
+	Company{user(login) required} to User 
+}
+
+dto * with mapstruct except GoogleFeedProduct
+
+service * with serviceImpl except GoogleFeedProduct, Coordinate
+
+filter Product, GoogleFeedProduct, Space, Photo
+
+#title: stl-jdl
