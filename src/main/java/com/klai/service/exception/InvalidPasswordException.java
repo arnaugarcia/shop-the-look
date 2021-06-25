@@ -1,4 +1,4 @@
-package com.klai.service;
+package com.klai.service.exception;
 
 public class InvalidPasswordException extends RuntimeException {
 
