@@ -23,8 +23,8 @@
     "testFrameworks": ["protractor", "cucumber", "gatling"],
     "websocket": false,
     "applicationType": "monolith",
-    "packageName": "com.klai",
-    "packageFolder": "com/klai",
+    "packageName": "com.klai.stl",
+    "packageFolder": "com/klai/stl",
     "nativeLanguage": "en",
     "jhipsterVersion": "7.1.0",
     "skipServer": false,
@@ -44,6 +44,6 @@
     "creationTimestamp": 1624558808913,
     "jwtSecretKey": "Y2I3ODEwMzI5MjdlNTEwNDU0YTc1NDk4ZjRiYzE1NGEyOTNiYWUxMWEzZjNhOTNlM2JhYjYzM2M5MjgwMmI5OTZlZDQ1ZWUzZDExMDc0ZDg2MjI1MGYyMTI1ODg0NDdmNTk3ZDg4ZTc0Y2I2MzdjYTYzMjBlNmFiMTFmODMzMWY=",
     "devServerPort": 4200,
-    "lastLiquibaseTimestamp": 1624612783000
+    "lastLiquibaseTimestamp": 1624644540000
   }
 }
