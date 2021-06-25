@@ -45,8 +45,8 @@ public class GoogleFeedProduct implements Serializable {
     @Column(name = "image_link", nullable = false)
     private String imageLink;
 
-    @Column(name = "aditional_image_link")
-    private String aditionalImageLink;
+    @Column(name = "additional_image_link")
+    private String additionalImageLink;
 
     @Column(name = "mobile_link")
     private String mobileLink;
@@ -165,17 +165,17 @@ public class GoogleFeedProduct implements Serializable {
         this.imageLink = imageLink;
     }
 
-    public String getAditionalImageLink() {
-        return this.aditionalImageLink;
+    public String getAdditionalImageLink() {
+        return this.additionalImageLink;
     }
 
-    public GoogleFeedProduct aditionalImageLink(String aditionalImageLink) {
-        this.aditionalImageLink = aditionalImageLink;
+    public GoogleFeedProduct additionalImageLink(String additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
         return this;
     }
 
-    public void setAditionalImageLink(String aditionalImageLink) {
-        this.aditionalImageLink = aditionalImageLink;
+    public void setAdditionalImageLink(String additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
     }
 
     public String getMobileLink() {
@@ -337,7 +337,7 @@ public class GoogleFeedProduct implements Serializable {
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", imageLink='" + getImageLink() + "'" +
-            ", aditionalImageLink='" + getAditionalImageLink() + "'" +
+            ", additionalImageLink='" + getAdditionalImageLink() + "'" +
             ", mobileLink='" + getMobileLink() + "'" +
             ", availability='" + getAvailability() + "'" +
             ", availabilityDate='" + getAvailabilityDate() + "'" +

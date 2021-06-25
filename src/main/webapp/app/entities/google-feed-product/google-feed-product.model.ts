@@ -11,7 +11,7 @@ export interface IGoogleFeedProduct {
   description?: string;
   link?: string;
   imageLink?: string;
-  aditionalImageLink?: string | null;
+  additionalImageLink?: string | null;
   mobileLink?: string | null;
   availability?: GoogleFeedProductAvailability;
   availabilityDate?: dayjs.Dayjs | null;
@@ -32,7 +32,7 @@ export class GoogleFeedProduct implements IGoogleFeedProduct {
     public description?: string,
     public link?: string,
     public imageLink?: string,
-    public aditionalImageLink?: string | null,
+    public additionalImageLink?: string | null,
     public mobileLink?: string | null,
     public availability?: GoogleFeedProductAvailability,
     public availabilityDate?: dayjs.Dayjs | null,

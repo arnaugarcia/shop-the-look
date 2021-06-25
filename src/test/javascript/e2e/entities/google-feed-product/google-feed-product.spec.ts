@@ -55,7 +55,7 @@ describe('GoogleFeedProduct e2e test', () => {
             googleFeedProductUpdatePage.setDescriptionInput('description'),
             googleFeedProductUpdatePage.setLinkInput('link'),
             googleFeedProductUpdatePage.setImageLinkInput('imageLink'),
-            googleFeedProductUpdatePage.setAditionalImageLinkInput('aditionalImageLink'),
+            googleFeedProductUpdatePage.setAdditionalImageLinkInput('additionalImageLink'),
             googleFeedProductUpdatePage.setMobileLinkInput('mobileLink'),
             googleFeedProductUpdatePage.availabilitySelectLastOption(),
             googleFeedProductUpdatePage.setAvailabilityDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM'),

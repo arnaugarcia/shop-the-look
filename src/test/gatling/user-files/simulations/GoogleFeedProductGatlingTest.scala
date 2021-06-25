@@ -76,7 +76,7 @@ class GoogleFeedProductGatlingTest extends Simulation {
                 , "description":"SAMPLE_TEXT"
                 , "link":"SAMPLE_TEXT"
                 , "imageLink":"SAMPLE_TEXT"
-                , "aditionalImageLink":"SAMPLE_TEXT"
+                , "additionalImageLink":"SAMPLE_TEXT"
                 , "mobileLink":"SAMPLE_TEXT"
                 , "availability":"IN_STOCK"
                 , "availabilityDate":"2020-01-01T00:00:00.000Z"

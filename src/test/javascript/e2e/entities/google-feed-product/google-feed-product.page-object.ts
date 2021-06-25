@@ -35,7 +35,7 @@ export class GoogleFeedProductUpdatePage {
   descriptionInput = element(by.id('field_description'));
   linkInput = element(by.id('field_link'));
   imageLinkInput = element(by.id('field_imageLink'));
-  aditionalImageLinkInput = element(by.id('field_aditionalImageLink'));
+  additionalImageLinkInput = element(by.id('field_additionalImageLink'));
   mobileLinkInput = element(by.id('field_mobileLink'));
   availabilitySelect = element(by.id('field_availability'));
   availabilityDateInput = element(by.id('field_availabilityDate'));
@@ -100,12 +100,12 @@ export class GoogleFeedProductUpdatePage {
     return await this.imageLinkInput.getAttribute('value');
   }
 
-  async setAditionalImageLinkInput(aditionalImageLink: string): Promise<void> {
-    await this.aditionalImageLinkInput.sendKeys(aditionalImageLink);
+  async setAdditionalImageLinkInput(additionalImageLink: string): Promise<void> {
+    await this.additionalImageLinkInput.sendKeys(additionalImageLink);
   }
 
-  async getAditionalImageLinkInput(): Promise<string> {
-    return await this.aditionalImageLinkInput.getAttribute('value');
+  async getAdditionalImageLinkInput(): Promise<string> {
+    return await this.additionalImageLinkInput.getAttribute('value');
   }
 
   async setMobileLinkInput(mobileLink: string): Promise<void> {

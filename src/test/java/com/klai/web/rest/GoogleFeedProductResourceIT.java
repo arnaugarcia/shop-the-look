@@ -54,8 +54,8 @@ class GoogleFeedProductResourceIT {
     private static final String DEFAULT_IMAGE_LINK = "AAAAAAAAAA";
     private static final String UPDATED_IMAGE_LINK = "BBBBBBBBBB";
 
-    private static final String DEFAULT_ADITIONAL_IMAGE_LINK = "AAAAAAAAAA";
-    private static final String UPDATED_ADITIONAL_IMAGE_LINK = "BBBBBBBBBB";
+    private static final String DEFAULT_ADDITIONAL_IMAGE_LINK = "AAAAAAAAAA";
+    private static final String UPDATED_ADDITIONAL_IMAGE_LINK = "BBBBBBBBBB";
 
     private static final String DEFAULT_MOBILE_LINK = "AAAAAAAAAA";
     private static final String UPDATED_MOBILE_LINK = "BBBBBBBBBB";
@@ -115,7 +115,7 @@ class GoogleFeedProductResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
             .imageLink(DEFAULT_IMAGE_LINK)
-            .aditionalImageLink(DEFAULT_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
             .mobileLink(DEFAULT_MOBILE_LINK)
             .availability(DEFAULT_AVAILABILITY)
             .availabilityDate(DEFAULT_AVAILABILITY_DATE)
@@ -151,7 +151,7 @@ class GoogleFeedProductResourceIT {
             .description(UPDATED_DESCRIPTION)
             .link(UPDATED_LINK)
             .imageLink(UPDATED_IMAGE_LINK)
-            .aditionalImageLink(UPDATED_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(UPDATED_ADDITIONAL_IMAGE_LINK)
             .mobileLink(UPDATED_MOBILE_LINK)
             .availability(UPDATED_AVAILABILITY)
             .availabilityDate(UPDATED_AVAILABILITY_DATE)
@@ -199,7 +199,7 @@ class GoogleFeedProductResourceIT {
         assertThat(testGoogleFeedProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testGoogleFeedProduct.getLink()).isEqualTo(DEFAULT_LINK);
         assertThat(testGoogleFeedProduct.getImageLink()).isEqualTo(DEFAULT_IMAGE_LINK);
-        assertThat(testGoogleFeedProduct.getAditionalImageLink()).isEqualTo(DEFAULT_ADITIONAL_IMAGE_LINK);
+        assertThat(testGoogleFeedProduct.getAdditionalImageLink()).isEqualTo(DEFAULT_ADDITIONAL_IMAGE_LINK);
         assertThat(testGoogleFeedProduct.getMobileLink()).isEqualTo(DEFAULT_MOBILE_LINK);
         assertThat(testGoogleFeedProduct.getAvailability()).isEqualTo(DEFAULT_AVAILABILITY);
         assertThat(testGoogleFeedProduct.getAvailabilityDate()).isEqualTo(DEFAULT_AVAILABILITY_DATE);
@@ -400,7 +400,7 @@ class GoogleFeedProductResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK)))
             .andExpect(jsonPath("$.[*].imageLink").value(hasItem(DEFAULT_IMAGE_LINK)))
-            .andExpect(jsonPath("$.[*].aditionalImageLink").value(hasItem(DEFAULT_ADITIONAL_IMAGE_LINK)))
+            .andExpect(jsonPath("$.[*].additionalImageLink").value(hasItem(DEFAULT_ADDITIONAL_IMAGE_LINK)))
             .andExpect(jsonPath("$.[*].mobileLink").value(hasItem(DEFAULT_MOBILE_LINK)))
             .andExpect(jsonPath("$.[*].availability").value(hasItem(DEFAULT_AVAILABILITY.toString())))
             .andExpect(jsonPath("$.[*].availabilityDate").value(hasItem(sameInstant(DEFAULT_AVAILABILITY_DATE))))
@@ -429,7 +429,7 @@ class GoogleFeedProductResourceIT {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.link").value(DEFAULT_LINK))
             .andExpect(jsonPath("$.imageLink").value(DEFAULT_IMAGE_LINK))
-            .andExpect(jsonPath("$.aditionalImageLink").value(DEFAULT_ADITIONAL_IMAGE_LINK))
+            .andExpect(jsonPath("$.additionalImageLink").value(DEFAULT_ADDITIONAL_IMAGE_LINK))
             .andExpect(jsonPath("$.mobileLink").value(DEFAULT_MOBILE_LINK))
             .andExpect(jsonPath("$.availability").value(DEFAULT_AVAILABILITY.toString()))
             .andExpect(jsonPath("$.availabilityDate").value(sameInstant(DEFAULT_AVAILABILITY_DATE)))
@@ -851,80 +851,82 @@ class GoogleFeedProductResourceIT {
 
     @Test
     @Transactional
-    void getAllGoogleFeedProductsByAditionalImageLinkIsEqualToSomething() throws Exception {
+    void getAllGoogleFeedProductsByAdditionalImageLinkIsEqualToSomething() throws Exception {
         // Initialize the database
         googleFeedProductRepository.saveAndFlush(googleFeedProduct);
 
-        // Get all the googleFeedProductList where aditionalImageLink equals to DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldBeFound("aditionalImageLink.equals=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink equals to DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldBeFound("additionalImageLink.equals=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the googleFeedProductList where aditionalImageLink equals to UPDATED_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldNotBeFound("aditionalImageLink.equals=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink equals to UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldNotBeFound("additionalImageLink.equals=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllGoogleFeedProductsByAditionalImageLinkIsNotEqualToSomething() throws Exception {
+    void getAllGoogleFeedProductsByAdditionalImageLinkIsNotEqualToSomething() throws Exception {
         // Initialize the database
         googleFeedProductRepository.saveAndFlush(googleFeedProduct);
 
-        // Get all the googleFeedProductList where aditionalImageLink not equals to DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldNotBeFound("aditionalImageLink.notEquals=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink not equals to DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldNotBeFound("additionalImageLink.notEquals=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the googleFeedProductList where aditionalImageLink not equals to UPDATED_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldBeFound("aditionalImageLink.notEquals=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink not equals to UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldBeFound("additionalImageLink.notEquals=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllGoogleFeedProductsByAditionalImageLinkIsInShouldWork() throws Exception {
+    void getAllGoogleFeedProductsByAdditionalImageLinkIsInShouldWork() throws Exception {
         // Initialize the database
         googleFeedProductRepository.saveAndFlush(googleFeedProduct);
 
-        // Get all the googleFeedProductList where aditionalImageLink in DEFAULT_ADITIONAL_IMAGE_LINK or UPDATED_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldBeFound("aditionalImageLink.in=" + DEFAULT_ADITIONAL_IMAGE_LINK + "," + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink in DEFAULT_ADDITIONAL_IMAGE_LINK or UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldBeFound(
+            "additionalImageLink.in=" + DEFAULT_ADDITIONAL_IMAGE_LINK + "," + UPDATED_ADDITIONAL_IMAGE_LINK
+        );
 
-        // Get all the googleFeedProductList where aditionalImageLink equals to UPDATED_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldNotBeFound("aditionalImageLink.in=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink equals to UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldNotBeFound("additionalImageLink.in=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllGoogleFeedProductsByAditionalImageLinkIsNullOrNotNull() throws Exception {
+    void getAllGoogleFeedProductsByAdditionalImageLinkIsNullOrNotNull() throws Exception {
         // Initialize the database
         googleFeedProductRepository.saveAndFlush(googleFeedProduct);
 
-        // Get all the googleFeedProductList where aditionalImageLink is not null
-        defaultGoogleFeedProductShouldBeFound("aditionalImageLink.specified=true");
+        // Get all the googleFeedProductList where additionalImageLink is not null
+        defaultGoogleFeedProductShouldBeFound("additionalImageLink.specified=true");
 
-        // Get all the googleFeedProductList where aditionalImageLink is null
-        defaultGoogleFeedProductShouldNotBeFound("aditionalImageLink.specified=false");
+        // Get all the googleFeedProductList where additionalImageLink is null
+        defaultGoogleFeedProductShouldNotBeFound("additionalImageLink.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllGoogleFeedProductsByAditionalImageLinkContainsSomething() throws Exception {
+    void getAllGoogleFeedProductsByAdditionalImageLinkContainsSomething() throws Exception {
         // Initialize the database
         googleFeedProductRepository.saveAndFlush(googleFeedProduct);
 
-        // Get all the googleFeedProductList where aditionalImageLink contains DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldBeFound("aditionalImageLink.contains=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink contains DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldBeFound("additionalImageLink.contains=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the googleFeedProductList where aditionalImageLink contains UPDATED_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldNotBeFound("aditionalImageLink.contains=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink contains UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldNotBeFound("additionalImageLink.contains=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllGoogleFeedProductsByAditionalImageLinkNotContainsSomething() throws Exception {
+    void getAllGoogleFeedProductsByAdditionalImageLinkNotContainsSomething() throws Exception {
         // Initialize the database
         googleFeedProductRepository.saveAndFlush(googleFeedProduct);
 
-        // Get all the googleFeedProductList where aditionalImageLink does not contain DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldNotBeFound("aditionalImageLink.doesNotContain=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink does not contain DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldNotBeFound("additionalImageLink.doesNotContain=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the googleFeedProductList where aditionalImageLink does not contain UPDATED_ADITIONAL_IMAGE_LINK
-        defaultGoogleFeedProductShouldBeFound("aditionalImageLink.doesNotContain=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the googleFeedProductList where additionalImageLink does not contain UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultGoogleFeedProductShouldBeFound("additionalImageLink.doesNotContain=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
@@ -1584,7 +1586,7 @@ class GoogleFeedProductResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK)))
             .andExpect(jsonPath("$.[*].imageLink").value(hasItem(DEFAULT_IMAGE_LINK)))
-            .andExpect(jsonPath("$.[*].aditionalImageLink").value(hasItem(DEFAULT_ADITIONAL_IMAGE_LINK)))
+            .andExpect(jsonPath("$.[*].additionalImageLink").value(hasItem(DEFAULT_ADDITIONAL_IMAGE_LINK)))
             .andExpect(jsonPath("$.[*].mobileLink").value(hasItem(DEFAULT_MOBILE_LINK)))
             .andExpect(jsonPath("$.[*].availability").value(hasItem(DEFAULT_AVAILABILITY.toString())))
             .andExpect(jsonPath("$.[*].availabilityDate").value(hasItem(sameInstant(DEFAULT_AVAILABILITY_DATE))))
@@ -1647,7 +1649,7 @@ class GoogleFeedProductResourceIT {
             .description(UPDATED_DESCRIPTION)
             .link(UPDATED_LINK)
             .imageLink(UPDATED_IMAGE_LINK)
-            .aditionalImageLink(UPDATED_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(UPDATED_ADDITIONAL_IMAGE_LINK)
             .mobileLink(UPDATED_MOBILE_LINK)
             .availability(UPDATED_AVAILABILITY)
             .availabilityDate(UPDATED_AVAILABILITY_DATE)
@@ -1675,7 +1677,7 @@ class GoogleFeedProductResourceIT {
         assertThat(testGoogleFeedProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testGoogleFeedProduct.getLink()).isEqualTo(UPDATED_LINK);
         assertThat(testGoogleFeedProduct.getImageLink()).isEqualTo(UPDATED_IMAGE_LINK);
-        assertThat(testGoogleFeedProduct.getAditionalImageLink()).isEqualTo(UPDATED_ADITIONAL_IMAGE_LINK);
+        assertThat(testGoogleFeedProduct.getAdditionalImageLink()).isEqualTo(UPDATED_ADDITIONAL_IMAGE_LINK);
         assertThat(testGoogleFeedProduct.getMobileLink()).isEqualTo(UPDATED_MOBILE_LINK);
         assertThat(testGoogleFeedProduct.getAvailability()).isEqualTo(UPDATED_AVAILABILITY);
         assertThat(testGoogleFeedProduct.getAvailabilityDate()).isEqualTo(UPDATED_AVAILABILITY_DATE);
@@ -1783,7 +1785,7 @@ class GoogleFeedProductResourceIT {
         assertThat(testGoogleFeedProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testGoogleFeedProduct.getLink()).isEqualTo(DEFAULT_LINK);
         assertThat(testGoogleFeedProduct.getImageLink()).isEqualTo(UPDATED_IMAGE_LINK);
-        assertThat(testGoogleFeedProduct.getAditionalImageLink()).isEqualTo(DEFAULT_ADITIONAL_IMAGE_LINK);
+        assertThat(testGoogleFeedProduct.getAdditionalImageLink()).isEqualTo(DEFAULT_ADDITIONAL_IMAGE_LINK);
         assertThat(testGoogleFeedProduct.getMobileLink()).isEqualTo(UPDATED_MOBILE_LINK);
         assertThat(testGoogleFeedProduct.getAvailability()).isEqualTo(UPDATED_AVAILABILITY);
         assertThat(testGoogleFeedProduct.getAvailabilityDate()).isEqualTo(DEFAULT_AVAILABILITY_DATE);
@@ -1813,7 +1815,7 @@ class GoogleFeedProductResourceIT {
             .description(UPDATED_DESCRIPTION)
             .link(UPDATED_LINK)
             .imageLink(UPDATED_IMAGE_LINK)
-            .aditionalImageLink(UPDATED_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(UPDATED_ADDITIONAL_IMAGE_LINK)
             .mobileLink(UPDATED_MOBILE_LINK)
             .availability(UPDATED_AVAILABILITY)
             .availabilityDate(UPDATED_AVAILABILITY_DATE)
@@ -1841,7 +1843,7 @@ class GoogleFeedProductResourceIT {
         assertThat(testGoogleFeedProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testGoogleFeedProduct.getLink()).isEqualTo(UPDATED_LINK);
         assertThat(testGoogleFeedProduct.getImageLink()).isEqualTo(UPDATED_IMAGE_LINK);
-        assertThat(testGoogleFeedProduct.getAditionalImageLink()).isEqualTo(UPDATED_ADITIONAL_IMAGE_LINK);
+        assertThat(testGoogleFeedProduct.getAdditionalImageLink()).isEqualTo(UPDATED_ADDITIONAL_IMAGE_LINK);
         assertThat(testGoogleFeedProduct.getMobileLink()).isEqualTo(UPDATED_MOBILE_LINK);
         assertThat(testGoogleFeedProduct.getAvailability()).isEqualTo(UPDATED_AVAILABILITY);
         assertThat(testGoogleFeedProduct.getAvailabilityDate()).isEqualTo(UPDATED_AVAILABILITY_DATE);

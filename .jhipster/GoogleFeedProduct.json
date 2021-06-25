@@ -27,7 +27,7 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "aditionalImageLink",
+      "fieldName": "additionalImageLink",
       "fieldType": "String"
     },
     {
