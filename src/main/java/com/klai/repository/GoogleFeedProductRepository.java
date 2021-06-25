@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface GoogleFeedProductRepository extends JpaRepository<GoogleFeedProduct, Long> {}
+public interface GoogleFeedProductRepository extends JpaRepository<GoogleFeedProduct, Long>, JpaSpecificationExecutor<GoogleFeedProduct> {}

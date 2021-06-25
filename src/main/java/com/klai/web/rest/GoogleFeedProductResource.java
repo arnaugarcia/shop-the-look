@@ -2,6 +2,9 @@ package com.klai.web.rest;
 
 import com.klai.domain.GoogleFeedProduct;
 import com.klai.repository.GoogleFeedProductRepository;
+import com.klai.service.GoogleFeedProductQueryService;
+import com.klai.service.GoogleFeedProductService;
+import com.klai.service.criteria.GoogleFeedProductCriteria;
 import com.klai.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +26,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class GoogleFeedProductResource {
 
     private final Logger log = LoggerFactory.getLogger(GoogleFeedProductResource.class);
@@ -34,10 +35,20 @@ public class GoogleFeedProductResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final GoogleFeedProductService googleFeedProductService;
+
     private final GoogleFeedProductRepository googleFeedProductRepository;
 
-    public GoogleFeedProductResource(GoogleFeedProductRepository googleFeedProductRepository) {
+    private final GoogleFeedProductQueryService googleFeedProductQueryService;
+
+    public GoogleFeedProductResource(
+        GoogleFeedProductService googleFeedProductService,
+        GoogleFeedProductRepository googleFeedProductRepository,
+        GoogleFeedProductQueryService googleFeedProductQueryService
+    ) {
+        this.googleFeedProductService = googleFeedProductService;
         this.googleFeedProductRepository = googleFeedProductRepository;
+        this.googleFeedProductQueryService = googleFeedProductQueryService;
     }
 
     /**
@@ -54,7 +65,7 @@ public class GoogleFeedProductResource {
         if (googleFeedProduct.getId() != null) {
             throw new BadRequestAlertException("A new googleFeedProduct cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        GoogleFeedProduct result = googleFeedProductRepository.save(googleFeedProduct);
+        GoogleFeedProduct result = googleFeedProductService.save(googleFeedProduct);
         return ResponseEntity
             .created(new URI("/api/google-feed-products/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -88,7 +99,7 @@ public class GoogleFeedProductResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        GoogleFeedProduct result = googleFeedProductRepository.save(googleFeedProduct);
+        GoogleFeedProduct result = googleFeedProductService.save(googleFeedProduct);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, googleFeedProduct.getId().toString()))
@@ -123,60 +134,7 @@ public class GoogleFeedProductResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<GoogleFeedProduct> result = googleFeedProductRepository
-            .findById(googleFeedProduct.getId())
-            .map(
-                existingGoogleFeedProduct -> {
-                    if (googleFeedProduct.getSku() != null) {
-                        existingGoogleFeedProduct.setSku(googleFeedProduct.getSku());
-                    }
-                    if (googleFeedProduct.getName() != null) {
-                        existingGoogleFeedProduct.setName(googleFeedProduct.getName());
-                    }
-                    if (googleFeedProduct.getDescription() != null) {
-                        existingGoogleFeedProduct.setDescription(googleFeedProduct.getDescription());
-                    }
-                    if (googleFeedProduct.getLink() != null) {
-                        existingGoogleFeedProduct.setLink(googleFeedProduct.getLink());
-                    }
-                    if (googleFeedProduct.getImageLink() != null) {
-                        existingGoogleFeedProduct.setImageLink(googleFeedProduct.getImageLink());
-                    }
-                    if (googleFeedProduct.getAditionalImageLink() != null) {
-                        existingGoogleFeedProduct.setAditionalImageLink(googleFeedProduct.getAditionalImageLink());
-                    }
-                    if (googleFeedProduct.getMobileLink() != null) {
-                        existingGoogleFeedProduct.setMobileLink(googleFeedProduct.getMobileLink());
-                    }
-                    if (googleFeedProduct.getAvailability() != null) {
-                        existingGoogleFeedProduct.setAvailability(googleFeedProduct.getAvailability());
-                    }
-                    if (googleFeedProduct.getAvailabilityDate() != null) {
-                        existingGoogleFeedProduct.setAvailabilityDate(googleFeedProduct.getAvailabilityDate());
-                    }
-                    if (googleFeedProduct.getPrice() != null) {
-                        existingGoogleFeedProduct.setPrice(googleFeedProduct.getPrice());
-                    }
-                    if (googleFeedProduct.getSalePrice() != null) {
-                        existingGoogleFeedProduct.setSalePrice(googleFeedProduct.getSalePrice());
-                    }
-                    if (googleFeedProduct.getBrand() != null) {
-                        existingGoogleFeedProduct.setBrand(googleFeedProduct.getBrand());
-                    }
-                    if (googleFeedProduct.getCondition() != null) {
-                        existingGoogleFeedProduct.setCondition(googleFeedProduct.getCondition());
-                    }
-                    if (googleFeedProduct.getAdult() != null) {
-                        existingGoogleFeedProduct.setAdult(googleFeedProduct.getAdult());
-                    }
-                    if (googleFeedProduct.getAgeGroup() != null) {
-                        existingGoogleFeedProduct.setAgeGroup(googleFeedProduct.getAgeGroup());
-                    }
-
-                    return existingGoogleFeedProduct;
-                }
-            )
-            .map(googleFeedProductRepository::save);
+        Optional<GoogleFeedProduct> result = googleFeedProductService.partialUpdate(googleFeedProduct);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -187,12 +145,26 @@ public class GoogleFeedProductResource {
     /**
      * {@code GET  /google-feed-products} : get all the googleFeedProducts.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of googleFeedProducts in body.
      */
     @GetMapping("/google-feed-products")
-    public List<GoogleFeedProduct> getAllGoogleFeedProducts() {
-        log.debug("REST request to get all GoogleFeedProducts");
-        return googleFeedProductRepository.findAll();
+    public ResponseEntity<List<GoogleFeedProduct>> getAllGoogleFeedProducts(GoogleFeedProductCriteria criteria) {
+        log.debug("REST request to get GoogleFeedProducts by criteria: {}", criteria);
+        List<GoogleFeedProduct> entityList = googleFeedProductQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /google-feed-products/count} : count all the googleFeedProducts.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/google-feed-products/count")
+    public ResponseEntity<Long> countGoogleFeedProducts(GoogleFeedProductCriteria criteria) {
+        log.debug("REST request to count GoogleFeedProducts by criteria: {}", criteria);
+        return ResponseEntity.ok().body(googleFeedProductQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -204,7 +176,7 @@ public class GoogleFeedProductResource {
     @GetMapping("/google-feed-products/{id}")
     public ResponseEntity<GoogleFeedProduct> getGoogleFeedProduct(@PathVariable Long id) {
         log.debug("REST request to get GoogleFeedProduct : {}", id);
-        Optional<GoogleFeedProduct> googleFeedProduct = googleFeedProductRepository.findById(id);
+        Optional<GoogleFeedProduct> googleFeedProduct = googleFeedProductService.findOne(id);
         return ResponseUtil.wrapOrNotFound(googleFeedProduct);
     }
 
@@ -217,7 +189,7 @@ public class GoogleFeedProductResource {
     @DeleteMapping("/google-feed-products/{id}")
     public ResponseEntity<Void> deleteGoogleFeedProduct(@PathVariable Long id) {
         log.debug("REST request to delete GoogleFeedProduct : {}", id);
-        googleFeedProductRepository.deleteById(id);
+        googleFeedProductService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

@@ -1,7 +1,9 @@
 package com.klai.web.rest;
 
 import com.klai.repository.SpaceRepository;
+import com.klai.service.SpaceQueryService;
 import com.klai.service.SpaceService;
+import com.klai.service.criteria.SpaceCriteria;
 import com.klai.service.dto.SpaceDTO;
 import com.klai.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -37,9 +39,12 @@ public class SpaceResource {
 
     private final SpaceRepository spaceRepository;
 
-    public SpaceResource(SpaceService spaceService, SpaceRepository spaceRepository) {
+    private final SpaceQueryService spaceQueryService;
+
+    public SpaceResource(SpaceService spaceService, SpaceRepository spaceRepository, SpaceQueryService spaceQueryService) {
         this.spaceService = spaceService;
         this.spaceRepository = spaceRepository;
+        this.spaceQueryService = spaceQueryService;
     }
 
     /**
@@ -135,12 +140,26 @@ public class SpaceResource {
     /**
      * {@code GET  /spaces} : get all the spaces.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of spaces in body.
      */
     @GetMapping("/spaces")
-    public List<SpaceDTO> getAllSpaces() {
-        log.debug("REST request to get all Spaces");
-        return spaceService.findAll();
+    public ResponseEntity<List<SpaceDTO>> getAllSpaces(SpaceCriteria criteria) {
+        log.debug("REST request to get Spaces by criteria: {}", criteria);
+        List<SpaceDTO> entityList = spaceQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /spaces/count} : count all the spaces.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/spaces/count")
+    public ResponseEntity<Long> countSpaces(SpaceCriteria criteria) {
+        log.debug("REST request to count Spaces by criteria: {}", criteria);
+        return ResponseEntity.ok().body(spaceQueryService.countByCriteria(criteria));
     }
 
     /**

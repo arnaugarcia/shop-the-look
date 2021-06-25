@@ -23,6 +23,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "photo",
       "otherEntityRelationshipName": "coordinate",
+      "relationshipValidateRules": "required",
       "relationshipName": "photo"
     }
   ],

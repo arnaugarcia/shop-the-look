@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SpaceRepository extends JpaRepository<Space, Long> {}
+public interface SpaceRepository extends JpaRepository<Space, Long>, JpaSpecificationExecutor<Space> {}

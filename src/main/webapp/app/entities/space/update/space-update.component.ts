@@ -27,7 +27,7 @@ export class SpaceUpdateComponent implements OnInit {
     description: [],
     maxPhotos: [],
     visible: [],
-    company: [],
+    company: [null, Validators.required],
   });
 
   constructor(

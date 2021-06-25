@@ -30,6 +30,7 @@
       "relationshipType": "one-to-many",
       "otherEntityName": "photo",
       "otherEntityRelationshipName": "spaceTemplate",
+      "relationshipValidateRules": "required",
       "relationshipName": "photo",
       "otherEntityField": "name"
     }

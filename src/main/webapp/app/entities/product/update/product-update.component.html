@@ -154,7 +154,7 @@
         <div class="form-group">
           <label class="form-control-label" stlTranslate="stlApp.product.coordinate" for="field_coordinate">Coordinate</label>
           <select class="form-control" id="field_coordinate" data-cy="coordinate" name="coordinate" formControlName="coordinate">
-            <option *ngIf="!editForm.get('coordinate')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="null"></option>
             <option
               [ngValue]="
                 coordinateOption.id === editForm.get('coordinate')!.value?.id ? editForm.get('coordinate')!.value : coordinateOption
@@ -164,17 +164,6 @@
               {{ coordinateOption.id }}
             </option>
           </select>
-        </div>
-        <div
-          *ngIf="editForm.get(['coordinate'])!.invalid && (editForm.get(['coordinate'])!.dirty || editForm.get(['coordinate'])!.touched)"
-        >
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get(['coordinate'])?.errors?.required"
-            stlTranslate="entity.validation.required"
-          >
-            This field is required.
-          </small>
         </div>
       </div>
 

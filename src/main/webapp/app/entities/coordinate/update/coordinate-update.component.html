@@ -26,7 +26,7 @@
         <div class="form-group">
           <label class="form-control-label" stlTranslate="stlApp.coordinate.photo" for="field_photo">Photo</label>
           <select class="form-control" id="field_photo" data-cy="photo" name="photo" formControlName="photo">
-            <option [ngValue]="null"></option>
+            <option *ngIf="!editForm.get('photo')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="photoOption.id === editForm.get('photo')!.value?.id ? editForm.get('photo')!.value : photoOption"
               *ngFor="let photoOption of photosSharedCollection; trackBy: trackPhotoById"
@@ -34,6 +34,11 @@
               {{ photoOption.id }}
             </option>
           </select>
+        </div>
+        <div *ngIf="editForm.get(['photo'])!.invalid && (editForm.get(['photo'])!.dirty || editForm.get(['photo'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['photo'])?.errors?.required" stlTranslate="entity.validation.required">
+            This field is required.
+          </small>
         </div>
       </div>
 

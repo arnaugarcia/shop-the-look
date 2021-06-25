@@ -1,7 +1,11 @@
-import { browser, ExpectedConditions as ec, promise } from 'protractor';
+import { browser, ExpectedConditions as ec /* , promise */ } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-import { SpaceTemplateComponentsPage, SpaceTemplateDeleteDialog, SpaceTemplateUpdatePage } from './space-template.page-object';
+import {
+  SpaceTemplateComponentsPage,
+  /* SpaceTemplateDeleteDialog, */
+  SpaceTemplateUpdatePage,
+} from './space-template.page-object';
 
 const expect = chai.expect;
 
@@ -10,7 +14,7 @@ describe('SpaceTemplate e2e test', () => {
   let signInPage: SignInPage;
   let spaceTemplateComponentsPage: SpaceTemplateComponentsPage;
   let spaceTemplateUpdatePage: SpaceTemplateUpdatePage;
-  let spaceTemplateDeleteDialog: SpaceTemplateDeleteDialog;
+  /* let spaceTemplateDeleteDialog: SpaceTemplateDeleteDialog; */
   const username = process.env.E2E_USERNAME ?? 'admin';
   const password = process.env.E2E_PASSWORD ?? 'admin';
 
@@ -40,36 +44,37 @@ describe('SpaceTemplate e2e test', () => {
     await spaceTemplateUpdatePage.cancel();
   });
 
-  it('should create and save SpaceTemplates', async () => {
-    const nbButtonsBeforeCreate = await spaceTemplateComponentsPage.countDeleteButtons();
+  /* it('should create and save SpaceTemplates', async () => {
+        const nbButtonsBeforeCreate = await spaceTemplateComponentsPage.countDeleteButtons();
 
-    await spaceTemplateComponentsPage.clickOnCreateButton();
+        await spaceTemplateComponentsPage.clickOnCreateButton();
 
-    await promise.all([
-      spaceTemplateUpdatePage.setNameInput('name'),
-      spaceTemplateUpdatePage.setDescriptionInput('description'),
-      spaceTemplateUpdatePage.setMaxProductsInput('5'),
-      spaceTemplateUpdatePage.setMaxPhotosInput('5'),
-      spaceTemplateUpdatePage.getActiveInput().click(),
-    ]);
+        await promise.all([
+            spaceTemplateUpdatePage.setNameInput('name'),
+            spaceTemplateUpdatePage.setDescriptionInput('description'),
+            spaceTemplateUpdatePage.setMaxProductsInput('5'),
+            spaceTemplateUpdatePage.setMaxPhotosInput('5'),
+            spaceTemplateUpdatePage.getActiveInput().click(),
+        ]);
 
-    await spaceTemplateUpdatePage.save();
-    expect(await spaceTemplateUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
+        await spaceTemplateUpdatePage.save();
+        expect(await spaceTemplateUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 
-    expect(await spaceTemplateComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
-  });
+        expect(await spaceTemplateComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
+    }); */
 
-  it('should delete last SpaceTemplate', async () => {
-    const nbButtonsBeforeDelete = await spaceTemplateComponentsPage.countDeleteButtons();
-    await spaceTemplateComponentsPage.clickOnLastDeleteButton();
+  /* it('should delete last SpaceTemplate', async () => {
+        const nbButtonsBeforeDelete = await spaceTemplateComponentsPage.countDeleteButtons();
+        await spaceTemplateComponentsPage.clickOnLastDeleteButton();
 
-    spaceTemplateDeleteDialog = new SpaceTemplateDeleteDialog();
-    expect(await spaceTemplateDeleteDialog.getDialogTitle()).to.eq('stlApp.spaceTemplate.delete.question');
-    await spaceTemplateDeleteDialog.clickOnConfirmButton();
-    await browser.wait(ec.visibilityOf(spaceTemplateComponentsPage.title), 5000);
+        spaceTemplateDeleteDialog = new SpaceTemplateDeleteDialog();
+        expect(await spaceTemplateDeleteDialog.getDialogTitle())
+            .to.eq('stlApp.spaceTemplate.delete.question');
+        await spaceTemplateDeleteDialog.clickOnConfirmButton();
+        await browser.wait(ec.visibilityOf(spaceTemplateComponentsPage.title), 5000);
 
-    expect(await spaceTemplateComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
-  });
+        expect(await spaceTemplateComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
+    }); */
 
   after(async () => {
     await navBarPage.autoSignOut();

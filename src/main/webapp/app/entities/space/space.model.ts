@@ -9,8 +9,8 @@ export interface ISpace {
   description?: string | null;
   maxPhotos?: number | null;
   visible?: boolean | null;
-  photos?: IPhoto[] | null;
-  company?: ICompany | null;
+  photos?: IPhoto[];
+  company?: ICompany;
 }
 
 export class Space implements ISpace {
@@ -22,8 +22,8 @@ export class Space implements ISpace {
     public description?: string | null,
     public maxPhotos?: number | null,
     public visible?: boolean | null,
-    public photos?: IPhoto[] | null,
-    public company?: ICompany | null
+    public photos?: IPhoto[],
+    public company?: ICompany
   ) {
     this.active = this.active ?? false;
     this.visible = this.visible ?? false;

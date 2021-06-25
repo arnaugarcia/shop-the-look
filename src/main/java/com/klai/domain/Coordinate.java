@@ -34,7 +34,8 @@ public class Coordinate implements Serializable {
     @JsonIgnoreProperties(value = { "company", "coordinate" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "coordinates", "space", "spaceTemplate" }, allowSetters = true)
     private Photo photo;
 

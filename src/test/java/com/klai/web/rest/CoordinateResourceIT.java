@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.IntegrationTest;
 import com.klai.domain.Coordinate;
+import com.klai.domain.Photo;
 import com.klai.domain.Product;
 import com.klai.repository.CoordinateRepository;
 import com.klai.service.dto.CoordinateDTO;
@@ -76,6 +77,16 @@ class CoordinateResourceIT {
             product = TestUtil.findAll(em, Product.class).get(0);
         }
         coordinate.getProducts().add(product);
+        // Add required entity
+        Photo photo;
+        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
+            photo = PhotoResourceIT.createEntity(em);
+            em.persist(photo);
+            em.flush();
+        } else {
+            photo = TestUtil.findAll(em, Photo.class).get(0);
+        }
+        coordinate.setPhoto(photo);
         return coordinate;
     }
 
@@ -97,6 +108,16 @@ class CoordinateResourceIT {
             product = TestUtil.findAll(em, Product.class).get(0);
         }
         coordinate.getProducts().add(product);
+        // Add required entity
+        Photo photo;
+        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
+            photo = PhotoResourceIT.createUpdatedEntity(em);
+            em.persist(photo);
+            em.flush();
+        } else {
+            photo = TestUtil.findAll(em, Photo.class).get(0);
+        }
+        coordinate.setPhoto(photo);
         return coordinate;
     }
 

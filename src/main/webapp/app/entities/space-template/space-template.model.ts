@@ -7,7 +7,7 @@ export interface ISpaceTemplate {
   maxProducts?: number;
   maxPhotos?: number;
   active?: boolean | null;
-  photos?: IPhoto[] | null;
+  photos?: IPhoto[];
 }
 
 export class SpaceTemplate implements ISpaceTemplate {
@@ -18,7 +18,7 @@ export class SpaceTemplate implements ISpaceTemplate {
     public maxProducts?: number,
     public maxPhotos?: number,
     public active?: boolean | null,
-    public photos?: IPhoto[] | null
+    public photos?: IPhoto[]
   ) {
     this.active = this.active ?? false;
   }

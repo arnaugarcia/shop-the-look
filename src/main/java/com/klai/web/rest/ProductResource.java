@@ -1,7 +1,9 @@
 package com.klai.web.rest;
 
 import com.klai.repository.ProductRepository;
+import com.klai.service.ProductQueryService;
 import com.klai.service.ProductService;
+import com.klai.service.criteria.ProductCriteria;
 import com.klai.service.dto.ProductDTO;
 import com.klai.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -37,9 +39,12 @@ public class ProductResource {
 
     private final ProductRepository productRepository;
 
-    public ProductResource(ProductService productService, ProductRepository productRepository) {
+    private final ProductQueryService productQueryService;
+
+    public ProductResource(ProductService productService, ProductRepository productRepository, ProductQueryService productQueryService) {
         this.productService = productService;
         this.productRepository = productRepository;
+        this.productQueryService = productQueryService;
     }
 
     /**
@@ -135,12 +140,26 @@ public class ProductResource {
     /**
      * {@code GET  /products} : get all the products.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
     @GetMapping("/products")
-    public List<ProductDTO> getAllProducts() {
-        log.debug("REST request to get all Products");
-        return productService.findAll();
+    public ResponseEntity<List<ProductDTO>> getAllProducts(ProductCriteria criteria) {
+        log.debug("REST request to get Products by criteria: {}", criteria);
+        List<ProductDTO> entityList = productQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /products/count} : count all the products.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/products/count")
+    public ResponseEntity<Long> countProducts(ProductCriteria criteria) {
+        log.debug("REST request to count Products by criteria: {}", criteria);
+        return ResponseEntity.ok().body(productQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -34,7 +34,7 @@ export class ProductUpdateComponent implements OnInit {
     price: [null, [Validators.required]],
     category: [],
     company: [null, Validators.required],
-    coordinate: [null, Validators.required],
+    coordinate: [],
   });
 
   constructor(

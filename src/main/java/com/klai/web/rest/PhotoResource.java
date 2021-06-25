@@ -1,7 +1,9 @@
 package com.klai.web.rest;
 
 import com.klai.repository.PhotoRepository;
+import com.klai.service.PhotoQueryService;
 import com.klai.service.PhotoService;
+import com.klai.service.criteria.PhotoCriteria;
 import com.klai.service.dto.PhotoDTO;
 import com.klai.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -37,9 +39,12 @@ public class PhotoResource {
 
     private final PhotoRepository photoRepository;
 
-    public PhotoResource(PhotoService photoService, PhotoRepository photoRepository) {
+    private final PhotoQueryService photoQueryService;
+
+    public PhotoResource(PhotoService photoService, PhotoRepository photoRepository, PhotoQueryService photoQueryService) {
         this.photoService = photoService;
         this.photoRepository = photoRepository;
+        this.photoQueryService = photoQueryService;
     }
 
     /**
@@ -135,12 +140,26 @@ public class PhotoResource {
     /**
      * {@code GET  /photos} : get all the photos.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of photos in body.
      */
     @GetMapping("/photos")
-    public List<PhotoDTO> getAllPhotos() {
-        log.debug("REST request to get all Photos");
-        return photoService.findAll();
+    public ResponseEntity<List<PhotoDTO>> getAllPhotos(PhotoCriteria criteria) {
+        log.debug("REST request to get Photos by criteria: {}", criteria);
+        List<PhotoDTO> entityList = photoQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /photos/count} : count all the photos.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/photos/count")
+    public ResponseEntity<Long> countPhotos(PhotoCriteria criteria) {
+        log.debug("REST request to count Photos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(photoQueryService.countByCriteria(criteria));
     }
 
     /**

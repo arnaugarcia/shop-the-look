@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.IntegrationTest;
+import com.klai.domain.Photo;
 import com.klai.domain.SpaceTemplate;
 import com.klai.repository.SpaceTemplateRepository;
 import com.klai.service.dto.SpaceTemplateDTO;
@@ -79,6 +80,16 @@ class SpaceTemplateResourceIT {
             .maxProducts(DEFAULT_MAX_PRODUCTS)
             .maxPhotos(DEFAULT_MAX_PHOTOS)
             .active(DEFAULT_ACTIVE);
+        // Add required entity
+        Photo photo;
+        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
+            photo = PhotoResourceIT.createEntity(em);
+            em.persist(photo);
+            em.flush();
+        } else {
+            photo = TestUtil.findAll(em, Photo.class).get(0);
+        }
+        spaceTemplate.getPhotos().add(photo);
         return spaceTemplate;
     }
 
@@ -95,6 +106,16 @@ class SpaceTemplateResourceIT {
             .maxProducts(UPDATED_MAX_PRODUCTS)
             .maxPhotos(UPDATED_MAX_PHOTOS)
             .active(UPDATED_ACTIVE);
+        // Add required entity
+        Photo photo;
+        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
+            photo = PhotoResourceIT.createUpdatedEntity(em);
+            em.persist(photo);
+            em.flush();
+        } else {
+            photo = TestUtil.findAll(em, Photo.class).get(0);
+        }
+        spaceTemplate.getPhotos().add(photo);
         return spaceTemplate;
     }
 

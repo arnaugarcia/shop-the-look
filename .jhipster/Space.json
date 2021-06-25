@@ -33,6 +33,7 @@
       "relationshipType": "one-to-many",
       "otherEntityName": "photo",
       "otherEntityRelationshipName": "space",
+      "relationshipValidateRules": "required",
       "relationshipName": "photo",
       "otherEntityField": "name"
     },
@@ -40,6 +41,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "company",
       "otherEntityRelationshipName": "space",
+      "relationshipValidateRules": "required",
       "relationshipName": "company",
       "otherEntityField": "cif"
     }
@@ -48,7 +50,7 @@
   "dto": "mapstruct",
   "pagination": "no",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,

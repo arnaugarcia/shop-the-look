@@ -62,8 +62,7 @@ public class Product implements Serializable {
     @JsonIgnoreProperties(value = { "products", "importedProducts", "spaces", "users", "subscriptionPlan" }, allowSetters = true)
     private Company company;
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @ManyToOne
     @JsonIgnoreProperties(value = { "products", "photo" }, allowSetters = true)
     private Coordinate coordinate;
 

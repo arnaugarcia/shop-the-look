@@ -23,7 +23,7 @@ export class CoordinateUpdateComponent implements OnInit {
     id: [],
     x: [],
     y: [],
-    photo: [],
+    photo: [null, Validators.required],
   });
 
   constructor(

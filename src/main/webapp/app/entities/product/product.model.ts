@@ -14,7 +14,7 @@ export interface IProduct {
   price?: string;
   category?: string | null;
   company?: ICompany;
-  coordinate?: ICoordinate;
+  coordinate?: ICoordinate | null;
 }
 
 export class Product implements IProduct {
@@ -30,7 +30,7 @@ export class Product implements IProduct {
     public price?: string,
     public category?: string | null,
     public company?: ICompany,
-    public coordinate?: ICoordinate
+    public coordinate?: ICoordinate | null
   ) {}
 }
 
