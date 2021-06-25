@@ -7,7 +7,7 @@
     "serviceDiscoveryType": false,
     "skipUserManagement": false,
     "withAdminUi": true,
-    "baseName": "stl",
+    "baseName": "ShopTheLook",
     "buildTool": "maven",
     "databaseType": "sql",
     "devDatabaseType": "mysql",

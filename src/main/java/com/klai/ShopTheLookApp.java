@@ -20,18 +20,18 @@ import tech.jhipster.config.JHipsterConstants;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
-public class StlApp {
+public class ShopTheLookApp {
 
-    private static final Logger log = LoggerFactory.getLogger(StlApp.class);
+    private static final Logger log = LoggerFactory.getLogger(ShopTheLookApp.class);
 
     private final Environment env;
 
-    public StlApp(Environment env) {
+    public ShopTheLookApp(Environment env) {
         this.env = env;
     }
 
     /**
-     * Initializes stl.
+     * Initializes ShopTheLook.
      * <p>
      * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
      * <p>
@@ -64,7 +64,7 @@ public class StlApp {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(StlApp.class);
+        SpringApplication app = new SpringApplication(ShopTheLookApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);

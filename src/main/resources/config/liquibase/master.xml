@@ -15,21 +15,7 @@
     <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182108_added_entity_Company.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182208_added_entity_Space.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182308_added_entity_SpaceTemplate.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182408_added_entity_Photo.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182508_added_entity_SubscriptionPlan.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182608_added_entity_Product.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182708_added_entity_GoogleFeedProduct.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182808_added_entity_Coordinate.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20210624182108_added_entity_constraints_Company.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182208_added_entity_constraints_Space.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182408_added_entity_constraints_Photo.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182608_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182708_added_entity_constraints_GoogleFeedProduct.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210624182808_added_entity_constraints_Coordinate.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

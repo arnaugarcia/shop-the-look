@@ -36,7 +36,7 @@ module.exports = (config, options, targetOptions) => {
         extensions: ['js', 'ts'],
       }),
       new WebpackNotifierPlugin({
-        title: 'Stl',
+        title: 'Shop The Look',
         contentImage: path.join(__dirname, 'logo-jhipster.png'),
       })
     );

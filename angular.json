@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "stl": {
+    "shop-the-look": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -84,16 +84,16 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "stl:build:development",
+            "browserTarget": "shop-the-look:build:development",
             "proxyConfig": "./webpack/proxy.conf.js",
             "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "stl:build:production"
+              "browserTarget": "shop-the-look:build:production"
             },
             "development": {
-              "browserTarget": "stl:build:development"
+              "browserTarget": "shop-the-look:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -107,9 +107,9 @@
       }
     }
   },
-  "defaultProject": "stl",
+  "defaultProject": "shop-the-look",
   "cli": {
-    "analytics": "6416631f-60f9-4d68-ba93-2a213d4fd997",
+    "analytics": "52874c99-ab51-425a-80ab-2082443610e2",
     "packageManager": "npm"
   }
 }

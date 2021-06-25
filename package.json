@@ -1,8 +1,8 @@
 {
-  "name": "stl",
+  "name": "shop-the-look",
   "version": "0.0.1-SNAPSHOT",
   "private": true,
-  "description": "Description for stl",
+  "description": "Description for ShopTheLook",
   "license": "UNLICENSED",
   "scripts": {
     "prettier:check": "prettier --check \"{,src/**/,webpack/}*.{md,json,yml,html,js,ts,tsx,css,scss,java}\"",

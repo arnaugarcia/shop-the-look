@@ -1,20 +1,12 @@
 {
   "global": {
-    "title": "Stl",
+    "title": "ShopTheLook",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "company": "Company",
-        "space": "Space",
-        "spaceTemplate": "Space Template",
-        "photo": "Photo",
-        "subscriptionPlan": "Subscription Plan",
-        "product": "Product",
-        "googleFeedProduct": "Google Feed Product",
-        "coordinate": "Coordinate",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
