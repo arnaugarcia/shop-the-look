@@ -1,5 +1,7 @@
 package com.klai.stl.config;
 
+import static tech.jhipster.config.liquibase.SpringLiquibaseUtil.createSpringLiquibase;
+
 import java.util.concurrent.Executor;
 import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
@@ -15,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import tech.jhipster.config.JHipsterConstants;
-import tech.jhipster.config.liquibase.SpringLiquibaseUtil;
 
 @Configuration
 public class LiquibaseConfiguration {
@@ -37,10 +38,7 @@ public class LiquibaseConfiguration {
         DataSourceProperties dataSourceProperties
     ) {
         // If you don't want Liquibase to start asynchronously, substitute by this:
-        // SpringLiquibase liquibase = SpringLiquibaseUtil.createSpringLiquibase(liquibaseDataSource.getIfAvailable(), liquibaseProperties, dataSource.getIfUnique(), dataSourceProperties);
-        SpringLiquibase liquibase = SpringLiquibaseUtil.createAsyncSpringLiquibase(
-            this.env,
-            executor,
+        SpringLiquibase liquibase = createSpringLiquibase(
             liquibaseDataSource.getIfAvailable(),
             liquibaseProperties,
             dataSource.getIfUnique(),
