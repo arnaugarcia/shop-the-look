@@ -1,2 +1,4 @@
 id;name;description;max_products;max_photos;active
-
+1;Demo Space 1;Demo Space with 5 photos;10;5;true
+2;Demo Space 2;Demo Space with 6 photos;20;10;true
+3;Demo Space 3;Demo Space with 10 photos;30;10;true
