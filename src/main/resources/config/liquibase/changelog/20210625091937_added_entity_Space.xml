@@ -21,7 +21,7 @@
                 <constraints nullable="true" />
             </column>
             <column name="reference" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_space__reference" />
             </column>
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />

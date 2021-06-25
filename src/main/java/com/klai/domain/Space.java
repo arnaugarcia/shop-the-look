@@ -31,7 +31,7 @@ public class Space implements Serializable {
     private Boolean active;
 
     @NotNull
-    @Column(name = "reference", nullable = false)
+    @Column(name = "reference", nullable = false, unique = true)
     private String reference;
 
     @Column(name = "description")

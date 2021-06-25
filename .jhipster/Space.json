@@ -13,7 +13,7 @@
     {
       "fieldName": "reference",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required", "unique"]
     },
     {
       "fieldName": "description",

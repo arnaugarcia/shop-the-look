@@ -30,7 +30,7 @@ public class Company implements Serializable {
     private String name;
 
     @NotNull
-    @Column(name = "cif", nullable = false)
+    @Column(name = "cif", nullable = false, unique = true)
     private String cif;
 
     @Column(name = "token")

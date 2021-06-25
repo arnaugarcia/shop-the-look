@@ -9,7 +9,7 @@
     {
       "fieldName": "cif",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required", "unique"]
     },
     {
       "fieldName": "token",
