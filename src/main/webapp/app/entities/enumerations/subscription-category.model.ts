@@ -1,5 +1,5 @@
 export enum SubscriptionCategory {
-  BRONCE = 'BRONCE',
+  BRONZE = 'BRONZE',
 
   SILVER = 'SILVER',
 

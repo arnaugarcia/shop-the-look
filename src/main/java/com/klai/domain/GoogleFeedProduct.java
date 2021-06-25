@@ -81,7 +81,8 @@ public class GoogleFeedProduct implements Serializable {
     @Column(name = "age_group")
     private GoogleFeedAgeGroup ageGroup;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "products", "importedProducts", "spaces", "users", "subscriptionPlan" }, allowSetters = true)
     private Company company;
 

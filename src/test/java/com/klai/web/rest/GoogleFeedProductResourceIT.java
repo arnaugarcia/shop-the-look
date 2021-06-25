@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.IntegrationTest;
+import com.klai.domain.Company;
 import com.klai.domain.GoogleFeedProduct;
 import com.klai.domain.enumeration.GoogleFeedAgeGroup;
 import com.klai.domain.enumeration.GoogleFeedProductAvailability;
@@ -122,6 +123,16 @@ class GoogleFeedProductResourceIT {
             .condition(DEFAULT_CONDITION)
             .adult(DEFAULT_ADULT)
             .ageGroup(DEFAULT_AGE_GROUP);
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        googleFeedProduct.setCompany(company);
         return googleFeedProduct;
     }
 
@@ -148,6 +159,16 @@ class GoogleFeedProductResourceIT {
             .condition(UPDATED_CONDITION)
             .adult(UPDATED_ADULT)
             .ageGroup(UPDATED_AGE_GROUP);
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createUpdatedEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        googleFeedProduct.setCompany(company);
         return googleFeedProduct;
     }
 

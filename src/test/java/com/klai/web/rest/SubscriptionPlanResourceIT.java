@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.IntegrationTest;
+import com.klai.domain.Company;
 import com.klai.domain.SubscriptionPlan;
 import com.klai.domain.enumeration.SubscriptionCategory;
 import com.klai.repository.SubscriptionPlanRepository;
@@ -84,6 +85,16 @@ class SubscriptionPlanResourceIT {
             .maxProducts(DEFAULT_MAX_PRODUCTS)
             .maxSpaces(DEFAULT_MAX_SPACES)
             .maxRequests(DEFAULT_MAX_REQUESTS);
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        subscriptionPlan.getCompanies().add(company);
         return subscriptionPlan;
     }
 
@@ -101,6 +112,16 @@ class SubscriptionPlanResourceIT {
             .maxProducts(UPDATED_MAX_PRODUCTS)
             .maxSpaces(UPDATED_MAX_SPACES)
             .maxRequests(UPDATED_MAX_REQUESTS);
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createUpdatedEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        subscriptionPlan.getCompanies().add(company);
         return subscriptionPlan;
     }
 

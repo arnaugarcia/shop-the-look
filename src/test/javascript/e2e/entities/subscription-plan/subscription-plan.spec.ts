@@ -1,7 +1,11 @@
-import { browser, ExpectedConditions as ec, promise } from 'protractor';
+import { browser, ExpectedConditions as ec /* , promise */ } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-import { SubscriptionPlanComponentsPage, SubscriptionPlanDeleteDialog, SubscriptionPlanUpdatePage } from './subscription-plan.page-object';
+import {
+  SubscriptionPlanComponentsPage,
+  /* SubscriptionPlanDeleteDialog, */
+  SubscriptionPlanUpdatePage,
+} from './subscription-plan.page-object';
 
 const expect = chai.expect;
 
@@ -10,7 +14,7 @@ describe('SubscriptionPlan e2e test', () => {
   let signInPage: SignInPage;
   let subscriptionPlanComponentsPage: SubscriptionPlanComponentsPage;
   let subscriptionPlanUpdatePage: SubscriptionPlanUpdatePage;
-  let subscriptionPlanDeleteDialog: SubscriptionPlanDeleteDialog;
+  /* let subscriptionPlanDeleteDialog: SubscriptionPlanDeleteDialog; */
   const username = process.env.E2E_USERNAME ?? 'admin';
   const password = process.env.E2E_PASSWORD ?? 'admin';
 
@@ -40,40 +44,38 @@ describe('SubscriptionPlan e2e test', () => {
     await subscriptionPlanUpdatePage.cancel();
   });
 
-  it('should create and save SubscriptionPlans', async () => {
-    const nbButtonsBeforeCreate = await subscriptionPlanComponentsPage.countDeleteButtons();
+  /* it('should create and save SubscriptionPlans', async () => {
+        const nbButtonsBeforeCreate = await subscriptionPlanComponentsPage.countDeleteButtons();
 
-    await subscriptionPlanComponentsPage.clickOnCreateButton();
+        await subscriptionPlanComponentsPage.clickOnCreateButton();
 
-    await promise.all([
-      subscriptionPlanUpdatePage.setNameInput('name'),
-      subscriptionPlanUpdatePage.setDescriptionInput('description'),
-      subscriptionPlanUpdatePage.categorySelectLastOption(),
-      subscriptionPlanUpdatePage.setMaxProductsInput('5'),
-      subscriptionPlanUpdatePage.setMaxSpacesInput('5'),
-      subscriptionPlanUpdatePage.setMaxRequestsInput('5'),
-    ]);
+        await promise.all([
+            subscriptionPlanUpdatePage.setNameInput('name'),
+            subscriptionPlanUpdatePage.setDescriptionInput('description'),
+            subscriptionPlanUpdatePage.categorySelectLastOption(),
+            subscriptionPlanUpdatePage.setMaxProductsInput('5'),
+            subscriptionPlanUpdatePage.setMaxSpacesInput('5'),
+            subscriptionPlanUpdatePage.setMaxRequestsInput('5'),
+        ]);
 
-    await subscriptionPlanUpdatePage.save();
-    expect(await subscriptionPlanUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
+        await subscriptionPlanUpdatePage.save();
+        expect(await subscriptionPlanUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 
-    expect(await subscriptionPlanComponentsPage.countDeleteButtons()).to.eq(
-      nbButtonsBeforeCreate + 1,
-      'Expected one more entry in the table'
-    );
-  });
+        expect(await subscriptionPlanComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
+    }); */
 
-  it('should delete last SubscriptionPlan', async () => {
-    const nbButtonsBeforeDelete = await subscriptionPlanComponentsPage.countDeleteButtons();
-    await subscriptionPlanComponentsPage.clickOnLastDeleteButton();
+  /* it('should delete last SubscriptionPlan', async () => {
+        const nbButtonsBeforeDelete = await subscriptionPlanComponentsPage.countDeleteButtons();
+        await subscriptionPlanComponentsPage.clickOnLastDeleteButton();
 
-    subscriptionPlanDeleteDialog = new SubscriptionPlanDeleteDialog();
-    expect(await subscriptionPlanDeleteDialog.getDialogTitle()).to.eq('stlApp.subscriptionPlan.delete.question');
-    await subscriptionPlanDeleteDialog.clickOnConfirmButton();
-    await browser.wait(ec.visibilityOf(subscriptionPlanComponentsPage.title), 5000);
+        subscriptionPlanDeleteDialog = new SubscriptionPlanDeleteDialog();
+        expect(await subscriptionPlanDeleteDialog.getDialogTitle())
+            .to.eq('stlApp.subscriptionPlan.delete.question');
+        await subscriptionPlanDeleteDialog.clickOnConfirmButton();
+        await browser.wait(ec.visibilityOf(subscriptionPlanComponentsPage.title), 5000);
 
-    expect(await subscriptionPlanComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
-  });
+        expect(await subscriptionPlanComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
+    }); */
 
   after(async () => {
     await navBarPage.autoSignOut();

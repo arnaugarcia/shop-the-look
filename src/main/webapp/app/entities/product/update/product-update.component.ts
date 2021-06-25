@@ -33,8 +33,8 @@ export class ProductUpdateComponent implements OnInit {
     availability: [null, [Validators.required]],
     price: [null, [Validators.required]],
     category: [],
-    company: [],
-    coordinate: [],
+    company: [null, Validators.required],
+    coordinate: [null, Validators.required],
   });
 
   constructor(

@@ -37,6 +37,7 @@
       "relationshipType": "one-to-many",
       "otherEntityName": "company",
       "otherEntityRelationshipName": "subscriptionPlan",
+      "relationshipValidateRules": "required",
       "relationshipName": "company",
       "otherEntityField": "cif"
     }

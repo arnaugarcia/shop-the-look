@@ -21,7 +21,7 @@ export interface IGoogleFeedProduct {
   condition?: GoogleFeedProductCondition | null;
   adult?: boolean | null;
   ageGroup?: GoogleFeedAgeGroup | null;
-  company?: ICompany | null;
+  company?: ICompany;
 }
 
 export class GoogleFeedProduct implements IGoogleFeedProduct {
@@ -42,7 +42,7 @@ export class GoogleFeedProduct implements IGoogleFeedProduct {
     public condition?: GoogleFeedProductCondition | null,
     public adult?: boolean | null,
     public ageGroup?: GoogleFeedAgeGroup | null,
-    public company?: ICompany | null
+    public company?: ICompany
   ) {
     this.adult = this.adult ?? false;
   }

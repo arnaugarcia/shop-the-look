@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.IntegrationTest;
+import com.klai.domain.Company;
+import com.klai.domain.Coordinate;
 import com.klai.domain.Product;
 import com.klai.domain.enumeration.ProductAvailability;
 import com.klai.repository.ProductRepository;
@@ -96,6 +98,26 @@ class ProductResourceIT {
             .availability(DEFAULT_AVAILABILITY)
             .price(DEFAULT_PRICE)
             .category(DEFAULT_CATEGORY);
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        product.setCompany(company);
+        // Add required entity
+        Coordinate coordinate;
+        if (TestUtil.findAll(em, Coordinate.class).isEmpty()) {
+            coordinate = CoordinateResourceIT.createEntity(em);
+            em.persist(coordinate);
+            em.flush();
+        } else {
+            coordinate = TestUtil.findAll(em, Coordinate.class).get(0);
+        }
+        product.setCoordinate(coordinate);
         return product;
     }
 
@@ -116,6 +138,26 @@ class ProductResourceIT {
             .availability(UPDATED_AVAILABILITY)
             .price(UPDATED_PRICE)
             .category(UPDATED_CATEGORY);
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createUpdatedEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        product.setCompany(company);
+        // Add required entity
+        Coordinate coordinate;
+        if (TestUtil.findAll(em, Coordinate.class).isEmpty()) {
+            coordinate = CoordinateResourceIT.createUpdatedEntity(em);
+            em.persist(coordinate);
+            em.flush();
+        } else {
+            coordinate = TestUtil.findAll(em, Coordinate.class).get(0);
+        }
+        product.setCoordinate(coordinate);
         return product;
     }
 

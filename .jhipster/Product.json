@@ -51,6 +51,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "company",
       "otherEntityRelationshipName": "product",
+      "relationshipValidateRules": "required",
       "relationshipName": "company",
       "otherEntityField": "cif"
     },
@@ -58,6 +59,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "coordinate",
       "otherEntityRelationshipName": "product",
+      "relationshipValidateRules": "required",
       "relationshipName": "coordinate"
     }
   ],

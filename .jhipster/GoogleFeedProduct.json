@@ -78,6 +78,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "company",
       "otherEntityRelationshipName": "importedProduct",
+      "relationshipValidateRules": "required",
       "relationshipName": "company",
       "otherEntityField": "cif"
     }

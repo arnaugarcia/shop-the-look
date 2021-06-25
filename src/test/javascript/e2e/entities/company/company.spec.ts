@@ -1,7 +1,11 @@
-import { browser, ExpectedConditions as ec, promise } from 'protractor';
+import { browser, ExpectedConditions as ec /* , promise */ } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-import { CompanyComponentsPage, CompanyDeleteDialog, CompanyUpdatePage } from './company.page-object';
+import {
+  CompanyComponentsPage,
+  /* CompanyDeleteDialog, */
+  CompanyUpdatePage,
+} from './company.page-object';
 
 const expect = chai.expect;
 
@@ -10,7 +14,7 @@ describe('Company e2e test', () => {
   let signInPage: SignInPage;
   let companyComponentsPage: CompanyComponentsPage;
   let companyUpdatePage: CompanyUpdatePage;
-  let companyDeleteDialog: CompanyDeleteDialog;
+  /* let companyDeleteDialog: CompanyDeleteDialog; */
   const username = process.env.E2E_USERNAME ?? 'admin';
   const password = process.env.E2E_PASSWORD ?? 'admin';
 
@@ -37,38 +41,39 @@ describe('Company e2e test', () => {
     await companyUpdatePage.cancel();
   });
 
-  it('should create and save Companies', async () => {
-    const nbButtonsBeforeCreate = await companyComponentsPage.countDeleteButtons();
+  /* it('should create and save Companies', async () => {
+        const nbButtonsBeforeCreate = await companyComponentsPage.countDeleteButtons();
 
-    await companyComponentsPage.clickOnCreateButton();
+        await companyComponentsPage.clickOnCreateButton();
 
-    await promise.all([
-      companyUpdatePage.setNameInput('name'),
-      companyUpdatePage.setCifInput('cif'),
-      companyUpdatePage.setTokenInput('token'),
-      companyUpdatePage.industrySelectLastOption(),
-      companyUpdatePage.companySizeSelectLastOption(),
-      // companyUpdatePage.userSelectLastOption(),
-      companyUpdatePage.subscriptionPlanSelectLastOption(),
-    ]);
+        await promise.all([
+            companyUpdatePage.setNameInput('name'),
+            companyUpdatePage.setCifInput('cif'),
+            companyUpdatePage.setTokenInput('token'),
+            companyUpdatePage.industrySelectLastOption(),
+            companyUpdatePage.companySizeSelectLastOption(),
+            // companyUpdatePage.userSelectLastOption(),
+            companyUpdatePage.subscriptionPlanSelectLastOption(),
+        ]);
 
-    await companyUpdatePage.save();
-    expect(await companyUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
+        await companyUpdatePage.save();
+        expect(await companyUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 
-    expect(await companyComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
-  });
+        expect(await companyComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
+    }); */
 
-  it('should delete last Company', async () => {
-    const nbButtonsBeforeDelete = await companyComponentsPage.countDeleteButtons();
-    await companyComponentsPage.clickOnLastDeleteButton();
+  /* it('should delete last Company', async () => {
+        const nbButtonsBeforeDelete = await companyComponentsPage.countDeleteButtons();
+        await companyComponentsPage.clickOnLastDeleteButton();
 
-    companyDeleteDialog = new CompanyDeleteDialog();
-    expect(await companyDeleteDialog.getDialogTitle()).to.eq('stlApp.company.delete.question');
-    await companyDeleteDialog.clickOnConfirmButton();
-    await browser.wait(ec.visibilityOf(companyComponentsPage.title), 5000);
+        companyDeleteDialog = new CompanyDeleteDialog();
+        expect(await companyDeleteDialog.getDialogTitle())
+            .to.eq('stlApp.company.delete.question');
+        await companyDeleteDialog.clickOnConfirmButton();
+        await browser.wait(ec.visibilityOf(companyComponentsPage.title), 5000);
 
-    expect(await companyComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
-  });
+        expect(await companyComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
+    }); */
 
   after(async () => {
     await navBarPage.autoSignOut();

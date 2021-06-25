@@ -13,8 +13,8 @@ export interface IProduct {
   availability?: ProductAvailability;
   price?: string;
   category?: string | null;
-  company?: ICompany | null;
-  coordinate?: ICoordinate | null;
+  company?: ICompany;
+  coordinate?: ICoordinate;
 }
 
 export class Product implements IProduct {
@@ -29,8 +29,8 @@ export class Product implements IProduct {
     public availability?: ProductAvailability,
     public price?: string,
     public category?: string | null,
-    public company?: ICompany | null,
-    public coordinate?: ICoordinate | null
+    public company?: ICompany,
+    public coordinate?: ICoordinate
   ) {}
 }
 

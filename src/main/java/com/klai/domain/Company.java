@@ -61,6 +61,7 @@ public class Company implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @NotNull
     @JoinTable(
         name = "rel_company__user",
         joinColumns = @JoinColumn(name = "company_id"),
@@ -68,7 +69,8 @@ public class Company implements Serializable {
     )
     private Set<User> users = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "companies" }, allowSetters = true)
     private SubscriptionPlan subscriptionPlan;
 

@@ -5,7 +5,7 @@ export interface ICoordinate {
   id?: number;
   x?: number | null;
   y?: number | null;
-  products?: IProduct[] | null;
+  products?: IProduct[];
   photo?: IPhoto | null;
 }
 
@@ -14,7 +14,7 @@ export class Coordinate implements ICoordinate {
     public id?: number,
     public x?: number | null,
     public y?: number | null,
-    public products?: IProduct[] | null,
+    public products?: IProduct[],
     public photo?: IPhoto | null
   ) {}
 }

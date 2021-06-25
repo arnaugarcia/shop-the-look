@@ -39,7 +39,7 @@ export class GoogleFeedProductUpdateComponent implements OnInit {
     condition: [],
     adult: [],
     ageGroup: [],
-    company: [],
+    company: [null, Validators.required],
   });
 
   constructor(

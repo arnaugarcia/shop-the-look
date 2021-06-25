@@ -9,7 +9,7 @@ export interface ISubscriptionPlan {
   maxProducts?: number;
   maxSpaces?: number;
   maxRequests?: number;
-  companies?: ICompany[] | null;
+  companies?: ICompany[];
 }
 
 export class SubscriptionPlan implements ISubscriptionPlan {
@@ -21,7 +21,7 @@ export class SubscriptionPlan implements ISubscriptionPlan {
     public maxProducts?: number,
     public maxSpaces?: number,
     public maxRequests?: number,
-    public companies?: ICompany[] | null
+    public companies?: ICompany[]
   ) {}
 }
 

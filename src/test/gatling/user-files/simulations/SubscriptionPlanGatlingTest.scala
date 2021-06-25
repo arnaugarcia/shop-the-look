@@ -73,7 +73,7 @@ class SubscriptionPlanGatlingTest extends Simulation {
             .body(StringBody("""{
                 "name":"SAMPLE_TEXT"
                 , "description":"SAMPLE_TEXT"
-                , "category":"BRONCE"
+                , "category":"BRONZE"
                 , "maxProducts":"0"
                 , "maxSpaces":"0"
                 , "maxRequests":"0"

@@ -57,11 +57,13 @@ public class Product implements Serializable {
     @Column(name = "category")
     private String category;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "products", "importedProducts", "spaces", "users", "subscriptionPlan" }, allowSetters = true)
     private Company company;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "products", "photo" }, allowSetters = true)
     private Coordinate coordinate;
 

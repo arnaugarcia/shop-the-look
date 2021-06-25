@@ -71,6 +71,11 @@
             </option>
           </select>
         </div>
+        <div *ngIf="editForm.get(['users'])!.invalid && (editForm.get(['users'])!.dirty || editForm.get(['users'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['users'])?.errors?.required" stlTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
 
         <div class="form-group">
           <label class="form-control-label" stlTranslate="stlApp.company.subscriptionPlan" for="field_subscriptionPlan"
@@ -83,7 +88,7 @@
             name="subscriptionPlan"
             formControlName="subscriptionPlan"
           >
-            <option [ngValue]="null"></option>
+            <option *ngIf="!editForm.get('subscriptionPlan')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="
                 subscriptionPlanOption.id === editForm.get('subscriptionPlan')!.value?.id
@@ -95,6 +100,20 @@
               {{ subscriptionPlanOption.name }}
             </option>
           </select>
+        </div>
+        <div
+          *ngIf="
+            editForm.get(['subscriptionPlan'])!.invalid &&
+            (editForm.get(['subscriptionPlan'])!.dirty || editForm.get(['subscriptionPlan'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['subscriptionPlan'])?.errors?.required"
+            stlTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
         </div>
       </div>
 

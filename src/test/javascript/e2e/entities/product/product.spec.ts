@@ -1,7 +1,11 @@
-import { browser, ExpectedConditions as ec, promise } from 'protractor';
+import { browser, ExpectedConditions as ec /* , promise */ } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-import { ProductComponentsPage, ProductDeleteDialog, ProductUpdatePage } from './product.page-object';
+import {
+  ProductComponentsPage,
+  /* ProductDeleteDialog, */
+  ProductUpdatePage,
+} from './product.page-object';
 
 const expect = chai.expect;
 
@@ -10,7 +14,7 @@ describe('Product e2e test', () => {
   let signInPage: SignInPage;
   let productComponentsPage: ProductComponentsPage;
   let productUpdatePage: ProductUpdatePage;
-  let productDeleteDialog: ProductDeleteDialog;
+  /* let productDeleteDialog: ProductDeleteDialog; */
   const username = process.env.E2E_USERNAME ?? 'admin';
   const password = process.env.E2E_PASSWORD ?? 'admin';
 
@@ -37,42 +41,43 @@ describe('Product e2e test', () => {
     await productUpdatePage.cancel();
   });
 
-  it('should create and save Products', async () => {
-    const nbButtonsBeforeCreate = await productComponentsPage.countDeleteButtons();
+  /* it('should create and save Products', async () => {
+        const nbButtonsBeforeCreate = await productComponentsPage.countDeleteButtons();
 
-    await productComponentsPage.clickOnCreateButton();
+        await productComponentsPage.clickOnCreateButton();
 
-    await promise.all([
-      productUpdatePage.setSkuInput('sku'),
-      productUpdatePage.setNameInput('name'),
-      productUpdatePage.setDescriptionInput('description'),
-      productUpdatePage.setLinkInput('link'),
-      productUpdatePage.setImageLinkInput('imageLink'),
-      productUpdatePage.setAditionalImageLinkInput('aditionalImageLink'),
-      productUpdatePage.availabilitySelectLastOption(),
-      productUpdatePage.setPriceInput('price'),
-      productUpdatePage.setCategoryInput('category'),
-      productUpdatePage.companySelectLastOption(),
-      productUpdatePage.coordinateSelectLastOption(),
-    ]);
+        await promise.all([
+            productUpdatePage.setSkuInput('sku'),
+            productUpdatePage.setNameInput('name'),
+            productUpdatePage.setDescriptionInput('description'),
+            productUpdatePage.setLinkInput('link'),
+            productUpdatePage.setImageLinkInput('imageLink'),
+            productUpdatePage.setAditionalImageLinkInput('aditionalImageLink'),
+            productUpdatePage.availabilitySelectLastOption(),
+            productUpdatePage.setPriceInput('price'),
+            productUpdatePage.setCategoryInput('category'),
+            productUpdatePage.companySelectLastOption(),
+            productUpdatePage.coordinateSelectLastOption(),
+        ]);
 
-    await productUpdatePage.save();
-    expect(await productUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
+        await productUpdatePage.save();
+        expect(await productUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 
-    expect(await productComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
-  });
+        expect(await productComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
+    }); */
 
-  it('should delete last Product', async () => {
-    const nbButtonsBeforeDelete = await productComponentsPage.countDeleteButtons();
-    await productComponentsPage.clickOnLastDeleteButton();
+  /* it('should delete last Product', async () => {
+        const nbButtonsBeforeDelete = await productComponentsPage.countDeleteButtons();
+        await productComponentsPage.clickOnLastDeleteButton();
 
-    productDeleteDialog = new ProductDeleteDialog();
-    expect(await productDeleteDialog.getDialogTitle()).to.eq('stlApp.product.delete.question');
-    await productDeleteDialog.clickOnConfirmButton();
-    await browser.wait(ec.visibilityOf(productComponentsPage.title), 5000);
+        productDeleteDialog = new ProductDeleteDialog();
+        expect(await productDeleteDialog.getDialogTitle())
+            .to.eq('stlApp.product.delete.question');
+        await productDeleteDialog.clickOnConfirmButton();
+        await browser.wait(ec.visibilityOf(productComponentsPage.title), 5000);
 
-    expect(await productComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
-  });
+        expect(await productComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
+    }); */
 
   after(async () => {
     await navBarPage.autoSignOut();

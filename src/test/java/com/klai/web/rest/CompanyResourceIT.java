@@ -8,6 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.IntegrationTest;
 import com.klai.domain.Company;
+import com.klai.domain.GoogleFeedProduct;
+import com.klai.domain.Product;
+import com.klai.domain.SubscriptionPlan;
+import com.klai.domain.User;
 import com.klai.domain.enumeration.CompanyIndustry;
 import com.klai.domain.enumeration.CompanySize;
 import com.klai.repository.CompanyRepository;
@@ -96,6 +100,41 @@ class CompanyResourceIT {
             .token(DEFAULT_TOKEN)
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
+        // Add required entity
+        Product product;
+        if (TestUtil.findAll(em, Product.class).isEmpty()) {
+            product = ProductResourceIT.createEntity(em);
+            em.persist(product);
+            em.flush();
+        } else {
+            product = TestUtil.findAll(em, Product.class).get(0);
+        }
+        company.getProducts().add(product);
+        // Add required entity
+        GoogleFeedProduct googleFeedProduct;
+        if (TestUtil.findAll(em, GoogleFeedProduct.class).isEmpty()) {
+            googleFeedProduct = GoogleFeedProductResourceIT.createEntity(em);
+            em.persist(googleFeedProduct);
+            em.flush();
+        } else {
+            googleFeedProduct = TestUtil.findAll(em, GoogleFeedProduct.class).get(0);
+        }
+        company.getImportedProducts().add(googleFeedProduct);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        company.getUsers().add(user);
+        // Add required entity
+        SubscriptionPlan subscriptionPlan;
+        if (TestUtil.findAll(em, SubscriptionPlan.class).isEmpty()) {
+            subscriptionPlan = SubscriptionPlanResourceIT.createEntity(em);
+            em.persist(subscriptionPlan);
+            em.flush();
+        } else {
+            subscriptionPlan = TestUtil.findAll(em, SubscriptionPlan.class).get(0);
+        }
+        company.setSubscriptionPlan(subscriptionPlan);
         return company;
     }
 
@@ -112,6 +151,41 @@ class CompanyResourceIT {
             .token(UPDATED_TOKEN)
             .industry(UPDATED_INDUSTRY)
             .companySize(UPDATED_COMPANY_SIZE);
+        // Add required entity
+        Product product;
+        if (TestUtil.findAll(em, Product.class).isEmpty()) {
+            product = ProductResourceIT.createUpdatedEntity(em);
+            em.persist(product);
+            em.flush();
+        } else {
+            product = TestUtil.findAll(em, Product.class).get(0);
+        }
+        company.getProducts().add(product);
+        // Add required entity
+        GoogleFeedProduct googleFeedProduct;
+        if (TestUtil.findAll(em, GoogleFeedProduct.class).isEmpty()) {
+            googleFeedProduct = GoogleFeedProductResourceIT.createUpdatedEntity(em);
+            em.persist(googleFeedProduct);
+            em.flush();
+        } else {
+            googleFeedProduct = TestUtil.findAll(em, GoogleFeedProduct.class).get(0);
+        }
+        company.getImportedProducts().add(googleFeedProduct);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        company.getUsers().add(user);
+        // Add required entity
+        SubscriptionPlan subscriptionPlan;
+        if (TestUtil.findAll(em, SubscriptionPlan.class).isEmpty()) {
+            subscriptionPlan = SubscriptionPlanResourceIT.createUpdatedEntity(em);
+            em.persist(subscriptionPlan);
+            em.flush();
+        } else {
+            subscriptionPlan = TestUtil.findAll(em, SubscriptionPlan.class).get(0);
+        }
+        company.setSubscriptionPlan(subscriptionPlan);
         return company;
     }
 

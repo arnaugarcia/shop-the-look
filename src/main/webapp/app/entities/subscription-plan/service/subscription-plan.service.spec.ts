@@ -25,7 +25,7 @@ describe('Service Tests', () => {
         id: 0,
         name: 'AAAAAAA',
         description: 'AAAAAAA',
-        category: SubscriptionCategory.BRONCE,
+        category: SubscriptionCategory.BRONZE,
         maxProducts: 0,
         maxSpaces: 0,
         maxRequests: 0,

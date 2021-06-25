@@ -13,11 +13,11 @@ export interface ICompany {
   token?: string | null;
   industry?: CompanyIndustry | null;
   companySize?: CompanySize | null;
-  products?: IProduct[] | null;
-  importedProducts?: IGoogleFeedProduct[] | null;
+  products?: IProduct[];
+  importedProducts?: IGoogleFeedProduct[];
   spaces?: ISpace[] | null;
-  users?: IUser[] | null;
-  subscriptionPlan?: ISubscriptionPlan | null;
+  users?: IUser[];
+  subscriptionPlan?: ISubscriptionPlan;
 }
 
 export class Company implements ICompany {
@@ -28,11 +28,11 @@ export class Company implements ICompany {
     public token?: string | null,
     public industry?: CompanyIndustry | null,
     public companySize?: CompanySize | null,
-    public products?: IProduct[] | null,
-    public importedProducts?: IGoogleFeedProduct[] | null,
+    public products?: IProduct[],
+    public importedProducts?: IGoogleFeedProduct[],
     public spaces?: ISpace[] | null,
-    public users?: IUser[] | null,
-    public subscriptionPlan?: ISubscriptionPlan | null
+    public users?: IUser[],
+    public subscriptionPlan?: ISubscriptionPlan
   ) {}
 }
 
