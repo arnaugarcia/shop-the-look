@@ -1557,13 +1557,9 @@ class GoogleFeedProductResourceIT {
     @Transactional
     void getAllGoogleFeedProductsByCompanyIsEqualToSomething() throws Exception {
         // Initialize the database
-        googleFeedProductRepository.saveAndFlush(googleFeedProduct);
-        Company company = CompanyResourceIT.createEntity(em);
-        em.persist(company);
-        em.flush();
-        googleFeedProduct.setCompany(company);
-        googleFeedProductRepository.saveAndFlush(googleFeedProduct);
-        Long companyId = company.getId();
+        final GoogleFeedProduct googleFeedProduct = googleFeedProductRepository.saveAndFlush(this.googleFeedProduct);
+        final GoogleFeedProduct result = googleFeedProductRepository.saveAndFlush(googleFeedProduct);
+        Long companyId = result.getCompany().getId();
 
         // Get all the googleFeedProductList where company equals to companyId
         defaultGoogleFeedProductShouldBeFound("companyId.equals=" + companyId);
