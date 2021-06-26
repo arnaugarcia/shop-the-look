@@ -103,6 +103,31 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
+        checkIfUsernameOrLoginIsUsed(userDTO);
+        User newUser = buildUser(userDTO, password);
+        Set<Authority> authorities = new HashSet<>();
+        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        this.clearUserCaches(newUser);
+        log.debug("Created Information for User: {}", newUser);
+        return newUser;
+    }
+
+    public User registerManager(AdminUserDTO userDTO, String password) {
+        checkIfUsernameOrLoginIsUsed(userDTO);
+        User newUser = buildUser(userDTO, password);
+        Set<Authority> authorities = new HashSet<>();
+        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository.findById(AuthoritiesConstants.MANAGER).ifPresent(authorities::add);
+        newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        this.clearUserCaches(newUser);
+        log.debug("Created Information for User: {}", newUser);
+        return newUser;
+    }
+
+    private void checkIfUsernameOrLoginIsUsed(AdminUserDTO userDTO) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(
@@ -123,6 +148,9 @@ public class UserService {
                     }
                 }
             );
+    }
+
+    private User buildUser(AdminUserDTO userDTO, String password) {
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin().toLowerCase());
@@ -139,12 +167,6 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        this.clearUserCaches(newUser);
-        log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
 
