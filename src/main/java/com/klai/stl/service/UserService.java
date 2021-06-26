@@ -1,9 +1,5 @@
 package com.klai.stl.service;
 
-import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static com.klai.stl.security.AuthoritiesConstants.USER;
-import static java.util.Arrays.asList;
-
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.Company;
@@ -11,6 +7,7 @@ import com.klai.stl.domain.User;
 import com.klai.stl.repository.AuthorityRepository;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
+import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
@@ -114,38 +111,6 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
-        Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(USER).ifPresent(authorities::add);
-        User newUser = buildAndSaveNewUser(userDTO, password, authorities);
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
-    }
-
-    private User buildAndSaveNewUser(AdminUserDTO userDTO, String password, Set<Authority> authorities) {
-        checkIfLoginAndEmailAreUsed(userDTO);
-        User newUser = new User();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        if (userDTO.getEmail() != null) {
-            newUser.setEmail(userDTO.getEmail().toLowerCase());
-        }
-        newUser.setImageUrl(userDTO.getImageUrl());
-        newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        this.clearUserCaches(newUser);
-        return newUser;
-    }
-
-    private void checkIfLoginAndEmailAreUsed(AdminUserDTO userDTO) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(
@@ -166,22 +131,42 @@ public class UserService {
                     }
                 }
             );
+        User newUser = new User();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setLogin(userDTO.getLogin().toLowerCase());
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(userDTO.getFirstName());
+        newUser.setLastName(userDTO.getLastName());
+        if (userDTO.getEmail() != null) {
+            newUser.setEmail(userDTO.getEmail().toLowerCase());
+        }
+        newUser.setImageUrl(userDTO.getImageUrl());
+        newUser.setLangKey(userDTO.getLangKey());
+        // new user is not active
+        newUser.setActivated(false);
+        // new user gets registration key
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        Set<Authority> authorities = new HashSet<>();
+        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        this.clearUserCaches(newUser);
+        log.debug("Created Information for User: {}", newUser);
+        return newUser;
     }
 
     public User registerCompany(CompanyUserVM companyUserVM, String password) {
-        final List<Authority> managerAuthorities = authorityRepository.findAllById(asList(USER, MANAGER));
-        Set<Authority> authorities = new HashSet<>(managerAuthorities);
-        User newUser = buildAndSaveNewUser(companyUserVM, password, authorities);
-
+        final User user = registerUser(companyUserVM, password);
         Company company = new Company();
         company.setName(companyUserVM.getName());
         company.setCif(companyUserVM.getCif());
         company.companySize(companyUserVM.getSize());
         company.setIndustry(companyUserVM.getIndustry());
         company.setToken(tokenService.generateRandomToken());
-        company.addUser(newUser);
+        company.addUser(user);
         companyRepository.save(company);
-        return newUser;
+        return user;
     }
 
     private boolean removeNonActivatedUser(User existingUser) {
