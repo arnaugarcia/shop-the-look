@@ -129,8 +129,8 @@ enum GoogleFeedProductAvailability {
 }
 
 relationship OneToMany {
-    Company{product(sku) required} to Product{company(cif) required},
-    Company{importedProduct(sku) required} to GoogleFeedProduct{company(cif) required},
+    Company{product(sku)} to Product{company(cif) required},
+    Company{importedProduct(sku)} to GoogleFeedProduct{company(cif) required},
 
     Company{space(reference)} to Space{company(cif) required},
 

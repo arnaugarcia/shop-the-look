@@ -31,7 +31,6 @@
       "relationshipType": "one-to-many",
       "otherEntityName": "product",
       "otherEntityRelationshipName": "company",
-      "relationshipValidateRules": "required",
       "relationshipName": "product",
       "otherEntityField": "sku"
     },
@@ -39,7 +38,6 @@
       "relationshipType": "one-to-many",
       "otherEntityName": "googleFeedProduct",
       "otherEntityRelationshipName": "company",
-      "relationshipValidateRules": "required",
       "relationshipName": "importedProduct",
       "otherEntityField": "sku"
     },

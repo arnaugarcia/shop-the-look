@@ -13,8 +13,8 @@ export interface ICompany {
   token?: string | null;
   industry?: CompanyIndustry | null;
   companySize?: CompanySize | null;
-  products?: IProduct[];
-  importedProducts?: IGoogleFeedProduct[];
+  products?: IProduct[] | null;
+  importedProducts?: IGoogleFeedProduct[] | null;
   spaces?: ISpace[] | null;
   users?: IUser[];
   subscriptionPlan?: ISubscriptionPlan | null;
@@ -28,8 +28,8 @@ export class Company implements ICompany {
     public token?: string | null,
     public industry?: CompanyIndustry | null,
     public companySize?: CompanySize | null,
-    public products?: IProduct[],
-    public importedProducts?: IGoogleFeedProduct[],
+    public products?: IProduct[] | null,
+    public importedProducts?: IGoogleFeedProduct[] | null,
     public spaces?: ISpace[] | null,
     public users?: IUser[],
     public subscriptionPlan?: ISubscriptionPlan | null
