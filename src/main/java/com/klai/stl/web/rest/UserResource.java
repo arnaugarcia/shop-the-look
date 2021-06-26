@@ -57,7 +57,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * Another option would be to have a specific JPA entity graph to handle this case.
  */
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class UserResource {
 
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
@@ -94,7 +94,7 @@ public class UserResource {
     }
 
     /**
-     * {@code POST  /admin/users}  : Creates a new user.
+     * {@code POST  /users}  : Creates a new user.
      * <p>
      * Creates a new user if the login and email are not already used, and sends an
      * mail with an activation link.
@@ -121,14 +121,14 @@ public class UserResource {
             User newUser = userService.createUser(userDTO);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity
-                .created(new URI("/api/admin/users/" + newUser.getLogin()))
+                .created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
     }
 
     /**
-     * {@code PUT /admin/users} : Updates an existing User.
+     * {@code PUT /users} : Updates an existing User.
      *
      * @param userDTO the user to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated user.
@@ -156,7 +156,7 @@ public class UserResource {
     }
 
     /**
-     * {@code GET /admin/users} : get all users with all the details - calling this are only allowed for the administrators.
+     * {@code GET /users} : get all users with all the details - calling this are only allowed for the administrators.
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
@@ -179,7 +179,7 @@ public class UserResource {
     }
 
     /**
-     * {@code GET /admin/users/:login} : get the "login" user.
+     * {@code GET /users/:login} : get the "login" user.
      *
      * @param login the login of the user to find.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
@@ -192,7 +192,7 @@ public class UserResource {
     }
 
     /**
-     * {@code DELETE /admin/users/:login} : delete the "login" User.
+     * {@code DELETE /users/:login} : delete the "login" User.
      *
      * @param login the login of the user to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
