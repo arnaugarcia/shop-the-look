@@ -5,9 +5,12 @@ import static org.springframework.http.HttpStatus.CREATED;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.SecurityUtils;
+import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.MailService;
+import com.klai.stl.service.TokenService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
+import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.web.rest.errors.*;
@@ -20,7 +23,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -45,10 +47,22 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final CompanyService companyService;
+
+    private final TokenService tokenService;
+
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        CompanyService companyService,
+        TokenService tokenService
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.companyService = companyService;
+        this.tokenService = tokenService;
     }
 
     /**
@@ -83,7 +97,19 @@ public class AccountResource {
         if (isPasswordLengthInvalid(companyUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerCompany(companyUserVM, companyUserVM.getPassword());
+        User user = userService.registerUser(companyUserVM, companyUserVM.getPassword());
+        Set<UserDTO> users = new HashSet<>();
+        users.add(new UserDTO(user));
+        CompanyDTO companyDTO = CompanyDTO
+            .builder()
+            .name(companyUserVM.getName())
+            .cif(companyUserVM.getCif())
+            .industry(companyUserVM.getIndustry())
+            .companySize(companyUserVM.getSize())
+            .token(tokenService.generateRandomToken())
+            .users(users)
+            .build();
+        companyService.save(companyDTO);
         mailService.sendActivationEmail(user);
     }
 
