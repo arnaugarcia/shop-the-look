@@ -185,6 +185,7 @@ class AccountResourceIT {
         assertThat(company.getName()).isEqualTo(companyUserVM.getName());
         assertThat(company.getUsers()).isNotNull();
         assertThat(company.getUsers()).hasSize(1);
+        assertThat(company.getToken()).isNotNull();
     }
 
     @Test
