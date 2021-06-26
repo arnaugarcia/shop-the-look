@@ -97,7 +97,7 @@ public class AccountResource {
         if (isPasswordLengthInvalid(companyUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(companyUserVM, companyUserVM.getPassword());
+        User user = userService.registerManager(companyUserVM, companyUserVM.getPassword());
         Set<UserDTO> users = new HashSet<>();
         users.add(new UserDTO(user));
         CompanyDTO companyDTO = CompanyDTO
