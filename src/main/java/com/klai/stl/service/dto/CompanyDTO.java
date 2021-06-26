@@ -4,13 +4,18 @@ import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import lombok.*;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.Company} entity.
  */
+@EqualsAndHashCode
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CompanyDTO implements Serializable {
 
     private Long id;
@@ -93,41 +98,5 @@ public class CompanyDTO implements Serializable {
 
     public void setSubscriptionPlan(SubscriptionPlanDTO subscriptionPlan) {
         this.subscriptionPlan = subscriptionPlan;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CompanyDTO)) {
-            return false;
-        }
-
-        CompanyDTO companyDTO = (CompanyDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, companyDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "CompanyDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", cif='" + getCif() + "'" +
-            ", token='" + getToken() + "'" +
-            ", industry='" + getIndustry() + "'" +
-            ", companySize='" + getCompanySize() + "'" +
-            ", users=" + getUsers() +
-            ", subscriptionPlan=" + getSubscriptionPlan() +
-            "}";
     }
 }
