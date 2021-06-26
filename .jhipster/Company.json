@@ -63,7 +63,6 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "subscriptionPlan",
       "otherEntityRelationshipName": "company",
-      "relationshipValidateRules": "required",
       "relationshipName": "subscriptionPlan",
       "otherEntityField": "name"
     }

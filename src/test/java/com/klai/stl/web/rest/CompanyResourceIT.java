@@ -10,7 +10,6 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.GoogleFeedProduct;
 import com.klai.stl.domain.Product;
-import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
@@ -125,16 +124,6 @@ class CompanyResourceIT {
         em.persist(user);
         em.flush();
         company.getUsers().add(user);
-        // Add required entity
-        SubscriptionPlan subscriptionPlan;
-        if (TestUtil.findAll(em, SubscriptionPlan.class).isEmpty()) {
-            subscriptionPlan = SubscriptionPlanResourceIT.createEntity(em);
-            em.persist(subscriptionPlan);
-            em.flush();
-        } else {
-            subscriptionPlan = TestUtil.findAll(em, SubscriptionPlan.class).get(0);
-        }
-        company.setSubscriptionPlan(subscriptionPlan);
         return company;
     }
 
@@ -176,16 +165,6 @@ class CompanyResourceIT {
         em.persist(user);
         em.flush();
         company.getUsers().add(user);
-        // Add required entity
-        SubscriptionPlan subscriptionPlan;
-        if (TestUtil.findAll(em, SubscriptionPlan.class).isEmpty()) {
-            subscriptionPlan = SubscriptionPlanResourceIT.createUpdatedEntity(em);
-            em.persist(subscriptionPlan);
-            em.flush();
-        } else {
-            subscriptionPlan = TestUtil.findAll(em, SubscriptionPlan.class).get(0);
-        }
-        company.setSubscriptionPlan(subscriptionPlan);
         return company;
     }
 

@@ -88,7 +88,7 @@
             name="subscriptionPlan"
             formControlName="subscriptionPlan"
           >
-            <option *ngIf="!editForm.get('subscriptionPlan')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="null"></option>
             <option
               [ngValue]="
                 subscriptionPlanOption.id === editForm.get('subscriptionPlan')!.value?.id
@@ -100,20 +100,6 @@
               {{ subscriptionPlanOption.name }}
             </option>
           </select>
-        </div>
-        <div
-          *ngIf="
-            editForm.get(['subscriptionPlan'])!.invalid &&
-            (editForm.get(['subscriptionPlan'])!.dirty || editForm.get(['subscriptionPlan'])!.touched)
-          "
-        >
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get(['subscriptionPlan'])?.errors?.required"
-            stlTranslate="entity.validation.required"
-          >
-            This field is required.
-          </small>
         </div>
       </div>
 

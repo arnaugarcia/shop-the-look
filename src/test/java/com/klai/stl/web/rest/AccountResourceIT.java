@@ -2,23 +2,31 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.web.rest.AccountResourceIT.TEST_USER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.config.Constants;
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
+import com.klai.stl.domain.enumeration.CompanyIndustry;
+import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.repository.AuthorityRepository;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
-import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.web.rest.vm.CompanyUserVM;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +46,13 @@ import org.springframework.transaction.annotation.Transactional;
 class AccountResourceIT {
 
     static final String TEST_USER_LOGIN = "test";
+    static final String COMPANY_CIF = "CIF";
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Autowired
     private AuthorityRepository authorityRepository;
@@ -134,6 +146,46 @@ class AccountResourceIT {
             .andExpect(status().isCreated());
 
         assertThat(userRepository.findOneByLogin("test-register-valid")).isPresent();
+    }
+
+    @Test
+    @Transactional
+    void testRegisterValidCompany() throws Exception {
+        CompanyUserVM companyUserVM = new CompanyUserVM();
+        companyUserVM.setLogin("company-test-register-valid");
+        companyUserVM.setPassword("password");
+        companyUserVM.setFirstName("Alice");
+        companyUserVM.setLastName("Test");
+        companyUserVM.setCif(COMPANY_CIF);
+        companyUserVM.setName("Company");
+        companyUserVM.setIndustry(CompanyIndustry.AUTOMOTIVE);
+        companyUserVM.setSize(CompanySize.INTERNATIONAL);
+        companyUserVM.setEmail("company-test-register-valid@example.com");
+        companyUserVM.setImageUrl("http://placehold.it/50x50");
+        companyUserVM.setLangKey(Constants.DEFAULT_LANGUAGE);
+        companyUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        assertThat(userRepository.findOneByLogin("company-test-register-valid")).isEmpty();
+
+        restAccountMockMvc
+            .perform(
+                post("/api/register/company")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(companyUserVM))
+            )
+            .andExpect(status().isCreated());
+
+        assertThat(userRepository.findOneByLogin("company-test-register-valid")).isPresent();
+
+        final Optional<Company> companyOptional = companyRepository.findByCif(COMPANY_CIF);
+        assertThat(companyOptional).isPresent();
+        final Company company = companyOptional.get();
+        assertThat(company.getCompanySize()).isEqualTo(companyUserVM.getSize());
+        assertThat(company.getIndustry()).isEqualTo(companyUserVM.getIndustry());
+        assertThat(company.getCif()).isEqualTo(companyUserVM.getCif());
+        assertThat(company.getName()).isEqualTo(companyUserVM.getName());
+        assertThat(company.getUsers()).isNotNull();
+        assertThat(company.getUsers()).hasSize(1);
+        assertThat(company.getToken()).isNotNull();
     }
 
     @Test

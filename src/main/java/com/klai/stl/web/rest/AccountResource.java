@@ -1,5 +1,7 @@
 package com.klai.stl.web.rest;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.SecurityUtils;
@@ -9,6 +11,7 @@ import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.web.rest.errors.*;
+import com.klai.stl.web.rest.vm.CompanyUserVM;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.util.*;
@@ -57,12 +60,30 @@ public class AccountResource {
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        mailService.sendActivationEmail(user);
+    }
+
+    /**
+     * {@code POST  /register} : register the user.
+     *
+     * @param companyUserVM the managed company user View Model.
+     * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
+     * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
+     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
+     */
+    @PostMapping("/register/company")
+    @ResponseStatus(CREATED)
+    public void registerCompanyAccount(@Valid @RequestBody CompanyUserVM companyUserVM) {
+        if (isPasswordLengthInvalid(companyUserVM.getPassword())) {
+            throw new InvalidPasswordException();
+        }
+        User user = userService.registerCompany(companyUserVM, companyUserVM.getPassword());
         mailService.sendActivationEmail(user);
     }
 

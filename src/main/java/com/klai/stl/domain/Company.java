@@ -69,8 +69,7 @@ public class Company implements Serializable {
     )
     private Set<User> users = new HashSet<>();
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @ManyToOne
     @JsonIgnoreProperties(value = { "companies" }, allowSetters = true)
     private SubscriptionPlan subscriptionPlan;
 
