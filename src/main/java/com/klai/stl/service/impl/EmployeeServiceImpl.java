@@ -2,7 +2,7 @@ package com.klai.stl.service.impl;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.service.CompanyService;
-import com.klai.stl.service.ManagerService;
+import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.CompanyDTO;
@@ -11,18 +11,18 @@ import com.klai.stl.service.exception.CompanyUserNotFound;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ManagerServiceImpl implements ManagerService {
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final UserService userService;
     private final CompanyService companyService;
 
-    public ManagerServiceImpl(UserService userService, CompanyService companyService) {
+    public EmployeeServiceImpl(UserService userService, CompanyService companyService) {
         this.userService = userService;
         this.companyService = companyService;
     }
 
     @Override
-    public CompanyDTO createUser(UserDTO userDTO) {
+    public CompanyDTO createEmployee(UserDTO userDTO) {
         final CompanyDTO currentUserCompany = findCurrentUserCompany();
         final AdminUserDTO user = AdminUserDTO
             .builder()

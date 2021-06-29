@@ -42,7 +42,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     private CompanyDTO saveAndTransform(Company company) {
-        companyRepository.save(company);
+        company = companyRepository.save(company);
         return companyMapper.toDto(company);
     }
 
