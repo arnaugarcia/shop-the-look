@@ -28,7 +28,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -105,9 +104,18 @@ class CompanyResourceIT {
         return company;
     }
 
+    public static Company createBasicEntity() {
+        return new Company()
+            .name(DEFAULT_NAME)
+            .cif(DEFAULT_CIF)
+            .token(DEFAULT_TOKEN)
+            .industry(DEFAULT_INDUSTRY)
+            .companySize(DEFAULT_COMPANY_SIZE);
+    }
+
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
