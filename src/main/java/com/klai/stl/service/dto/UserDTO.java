@@ -1,10 +1,7 @@
 package com.klai.stl.service.dto;
 
 import com.klai.stl.domain.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * A DTO representing a user, with only the public attributes.
@@ -13,6 +10,8 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
+@Builder
+@AllArgsConstructor
 public class UserDTO {
 
     private Long id;
