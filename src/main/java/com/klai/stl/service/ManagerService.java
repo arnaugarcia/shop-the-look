@@ -1,3 +1,7 @@
 package com.klai.stl.service;
 
-public interface ManagerService {}
+import com.klai.stl.service.dto.UserDTO;
+
+public interface ManagerService {
+    UserDTO createUser(UserDTO userDTO);
+}

@@ -57,7 +57,7 @@ public class CompanyUsersResource {
     @ApiOperation(value = "Creates a new user associated to the current manager company")
     @PostMapping("/users")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\")")
-    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
-        return null;
+    public ResponseEntity<UserDTO> createUserForManager(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
+        return managerService.createUser(userDTO);
     }
 }
