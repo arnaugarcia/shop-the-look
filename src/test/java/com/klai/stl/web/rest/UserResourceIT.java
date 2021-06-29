@@ -11,6 +11,7 @@ import com.klai.stl.domain.User;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.dto.AdminUserDTO;
+import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.mapper.UserMapper;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
@@ -105,6 +106,25 @@ class UserResourceIT {
     }
 
     /**
+     * Create a User.
+     * <p>
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which has a required relationship to the User entity.
+     */
+    public static User createEntity(String login) {
+        User user = new User();
+        user.setLogin(login);
+        user.setPassword(RandomStringUtils.random(60));
+        user.setActivated(true);
+        user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
+        user.setFirstName(DEFAULT_FIRSTNAME);
+        user.setLastName(DEFAULT_LASTNAME);
+        user.setImageUrl(DEFAULT_IMAGEURL);
+        user.setLangKey(DEFAULT_LANGKEY);
+        return user;
+    }
+
+    /**
      * Setups the database with one user.
      */
     public static User initTestUser(UserRepository userRepository, EntityManager em) {
@@ -112,6 +132,18 @@ class UserResourceIT {
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
         return user;
+    }
+
+    public static UserDTO createAUserDTO() {
+        return UserDTO
+            .builder()
+            .activated(true)
+            .email(DEFAULT_EMAIL)
+            .firstName(DEFAULT_FIRSTNAME)
+            .lastName(DEFAULT_LASTNAME)
+            .langKey(DEFAULT_LANGKEY)
+            .login(DEFAULT_LOGIN)
+            .build();
     }
 
     @BeforeEach
