@@ -3,7 +3,7 @@ package com.klai.stl.web.rest;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
-import com.klai.stl.service.ManagerService;
+import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
@@ -28,19 +28,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-public class CompanyUsersResource {
+public class EmployeeResource {
 
-    private final Logger log = LoggerFactory.getLogger(CompanyUsersResource.class);
+    private final Logger log = LoggerFactory.getLogger(EmployeeResource.class);
 
     private static final String ENTITY_NAME = "user";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ManagerService managerService;
+    private final EmployeeService employeeService;
 
-    public CompanyUsersResource(ManagerService managerService) {
-        this.managerService = managerService;
+    public EmployeeResource(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     /**
@@ -62,11 +62,15 @@ public class CompanyUsersResource {
             @ApiResponse(code = 401, message = "Not Authorized"),
         }
     )
-    @ApiOperation(value = "Creates a new user associated to the current manager company")
-    @PostMapping("/users")
+    @ApiOperation(value = "Creates a new employee associated to the current logged manager")
+    @PostMapping("/employee")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\")")
     public ResponseEntity<CompanyDTO> createUserForManager(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
-        CompanyDTO result = managerService.createUser(userDTO);
+        log.info("Creating a new employee with email {}", userDTO.getEmail());
+        if (userDTO.getId() != null) {
+            throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        CompanyDTO result = employeeService.createEmployee(userDTO);
         return ResponseEntity
             .created(new URI("/api/users"))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
