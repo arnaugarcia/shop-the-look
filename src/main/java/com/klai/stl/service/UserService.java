@@ -103,7 +103,7 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
-        checkIfUsernameOrLoginIsUsed(userDTO);
+        checkIfEmailOrLoginIsUsed(userDTO);
         User newUser = buildUser(userDTO, password);
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
@@ -115,7 +115,7 @@ public class UserService {
     }
 
     public User registerManager(AdminUserDTO userDTO, String password) {
-        checkIfUsernameOrLoginIsUsed(userDTO);
+        checkIfEmailOrLoginIsUsed(userDTO);
         User newUser = buildUser(userDTO, password);
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
@@ -127,7 +127,7 @@ public class UserService {
         return newUser;
     }
 
-    private void checkIfUsernameOrLoginIsUsed(AdminUserDTO userDTO) {
+    private void checkIfEmailOrLoginIsUsed(AdminUserDTO userDTO) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(
@@ -181,6 +181,8 @@ public class UserService {
     }
 
     public User createUser(AdminUserDTO userDTO) {
+        checkIfEmailOrLoginIsUsed(userDTO);
+
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());

@@ -4,6 +4,7 @@ import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
 import com.klai.stl.service.ManagerService;
+import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
@@ -64,8 +65,8 @@ public class CompanyUsersResource {
     @ApiOperation(value = "Creates a new user associated to the current manager company")
     @PostMapping("/users")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\")")
-    public ResponseEntity<UserDTO> createUserForManager(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
-        UserDTO result = managerService.createUser(userDTO);
+    public ResponseEntity<CompanyDTO> createUserForManager(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+        CompanyDTO result = managerService.createUser(userDTO);
         return ResponseEntity
             .created(new URI("/api/users"))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

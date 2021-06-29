@@ -4,7 +4,10 @@ import com.klai.stl.domain.User;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.ManagerService;
 import com.klai.stl.service.UserService;
+import com.klai.stl.service.dto.AdminUserDTO;
+import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.service.exception.CompanyUserNotFound;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,13 +22,23 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
-        final User user = findCurrentUser();
-        //companyService.
-        return null;
+    public CompanyDTO createUser(UserDTO userDTO) {
+        final CompanyDTO currentUserCompany = findCurrentUserCompany();
+        final AdminUserDTO user = AdminUserDTO
+            .builder()
+            .email(userDTO.getEmail())
+            .firstName(userDTO.getFirstName())
+            .lastName(userDTO.getLastName())
+            .login(userDTO.getLogin())
+            .langKey(userDTO.getLangKey())
+            .imageUrl(userDTO.getImageUrl())
+            .build();
+        final User employee = userService.createUser(user);
+        return companyService.addEmployee(employee, currentUserCompany);
     }
 
-    private User findCurrentUser() {
-        return this.userService.getUserWithAuthorities().orElseThrow();
+    private CompanyDTO findCurrentUserCompany() {
+        final User user = this.userService.getUserWithAuthorities().orElseThrow();
+        return companyService.findByEmployee(user.getLogin()).orElseThrow(CompanyUserNotFound::new);
     }
 }

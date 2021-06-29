@@ -3,9 +3,11 @@ package com.klai.stl.repository;
 import com.klai.stl.domain.Company;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +31,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByToken(String token);
 
     Optional<Company> findByCif(String cif);
+
+    @Query("select company from Company company left join fetch company.users users where users.login in (:login)")
+    Optional<Company> findByUser(@Param("login") Set<String> login);
 }

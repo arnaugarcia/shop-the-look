@@ -2,7 +2,6 @@ package com.klai.stl.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -12,11 +11,13 @@ import com.klai.stl.domain.User;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.dto.AdminUserDTO;
-import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.mapper.UserMapper;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -516,7 +517,7 @@ class UserResourceIT {
         userDTO.setLastModifiedBy(DEFAULT_LOGIN);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
-        User user = userMapper.userDTOToUser(userDTO);
+        User user = userMapper.adminUserDTOToUser(userDTO);
         assertThat(user.getId()).isEqualTo(DEFAULT_ID);
         assertThat(user.getLogin()).isEqualTo(DEFAULT_LOGIN);
         assertThat(user.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
