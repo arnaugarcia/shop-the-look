@@ -74,6 +74,7 @@ class CompanyGatlingTest extends Simulation {
                 "name":"SAMPLE_TEXT"
                 , "cif":"SAMPLE_TEXT"
                 , "token":"SAMPLE_TEXT"
+                , "reference":"SAMPLE_TEXT"
                 , "industry":"AUTOMOTIVE"
                 , "companySize":"STARTUP"
                 }""")).asJson

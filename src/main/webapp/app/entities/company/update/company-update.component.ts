@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import { ICompany, Company } from '../company.model';
+import { Company, ICompany } from '../company.model';
 import { CompanyService } from '../service/company.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
@@ -26,7 +26,8 @@ export class CompanyUpdateComponent implements OnInit {
     id: [],
     name: [null, [Validators.required]],
     cif: [null, [Validators.required]],
-    token: [],
+    token: [null, [Validators.required]],
+    reference: [null, [Validators.required]],
     industry: [],
     companySize: [],
     users: [null, Validators.required],
@@ -107,6 +108,7 @@ export class CompanyUpdateComponent implements OnInit {
       name: company.name,
       cif: company.cif,
       token: company.token,
+      reference: company.reference,
       industry: company.industry,
       companySize: company.companySize,
       users: company.users,
@@ -148,6 +150,7 @@ export class CompanyUpdateComponent implements OnInit {
       name: this.editForm.get(['name'])!.value,
       cif: this.editForm.get(['cif'])!.value,
       token: this.editForm.get(['token'])!.value,
+      reference: this.editForm.get(['reference'])!.value,
       industry: this.editForm.get(['industry'])!.value,
       companySize: this.editForm.get(['companySize'])!.value,
       users: this.editForm.get(['users'])!.value,

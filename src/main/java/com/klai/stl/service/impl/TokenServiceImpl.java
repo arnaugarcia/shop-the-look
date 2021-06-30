@@ -19,11 +19,11 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String generateRandomToken() {
+    public String generateToken() {
         String randomToken = randomAlphanumeric(TOKEN_SIZE);
         final Optional<Company> company = companyRepository.findByToken(randomToken);
         if (company.isPresent()) {
-            return generateRandomToken();
+            return this.generateToken();
         }
         return randomToken;
     }

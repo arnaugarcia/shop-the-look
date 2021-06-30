@@ -1,11 +1,7 @@
-import { browser, ExpectedConditions as ec /* , promise */ } from 'protractor';
+import { browser, ExpectedConditions as ec } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-import {
-  ProductComponentsPage,
-  /* ProductDeleteDialog, */
-  ProductUpdatePage,
-} from './product.page-object';
+import { ProductComponentsPage, ProductUpdatePage } from './product.page-object';
 
 const expect = chai.expect;
 
@@ -52,7 +48,7 @@ describe('Product e2e test', () => {
             productUpdatePage.setDescriptionInput('description'),
             productUpdatePage.setLinkInput('link'),
             productUpdatePage.setImageLinkInput('imageLink'),
-            productUpdatePage.setAditionalImageLinkInput('aditionalImageLink'),
+            productUpdatePage.setAdditionalImageLinkInput('additionalImageLink'),
             productUpdatePage.availabilitySelectLastOption(),
             productUpdatePage.setPriceInput('price'),
             productUpdatePage.setCategoryInput('category'),

@@ -11,7 +11,6 @@ import com.klai.stl.domain.Coordinate;
 import com.klai.stl.domain.Product;
 import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.repository.ProductRepository;
-import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.List;
@@ -50,8 +49,8 @@ class ProductResourceIT {
     private static final String DEFAULT_IMAGE_LINK = "AAAAAAAAAA";
     private static final String UPDATED_IMAGE_LINK = "BBBBBBBBBB";
 
-    private static final String DEFAULT_ADITIONAL_IMAGE_LINK = "AAAAAAAAAA";
-    private static final String UPDATED_ADITIONAL_IMAGE_LINK = "BBBBBBBBBB";
+    private static final String DEFAULT_ADDITIONAL_IMAGE_LINK = "AAAAAAAAAA";
+    private static final String UPDATED_ADDITIONAL_IMAGE_LINK = "BBBBBBBBBB";
 
     private static final ProductAvailability DEFAULT_AVAILABILITY = ProductAvailability.IN_STOCK;
     private static final ProductAvailability UPDATED_AVAILABILITY = ProductAvailability.OUT_OF_STOCK;
@@ -95,7 +94,7 @@ class ProductResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
             .imageLink(DEFAULT_IMAGE_LINK)
-            .aditionalImageLink(DEFAULT_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
             .availability(DEFAULT_AVAILABILITY)
             .price(DEFAULT_PRICE)
             .category(DEFAULT_CATEGORY);
@@ -125,7 +124,7 @@ class ProductResourceIT {
             .description(UPDATED_DESCRIPTION)
             .link(UPDATED_LINK)
             .imageLink(UPDATED_IMAGE_LINK)
-            .aditionalImageLink(UPDATED_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(UPDATED_ADDITIONAL_IMAGE_LINK)
             .availability(UPDATED_AVAILABILITY)
             .price(UPDATED_PRICE)
             .category(UPDATED_CATEGORY);
@@ -166,7 +165,7 @@ class ProductResourceIT {
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testProduct.getLink()).isEqualTo(DEFAULT_LINK);
         assertThat(testProduct.getImageLink()).isEqualTo(DEFAULT_IMAGE_LINK);
-        assertThat(testProduct.getAditionalImageLink()).isEqualTo(DEFAULT_ADITIONAL_IMAGE_LINK);
+        assertThat(testProduct.getAdditionalImageLink()).isEqualTo(DEFAULT_ADDITIONAL_IMAGE_LINK);
         assertThat(testProduct.getAvailability()).isEqualTo(DEFAULT_AVAILABILITY);
         assertThat(testProduct.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testProduct.getCategory()).isEqualTo(DEFAULT_CATEGORY);
@@ -334,7 +333,7 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK)))
             .andExpect(jsonPath("$.[*].imageLink").value(hasItem(DEFAULT_IMAGE_LINK)))
-            .andExpect(jsonPath("$.[*].aditionalImageLink").value(hasItem(DEFAULT_ADITIONAL_IMAGE_LINK)))
+            .andExpect(jsonPath("$.[*].additionalImageLink").value(hasItem(DEFAULT_ADDITIONAL_IMAGE_LINK)))
             .andExpect(jsonPath("$.[*].availability").value(hasItem(DEFAULT_AVAILABILITY.toString())))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY)));
@@ -357,7 +356,7 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.link").value(DEFAULT_LINK))
             .andExpect(jsonPath("$.imageLink").value(DEFAULT_IMAGE_LINK))
-            .andExpect(jsonPath("$.aditionalImageLink").value(DEFAULT_ADITIONAL_IMAGE_LINK))
+            .andExpect(jsonPath("$.additionalImageLink").value(DEFAULT_ADDITIONAL_IMAGE_LINK))
             .andExpect(jsonPath("$.availability").value(DEFAULT_AVAILABILITY.toString()))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
             .andExpect(jsonPath("$.category").value(DEFAULT_CATEGORY));
@@ -386,6 +385,12 @@ class ProductResourceIT {
     void getAllProductsBySkuIsEqualToSomething() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
+        Company company = CompanyResourceIT.createEntity(em);
+        em.persist(company);
+        em.flush();
+        product.setCompany(company);
+        productRepository.saveAndFlush(product);
+        Long companyId = company.getId();
 
         // Get all the productList where sku equals to DEFAULT_SKU
         defaultProductShouldBeFound("sku.equals=" + DEFAULT_SKU);
@@ -773,80 +778,80 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    void getAllProductsByAditionalImageLinkIsEqualToSomething() throws Exception {
+    void getAllProductsByAdditionalImageLinkIsEqualToSomething() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
 
-        // Get all the productList where aditionalImageLink equals to DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultProductShouldBeFound("aditionalImageLink.equals=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink equals to DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldBeFound("additionalImageLink.equals=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the productList where aditionalImageLink equals to UPDATED_ADITIONAL_IMAGE_LINK
-        defaultProductShouldNotBeFound("aditionalImageLink.equals=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink equals to UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldNotBeFound("additionalImageLink.equals=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllProductsByAditionalImageLinkIsNotEqualToSomething() throws Exception {
+    void getAllProductsByAdditionalImageLinkIsNotEqualToSomething() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
 
-        // Get all the productList where aditionalImageLink not equals to DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultProductShouldNotBeFound("aditionalImageLink.notEquals=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink not equals to DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldNotBeFound("additionalImageLink.notEquals=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the productList where aditionalImageLink not equals to UPDATED_ADITIONAL_IMAGE_LINK
-        defaultProductShouldBeFound("aditionalImageLink.notEquals=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink not equals to UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldBeFound("additionalImageLink.notEquals=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllProductsByAditionalImageLinkIsInShouldWork() throws Exception {
+    void getAllProductsByAdditionalImageLinkIsInShouldWork() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
 
-        // Get all the productList where aditionalImageLink in DEFAULT_ADITIONAL_IMAGE_LINK or UPDATED_ADITIONAL_IMAGE_LINK
-        defaultProductShouldBeFound("aditionalImageLink.in=" + DEFAULT_ADITIONAL_IMAGE_LINK + "," + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink in DEFAULT_ADDITIONAL_IMAGE_LINK or UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldBeFound("additionalImageLink.in=" + DEFAULT_ADDITIONAL_IMAGE_LINK + "," + UPDATED_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the productList where aditionalImageLink equals to UPDATED_ADITIONAL_IMAGE_LINK
-        defaultProductShouldNotBeFound("aditionalImageLink.in=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink equals to UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldNotBeFound("additionalImageLink.in=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllProductsByAditionalImageLinkIsNullOrNotNull() throws Exception {
+    void getAllProductsByAdditionalImageLinkIsNullOrNotNull() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
 
-        // Get all the productList where aditionalImageLink is not null
-        defaultProductShouldBeFound("aditionalImageLink.specified=true");
+        // Get all the productList where additionalImageLink is not null
+        defaultProductShouldBeFound("additionalImageLink.specified=true");
 
-        // Get all the productList where aditionalImageLink is null
-        defaultProductShouldNotBeFound("aditionalImageLink.specified=false");
+        // Get all the productList where additionalImageLink is null
+        defaultProductShouldNotBeFound("additionalImageLink.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllProductsByAditionalImageLinkContainsSomething() throws Exception {
+    void getAllProductsByAdditionalImageLinkContainsSomething() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
 
-        // Get all the productList where aditionalImageLink contains DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultProductShouldBeFound("aditionalImageLink.contains=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink contains DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldBeFound("additionalImageLink.contains=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the productList where aditionalImageLink contains UPDATED_ADITIONAL_IMAGE_LINK
-        defaultProductShouldNotBeFound("aditionalImageLink.contains=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink contains UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldNotBeFound("additionalImageLink.contains=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
     @Transactional
-    void getAllProductsByAditionalImageLinkNotContainsSomething() throws Exception {
+    void getAllProductsByAdditionalImageLinkNotContainsSomething() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
 
-        // Get all the productList where aditionalImageLink does not contain DEFAULT_ADITIONAL_IMAGE_LINK
-        defaultProductShouldNotBeFound("aditionalImageLink.doesNotContain=" + DEFAULT_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink does not contain DEFAULT_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldNotBeFound("additionalImageLink.doesNotContain=" + DEFAULT_ADDITIONAL_IMAGE_LINK);
 
-        // Get all the productList where aditionalImageLink does not contain UPDATED_ADITIONAL_IMAGE_LINK
-        defaultProductShouldBeFound("aditionalImageLink.doesNotContain=" + UPDATED_ADITIONAL_IMAGE_LINK);
+        // Get all the productList where additionalImageLink does not contain UPDATED_ADDITIONAL_IMAGE_LINK
+        defaultProductShouldBeFound("additionalImageLink.doesNotContain=" + UPDATED_ADDITIONAL_IMAGE_LINK);
     }
 
     @Test
@@ -1061,8 +1066,13 @@ class ProductResourceIT {
     @Transactional
     void getAllProductsByCompanyIsEqualToSomething() throws Exception {
         // Initialize the database
-        final Product result = productRepository.saveAndFlush(productRepository.saveAndFlush(product));
-        Long companyId = result.getCompany().getId();
+        productRepository.saveAndFlush(product);
+        Company company = CompanyResourceIT.createEntity(em);
+        em.persist(company);
+        em.flush();
+        product.setCompany(company);
+        productRepository.saveAndFlush(product);
+        Long companyId = company.getId();
 
         // Get all the productList where company equals to companyId
         defaultProductShouldBeFound("companyId.equals=" + companyId);
@@ -1104,7 +1114,7 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK)))
             .andExpect(jsonPath("$.[*].imageLink").value(hasItem(DEFAULT_IMAGE_LINK)))
-            .andExpect(jsonPath("$.[*].aditionalImageLink").value(hasItem(DEFAULT_ADITIONAL_IMAGE_LINK)))
+            .andExpect(jsonPath("$.[*].additionalImageLink").value(hasItem(DEFAULT_ADDITIONAL_IMAGE_LINK)))
             .andExpect(jsonPath("$.[*].availability").value(hasItem(DEFAULT_AVAILABILITY.toString())))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY)));
@@ -1161,7 +1171,7 @@ class ProductResourceIT {
             .description(UPDATED_DESCRIPTION)
             .link(UPDATED_LINK)
             .imageLink(UPDATED_IMAGE_LINK)
-            .aditionalImageLink(UPDATED_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(UPDATED_ADDITIONAL_IMAGE_LINK)
             .availability(UPDATED_AVAILABILITY)
             .price(UPDATED_PRICE)
             .category(UPDATED_CATEGORY);
@@ -1184,7 +1194,7 @@ class ProductResourceIT {
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testProduct.getLink()).isEqualTo(UPDATED_LINK);
         assertThat(testProduct.getImageLink()).isEqualTo(UPDATED_IMAGE_LINK);
-        assertThat(testProduct.getAditionalImageLink()).isEqualTo(UPDATED_ADITIONAL_IMAGE_LINK);
+        assertThat(testProduct.getAdditionalImageLink()).isEqualTo(UPDATED_ADDITIONAL_IMAGE_LINK);
         assertThat(testProduct.getAvailability()).isEqualTo(UPDATED_AVAILABILITY);
         assertThat(testProduct.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testProduct.getCategory()).isEqualTo(UPDATED_CATEGORY);
@@ -1267,7 +1277,7 @@ class ProductResourceIT {
         Product partialUpdatedProduct = new Product();
         partialUpdatedProduct.setId(product.getId());
 
-        partialUpdatedProduct.imageLink(UPDATED_IMAGE_LINK).aditionalImageLink(UPDATED_ADITIONAL_IMAGE_LINK);
+        partialUpdatedProduct.imageLink(UPDATED_IMAGE_LINK).additionalImageLink(UPDATED_ADDITIONAL_IMAGE_LINK);
 
         restProductMockMvc
             .perform(
@@ -1286,7 +1296,7 @@ class ProductResourceIT {
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testProduct.getLink()).isEqualTo(DEFAULT_LINK);
         assertThat(testProduct.getImageLink()).isEqualTo(UPDATED_IMAGE_LINK);
-        assertThat(testProduct.getAditionalImageLink()).isEqualTo(UPDATED_ADITIONAL_IMAGE_LINK);
+        assertThat(testProduct.getAdditionalImageLink()).isEqualTo(UPDATED_ADDITIONAL_IMAGE_LINK);
         assertThat(testProduct.getAvailability()).isEqualTo(DEFAULT_AVAILABILITY);
         assertThat(testProduct.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testProduct.getCategory()).isEqualTo(DEFAULT_CATEGORY);
@@ -1310,7 +1320,7 @@ class ProductResourceIT {
             .description(UPDATED_DESCRIPTION)
             .link(UPDATED_LINK)
             .imageLink(UPDATED_IMAGE_LINK)
-            .aditionalImageLink(UPDATED_ADITIONAL_IMAGE_LINK)
+            .additionalImageLink(UPDATED_ADDITIONAL_IMAGE_LINK)
             .availability(UPDATED_AVAILABILITY)
             .price(UPDATED_PRICE)
             .category(UPDATED_CATEGORY);
@@ -1332,7 +1342,7 @@ class ProductResourceIT {
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testProduct.getLink()).isEqualTo(UPDATED_LINK);
         assertThat(testProduct.getImageLink()).isEqualTo(UPDATED_IMAGE_LINK);
-        assertThat(testProduct.getAditionalImageLink()).isEqualTo(UPDATED_ADITIONAL_IMAGE_LINK);
+        assertThat(testProduct.getAdditionalImageLink()).isEqualTo(UPDATED_ADDITIONAL_IMAGE_LINK);
         assertThat(testProduct.getAvailability()).isEqualTo(UPDATED_AVAILABILITY);
         assertThat(testProduct.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testProduct.getCategory()).isEqualTo(UPDATED_CATEGORY);

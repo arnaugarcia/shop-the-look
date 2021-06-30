@@ -3,7 +3,7 @@ package com.klai.stl.service.dto;
 import com.klai.stl.domain.enumeration.ProductAvailability;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.Product} entity.
@@ -27,7 +27,7 @@ public class ProductDTO implements Serializable {
     @NotNull
     private String imageLink;
 
-    private String aditionalImageLink;
+    private String additionalImageLink;
 
     @NotNull
     private ProductAvailability availability;
@@ -89,12 +89,12 @@ public class ProductDTO implements Serializable {
         this.imageLink = imageLink;
     }
 
-    public String getAditionalImageLink() {
-        return aditionalImageLink;
+    public String getAdditionalImageLink() {
+        return additionalImageLink;
     }
 
-    public void setAditionalImageLink(String aditionalImageLink) {
-        this.aditionalImageLink = aditionalImageLink;
+    public void setAdditionalImageLink(String additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
     }
 
     public ProductAvailability getAvailability() {
@@ -168,7 +168,7 @@ public class ProductDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", imageLink='" + getImageLink() + "'" +
-            ", aditionalImageLink='" + getAditionalImageLink() + "'" +
+            ", additionalImageLink='" + getAdditionalImageLink() + "'" +
             ", availability='" + getAvailability() + "'" +
             ", price='" + getPrice() + "'" +
             ", category='" + getCategory() + "'" +

@@ -1,7 +1,9 @@
 package com.klai.stl.service;
 
-import com.klai.stl.domain.*; // for static metamodels
+import com.klai.stl.domain.Company_;
+import com.klai.stl.domain.Coordinate_;
 import com.klai.stl.domain.Product;
+import com.klai.stl.domain.Product_;
 import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
@@ -101,8 +103,9 @@ public class ProductQueryService extends QueryService<Product> {
             if (criteria.getImageLink() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getImageLink(), Product_.imageLink));
             }
-            if (criteria.getAditionalImageLink() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getAditionalImageLink(), Product_.aditionalImageLink));
+            if (criteria.getAdditionalImageLink() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getAdditionalImageLink(), Product_.additionalImageLink));
             }
             if (criteria.getAvailability() != null) {
                 specification = specification.and(buildSpecification(criteria.getAvailability(), Product_.availability));

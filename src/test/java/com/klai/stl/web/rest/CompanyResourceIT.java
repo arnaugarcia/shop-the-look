@@ -7,8 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
-import com.klai.stl.domain.Company;
-import com.klai.stl.domain.User;
+import com.klai.stl.domain.*;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.repository.CompanyRepository;
@@ -50,6 +49,9 @@ class CompanyResourceIT {
 
     private static final String DEFAULT_TOKEN = "AAAAAAAAAA";
     private static final String UPDATED_TOKEN = "BBBBBBBBBB";
+
+    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
+    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
 
     private static final CompanyIndustry DEFAULT_INDUSTRY = CompanyIndustry.AUTOMOTIVE;
     private static final CompanyIndustry UPDATED_INDUSTRY = CompanyIndustry.CLOTHES;
@@ -93,6 +95,7 @@ class CompanyResourceIT {
         Company company = new Company()
             .name(DEFAULT_NAME)
             .cif(DEFAULT_CIF)
+            .reference(DEFAULT_REFERENCE)
             .token(DEFAULT_TOKEN)
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
@@ -108,6 +111,7 @@ class CompanyResourceIT {
         return new Company()
             .name(DEFAULT_NAME)
             .cif(DEFAULT_CIF)
+            .reference(DEFAULT_REFERENCE)
             .token(DEFAULT_TOKEN)
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
@@ -124,13 +128,44 @@ class CompanyResourceIT {
             .name(UPDATED_NAME)
             .cif(UPDATED_CIF)
             .token(UPDATED_TOKEN)
+            .reference(UPDATED_REFERENCE)
             .industry(UPDATED_INDUSTRY)
             .companySize(UPDATED_COMPANY_SIZE);
+        // Add required entity
+        Product product;
+        if (TestUtil.findAll(em, Product.class).isEmpty()) {
+            product = ProductResourceIT.createUpdatedEntity(em);
+            em.persist(product);
+            em.flush();
+        } else {
+            product = TestUtil.findAll(em, Product.class).get(0);
+        }
+        company.getProducts().add(product);
+        // Add required entity
+        GoogleFeedProduct googleFeedProduct;
+        if (TestUtil.findAll(em, GoogleFeedProduct.class).isEmpty()) {
+            googleFeedProduct = GoogleFeedProductResourceIT.createUpdatedEntity(em);
+            em.persist(googleFeedProduct);
+            em.flush();
+        } else {
+            googleFeedProduct = TestUtil.findAll(em, GoogleFeedProduct.class).get(0);
+        }
+        company.getImportedProducts().add(googleFeedProduct);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
         em.flush();
         company.getUsers().add(user);
+        // Add required entity
+        SubscriptionPlan subscriptionPlan;
+        if (TestUtil.findAll(em, SubscriptionPlan.class).isEmpty()) {
+            subscriptionPlan = SubscriptionPlanResourceIT.createUpdatedEntity(em);
+            em.persist(subscriptionPlan);
+            em.flush();
+        } else {
+            subscriptionPlan = TestUtil.findAll(em, SubscriptionPlan.class).get(0);
+        }
+        company.setSubscriptionPlan(subscriptionPlan);
         return company;
     }
 
@@ -156,6 +191,7 @@ class CompanyResourceIT {
         assertThat(testCompany.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCompany.getCif()).isEqualTo(DEFAULT_CIF);
         assertThat(testCompany.getToken()).isEqualTo(DEFAULT_TOKEN);
+        assertThat(testCompany.getReference()).isNotBlank();
         assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
     }
@@ -217,6 +253,42 @@ class CompanyResourceIT {
 
     @Test
     @Transactional
+    void checkTokenIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyRepository.findAll().size();
+        // set the field null
+        company.setToken(null);
+
+        // Create the Company, which fails.
+        CompanyDTO companyDTO = companyMapper.toDto(company);
+
+        restCompanyMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Company> companyList = companyRepository.findAll();
+        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkReferenceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyRepository.findAll().size();
+        // set the field null
+        company.setReference(null);
+
+        // Create the Company, which fails.
+        CompanyDTO companyDTO = companyMapper.toDto(company);
+
+        restCompanyMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Company> companyList = companyRepository.findAll();
+        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllCompanies() throws Exception {
         // Initialize the database
         companyRepository.saveAndFlush(company);
@@ -230,6 +302,7 @@ class CompanyResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].cif").value(hasItem(DEFAULT_CIF)))
             .andExpect(jsonPath("$.[*].token").value(hasItem(DEFAULT_TOKEN)))
+            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].industry").value(hasItem(DEFAULT_INDUSTRY.toString())))
             .andExpect(jsonPath("$.[*].companySize").value(hasItem(DEFAULT_COMPANY_SIZE.toString())));
     }
@@ -267,6 +340,7 @@ class CompanyResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.cif").value(DEFAULT_CIF))
             .andExpect(jsonPath("$.token").value(DEFAULT_TOKEN))
+            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.industry").value(DEFAULT_INDUSTRY.toString()))
             .andExpect(jsonPath("$.companySize").value(DEFAULT_COMPANY_SIZE.toString()));
     }
@@ -294,6 +368,7 @@ class CompanyResourceIT {
             .name(UPDATED_NAME)
             .cif(UPDATED_CIF)
             .token(UPDATED_TOKEN)
+            .reference(UPDATED_REFERENCE)
             .industry(UPDATED_INDUSTRY)
             .companySize(UPDATED_COMPANY_SIZE);
         CompanyDTO companyDTO = companyMapper.toDto(updatedCompany);
@@ -313,6 +388,7 @@ class CompanyResourceIT {
         assertThat(testCompany.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCompany.getCif()).isEqualTo(UPDATED_CIF);
         assertThat(testCompany.getToken()).isEqualTo(UPDATED_TOKEN);
+        assertThat(testCompany.getReference()).isEqualTo(UPDATED_REFERENCE);
         assertThat(testCompany.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(UPDATED_COMPANY_SIZE);
     }
@@ -394,7 +470,7 @@ class CompanyResourceIT {
         Company partialUpdatedCompany = new Company();
         partialUpdatedCompany.setId(company.getId());
 
-        partialUpdatedCompany.cif(UPDATED_CIF).token(UPDATED_TOKEN).companySize(UPDATED_COMPANY_SIZE);
+        partialUpdatedCompany.cif(UPDATED_CIF).token(UPDATED_TOKEN).industry(UPDATED_INDUSTRY);
 
         restCompanyMockMvc
             .perform(
@@ -411,8 +487,9 @@ class CompanyResourceIT {
         assertThat(testCompany.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCompany.getCif()).isEqualTo(UPDATED_CIF);
         assertThat(testCompany.getToken()).isEqualTo(UPDATED_TOKEN);
-        assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
-        assertThat(testCompany.getCompanySize()).isEqualTo(UPDATED_COMPANY_SIZE);
+        assertThat(testCompany.getReference()).isEqualTo(DEFAULT_REFERENCE);
+        assertThat(testCompany.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
+        assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
     }
 
     @Test
@@ -431,6 +508,7 @@ class CompanyResourceIT {
             .name(UPDATED_NAME)
             .cif(UPDATED_CIF)
             .token(UPDATED_TOKEN)
+            .reference(UPDATED_REFERENCE)
             .industry(UPDATED_INDUSTRY)
             .companySize(UPDATED_COMPANY_SIZE);
 
@@ -449,6 +527,7 @@ class CompanyResourceIT {
         assertThat(testCompany.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCompany.getCif()).isEqualTo(UPDATED_CIF);
         assertThat(testCompany.getToken()).isEqualTo(UPDATED_TOKEN);
+        assertThat(testCompany.getReference()).isEqualTo(UPDATED_REFERENCE);
         assertThat(testCompany.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(UPDATED_COMPANY_SIZE);
     }

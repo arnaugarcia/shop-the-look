@@ -36,6 +36,25 @@
         <div class="form-group">
           <label class="form-control-label" stlTranslate="shopTheLookApp.company.token" for="field_token">Token</label>
           <input type="text" class="form-control" name="token" id="field_token" data-cy="token" formControlName="token" />
+          <div *ngIf="editForm.get('token')!.invalid && (editForm.get('token')!.dirty || editForm.get('token')!.touched)">
+            <small *ngIf="editForm.get('token')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_reference" stlTranslate="shopTheLookApp.company.reference">Reference</label>
+          <input class="form-control" data-cy="reference" formControlName="reference" id="field_reference" name="reference" type="text" />
+          <div *ngIf="editForm.get('reference')!.invalid && (editForm.get('reference')!.dirty || editForm.get('reference')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('reference')?.errors?.required"
+              stlTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="form-group">

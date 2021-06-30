@@ -1,11 +1,7 @@
-import { browser, ExpectedConditions as ec /* , promise */ } from 'protractor';
+import { browser, ExpectedConditions as ec } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-import {
-  CompanyComponentsPage,
-  /* CompanyDeleteDialog, */
-  CompanyUpdatePage,
-} from './company.page-object';
+import { CompanyComponentsPage, CompanyUpdatePage } from './company.page-object';
 
 const expect = chai.expect;
 
@@ -50,6 +46,7 @@ describe('Company e2e test', () => {
             companyUpdatePage.setNameInput('name'),
             companyUpdatePage.setCifInput('cif'),
             companyUpdatePage.setTokenInput('token'),
+            companyUpdatePage.setReferenceInput('reference'),
             companyUpdatePage.industrySelectLastOption(),
             companyUpdatePage.companySizeSelectLastOption(),
             // companyUpdatePage.userSelectLastOption(),

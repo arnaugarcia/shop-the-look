@@ -10,11 +10,12 @@ export interface ICompany {
   id?: number;
   name?: string;
   cif?: string;
-  token?: string | null;
+  token?: string;
+  reference?: string;
   industry?: CompanyIndustry | null;
   companySize?: CompanySize | null;
-  products?: IProduct[] | null;
-  importedProducts?: IGoogleFeedProduct[] | null;
+  products?: IProduct[];
+  importedProducts?: IGoogleFeedProduct[];
   spaces?: ISpace[] | null;
   users?: IUser[];
   subscriptionPlan?: ISubscriptionPlan | null;
@@ -25,11 +26,12 @@ export class Company implements ICompany {
     public id?: number,
     public name?: string,
     public cif?: string,
-    public token?: string | null,
+    public token?: string,
+    public reference?: string,
     public industry?: CompanyIndustry | null,
     public companySize?: CompanySize | null,
-    public products?: IProduct[] | null,
-    public importedProducts?: IGoogleFeedProduct[] | null,
+    public products?: IProduct[],
+    public importedProducts?: IGoogleFeedProduct[],
     public spaces?: ISpace[] | null,
     public users?: IUser[],
     public subscriptionPlan?: ISubscriptionPlan | null

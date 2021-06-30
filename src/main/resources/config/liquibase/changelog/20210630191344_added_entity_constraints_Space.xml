@@ -4,14 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
     <!--
-        Added the constraints for entity Coordinate.
+        Added the constraints for entity Space.
     -->
-    <changeSet id="20210625091943-2" author="jhipster">
+    <changeSet id="20210630191344-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="photo_id"
-                                 baseTableName="coordinate"
-                                 constraintName="fk_coordinate__photo_id"
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="space"
+                                 constraintName="fk_space__company_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="photo"/>
+                                 referencedTableName="company"/>
     </changeSet>
 </databaseChangeLog>

@@ -21,6 +21,7 @@
       "name": "Name",
       "cif": "Cif",
       "token": "Token",
+      "reference": "Reference",
       "industry": "Industry",
       "companySize": "Company Size",
       "product": "Product",

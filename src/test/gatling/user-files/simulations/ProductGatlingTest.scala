@@ -76,7 +76,7 @@ class ProductGatlingTest extends Simulation {
                 , "description":"SAMPLE_TEXT"
                 , "link":"SAMPLE_TEXT"
                 , "imageLink":"SAMPLE_TEXT"
-                , "aditionalImageLink":"SAMPLE_TEXT"
+                , "additionalImageLink":"SAMPLE_TEXT"
                 , "availability":"IN_STOCK"
                 , "price":"SAMPLE_TEXT"
                 , "category":"SAMPLE_TEXT"

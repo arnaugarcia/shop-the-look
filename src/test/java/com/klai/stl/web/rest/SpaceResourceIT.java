@@ -10,7 +10,6 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Photo;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.SpaceRepository;
-import com.klai.stl.service.criteria.SpaceCriteria;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.mapper.SpaceMapper;
 import java.util.List;
@@ -291,7 +290,13 @@ class SpaceResourceIT {
     @Transactional
     void getAllSpacesByNameIsEqualToSomething() throws Exception {
         // Initialize the database
+        em.flush();
         spaceRepository.saveAndFlush(space);
+        Company company = CompanyResourceIT.createEntity(em);
+        em.persist(company);
+        space.setCompany(company);
+        spaceRepository.saveAndFlush(space);
+        Long companyId = company.getId();
 
         // Get all the spaceList where name equals to DEFAULT_NAME
         defaultSpaceShouldBeFound("name.equals=" + DEFAULT_NAME);
