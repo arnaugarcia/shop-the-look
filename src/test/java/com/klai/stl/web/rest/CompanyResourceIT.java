@@ -191,7 +191,7 @@ class CompanyResourceIT {
         assertThat(testCompany.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCompany.getCif()).isEqualTo(DEFAULT_CIF);
         assertThat(testCompany.getToken()).isEqualTo(DEFAULT_TOKEN);
-        assertThat(testCompany.getReference()).isEqualTo(DEFAULT_REFERENCE);
+        assertThat(testCompany.getReference()).isNotBlank();
         assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
     }
