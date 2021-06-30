@@ -68,14 +68,62 @@ class EmployeeResourceIT {
         company.addUser(manager);
         em.persist(company);
         int databaseSizeBeforeCreate = companyRepository.findByCif(company.getCif()).get().getUsers().size();
-        // Create the Photo
+        // Create the user
         UserDTO userDTO = createAUserDTO();
         restPhotoMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
             .andExpect(status().isCreated());
 
         // Validate the User in the database
-        Set<User> photoList = companyRepository.findByCif(company.getCif()).get().getUsers();
-        assertThat(photoList).hasSize(databaseSizeBeforeCreate + 1);
+        Set<User> userList = companyRepository.findByCif(company.getCif()).get().getUsers();
+        assertThat(userList).hasSize(databaseSizeBeforeCreate + 1);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = { MANAGER })
+    void createEmployeeWithExistingId() throws Exception {
+        UserDTO userDTO = createAUserDTO();
+        userDTO.setId(1L);
+        restPhotoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "create-employee-existing-login", authorities = { MANAGER })
+    void createUserWithExistingLogin() throws Exception {
+        final String EXISTING_LOGIN = "create-employee-existing-login";
+        final User manager = UserResourceIT.createEntity(EXISTING_LOGIN);
+        manager.setLogin(EXISTING_LOGIN);
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+        UserDTO userDTO = createAUserDTO();
+        userDTO.setLogin(EXISTING_LOGIN);
+
+        restPhotoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "create-employee-existing-email", authorities = { MANAGER })
+    void createUserWithExistingEmail() throws Exception {
+        final String EXISTING_EMAIL = "employee@email.com";
+        final User manager = UserResourceIT.createEntity(EXISTING_EMAIL);
+        manager.setEmail(EXISTING_EMAIL);
+        manager.setLogin("create-employee-existing-email");
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+        UserDTO userDTO = createAUserDTO();
+        userDTO.setEmail(EXISTING_EMAIL);
+
+        restPhotoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
+            .andExpect(status().isBadRequest());
     }
 }
