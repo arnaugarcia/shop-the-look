@@ -2,7 +2,6 @@ package com.klai.stl.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -16,7 +15,10 @@ import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.mapper.UserMapper;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -104,6 +106,25 @@ class UserResourceIT {
     }
 
     /**
+     * Create a User.
+     * <p>
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which has a required relationship to the User entity.
+     */
+    public static User createEntity(String login) {
+        User user = new User();
+        user.setLogin(login);
+        user.setPassword(RandomStringUtils.random(60));
+        user.setActivated(true);
+        user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
+        user.setFirstName(DEFAULT_FIRSTNAME);
+        user.setLastName(DEFAULT_LASTNAME);
+        user.setImageUrl(DEFAULT_IMAGEURL);
+        user.setLangKey(DEFAULT_LANGKEY);
+        return user;
+    }
+
+    /**
      * Setups the database with one user.
      */
     public static User initTestUser(UserRepository userRepository, EntityManager em) {
@@ -111,6 +132,18 @@ class UserResourceIT {
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
         return user;
+    }
+
+    public static UserDTO createAUserDTO() {
+        return UserDTO
+            .builder()
+            .activated(true)
+            .email(DEFAULT_EMAIL)
+            .firstName(DEFAULT_FIRSTNAME)
+            .lastName(DEFAULT_LASTNAME)
+            .langKey(DEFAULT_LANGKEY)
+            .login(DEFAULT_LOGIN)
+            .build();
     }
 
     @BeforeEach
@@ -516,7 +549,7 @@ class UserResourceIT {
         userDTO.setLastModifiedBy(DEFAULT_LOGIN);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
-        User user = userMapper.userDTOToUser(userDTO);
+        User user = userMapper.adminUserDTOToUser(userDTO);
         assertThat(user.getId()).isEqualTo(DEFAULT_ID);
         assertThat(user.getLogin()).isEqualTo(DEFAULT_LOGIN);
         assertThat(user.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);

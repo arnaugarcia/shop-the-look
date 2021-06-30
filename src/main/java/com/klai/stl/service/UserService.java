@@ -1,20 +1,15 @@
 package com.klai.stl.service;
 
-import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static com.klai.stl.security.AuthoritiesConstants.USER;
-import static java.util.Arrays.asList;
-
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Authority;
-import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.AuthorityRepository;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
+import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
-import com.klai.stl.web.rest.vm.CompanyUserVM;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -41,15 +36,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final CompanyRepository companyRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
-
-    private final TokenService tokenService;
 
     public UserService(
         UserRepository userRepository,
@@ -60,11 +51,9 @@ public class UserService {
         TokenService tokenService
     ) {
         this.userRepository = userRepository;
-        this.companyRepository = companyRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
-        this.tokenService = tokenService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -114,38 +103,31 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
+        checkIfEmailOrLoginIsUsed(userDTO);
+        User newUser = buildUser(userDTO, password);
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(USER).ifPresent(authorities::add);
-        User newUser = buildAndSaveNewUser(userDTO, password, authorities);
+        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
 
-    private User buildAndSaveNewUser(AdminUserDTO userDTO, String password, Set<Authority> authorities) {
-        checkIfLoginAndEmailAreUsed(userDTO);
-        User newUser = new User();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        if (userDTO.getEmail() != null) {
-            newUser.setEmail(userDTO.getEmail().toLowerCase());
-        }
-        newUser.setImageUrl(userDTO.getImageUrl());
-        newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
+    public User registerManager(AdminUserDTO userDTO, String password) {
+        checkIfEmailOrLoginIsUsed(userDTO);
+        User newUser = buildUser(userDTO, password);
+        Set<Authority> authorities = new HashSet<>();
+        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository.findById(AuthoritiesConstants.MANAGER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
+        log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
 
-    private void checkIfLoginAndEmailAreUsed(AdminUserDTO userDTO) {
+    private void checkIfEmailOrLoginIsUsed(AdminUserDTO userDTO) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(
@@ -168,19 +150,23 @@ public class UserService {
             );
     }
 
-    public User registerCompany(CompanyUserVM companyUserVM, String password) {
-        final List<Authority> managerAuthorities = authorityRepository.findAllById(asList(USER, MANAGER));
-        Set<Authority> authorities = new HashSet<>(managerAuthorities);
-        User newUser = buildAndSaveNewUser(companyUserVM, password, authorities);
-
-        Company company = new Company();
-        company.setName(companyUserVM.getName());
-        company.setCif(companyUserVM.getCif());
-        company.companySize(companyUserVM.getSize());
-        company.setIndustry(companyUserVM.getIndustry());
-        company.setToken(tokenService.generateRandomToken());
-        company.addUser(newUser);
-        companyRepository.save(company);
+    private User buildUser(AdminUserDTO userDTO, String password) {
+        User newUser = new User();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setLogin(userDTO.getLogin().toLowerCase());
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(userDTO.getFirstName());
+        newUser.setLastName(userDTO.getLastName());
+        if (userDTO.getEmail() != null) {
+            newUser.setEmail(userDTO.getEmail().toLowerCase());
+        }
+        newUser.setImageUrl(userDTO.getImageUrl());
+        newUser.setLangKey(userDTO.getLangKey());
+        // new user is not active
+        newUser.setActivated(false);
+        // new user gets registration key
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
         return newUser;
     }
 
@@ -195,6 +181,8 @@ public class UserService {
     }
 
     public User createUser(AdminUserDTO userDTO) {
+        checkIfEmailOrLoginIsUsed(userDTO);
+
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
@@ -222,6 +210,8 @@ public class UserService {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
+        } else {
+            authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(user.getAuthorities()::add);
         }
         userRepository.save(user);
         this.clearUserCaches(user);

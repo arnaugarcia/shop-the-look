@@ -1,13 +1,13 @@
 package com.klai.stl.service.impl;
 
 import com.klai.stl.domain.Company;
+import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.exception.CompanyNotFound;
 import com.klai.stl.service.mapper.CompanyMapper;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +38,10 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDTO save(CompanyDTO companyDTO) {
         log.debug("Request to save Company : {}", companyDTO);
         Company company = companyMapper.toEntity(companyDTO);
+        return saveAndTransform(company);
+    }
+
+    private CompanyDTO saveAndTransform(Company company) {
         company = companyRepository.save(company);
         return companyMapper.toDto(company);
     }
@@ -70,6 +74,13 @@ public class CompanyServiceImpl implements CompanyService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Override
+    public CompanyDTO addEmployee(User employee, CompanyDTO companyDTO) {
+        final Company company = companyRepository.findByCif(companyDTO.getCif()).orElseThrow(CompanyNotFound::new);
+        company.addUser(employee);
+        return saveAndTransform(company);
+    }
+
     public Page<CompanyDTO> findAllWithEagerRelationships(Pageable pageable) {
         return companyRepository.findAllWithEagerRelationships(pageable).map(companyMapper::toDto);
     }
@@ -79,6 +90,14 @@ public class CompanyServiceImpl implements CompanyService {
     public Optional<CompanyDTO> findOne(Long id) {
         log.debug("Request to get Company : {}", id);
         return companyRepository.findOneWithEagerRelationships(id).map(companyMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<CompanyDTO> findByEmployee(String login) {
+        Set<String> collection = new HashSet<>();
+        collection.add(login);
+        return companyRepository.findByUser(collection).map(companyMapper::toDto);
     }
 
     @Override

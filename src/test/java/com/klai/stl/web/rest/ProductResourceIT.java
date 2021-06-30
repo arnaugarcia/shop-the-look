@@ -1061,13 +1061,8 @@ class ProductResourceIT {
     @Transactional
     void getAllProductsByCompanyIsEqualToSomething() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
-        Company company = CompanyResourceIT.createEntity(em);
-        em.persist(company);
-        em.flush();
-        product.setCompany(company);
-        productRepository.saveAndFlush(product);
-        Long companyId = company.getId();
+        final Product result = productRepository.saveAndFlush(productRepository.saveAndFlush(product));
+        Long companyId = result.getCompany().getId();
 
         // Get all the productList where company equals to companyId
         defaultProductShouldBeFound("companyId.equals=" + companyId);

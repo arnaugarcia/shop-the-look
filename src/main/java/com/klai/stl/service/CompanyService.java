@@ -1,5 +1,6 @@
 package com.klai.stl.service;
 
+import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.CompanyDTO;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,15 @@ public interface CompanyService {
     List<CompanyDTO> findAll();
 
     /**
+     * Adds a new employee to the company
+     *
+     * @param companyDTO the company to which the user will be added
+     * @param user       the user to add
+     * @return the persisted Company
+     */
+    CompanyDTO addEmployee(User user, CompanyDTO companyDTO);
+
+    /**
      * Get all the companies with eager load of many-to-many relationships.
      *
      * @param pageable the pagination information.
@@ -48,6 +58,14 @@ public interface CompanyService {
      * @return the entity.
      */
     Optional<CompanyDTO> findOne(Long id);
+
+    /**
+     * Find the company by its owner
+     *
+     * @param login the login of the user
+     * @return the entity.
+     */
+    Optional<CompanyDTO> findByEmployee(String login);
 
     /**
      * Delete the "id" company.

@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
-import com.klai.stl.domain.GoogleFeedProduct;
-import com.klai.stl.domain.Product;
 import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
@@ -30,7 +28,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -100,26 +97,6 @@ class CompanyResourceIT {
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
         // Add required entity
-        Product product;
-        if (TestUtil.findAll(em, Product.class).isEmpty()) {
-            product = ProductResourceIT.createEntity(em);
-            em.persist(product);
-            em.flush();
-        } else {
-            product = TestUtil.findAll(em, Product.class).get(0);
-        }
-        company.getProducts().add(product);
-        // Add required entity
-        GoogleFeedProduct googleFeedProduct;
-        if (TestUtil.findAll(em, GoogleFeedProduct.class).isEmpty()) {
-            googleFeedProduct = GoogleFeedProductResourceIT.createEntity(em);
-            em.persist(googleFeedProduct);
-            em.flush();
-        } else {
-            googleFeedProduct = TestUtil.findAll(em, GoogleFeedProduct.class).get(0);
-        }
-        company.getImportedProducts().add(googleFeedProduct);
-        // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
         em.flush();
@@ -127,9 +104,18 @@ class CompanyResourceIT {
         return company;
     }
 
+    public static Company createBasicEntity() {
+        return new Company()
+            .name(DEFAULT_NAME)
+            .cif(DEFAULT_CIF)
+            .token(DEFAULT_TOKEN)
+            .industry(DEFAULT_INDUSTRY)
+            .companySize(DEFAULT_COMPANY_SIZE);
+    }
+
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -140,26 +126,6 @@ class CompanyResourceIT {
             .token(UPDATED_TOKEN)
             .industry(UPDATED_INDUSTRY)
             .companySize(UPDATED_COMPANY_SIZE);
-        // Add required entity
-        Product product;
-        if (TestUtil.findAll(em, Product.class).isEmpty()) {
-            product = ProductResourceIT.createUpdatedEntity(em);
-            em.persist(product);
-            em.flush();
-        } else {
-            product = TestUtil.findAll(em, Product.class).get(0);
-        }
-        company.getProducts().add(product);
-        // Add required entity
-        GoogleFeedProduct googleFeedProduct;
-        if (TestUtil.findAll(em, GoogleFeedProduct.class).isEmpty()) {
-            googleFeedProduct = GoogleFeedProductResourceIT.createUpdatedEntity(em);
-            em.persist(googleFeedProduct);
-            em.flush();
-        } else {
-            googleFeedProduct = TestUtil.findAll(em, GoogleFeedProduct.class).get(0);
-        }
-        company.getImportedProducts().add(googleFeedProduct);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
