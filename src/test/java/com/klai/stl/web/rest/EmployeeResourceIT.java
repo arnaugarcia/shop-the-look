@@ -11,8 +11,10 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
+import com.klai.stl.repository.UserRepository;
 import com.klai.stl.service.dto.EmployeeRequestDTO;
 import com.klai.stl.service.dto.UserDTO;
+import java.util.Optional;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +41,9 @@ class EmployeeResourceIT {
     private CompanyRepository companyRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -60,13 +65,14 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "manager-create-employee", authorities = { MANAGER })
+    @WithMockUser(username = "create-employee", authorities = { MANAGER })
     void createEmployee() throws Exception {
-        final User manager = UserResourceIT.createEntity("manager-create-employee");
+        final User manager = UserResourceIT.createEntity("create-employee");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
         int databaseSizeBeforeCreate = companyRepository.findByCif(company.getCif()).get().getUsers().size();
+
         // Create the user
         final EmployeeRequestDTO requestDTO = EmployeeRequestDTO
             .builder()
@@ -77,6 +83,7 @@ class EmployeeResourceIT {
             .langKey(EMPLOYEE_LANG_KEY)
             .login(EMPLOYEE_LOGIN)
             .build();
+
         restPhotoMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(requestDTO)))
             .andExpect(status().isCreated());
@@ -84,6 +91,17 @@ class EmployeeResourceIT {
         // Validate the User in the database
         Set<User> userList = companyRepository.findByCif(company.getCif()).get().getUsers();
         assertThat(userList).hasSize(databaseSizeBeforeCreate + 1);
+
+        final Optional<User> oneByLogin = userRepository.findOneByLogin(EMPLOYEE_LOGIN);
+        assertThat(oneByLogin).isPresent();
+        User result = oneByLogin.get();
+        assertThat(result.getAuthorities()).hasSize(1);
+        assertThat(result.getEmail()).isEqualTo(EMPLOYEE_EMAIL);
+        assertThat(result.getFirstName()).isEqualTo(EMPLOYEE_FIRSTNAME);
+        assertThat(result.getLastName()).isEqualTo(EMPLOYEE_LASTNAME);
+        assertThat(result.getLangKey()).isEqualTo(EMPLOYEE_LANG_KEY);
+        assertThat(result.getLogin()).isEqualTo(EMPLOYEE_LOGIN);
+        assertThat(result.isActivated()).isFalse();
     }
 
     @Test
