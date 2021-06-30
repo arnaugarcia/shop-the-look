@@ -1,4 +1,4 @@
-import { element, by, ElementFinder } from 'protractor';
+import { by, element, ElementFinder } from 'protractor';
 
 export class ProductComponentsPage {
   createButton = element(by.id('jh-create-entity'));
@@ -35,7 +35,7 @@ export class ProductUpdatePage {
   descriptionInput = element(by.id('field_description'));
   linkInput = element(by.id('field_link'));
   imageLinkInput = element(by.id('field_imageLink'));
-  aditionalImageLinkInput = element(by.id('field_aditionalImageLink'));
+  additionalImageLinkInput = element(by.id('field_additionalImageLink'));
   availabilitySelect = element(by.id('field_availability'));
   priceInput = element(by.id('field_price'));
   categoryInput = element(by.id('field_category'));
@@ -95,12 +95,12 @@ export class ProductUpdatePage {
     return await this.imageLinkInput.getAttribute('value');
   }
 
-  async setAditionalImageLinkInput(aditionalImageLink: string): Promise<void> {
-    await this.aditionalImageLinkInput.sendKeys(aditionalImageLink);
+  async setAdditionalImageLinkInput(additionalImageLink: string): Promise<void> {
+    await this.additionalImageLinkInput.sendKeys(additionalImageLink);
   }
 
-  async getAditionalImageLinkInput(): Promise<string> {
-    return await this.aditionalImageLinkInput.getAttribute('value');
+  async getAdditionalImageLinkInput(): Promise<string> {
+    return await this.additionalImageLinkInput.getAttribute('value');
   }
 
   async setAvailabilitySelect(availability: string): Promise<void> {

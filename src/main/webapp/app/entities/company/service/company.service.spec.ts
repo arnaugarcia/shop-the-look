@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { CompanyIndustry } from 'app/entities/enumerations/company-industry.model';
 import { CompanySize } from 'app/entities/enumerations/company-size.model';
-import { ICompany, Company } from '../company.model';
+import { Company, ICompany } from '../company.model';
 
 import { CompanyService } from './company.service';
 
@@ -27,6 +27,7 @@ describe('Service Tests', () => {
         name: 'AAAAAAA',
         cif: 'AAAAAAA',
         token: 'AAAAAAA',
+        reference: 'AAAAAAA',
         industry: CompanyIndustry.AUTOMOTIVE,
         companySize: CompanySize.STARTUP,
       };
@@ -67,6 +68,7 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             cif: 'BBBBBB',
             token: 'BBBBBB',
+            reference: 'BBBBBB',
             industry: 'BBBBBB',
             companySize: 'BBBBBB',
           },
@@ -86,7 +88,7 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             cif: 'BBBBBB',
-            companySize: 'BBBBBB',
+            industry: 'BBBBBB',
           },
           new Company()
         );
@@ -109,6 +111,7 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             cif: 'BBBBBB',
             token: 'BBBBBB',
+            reference: 'BBBBBB',
             industry: 'BBBBBB',
             companySize: 'BBBBBB',
           },
@@ -162,7 +165,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Company to an array', () => {
-          const companyArray: ICompany[] = [{ id: 123 }, { id: 456 }, { id: 4381 }];
+          const companyArray: ICompany[] = [{ id: 123 }, { id: 456 }, { id: 38564 }];
           const companyCollection: ICompany[] = [{ id: 123 }];
           expectedResult = service.addCompanyToCollectionIfMissing(companyCollection, ...companyArray);
           expect(expectedResult).toHaveLength(3);

@@ -2,7 +2,7 @@ application {
   config {
     baseName ShopTheLook,
     applicationType monolith,
-    packageName com.klai,
+    packageName com.klai.stl,
     databaseType sql,
     authenticationType jwt,
     prodDatabaseType mysql,
@@ -19,7 +19,8 @@ application {
 entity Company {
 	name String required,
     cif String required unique,
-    token String,
+    token String required unique,
+    reference String required unique,
     industry CompanyIndustry,
     companySize CompanySize
 }
@@ -83,7 +84,7 @@ entity Product {
     description String required,
     link String required,
     imageLink String required,
-    aditionalImageLink String,
+    additionalImageLink String,
     availability ProductAvailability required,
     price String required,
     category String
@@ -145,8 +146,8 @@ relationship OneToMany {
     Coordinate{product(sku) required} to Product{coordinate}
 }
 
-relationship ManyToOne {
-	User to Company,
+relationship ManyToMany {
+	Company{user(login) required} to User
 }
 
 dto * with mapstruct except GoogleFeedProduct

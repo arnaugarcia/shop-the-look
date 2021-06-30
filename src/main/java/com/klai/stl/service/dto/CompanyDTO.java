@@ -6,17 +6,11 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.Company} entity.
  */
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class CompanyDTO implements Serializable {
 
     private Long id;
@@ -27,7 +21,11 @@ public class CompanyDTO implements Serializable {
     @NotNull
     private String cif;
 
+    @NotNull
     private String token;
+
+    @NotNull
+    private String reference;
 
     private CompanyIndustry industry;
 
@@ -67,6 +65,14 @@ public class CompanyDTO implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public CompanyIndustry getIndustry() {
@@ -130,6 +136,7 @@ public class CompanyDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", cif='" + getCif() + "'" +
             ", token='" + getToken() + "'" +
+            ", reference='" + getReference() + "'" +
             ", industry='" + getIndustry() + "'" +
             ", companySize='" + getCompanySize() + "'" +
             ", users=" + getUsers() +

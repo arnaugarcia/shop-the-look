@@ -9,7 +9,7 @@ export interface IProduct {
   description?: string;
   link?: string;
   imageLink?: string;
-  aditionalImageLink?: string | null;
+  additionalImageLink?: string | null;
   availability?: ProductAvailability;
   price?: string;
   category?: string | null;
@@ -25,7 +25,7 @@ export class Product implements IProduct {
     public description?: string,
     public link?: string,
     public imageLink?: string,
-    public aditionalImageLink?: string | null,
+    public additionalImageLink?: string | null,
     public availability?: ProductAvailability,
     public price?: string,
     public category?: string | null,

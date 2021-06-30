@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.ProductAvailability;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -42,8 +42,8 @@ public class Product implements Serializable {
     @Column(name = "image_link", nullable = false)
     private String imageLink;
 
-    @Column(name = "aditional_image_link")
-    private String aditionalImageLink;
+    @Column(name = "additional_image_link")
+    private String additionalImageLink;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -145,17 +145,17 @@ public class Product implements Serializable {
         this.imageLink = imageLink;
     }
 
-    public String getAditionalImageLink() {
-        return this.aditionalImageLink;
+    public String getAdditionalImageLink() {
+        return this.additionalImageLink;
     }
 
-    public Product aditionalImageLink(String aditionalImageLink) {
-        this.aditionalImageLink = aditionalImageLink;
+    public void setAdditionalImageLink(String additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
+    }
+
+    public Product additionalImageLink(String additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
         return this;
-    }
-
-    public void setAditionalImageLink(String aditionalImageLink) {
-        this.aditionalImageLink = aditionalImageLink;
     }
 
     public ProductAvailability getAvailability() {
@@ -252,7 +252,7 @@ public class Product implements Serializable {
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", imageLink='" + getImageLink() + "'" +
-            ", aditionalImageLink='" + getAditionalImageLink() + "'" +
+            ", additionalImageLink='" + getAdditionalImageLink() + "'" +
             ", availability='" + getAvailability() + "'" +
             ", price='" + getPrice() + "'" +
             ", category='" + getCategory() + "'" +

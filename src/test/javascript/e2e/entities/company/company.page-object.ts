@@ -1,4 +1,4 @@
-import { element, by, ElementFinder } from 'protractor';
+import { by, element, ElementFinder } from 'protractor';
 
 export class CompanyComponentsPage {
   createButton = element(by.id('jh-create-entity'));
@@ -33,6 +33,7 @@ export class CompanyUpdatePage {
   nameInput = element(by.id('field_name'));
   cifInput = element(by.id('field_cif'));
   tokenInput = element(by.id('field_token'));
+  referenceInput = element(by.id('field_reference'));
   industrySelect = element(by.id('field_industry'));
   companySizeSelect = element(by.id('field_companySize'));
 
@@ -73,6 +74,14 @@ export class CompanyUpdatePage {
 
   async getTokenInput(): Promise<string> {
     return await this.tokenInput.getAttribute('value');
+  }
+
+  async setReferenceInput(reference: string): Promise<void> {
+    await this.referenceInput.sendKeys(reference);
+  }
+
+  async getReferenceInput(): Promise<string> {
+    return await this.referenceInput.getAttribute('value');
   }
 
   async setIndustrySelect(industry: string): Promise<void> {

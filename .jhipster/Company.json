@@ -4,16 +4,33 @@
     {
       "fieldName": "name",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "cif",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
+      "fieldValidateRules": [
+        "required",
+        "unique"
+      ]
     },
     {
       "fieldName": "token",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required",
+        "unique"
+      ]
+    },
+    {
+      "fieldName": "reference",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required",
+        "unique"
+      ]
     },
     {
       "fieldName": "industry",
@@ -31,6 +48,7 @@
       "relationshipType": "one-to-many",
       "otherEntityName": "product",
       "otherEntityRelationshipName": "company",
+      "relationshipValidateRules": "required",
       "relationshipName": "product",
       "otherEntityField": "sku"
     },
@@ -38,6 +56,7 @@
       "relationshipType": "one-to-many",
       "otherEntityName": "googleFeedProduct",
       "otherEntityRelationshipName": "company",
+      "relationshipValidateRules": "required",
       "relationshipName": "importedProduct",
       "otherEntityField": "sku"
     },
@@ -61,6 +80,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "subscriptionPlan",
       "otherEntityRelationshipName": "company",
+      "relationshipValidateRules": "required",
       "relationshipName": "subscriptionPlan",
       "otherEntityField": "name"
     }

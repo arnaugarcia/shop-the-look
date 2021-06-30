@@ -4,11 +4,7 @@ import com.klai.stl.domain.enumeration.ProductAvailability;
 import java.io.Serializable;
 import java.util.Objects;
 import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.DoubleFilter;
 import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.FloatFilter;
-import tech.jhipster.service.filter.IntegerFilter;
 import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
@@ -54,7 +50,7 @@ public class ProductCriteria implements Serializable, Criteria {
 
     private StringFilter imageLink;
 
-    private StringFilter aditionalImageLink;
+    private StringFilter additionalImageLink;
 
     private ProductAvailabilityFilter availability;
 
@@ -75,7 +71,7 @@ public class ProductCriteria implements Serializable, Criteria {
         this.description = other.description == null ? null : other.description.copy();
         this.link = other.link == null ? null : other.link.copy();
         this.imageLink = other.imageLink == null ? null : other.imageLink.copy();
-        this.aditionalImageLink = other.aditionalImageLink == null ? null : other.aditionalImageLink.copy();
+        this.additionalImageLink = other.additionalImageLink == null ? null : other.additionalImageLink.copy();
         this.availability = other.availability == null ? null : other.availability.copy();
         this.price = other.price == null ? null : other.price.copy();
         this.category = other.category == null ? null : other.category.copy();
@@ -178,19 +174,19 @@ public class ProductCriteria implements Serializable, Criteria {
         this.imageLink = imageLink;
     }
 
-    public StringFilter getAditionalImageLink() {
-        return aditionalImageLink;
+    public StringFilter getAdditionalImageLink() {
+        return additionalImageLink;
     }
 
-    public StringFilter aditionalImageLink() {
-        if (aditionalImageLink == null) {
-            aditionalImageLink = new StringFilter();
+    public void setAdditionalImageLink(StringFilter additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
+    }
+
+    public StringFilter additionalImageLink() {
+        if (additionalImageLink == null) {
+            additionalImageLink = new StringFilter();
         }
-        return aditionalImageLink;
-    }
-
-    public void setAditionalImageLink(StringFilter aditionalImageLink) {
-        this.aditionalImageLink = aditionalImageLink;
+        return additionalImageLink;
     }
 
     public ProductAvailabilityFilter getAvailability() {
@@ -284,7 +280,7 @@ public class ProductCriteria implements Serializable, Criteria {
             Objects.equals(description, that.description) &&
             Objects.equals(link, that.link) &&
             Objects.equals(imageLink, that.imageLink) &&
-            Objects.equals(aditionalImageLink, that.aditionalImageLink) &&
+            Objects.equals(additionalImageLink, that.additionalImageLink) &&
             Objects.equals(availability, that.availability) &&
             Objects.equals(price, that.price) &&
             Objects.equals(category, that.category) &&
@@ -302,7 +298,7 @@ public class ProductCriteria implements Serializable, Criteria {
             description,
             link,
             imageLink,
-            aditionalImageLink,
+            additionalImageLink,
             availability,
             price,
             category,
@@ -321,7 +317,7 @@ public class ProductCriteria implements Serializable, Criteria {
             (description != null ? "description=" + description + ", " : "") +
             (link != null ? "link=" + link + ", " : "") +
             (imageLink != null ? "imageLink=" + imageLink + ", " : "") +
-            (aditionalImageLink != null ? "aditionalImageLink=" + aditionalImageLink + ", " : "") +
+            (additionalImageLink != null ? "additionalImageLink=" + additionalImageLink + ", " : "") +
             (availability != null ? "availability=" + availability + ", " : "") +
             (price != null ? "price=" + price + ", " : "") +
             (category != null ? "category=" + category + ", " : "") +

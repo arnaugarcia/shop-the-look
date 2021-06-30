@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -33,8 +33,13 @@ public class Company implements Serializable {
     @Column(name = "cif", nullable = false, unique = true)
     private String cif;
 
-    @Column(name = "token")
+    @NotNull
+    @Column(name = "token", nullable = false, unique = true)
     private String token;
+
+    @NotNull
+    @Column(name = "reference", nullable = false, unique = true)
+    private String reference;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "industry")
@@ -69,7 +74,8 @@ public class Company implements Serializable {
     )
     private Set<User> users = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "companies" }, allowSetters = true)
     private SubscriptionPlan subscriptionPlan;
 
@@ -124,6 +130,19 @@ public class Company implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getReference() {
+        return this.reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Company reference(String reference) {
+        this.reference = reference;
+        return this;
     }
 
     public CompanyIndustry getIndustry() {
@@ -308,6 +327,7 @@ public class Company implements Serializable {
             ", name='" + getName() + "'" +
             ", cif='" + getCif() + "'" +
             ", token='" + getToken() + "'" +
+            ", reference='" + getReference() + "'" +
             ", industry='" + getIndustry() + "'" +
             ", companySize='" + getCompanySize() + "'" +
             "}";

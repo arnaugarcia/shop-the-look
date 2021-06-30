@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <!--
         Added the entity Company.
@@ -15,22 +13,25 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="cif" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__cif" />
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__cif"/>
             </column>
             <column name="token" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__token"/>
+            </column>
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__reference"/>
             </column>
             <column name="industry" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="company_size" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="subscription_plan_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -62,26 +63,17 @@
     -->
     <changeSet id="20210625181539-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/data/company.csv"
-                  separator=";"
-                  tableName="company">
+            file="config/liquibase/fake-data/company.csv"
+            separator=";"
+            tableName="company">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="cif" type="string"/>
             <column name="token" type="string"/>
+            <column name="reference" type="string"/>
             <column name="industry" type="string"/>
             <column name="company_size" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
-        </loadData>
-    </changeSet>
-
-    <changeSet id="20210625181539-2-data" author="jhipster" context="faker">
-        <loadData
-            file="config/liquibase/data/company-user.csv"
-            separator=";"
-            tableName="rel_company__user">
-            <column name="user_id" type="numeric"/>
-            <column name="company_id" type="numeric"/>
+            <column name="subscription_plan_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
