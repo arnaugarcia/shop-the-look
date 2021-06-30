@@ -290,10 +290,10 @@ class SpaceResourceIT {
     @Transactional
     void getAllSpacesByNameIsEqualToSomething() throws Exception {
         // Initialize the database
+        em.flush();
         spaceRepository.saveAndFlush(space);
         Company company = CompanyResourceIT.createEntity(em);
         em.persist(company);
-        em.flush();
         space.setCompany(company);
         spaceRepository.saveAndFlush(space);
         Long companyId = company.getId();

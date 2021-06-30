@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Company.
     -->
-    <changeSet id="20210625181539-2" author="jhipster">
+    <changeSet id="20210630191343-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="company_id"
                                  baseTableName="rel_company__user"

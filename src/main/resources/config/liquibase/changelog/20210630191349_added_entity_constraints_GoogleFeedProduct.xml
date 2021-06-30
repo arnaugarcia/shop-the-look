@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
     <!--
-        Added the constraints for entity Space.
+        Added the constraints for entity GoogleFeedProduct.
     -->
-    <changeSet id="20210625181540-2" author="jhipster">
+    <changeSet id="20210630191349-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="company_id"
-                                 baseTableName="space"
-                                 constraintName="fk_space__company_id"
+                                 baseTableName="google_feed_product"
+                                 constraintName="fk_google_feed_product__company_id"
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
     </changeSet>
