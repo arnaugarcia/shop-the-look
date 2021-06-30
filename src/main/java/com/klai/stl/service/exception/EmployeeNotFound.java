@@ -1,8 +1,8 @@
 package com.klai.stl.service.exception;
 
-public class CompanyUserNotFound extends RuntimeException {
+public class EmployeeNotFound extends RuntimeException {
 
-    public CompanyUserNotFound() {
+    public EmployeeNotFound() {
         super("No user was found for this company");
     }
 }

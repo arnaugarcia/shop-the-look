@@ -11,11 +11,9 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
-import com.klai.stl.repository.UserRepository;
+import com.klai.stl.service.dto.EmployeeRequestDTO;
 import com.klai.stl.service.dto.UserDTO;
-import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,12 +35,6 @@ class EmployeeResourceIT {
     private static final String ENTITY_API_URL = "/api/employee";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
-    private static Random random = new Random();
-    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
-
-    @Autowired
-    private UserRepository userRepository;
-
     @Autowired
     private CompanyRepository companyRepository;
 
@@ -53,6 +45,13 @@ class EmployeeResourceIT {
     private MockMvc restPhotoMockMvc;
 
     private Company company;
+
+    private static final String EMPLOYEE_EMAIL = "email@email.com";
+    private static final String EMPLOYEE_FIRSTNAME = "EMPLOYEE_FIRSTNAME";
+    private static final String EMPLOYEE_LASTNAME = "EMPLOYEE_LASTNAME";
+    private static final String EMPLOYEE_IMAGE = "EMPLOYEE_IMAGE";
+    private static final String EMPLOYEE_LANG_KEY = "ca";
+    private static final String EMPLOYEE_LOGIN = "employee";
 
     @BeforeEach
     public void initTest() {
@@ -69,9 +68,17 @@ class EmployeeResourceIT {
         em.persist(company);
         int databaseSizeBeforeCreate = companyRepository.findByCif(company.getCif()).get().getUsers().size();
         // Create the user
-        UserDTO userDTO = createAUserDTO();
+        final EmployeeRequestDTO requestDTO = EmployeeRequestDTO
+            .builder()
+            .email(EMPLOYEE_EMAIL)
+            .firstName(EMPLOYEE_FIRSTNAME)
+            .lastName(EMPLOYEE_LASTNAME)
+            .imageUrl(EMPLOYEE_IMAGE)
+            .langKey(EMPLOYEE_LANG_KEY)
+            .login(EMPLOYEE_LOGIN)
+            .build();
         restPhotoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(requestDTO)))
             .andExpect(status().isCreated());
 
         // Validate the User in the database

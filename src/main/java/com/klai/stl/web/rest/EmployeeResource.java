@@ -5,7 +5,7 @@ import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.dto.CompanyDTO;
-import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.service.dto.EmployeeRequestDTO;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -50,9 +50,9 @@ public class EmployeeResource {
      * mail with an activation link.
      * The user needs to be activated on creation.
      *
-     * @param userDTO the user to create.
+     * @param employeeRequestDTO the employee to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @throws URISyntaxException       if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
     @ApiResponses(
@@ -65,12 +65,13 @@ public class EmployeeResource {
     @ApiOperation(value = "Creates a new employee associated to the current logged manager")
     @PostMapping("/employee")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\")")
-    public ResponseEntity<CompanyDTO> createUserForManager(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
-        log.info("Creating a new employee with email {}", userDTO.getEmail());
-        if (userDTO.getId() != null) {
+    public ResponseEntity<CompanyDTO> createUserForManager(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO)
+        throws URISyntaxException {
+        log.info("Creating a new employee with email {}", employeeRequestDTO.getEmail());
+        if (employeeRequestDTO.getId() != null) {
             throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CompanyDTO result = employeeService.createEmployee(userDTO);
+        CompanyDTO result = employeeService.createEmployee(employeeRequestDTO);
         return ResponseEntity
             .created(new URI("/api/users"))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

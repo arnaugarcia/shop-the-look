@@ -6,8 +6,8 @@ import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.CompanyDTO;
-import com.klai.stl.service.dto.UserDTO;
-import com.klai.stl.service.exception.CompanyUserNotFound;
+import com.klai.stl.service.dto.EmployeeRequestDTO;
+import com.klai.stl.service.exception.EmployeeNotFound;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public CompanyDTO createEmployee(UserDTO userDTO) {
+    public CompanyDTO createEmployee(EmployeeRequestDTO userDTO) {
         final CompanyDTO currentUserCompany = findCurrentUserCompany();
         final AdminUserDTO user = AdminUserDTO
             .builder()
@@ -39,6 +39,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private CompanyDTO findCurrentUserCompany() {
         final User user = this.userService.getUserWithAuthorities().orElseThrow();
-        return companyService.findByEmployee(user.getLogin()).orElseThrow(CompanyUserNotFound::new);
+        return companyService.findByEmployee(user.getLogin()).orElseThrow(EmployeeNotFound::new);
     }
 }
