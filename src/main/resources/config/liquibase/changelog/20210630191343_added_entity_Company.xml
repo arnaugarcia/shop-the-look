@@ -7,34 +7,37 @@
     <!--
         Added the entity Company.
     -->
-    <changeSet id="20210625091936-1" author="jhipster">
+    <changeSet id="20210630191343-1" author="jhipster">
         <createTable tableName="company">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="cif" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__cif" />
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__cif"/>
             </column>
             <column name="token" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__token"/>
+            </column>
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_company__reference"/>
             </column>
             <column name="industry" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="company_size" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="subscription_plan_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="true"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
 
-    <changeSet id="20210625091936-1-relations" author="jhipster">
+    <changeSet id="20210630191343-1-relations" author="jhipster">
 
         <createTable tableName="rel_company__user">
             <column name="user_id" type="bigint">
@@ -58,23 +61,23 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20210625091936-1-data" author="jhipster" context="faker">
+    <changeSet id="20210630191343-1-data" author="jhipster">
         <loadData
-                  file="config/liquibase/fake-data/company.csv"
-                  separator=";"
-                  tableName="company">
+            file="config/liquibase/data/company.csv"
+            separator=";"
+            tableName="company">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="cif" type="string"/>
             <column name="token" type="string"/>
+            <column name="reference" type="string"/>
             <column name="industry" type="string"/>
             <column name="company_size" type="string"/>
-            <column name="subscription_plan_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
 
-    <changeSet id="20210625181539-2-data" author="jhipster" context="faker">
+    <changeSet id="20210630191343-2-data" author="jhipster">
         <loadData
             file="config/liquibase/data/company-user.csv"
             separator=";"
@@ -83,5 +86,4 @@
             <column name="company_id" type="numeric"/>
         </loadData>
     </changeSet>
-
 </databaseChangeLog>
