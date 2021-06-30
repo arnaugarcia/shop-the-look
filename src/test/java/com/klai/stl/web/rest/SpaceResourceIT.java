@@ -291,6 +291,12 @@ class SpaceResourceIT {
     void getAllSpacesByNameIsEqualToSomething() throws Exception {
         // Initialize the database
         spaceRepository.saveAndFlush(space);
+        Company company = CompanyResourceIT.createEntity(em);
+        em.persist(company);
+        em.flush();
+        space.setCompany(company);
+        spaceRepository.saveAndFlush(space);
+        Long companyId = company.getId();
 
         // Get all the spaceList where name equals to DEFAULT_NAME
         defaultSpaceShouldBeFound("name.equals=" + DEFAULT_NAME);
@@ -751,13 +757,8 @@ class SpaceResourceIT {
     @Transactional
     void getAllSpacesByCompanyIsEqualToSomething() throws Exception {
         // Initialize the database
-        spaceRepository.saveAndFlush(space);
-        Company company = CompanyResourceIT.createEntity(em);
-        em.persist(company);
-        em.flush();
-        space.setCompany(company);
-        spaceRepository.saveAndFlush(space);
-        Long companyId = company.getId();
+        final Space result = spaceRepository.saveAndFlush(spaceRepository.saveAndFlush(space));
+        Long companyId = result.getCompany().getId();
 
         // Get all the spaceList where company equals to companyId
         defaultSpaceShouldBeFound("companyId.equals=" + companyId);

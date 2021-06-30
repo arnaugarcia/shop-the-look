@@ -18,7 +18,7 @@ export interface ICompany {
   importedProducts?: IGoogleFeedProduct[];
   spaces?: ISpace[] | null;
   users?: IUser[];
-  subscriptionPlan?: ISubscriptionPlan;
+  subscriptionPlan?: ISubscriptionPlan | null;
 }
 
 export class Company implements ICompany {
@@ -34,7 +34,7 @@ export class Company implements ICompany {
     public importedProducts?: IGoogleFeedProduct[],
     public spaces?: ISpace[] | null,
     public users?: IUser[],
-    public subscriptionPlan?: ISubscriptionPlan
+    public subscriptionPlan?: ISubscriptionPlan | null
   ) {}
 }
 

@@ -141,7 +141,7 @@ relationship OneToMany {
 
     Photo{coordinate} to Coordinate{photo required},
 
-    SubscriptionPlan{company(cif) required} to Company{subscriptionPlan(name) required},
+    SubscriptionPlan{company(cif) required} to Company{subscriptionPlan(name)},
 
     Coordinate{product(sku) required} to Product{coordinate}
 }

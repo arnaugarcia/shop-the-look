@@ -7,10 +7,16 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.Company} entity.
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CompanyDTO implements Serializable {
 
     private Long id;

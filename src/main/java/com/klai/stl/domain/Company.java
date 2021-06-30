@@ -74,8 +74,7 @@ public class Company implements Serializable {
     )
     private Set<User> users = new HashSet<>();
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @ManyToOne
     @JsonIgnoreProperties(value = { "companies" }, allowSetters = true)
     private SubscriptionPlan subscriptionPlan;
 
@@ -136,13 +135,13 @@ public class Company implements Serializable {
         return this.reference;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public Company reference(String reference) {
         this.reference = reference;
         return this;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public CompanyIndustry getIndustry() {

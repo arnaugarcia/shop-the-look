@@ -178,15 +178,15 @@ public class ProductCriteria implements Serializable, Criteria {
         return additionalImageLink;
     }
 
-    public void setAdditionalImageLink(StringFilter additionalImageLink) {
-        this.additionalImageLink = additionalImageLink;
-    }
-
     public StringFilter additionalImageLink() {
         if (additionalImageLink == null) {
             additionalImageLink = new StringFilter();
         }
         return additionalImageLink;
+    }
+
+    public void setAdditionalImageLink(StringFilter additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
     }
 
     public ProductAvailabilityFilter getAvailability() {

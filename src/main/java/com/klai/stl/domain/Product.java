@@ -149,13 +149,13 @@ public class Product implements Serializable {
         return this.additionalImageLink;
     }
 
-    public void setAdditionalImageLink(String additionalImageLink) {
-        this.additionalImageLink = additionalImageLink;
-    }
-
     public Product additionalImageLink(String additionalImageLink) {
         this.additionalImageLink = additionalImageLink;
         return this;
+    }
+
+    public void setAdditionalImageLink(String additionalImageLink) {
+        this.additionalImageLink = additionalImageLink;
     }
 
     public ProductAvailability getAvailability() {

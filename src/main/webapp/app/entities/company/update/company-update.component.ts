@@ -31,7 +31,7 @@ export class CompanyUpdateComponent implements OnInit {
     industry: [],
     companySize: [],
     users: [null, Validators.required],
-    subscriptionPlan: [null, Validators.required],
+    subscriptionPlan: [],
   });
 
   constructor(
