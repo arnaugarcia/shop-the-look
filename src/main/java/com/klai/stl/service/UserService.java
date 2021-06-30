@@ -210,6 +210,8 @@ public class UserService {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
+        } else {
+            authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(user.getAuthorities()::add);
         }
         userRepository.save(user);
         this.clearUserCaches(user);

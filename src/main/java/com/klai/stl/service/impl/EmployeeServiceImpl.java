@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public CompanyDTO createEmployee(EmployeeRequestDTO userDTO) {
+    public User createEmployee(EmployeeRequestDTO userDTO) {
         final CompanyDTO currentUserCompany = findCurrentUserCompany();
         final AdminUserDTO user = AdminUserDTO
             .builder()
@@ -34,7 +34,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             .imageUrl(userDTO.getImageUrl())
             .build();
         final User employee = userService.createUser(user);
-        return companyService.addEmployee(employee, currentUserCompany);
+        companyService.addEmployee(employee, currentUserCompany);
+        return employee;
     }
 
     private CompanyDTO findCurrentUserCompany() {

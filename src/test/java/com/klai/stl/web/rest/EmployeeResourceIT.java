@@ -101,7 +101,7 @@ class EmployeeResourceIT {
         assertThat(result.getLastName()).isEqualTo(EMPLOYEE_LASTNAME);
         assertThat(result.getLangKey()).isEqualTo(EMPLOYEE_LANG_KEY);
         assertThat(result.getLogin()).isEqualTo(EMPLOYEE_LOGIN);
-        assertThat(result.isActivated()).isFalse();
+        assertThat(result.isActivated()).isTrue();
     }
 
     @Test
