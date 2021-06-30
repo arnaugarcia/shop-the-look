@@ -1,5 +1,8 @@
 package com.klai.stl.service.impl;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
@@ -38,7 +41,18 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDTO save(CompanyDTO companyDTO) {
         log.debug("Request to save Company : {}", companyDTO);
         Company company = companyMapper.toEntity(companyDTO);
+        if (isEmpty(companyDTO.getId())) {
+            company.setReference(generateReference());
+        }
         return saveAndTransform(company);
+    }
+
+    private String generateReference() {
+        String reference = randomAlphanumeric(5);
+        if (companyRepository.findByReference(reference).isEmpty()) {
+            return reference;
+        }
+        return generateReference();
     }
 
     private CompanyDTO saveAndTransform(Company company) {

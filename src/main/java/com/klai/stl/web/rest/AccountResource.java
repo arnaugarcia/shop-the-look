@@ -110,7 +110,7 @@ public class AccountResource {
             .cif(companyUserVM.getCif())
             .industry(companyUserVM.getIndustry())
             .companySize(companyUserVM.getSize())
-            .token(tokenService.generateRandomToken())
+            .token(tokenService.generateToken())
             .users(users)
             .build();
         companyService.save(companyDTO);
