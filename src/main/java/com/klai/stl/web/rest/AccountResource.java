@@ -13,11 +13,15 @@ import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
 import com.klai.stl.service.dto.UserDTO;
-import com.klai.stl.web.rest.errors.*;
+import com.klai.stl.web.rest.errors.EmailAlreadyUsedException;
+import com.klai.stl.web.rest.errors.InvalidPasswordException;
+import com.klai.stl.web.rest.errors.LoginAlreadyUsedException;
 import com.klai.stl.web.rest.vm.CompanyUserVM;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
@@ -122,7 +126,7 @@ public class AccountResource {
     @GetMapping("/activate")
     public void activateAccount(@RequestParam(value = "key") String key) {
         Optional<User> user = userService.activateRegistration(key);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
     }
@@ -170,7 +174,7 @@ public class AccountResource {
             throw new EmailAlreadyUsedException();
         }
         Optional<User> user = userRepository.findOneByLogin(userLogin);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("User could not be found");
         }
         userService.updateUser(
