@@ -1,5 +1,7 @@
 package com.klai.stl.service.dto;
 
+import static java.util.Optional.ofNullable;
+
 import com.klai.stl.domain.User;
 import lombok.*;
 
@@ -30,6 +32,8 @@ public class UserDTO {
 
     private String langKey;
 
+    private String companyReference;
+
     public UserDTO(User user) {
         this.id = user.getId();
         this.login = user.getLogin();
@@ -39,5 +43,6 @@ public class UserDTO {
         this.imageUrl = user.getImageUrl();
         this.activated = user.isActivated();
         this.langKey = user.getLangKey();
+        ofNullable(user.getCompany()).ifPresent(company -> this.companyReference = company.getReference());
     }
 }

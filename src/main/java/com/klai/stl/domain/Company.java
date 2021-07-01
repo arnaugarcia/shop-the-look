@@ -1,5 +1,7 @@
 package com.klai.stl.domain;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
@@ -9,14 +11,13 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Company.
  */
 @Entity
 @Table(name = "company")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = READ_WRITE)
 public class Company implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,28 +51,24 @@ public class Company implements Serializable {
     private CompanySize companySize;
 
     @OneToMany(mappedBy = "company")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Cache(usage = READ_WRITE)
     @JsonIgnoreProperties(value = { "company", "coordinate" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 
     @OneToMany(mappedBy = "company")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Cache(usage = READ_WRITE)
     @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
     private Set<GoogleFeedProduct> importedProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "company")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Cache(usage = READ_WRITE)
     @JsonIgnoreProperties(value = { "photos", "company" }, allowSetters = true)
     private Set<Space> spaces = new HashSet<>();
 
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @OneToMany(mappedBy = "company")
+    @Cache(usage = READ_WRITE)
     @NotNull
-    @JoinTable(
-        name = "rel_company__user",
-        joinColumns = @JoinColumn(name = "company_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @JsonIgnoreProperties(value = { "company" })
     private Set<User> users = new HashSet<>();
 
     @ManyToOne

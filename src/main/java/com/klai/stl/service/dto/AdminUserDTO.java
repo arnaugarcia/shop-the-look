@@ -1,5 +1,7 @@
 package com.klai.stl.service.dto;
 
+import static java.util.Optional.ofNullable;
+
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.User;
@@ -55,6 +57,8 @@ public class AdminUserDTO {
 
     private Set<String> authorities;
 
+    private String companyReference;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -73,6 +77,7 @@ public class AdminUserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        ofNullable(user.getCompany()).ifPresent(company -> this.companyReference = company.getReference());
     }
 
     public Long getId() {
@@ -177,6 +182,14 @@ public class AdminUserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getCompanyReference() {
+        return companyReference;
+    }
+
+    public void setCompanyReference(String companyReference) {
+        this.companyReference = companyReference;
     }
 
     // prettier-ignore

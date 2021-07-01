@@ -10,7 +10,9 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.exception.CompanyNotFound;
 import com.klai.stl.service.mapper.CompanyMapper;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private String generateReference() {
         String reference = randomAlphanumeric(5);
-        if (companyRepository.findByReference(reference).isEmpty()) {
+        if (findByReference(reference).isEmpty()) {
             return reference;
         }
         return generateReference();
@@ -89,8 +91,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDTO addEmployee(User employee, CompanyDTO companyDTO) {
-        final Company company = companyRepository.findByCif(companyDTO.getCif()).orElseThrow(CompanyNotFound::new);
+    public CompanyDTO addEmployee(User employee, String companyReference) {
+        final Company company = findByReference(companyReference).orElseThrow(CompanyNotFound::new);
         company.addUser(employee);
         return saveAndTransform(company);
     }
@@ -108,10 +110,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CompanyDTO> findByEmployee(String login) {
-        Set<String> collection = new HashSet<>();
-        collection.add(login);
-        return companyRepository.findByUser(collection).map(companyMapper::toDto);
+    public Optional<CompanyDTO> findOne(String reference) {
+        log.debug("Request to get Company : {}", reference);
+        return findByReference(reference).map(companyMapper::toDto);
+    }
+
+    private Optional<Company> findByReference(String reference) {
+        return companyRepository.findByReference(reference);
     }
 
     @Override

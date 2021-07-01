@@ -2,6 +2,7 @@ package com.klai.stl.domain;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.klai.stl.config.Constants;
@@ -87,6 +88,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+
+    @ManyToOne
+    @Cache(usage = READ_WRITE)
+    private Company company;
 
     @JsonIgnore
     @ManyToMany
