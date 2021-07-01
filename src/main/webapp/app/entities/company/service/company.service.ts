@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ICompany, getCompanyIdentifier } from '../company.model';
+import { getCompanyIdentifier, ICompany } from '../company.model';
 
 export type EntityResponseType = HttpResponse<ICompany>;
 export type EntityArrayResponseType = HttpResponse<ICompany[]>;
@@ -28,8 +28,8 @@ export class CompanyService {
     return this.http.patch<ICompany>(`${this.resourceUrl}/${getCompanyIdentifier(company) as number}`, company, { observe: 'response' });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<ICompany>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  find(reference: string): Observable<EntityResponseType> {
+    return this.http.get<ICompany>(`${this.resourceUrl}/${reference}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

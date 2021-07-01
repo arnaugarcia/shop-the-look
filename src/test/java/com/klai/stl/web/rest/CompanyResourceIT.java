@@ -333,7 +333,7 @@ class CompanyResourceIT {
 
         // Get the company
         restCompanyMockMvc
-            .perform(get(ENTITY_API_URL_ID, company.getId()))
+            .perform(get(ENTITY_API_URL_ID, company.getReference()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(company.getId().intValue()))

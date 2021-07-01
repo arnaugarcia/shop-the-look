@@ -145,15 +145,15 @@ public class CompanyResource {
     }
 
     /**
-     * {@code GET  /companies/:id} : get the "id" company.
+     * {@code GET  /companies/:reference} : get the "id" company.
      *
-     * @param id the id of the companyDTO to retrieve.
+     * @param reference the reference of the companyDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the companyDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/companies/{id}")
-    public ResponseEntity<CompanyDTO> getCompany(@PathVariable Long id) {
-        log.debug("REST request to get Company : {}", id);
-        Optional<CompanyDTO> companyDTO = companyService.findOne(id);
+    @GetMapping("/companies/{reference}")
+    public ResponseEntity<CompanyDTO> getCompany(@PathVariable String reference) {
+        log.debug("REST request to get Company : {}", reference);
+        Optional<CompanyDTO> companyDTO = companyService.findOne(reference);
         return ResponseUtil.wrapOrNotFound(companyDTO);
     }
 
