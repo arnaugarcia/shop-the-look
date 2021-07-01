@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Company}.
@@ -37,11 +38,11 @@ public interface CompanyService {
     /**
      * Adds a new employee to the company
      *
-     * @param companyDTO the company to which the user will be added
-     * @param user       the user to add
+     * @param companyReference the company to which the user will be added
+     * @param user             the user to add
      * @return the persisted Company
      */
-    CompanyDTO addEmployee(User user, CompanyDTO companyDTO);
+    CompanyDTO addEmployee(User user, String companyReference);
 
     /**
      * Get all the companies with eager load of many-to-many relationships.
@@ -59,13 +60,8 @@ public interface CompanyService {
      */
     Optional<CompanyDTO> findOne(Long id);
 
-    /**
-     * Find the company by its owner
-     *
-     * @param login the login of the user
-     * @return the entity.
-     */
-    Optional<CompanyDTO> findByEmployee(String login);
+    @Transactional(readOnly = true)
+    Optional<CompanyDTO> findOne(String reference);
 
     /**
      * Delete the "id" company.
