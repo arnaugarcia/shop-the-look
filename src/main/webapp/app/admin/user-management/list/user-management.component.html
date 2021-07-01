@@ -29,6 +29,7 @@
             <span stlTranslate="userManagement.langKey">Lang Key</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"><span stlTranslate="userManagement.profiles">Profiles</span></th>
+          <th scope="col"><span stlTranslate="userManagement.profiles">Company</span></th>
           <th scope="col" stlSortBy="createdDate">
             <span stlTranslate="userManagement.createdDate">Created Date</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -72,6 +73,9 @@
             <div *ngFor="let authority of user.authorities">
               <span class="badge badge-info">{{ authority }}</span>
             </div>
+          </td>
+          <td>
+            <a [routerLink]="['/company', user.companyReference, 'view']">{{ user.companyReference }}</a>
           </td>
           <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td>{{ user.lastModifiedBy }}</td>
