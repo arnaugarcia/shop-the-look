@@ -37,20 +37,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="20210630191343-1-relations" author="jhipster">
-
-        <createTable tableName="rel_company__user">
-            <column name="user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="company_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="company_id, user_id" tableName="rel_company__user"/>
-    </changeSet>
-
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
@@ -77,13 +63,4 @@
         </loadData>
     </changeSet>
 
-    <changeSet id="20210630191343-2-data" author="jhipster">
-        <loadData
-            file="config/liquibase/data/company-user.csv"
-            separator=";"
-            tableName="rel_company__user">
-            <column name="user_id" type="numeric"/>
-            <column name="company_id" type="numeric"/>
-        </loadData>
-    </changeSet>
 </databaseChangeLog>
