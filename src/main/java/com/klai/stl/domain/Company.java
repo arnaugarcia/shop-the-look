@@ -64,7 +64,7 @@ public class Company implements Serializable {
     @JsonIgnoreProperties(value = { "photos", "company" }, allowSetters = true)
     private Set<Space> spaces = new HashSet<>();
 
-    @ManyToMany
+    @OneToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @NotNull
     @JoinTable(
