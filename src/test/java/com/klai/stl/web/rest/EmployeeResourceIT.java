@@ -68,9 +68,10 @@ class EmployeeResourceIT {
     @WithMockUser(username = "create-employee", authorities = { MANAGER })
     void createEmployee() throws Exception {
         final User manager = UserResourceIT.createEntity("create-employee");
+        em.persist(company);
+        manager.setCompany(company);
         em.persist(manager);
         company.addUser(manager);
-        em.persist(company);
         int databaseSizeBeforeCreate = companyRepository.findByCif(company.getCif()).get().getUsers().size();
 
         // Create the user
