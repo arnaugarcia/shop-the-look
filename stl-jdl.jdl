@@ -45,7 +45,7 @@ enum CompanyType {
 }
 
 enum CompanySize {
-	0_1, 2_10, 11_50, 51_200, 201_500, 501_1000, 1000_5000, 5000-10000, MORE_10000
+	STARTUP, SMALL, MEDIUM, LARGE, INTERNATIONAL
 }
 
 enum CompanyIndustry {
