@@ -18,19 +18,38 @@ application {
 
 entity Company {
 	name String required,
-    cif String required unique,
+	commercialName String,
+    nif String required unique,
+    logo String,
+    vat String,
+    url String required,
+    phone String required,
+    email String required,
+    type CompanyType,
     token String required unique,
     reference String required unique,
     industry CompanyIndustry,
     companySize CompanySize
 }
 
+entity BillingAddress {
+    address String required,
+    city String required,
+    province String required,
+    zipCode String required,
+    country String required
+}
+
+enum CompanyType {
+    PRIVATE, SELF_EMPLOYEE
+}
+
 enum CompanySize {
-	STARTUP, SMALL, MEDIUM, LARGE, INTERNATIONAL
+	0_1, 2_10, 11_50, 51_200, 201_500, 501_1000, 1000_5000, 5000-10000, MORE_10000
 }
 
 enum CompanyIndustry {
-	AUTOMOTIVE, CLOTHES, IT
+	AUTOMOTIVE, PHARMACY_COSMETICS, TECHNOLOGICAL_ELECTRONIC, CLOTHES_ACCESSORIES, SPORTS, CHILDCARE, PETS, HOME_GARDEN, FOOD_DRINKS, TOYS_HOBBIES, LEISURE, CULTURE, OTHER
 }
 
 entity Space {
@@ -144,6 +163,10 @@ relationship OneToMany {
     SubscriptionPlan{company(cif) required} to Company{subscriptionPlan(name)},
 
     Coordinate{product(sku) required} to Product{coordinate}
+}
+
+relationship OneToOne {
+    Company to BillingAddress{company(reference)}
 }
 
 relationship ManyToMany {
