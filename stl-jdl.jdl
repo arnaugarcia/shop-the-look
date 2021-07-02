@@ -166,7 +166,7 @@ relationship OneToMany {
 }
 
 relationship OneToOne {
-    Company to BillingAddress{company(reference)}
+    Company to BillingAddress
 }
 
 relationship ManyToMany {
