@@ -107,16 +107,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CompanyDTO> findOne(Long id) {
+    public CompanyDTO findOne(Long id) {
         log.debug("Request to get Company : {}", id);
-        return companyRepository.findOneWithEagerRelationships(id).map(companyMapper::toDto);
+        return companyRepository.findOneWithEagerRelationships(id).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CompanyDTO> findOne(String reference) {
+    public CompanyDTO findOne(String reference) {
         log.debug("Request to get Company : {}", reference);
-        return findByReference(reference).map(companyMapper::toDto);
+        return findByReference(reference).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
     }
 
     private Optional<Company> findByReference(String reference) {

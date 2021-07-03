@@ -153,8 +153,8 @@ public class CompanyResource {
     @GetMapping("/companies/{reference}")
     public ResponseEntity<CompanyDTO> getCompany(@PathVariable String reference) {
         log.debug("REST request to get Company : {}", reference);
-        Optional<CompanyDTO> companyDTO = companyService.findOne(reference);
-        return ResponseUtil.wrapOrNotFound(companyDTO);
+        CompanyDTO companyDTO = companyService.findOne(reference);
+        return ResponseEntity.ok(companyDTO);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
@@ -68,7 +69,7 @@ public class EmployeeResource {
     )
     @ApiOperation(value = "Creates a new employee associated to the current logged manager")
     @PostMapping("/employees")
-    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\")")
+    @PreAuthorize("hasAnyAuthority(" + MANAGER + ") or hasAnyAuthority(" + ADMIN + ")")
     public ResponseEntity<User> createEmployee(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) throws URISyntaxException {
         log.info("Creating a new employee with email {}", employeeRequestDTO.getEmail());
         if (employeeRequestDTO.getId() != null) {
