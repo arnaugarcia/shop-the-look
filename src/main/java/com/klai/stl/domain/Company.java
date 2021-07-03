@@ -5,19 +5,21 @@ import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
+import com.klai.stl.domain.enumeration.CompanyType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Company.
  */
 @Entity
 @Table(name = "company")
-@Cache(usage = READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Company implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,9 +32,34 @@ public class Company implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "commercial_name")
+    private String commercialName;
+
     @NotNull
-    @Column(name = "cif", nullable = false, unique = true)
-    private String cif;
+    @Column(name = "nif", nullable = false, unique = true)
+    private String nif;
+
+    @Column(name = "logo")
+    private String logo;
+
+    @Column(name = "vat")
+    private String vat;
+
+    @NotNull
+    @Column(name = "url", nullable = false)
+    private String url;
+
+    @NotNull
+    @Column(name = "phone", nullable = false)
+    private String phone;
+
+    @NotNull
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private CompanyType type;
 
     @NotNull
     @Column(name = "token", nullable = false, unique = true)
@@ -50,18 +77,23 @@ public class Company implements Serializable {
     @Column(name = "company_size")
     private CompanySize companySize;
 
+    @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(unique = true)
+    private BillingAddress billingAddress;
+
     @OneToMany(mappedBy = "company")
-    @Cache(usage = READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "company", "coordinate" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 
     @OneToMany(mappedBy = "company")
-    @Cache(usage = READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
     private Set<GoogleFeedProduct> importedProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "company")
-    @Cache(usage = READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "photos", "company" }, allowSetters = true)
     private Set<Space> spaces = new HashSet<>();
 
@@ -102,17 +134,108 @@ public class Company implements Serializable {
         this.name = name;
     }
 
-    public String getCif() {
-        return this.cif;
+    public String getCommercialName() {
+        return this.commercialName;
     }
 
-    public Company cif(String cif) {
-        this.cif = cif;
+    public Company commercialName(String commercialName) {
+        this.commercialName = commercialName;
         return this;
     }
 
-    public void setCif(String cif) {
-        this.cif = cif;
+    public void setCommercialName(String commercialName) {
+        this.commercialName = commercialName;
+    }
+
+    public String getNif() {
+        return this.nif;
+    }
+
+    public Company nif(String nif) {
+        this.nif = nif;
+        return this;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
+
+    public String getLogo() {
+        return this.logo;
+    }
+
+    public Company logo(String logo) {
+        this.logo = logo;
+        return this;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getVat() {
+        return this.vat;
+    }
+
+    public Company vat(String vat) {
+        this.vat = vat;
+        return this;
+    }
+
+    public void setVat(String vat) {
+        this.vat = vat;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public Company url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public Company phone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public Company email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public CompanyType getType() {
+        return this.type;
+    }
+
+    public Company type(CompanyType type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(CompanyType type) {
+        this.type = type;
     }
 
     public String getToken() {
@@ -165,6 +288,19 @@ public class Company implements Serializable {
 
     public void setCompanySize(CompanySize companySize) {
         this.companySize = companySize;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return this.billingAddress;
+    }
+
+    public Company billingAddress(BillingAddress billingAddress) {
+        this.setBillingAddress(billingAddress);
+        return this;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
     }
 
     public Set<Product> getProducts() {
@@ -321,7 +457,14 @@ public class Company implements Serializable {
         return "Company{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cif='" + getCif() + "'" +
+            ", commercialName='" + getCommercialName() + "'" +
+            ", nif='" + getNif() + "'" +
+            ", logo='" + getLogo() + "'" +
+            ", vat='" + getVat() + "'" +
+            ", url='" + getUrl() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", type='" + getType() + "'" +
             ", token='" + getToken() + "'" +
             ", reference='" + getReference() + "'" +
             ", industry='" + getIndustry() + "'" +

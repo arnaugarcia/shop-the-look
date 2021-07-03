@@ -63,7 +63,7 @@
           <td>{{ product.category }}</td>
           <td>
             <div *ngIf="product.company">
-              <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.cif }}</a>
+              <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.nif }}</a>
             </div>
           </td>
           <td>

@@ -78,7 +78,7 @@
           <td stlTranslate="{{ 'shopTheLookApp.GoogleFeedAgeGroup.' + googleFeedProduct.ageGroup }}">{{ googleFeedProduct.ageGroup }}</td>
           <td>
             <div *ngIf="googleFeedProduct.company">
-              <a [routerLink]="['/company', googleFeedProduct.company?.id, 'view']">{{ googleFeedProduct.company?.cif }}</a>
+              <a [routerLink]="['/company', googleFeedProduct.company?.id, 'view']">{{ googleFeedProduct.company?.nif }}</a>
             </div>
           </td>
           <td class="text-right">

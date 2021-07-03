@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
         Added the entity Coordinate.
@@ -13,10 +15,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="x" type="double">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
             <column name="y" type="double">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
             <column name="photo_id" type="bigint">
                 <constraints nullable="false" />
@@ -37,9 +39,9 @@
     -->
     <changeSet id="20210630191350-1-data" author="jhipster" context="faker">
         <loadData
-            file="config/liquibase/fake-data/coordinate.csv"
-            separator=";"
-            tableName="coordinate">
+                  file="config/liquibase/fake-data/coordinate.csv"
+                  separator=";"
+                  tableName="coordinate">
             <column name="id" type="numeric"/>
             <column name="x" type="numeric"/>
             <column name="y" type="numeric"/>

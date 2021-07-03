@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -50,7 +50,10 @@ public class Space implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "products", "importedProducts", "spaces", "users", "subscriptionPlan" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "billingAddress", "products", "importedProducts", "spaces", "users", "subscriptionPlan" },
+        allowSetters = true
+    )
     private Company company;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

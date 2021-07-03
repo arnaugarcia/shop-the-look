@@ -4,38 +4,59 @@
     {
       "fieldName": "name",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cif",
+      "fieldName": "commercialName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nif",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required",
-        "unique"
-      ]
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "logo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "vat",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "url",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "CompanyType",
+      "fieldValues": "PRIVATE,SELF_EMPLOYEE"
     },
     {
       "fieldName": "token",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required",
-        "unique"
-      ]
+      "fieldValidateRules": ["required", "unique"]
     },
     {
       "fieldName": "reference",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required",
-        "unique"
-      ]
+      "fieldValidateRules": ["required", "unique"]
     },
     {
       "fieldName": "industry",
       "fieldType": "CompanyIndustry",
-      "fieldValues": "AUTOMOTIVE,CLOTHES,IT"
+      "fieldValues": "AUTOMOTIVE,PHARMACY_COSMETICS,TECHNOLOGICAL_ELECTRONIC,CLOTHES_ACCESSORIES,SPORTS,CHILDCARE,PETS,HOME_GARDEN,FOOD_DRINKS,TOYS_HOBBIES,LEISURE,CULTURE,OTHER"
     },
     {
       "fieldName": "companySize",
@@ -44,6 +65,13 @@
     }
   ],
   "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "billingAddress",
+      "otherEntityRelationshipName": "company",
+      "relationshipName": "billingAddress",
+      "ownerSide": true
+    },
     {
       "relationshipType": "one-to-many",
       "otherEntityName": "product",

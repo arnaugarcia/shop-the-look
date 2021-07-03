@@ -72,7 +72,7 @@ class EmployeeResourceIT {
         manager.setCompany(company);
         em.persist(manager);
         company.addUser(manager);
-        int databaseSizeBeforeCreate = companyRepository.findByCif(company.getCif()).get().getUsers().size();
+        int databaseSizeBeforeCreate = companyRepository.findByNif(company.getNif()).get().getUsers().size();
 
         // Create the user
         final EmployeeRequestDTO requestDTO = EmployeeRequestDTO
@@ -90,7 +90,7 @@ class EmployeeResourceIT {
             .andExpect(status().isCreated());
 
         // Validate the User in the database
-        Set<User> userList = companyRepository.findByCif(company.getCif()).get().getUsers();
+        Set<User> userList = companyRepository.findByNif(company.getNif()).get().getUsers();
         assertThat(userList).hasSize(databaseSizeBeforeCreate + 1);
 
         final Optional<User> oneByLogin = userRepository.findOneByLogin(EMPLOYEE_LOGIN);

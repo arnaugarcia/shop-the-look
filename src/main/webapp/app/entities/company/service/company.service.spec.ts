@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+import { CompanyType } from 'app/entities/enumerations/company-type.model';
 import { CompanyIndustry } from 'app/entities/enumerations/company-industry.model';
 import { CompanySize } from 'app/entities/enumerations/company-size.model';
-import { Company, ICompany } from '../company.model';
+import { ICompany, Company } from '../company.model';
 
 import { CompanyService } from './company.service';
 
@@ -25,7 +26,14 @@ describe('Service Tests', () => {
       elemDefault = {
         id: 0,
         name: 'AAAAAAA',
-        cif: 'AAAAAAA',
+        commercialName: 'AAAAAAA',
+        nif: 'AAAAAAA',
+        logo: 'AAAAAAA',
+        vat: 'AAAAAAA',
+        url: 'AAAAAAA',
+        phone: 'AAAAAAA',
+        email: 'AAAAAAA',
+        type: CompanyType.PRIVATE,
         token: 'AAAAAAA',
         reference: 'AAAAAAA',
         industry: CompanyIndustry.AUTOMOTIVE,
@@ -66,7 +74,14 @@ describe('Service Tests', () => {
           {
             id: 1,
             name: 'BBBBBB',
-            cif: 'BBBBBB',
+            commercialName: 'BBBBBB',
+            nif: 'BBBBBB',
+            logo: 'BBBBBB',
+            vat: 'BBBBBB',
+            url: 'BBBBBB',
+            phone: 'BBBBBB',
+            email: 'BBBBBB',
+            type: 'BBBBBB',
             token: 'BBBBBB',
             reference: 'BBBBBB',
             industry: 'BBBBBB',
@@ -87,8 +102,11 @@ describe('Service Tests', () => {
       it('should partial update a Company', () => {
         const patchObject = Object.assign(
           {
-            cif: 'BBBBBB',
-            industry: 'BBBBBB',
+            commercialName: 'BBBBBB',
+            vat: 'BBBBBB',
+            email: 'BBBBBB',
+            type: 'BBBBBB',
+            token: 'BBBBBB',
           },
           new Company()
         );
@@ -109,7 +127,14 @@ describe('Service Tests', () => {
           {
             id: 1,
             name: 'BBBBBB',
-            cif: 'BBBBBB',
+            commercialName: 'BBBBBB',
+            nif: 'BBBBBB',
+            logo: 'BBBBBB',
+            vat: 'BBBBBB',
+            url: 'BBBBBB',
+            phone: 'BBBBBB',
+            email: 'BBBBBB',
+            type: 'BBBBBB',
             token: 'BBBBBB',
             reference: 'BBBBBB',
             industry: 'BBBBBB',
@@ -165,7 +190,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Company to an array', () => {
-          const companyArray: ICompany[] = [{ id: 123 }, { id: 456 }, { id: 38564 }];
+          const companyArray: ICompany[] = [{ id: 123 }, { id: 456 }, { id: 49998 }];
           const companyCollection: ICompany[] = [{ id: 123 }];
           expectedResult = service.addCompanyToCollectionIfMissing(companyCollection, ...companyArray);
           expect(expectedResult).toHaveLength(3);

@@ -2,6 +2,7 @@ package com.klai.stl.service.dto;
 
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
+import com.klai.stl.domain.enumeration.CompanyType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,9 +15,9 @@ import lombok.NoArgsConstructor;
 /**
  * A DTO for the {@link com.klai.stl.domain.Company} entity.
  */
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompanyDTO implements Serializable {
 
     private Long id;
@@ -24,8 +25,25 @@ public class CompanyDTO implements Serializable {
     @NotNull
     private String name;
 
+    private String commercialName;
+
     @NotNull
-    private String cif;
+    private String nif;
+
+    private String logo;
+
+    private String vat;
+
+    @NotNull
+    private String url;
+
+    @NotNull
+    private String phone;
+
+    @NotNull
+    private String email;
+
+    private CompanyType type;
 
     @NotNull
     private String token;
@@ -36,6 +54,8 @@ public class CompanyDTO implements Serializable {
     private CompanyIndustry industry;
 
     private CompanySize companySize;
+
+    private BillingAddressDTO billingAddress;
 
     private Set<UserDTO> users = new HashSet<>();
 
@@ -57,12 +77,68 @@ public class CompanyDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCif() {
-        return cif;
+    public String getCommercialName() {
+        return commercialName;
     }
 
-    public void setCif(String cif) {
-        this.cif = cif;
+    public void setCommercialName(String commercialName) {
+        this.commercialName = commercialName;
+    }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getVat() {
+        return vat;
+    }
+
+    public void setVat(String vat) {
+        this.vat = vat;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public CompanyType getType() {
+        return type;
+    }
+
+    public void setType(CompanyType type) {
+        this.type = type;
     }
 
     public String getToken() {
@@ -95,6 +171,14 @@ public class CompanyDTO implements Serializable {
 
     public void setCompanySize(CompanySize companySize) {
         this.companySize = companySize;
+    }
+
+    public BillingAddressDTO getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddressDTO billingAddress) {
+        this.billingAddress = billingAddress;
     }
 
     public Set<UserDTO> getUsers() {
@@ -140,11 +224,19 @@ public class CompanyDTO implements Serializable {
         return "CompanyDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cif='" + getCif() + "'" +
+            ", commercialName='" + getCommercialName() + "'" +
+            ", nif='" + getNif() + "'" +
+            ", logo='" + getLogo() + "'" +
+            ", vat='" + getVat() + "'" +
+            ", url='" + getUrl() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", type='" + getType() + "'" +
             ", token='" + getToken() + "'" +
             ", reference='" + getReference() + "'" +
             ", industry='" + getIndustry() + "'" +
             ", companySize='" + getCompanySize() + "'" +
+            ", billingAddress=" + getBillingAddress() +
             ", users=" + getUsers() +
             ", subscriptionPlan=" + getSubscriptionPlan() +
             "}";

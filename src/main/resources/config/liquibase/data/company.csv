@@ -1,2 +1,2 @@
-id;name;cif      ;token               ;reference;industry;company_size;subscription_plan_id
-1 ;Klai;B42951921;jYIiS0kf48WLdZGf1G5i;AH4IP    ;IT      ;STARTUP     ;1
+id;name;commercial_name;nif;logo;vat;url;phone;email;type;token;reference;industry;company_size;subscription_plan_id
+1;Klai;Klai;B42951921;;VAT;https://weareklai.com;692464645;hello@weareklai.com;PRIVATE;jYIiS0kf48WLdZGf1G5i;AH4IP;TECHNOLOGICAL_ELECTRONIC;STARTUP;1

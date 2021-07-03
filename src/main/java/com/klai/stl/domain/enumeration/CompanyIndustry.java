@@ -5,6 +5,16 @@ package com.klai.stl.domain.enumeration;
  */
 public enum CompanyIndustry {
     AUTOMOTIVE,
-    CLOTHES,
-    IT,
+    PHARMACY_COSMETICS,
+    TECHNOLOGICAL_ELECTRONIC,
+    CLOTHES_ACCESSORIES,
+    SPORTS,
+    CHILDCARE,
+    PETS,
+    HOME_GARDEN,
+    FOOD_DRINKS,
+    TOYS_HOBBIES,
+    LEISURE,
+    CULTURE,
+    OTHER,
 }

@@ -3,8 +3,18 @@
     "CompanyIndustry": {
       "null": "",
       "AUTOMOTIVE": "AUTOMOTIVE",
-      "CLOTHES": "CLOTHES",
-      "IT": "IT"
+      "PHARMACY_COSMETICS": "PHARMACY_COSMETICS",
+      "TECHNOLOGICAL_ELECTRONIC": "TECHNOLOGICAL_ELECTRONIC",
+      "CLOTHES_ACCESSORIES": "CLOTHES_ACCESSORIES",
+      "SPORTS": "SPORTS",
+      "CHILDCARE": "CHILDCARE",
+      "PETS": "PETS",
+      "HOME_GARDEN": "HOME_GARDEN",
+      "FOOD_DRINKS": "FOOD_DRINKS",
+      "TOYS_HOBBIES": "TOYS_HOBBIES",
+      "LEISURE": "LEISURE",
+      "CULTURE": "CULTURE",
+      "OTHER": "OTHER"
     }
   }
 }

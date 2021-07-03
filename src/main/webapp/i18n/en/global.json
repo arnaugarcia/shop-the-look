@@ -15,6 +15,7 @@
         "product": "Product",
         "googleFeedProduct": "Google Feed Product",
         "coordinate": "Coordinate",
+        "billingAddress": "Billing Address",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

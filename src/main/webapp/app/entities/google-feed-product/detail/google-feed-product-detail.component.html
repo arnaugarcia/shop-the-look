@@ -85,7 +85,7 @@
         <dt><span stlTranslate="shopTheLookApp.googleFeedProduct.company">Company</span></dt>
         <dd>
           <div *ngIf="googleFeedProduct.company">
-            <a [routerLink]="['/company', googleFeedProduct.company?.id, 'view']">{{ googleFeedProduct.company?.cif }}</a>
+            <a [routerLink]="['/company', googleFeedProduct.company?.id, 'view']">{{ googleFeedProduct.company?.nif }}</a>
           </div>
         </dd>
       </dl>

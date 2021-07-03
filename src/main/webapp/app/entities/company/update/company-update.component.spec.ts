@@ -9,6 +9,8 @@ import { of, Subject } from 'rxjs';
 
 import { CompanyService } from '../service/company.service';
 import { ICompany, Company } from '../company.model';
+import { IBillingAddress } from 'app/entities/billing-address/billing-address.model';
+import { BillingAddressService } from 'app/entities/billing-address/service/billing-address.service';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
@@ -23,6 +25,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<CompanyUpdateComponent>;
     let activatedRoute: ActivatedRoute;
     let companyService: CompanyService;
+    let billingAddressService: BillingAddressService;
     let userService: UserService;
     let subscriptionPlanService: SubscriptionPlanService;
 
@@ -38,6 +41,7 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(CompanyUpdateComponent);
       activatedRoute = TestBed.inject(ActivatedRoute);
       companyService = TestBed.inject(CompanyService);
+      billingAddressService = TestBed.inject(BillingAddressService);
       userService = TestBed.inject(UserService);
       subscriptionPlanService = TestBed.inject(SubscriptionPlanService);
 
@@ -45,6 +49,24 @@ describe('Component Tests', () => {
     });
 
     describe('ngOnInit', () => {
+      it('Should call billingAddress query and add missing value', () => {
+        const company: ICompany = { id: 456 };
+        const billingAddress: IBillingAddress = { id: 8056 };
+        company.billingAddress = billingAddress;
+
+        const billingAddressCollection: IBillingAddress[] = [{ id: 59126 }];
+        jest.spyOn(billingAddressService, 'query').mockReturnValue(of(new HttpResponse({ body: billingAddressCollection })));
+        const expectedCollection: IBillingAddress[] = [billingAddress, ...billingAddressCollection];
+        jest.spyOn(billingAddressService, 'addBillingAddressToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+        activatedRoute.data = of({ company });
+        comp.ngOnInit();
+
+        expect(billingAddressService.query).toHaveBeenCalled();
+        expect(billingAddressService.addBillingAddressToCollectionIfMissing).toHaveBeenCalledWith(billingAddressCollection, billingAddress);
+        expect(comp.billingAddressesCollection).toEqual(expectedCollection);
+      });
+
       it('Should call User query and add missing value', () => {
         const company: ICompany = { id: 456 };
         const users: IUser[] = [{ id: 67844 }];
@@ -88,6 +110,8 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const company: ICompany = { id: 456 };
+        const billingAddress: IBillingAddress = { id: 12231 };
+        company.billingAddress = billingAddress;
         const users: IUser = { id: 40071 };
         company.users = [users];
         const subscriptionPlan: ISubscriptionPlan = { id: 85297 };
@@ -97,6 +121,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(company));
+        expect(comp.billingAddressesCollection).toContain(billingAddress);
         expect(comp.usersSharedCollection).toContain(users);
         expect(comp.subscriptionPlansSharedCollection).toContain(subscriptionPlan);
       });
@@ -167,6 +192,14 @@ describe('Component Tests', () => {
     });
 
     describe('Tracking relationships identifiers', () => {
+      describe('trackBillingAddressById', () => {
+        it('Should return tracked BillingAddress primary key', () => {
+          const entity = { id: 123 };
+          const trackResult = comp.trackBillingAddressById(0, entity);
+          expect(trackResult).toEqual(entity.id);
+        });
+      });
+
       describe('trackUserById', () => {
         it('Should return tracked User primary key', () => {
           const entity = { id: 123 };

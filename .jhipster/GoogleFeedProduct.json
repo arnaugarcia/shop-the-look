@@ -80,7 +80,7 @@
       "otherEntityRelationshipName": "importedProduct",
       "relationshipValidateRules": "required",
       "relationshipName": "company",
-      "otherEntityField": "cif"
+      "otherEntityField": "nif"
     }
   ],
   "entityTableName": "google_feed_product",

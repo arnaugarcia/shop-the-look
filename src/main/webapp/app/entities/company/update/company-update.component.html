@@ -24,28 +24,91 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" stlTranslate="shopTheLookApp.company.cif" for="field_cif">Cif</label>
-          <input type="text" class="form-control" name="cif" id="field_cif" data-cy="cif" formControlName="cif" />
-          <div *ngIf="editForm.get('cif')!.invalid && (editForm.get('cif')!.dirty || editForm.get('cif')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('cif')?.errors?.required" stlTranslate="entity.validation.required">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.commercialName" for="field_commercialName"
+            >Commercial Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="commercialName"
+            id="field_commercialName"
+            data-cy="commercialName"
+            formControlName="commercialName"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.nif" for="field_nif">Nif</label>
+          <input type="text" class="form-control" name="nif" id="field_nif" data-cy="nif" formControlName="nif" />
+          <div *ngIf="editForm.get('nif')!.invalid && (editForm.get('nif')!.dirty || editForm.get('nif')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('nif')?.errors?.required" stlTranslate="entity.validation.required">
               This field is required.
             </small>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.logo" for="field_logo">Logo</label>
+          <input type="text" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.vat" for="field_vat">Vat</label>
+          <input type="text" class="form-control" name="vat" id="field_vat" data-cy="vat" formControlName="vat" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.url" for="field_url">Url</label>
+          <input type="text" class="form-control" name="url" id="field_url" data-cy="url" formControlName="url" />
+          <div *ngIf="editForm.get('url')!.invalid && (editForm.get('url')!.dirty || editForm.get('url')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('url')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.phone" for="field_phone">Phone</label>
+          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
+          <div *ngIf="editForm.get('phone')!.invalid && (editForm.get('phone')!.dirty || editForm.get('phone')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('phone')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.email" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.type" for="field_type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'shopTheLookApp.CompanyType.null' | translate }}</option>
+            <option value="PRIVATE">{{ 'shopTheLookApp.CompanyType.PRIVATE' | translate }}</option>
+            <option value="SELF_EMPLOYEE">{{ 'shopTheLookApp.CompanyType.SELF_EMPLOYEE' | translate }}</option>
+          </select>
         </div>
 
         <div class="form-group">
           <label class="form-control-label" stlTranslate="shopTheLookApp.company.token" for="field_token">Token</label>
           <input type="text" class="form-control" name="token" id="field_token" data-cy="token" formControlName="token" />
           <div *ngIf="editForm.get('token')!.invalid && (editForm.get('token')!.dirty || editForm.get('token')!.touched)">
-            <small *ngIf="editForm.get('token')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+            <small class="form-text text-danger" *ngIf="editForm.get('token')?.errors?.required" stlTranslate="entity.validation.required">
               This field is required.
             </small>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_reference" stlTranslate="shopTheLookApp.company.reference">Reference</label>
-          <input class="form-control" data-cy="reference" formControlName="reference" id="field_reference" name="reference" type="text" />
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.reference" for="field_reference">Reference</label>
+          <input type="text" class="form-control" name="reference" id="field_reference" data-cy="reference" formControlName="reference" />
           <div *ngIf="editForm.get('reference')!.invalid && (editForm.get('reference')!.dirty || editForm.get('reference')!.touched)">
             <small
               class="form-text text-danger"
@@ -62,8 +125,18 @@
           <select class="form-control" name="industry" formControlName="industry" id="field_industry" data-cy="industry">
             <option [ngValue]="null">{{ 'shopTheLookApp.CompanyIndustry.null' | translate }}</option>
             <option value="AUTOMOTIVE">{{ 'shopTheLookApp.CompanyIndustry.AUTOMOTIVE' | translate }}</option>
-            <option value="CLOTHES">{{ 'shopTheLookApp.CompanyIndustry.CLOTHES' | translate }}</option>
-            <option value="IT">{{ 'shopTheLookApp.CompanyIndustry.IT' | translate }}</option>
+            <option value="PHARMACY_COSMETICS">{{ 'shopTheLookApp.CompanyIndustry.PHARMACY_COSMETICS' | translate }}</option>
+            <option value="TECHNOLOGICAL_ELECTRONIC">{{ 'shopTheLookApp.CompanyIndustry.TECHNOLOGICAL_ELECTRONIC' | translate }}</option>
+            <option value="CLOTHES_ACCESSORIES">{{ 'shopTheLookApp.CompanyIndustry.CLOTHES_ACCESSORIES' | translate }}</option>
+            <option value="SPORTS">{{ 'shopTheLookApp.CompanyIndustry.SPORTS' | translate }}</option>
+            <option value="CHILDCARE">{{ 'shopTheLookApp.CompanyIndustry.CHILDCARE' | translate }}</option>
+            <option value="PETS">{{ 'shopTheLookApp.CompanyIndustry.PETS' | translate }}</option>
+            <option value="HOME_GARDEN">{{ 'shopTheLookApp.CompanyIndustry.HOME_GARDEN' | translate }}</option>
+            <option value="FOOD_DRINKS">{{ 'shopTheLookApp.CompanyIndustry.FOOD_DRINKS' | translate }}</option>
+            <option value="TOYS_HOBBIES">{{ 'shopTheLookApp.CompanyIndustry.TOYS_HOBBIES' | translate }}</option>
+            <option value="LEISURE">{{ 'shopTheLookApp.CompanyIndustry.LEISURE' | translate }}</option>
+            <option value="CULTURE">{{ 'shopTheLookApp.CompanyIndustry.CULTURE' | translate }}</option>
+            <option value="OTHER">{{ 'shopTheLookApp.CompanyIndustry.OTHER' | translate }}</option>
           </select>
         </div>
 
@@ -76,6 +149,31 @@
             <option value="MEDIUM">{{ 'shopTheLookApp.CompanySize.MEDIUM' | translate }}</option>
             <option value="LARGE">{{ 'shopTheLookApp.CompanySize.LARGE' | translate }}</option>
             <option value="INTERNATIONAL">{{ 'shopTheLookApp.CompanySize.INTERNATIONAL' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" stlTranslate="shopTheLookApp.company.billingAddress" for="field_billingAddress"
+            >Billing Address</label
+          >
+          <select
+            class="form-control"
+            id="field_billingAddress"
+            data-cy="billingAddress"
+            name="billingAddress"
+            formControlName="billingAddress"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                billingAddressOption.id === editForm.get('billingAddress')!.value?.id
+                  ? editForm.get('billingAddress')!.value
+                  : billingAddressOption
+              "
+              *ngFor="let billingAddressOption of billingAddressesCollection; trackBy: trackBillingAddressById"
+            >
+              {{ billingAddressOption.id }}
+            </option>
           </select>
         </div>
 

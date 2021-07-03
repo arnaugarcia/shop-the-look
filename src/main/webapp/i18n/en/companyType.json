@@ -1,0 +1,9 @@
+{
+  "shopTheLookApp": {
+    "CompanyType": {
+      "null": "",
+      "PRIVATE": "PRIVATE",
+      "SELF_EMPLOYEE": "SELF_EMPLOYEE"
+    }
+  }
+}

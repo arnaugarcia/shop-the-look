@@ -72,7 +72,14 @@ class CompanyGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "name":"SAMPLE_TEXT"
-                , "cif":"SAMPLE_TEXT"
+                , "commercialName":"SAMPLE_TEXT"
+                , "nif":"SAMPLE_TEXT"
+                , "logo":"SAMPLE_TEXT"
+                , "vat":"SAMPLE_TEXT"
+                , "url":"SAMPLE_TEXT"
+                , "phone":"SAMPLE_TEXT"
+                , "email":"SAMPLE_TEXT"
+                , "type":"PRIVATE"
                 , "token":"SAMPLE_TEXT"
                 , "reference":"SAMPLE_TEXT"
                 , "industry":"AUTOMOTIVE"
