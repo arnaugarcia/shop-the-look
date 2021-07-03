@@ -16,7 +16,6 @@ import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.web.rest.errors.EmailAlreadyUsedException;
 import com.klai.stl.web.rest.errors.InvalidPasswordException;
 import com.klai.stl.web.rest.errors.LoginAlreadyUsedException;
-import com.klai.stl.web.rest.vm.CompanyUserVM;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.util.HashSet;
@@ -72,32 +71,14 @@ public class AccountResource {
     /**
      * {@code POST  /register} : register the user.
      *
-     * @param managedUserVM the managed user View Model.
+     * @param companyUserVM the managed company user View Model.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
     @PostMapping("/register")
     @ResponseStatus(CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
-        if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
-            throw new InvalidPasswordException();
-        }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
-    }
-
-    /**
-     * {@code POST  /register} : register the user.
-     *
-     * @param companyUserVM the managed company user View Model.
-     * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
-     * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
-     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
-     */
-    @PostMapping("/register/company")
-    @ResponseStatus(CREATED)
-    public void registerCompanyAccount(@Valid @RequestBody CompanyUserVM companyUserVM) {
+    public void registerCompany(@Valid @RequestBody ManagedUserVM companyUserVM) {
         if (isPasswordLengthInvalid(companyUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
@@ -107,7 +88,7 @@ public class AccountResource {
         CompanyDTO companyDTO = CompanyDTO
             .builder()
             .name(companyUserVM.getName())
-            .nif(companyUserVM.getCif())
+            .nif(companyUserVM.getNif())
             .url(companyUserVM.getUrl())
             .vat(companyUserVM.getVat())
             .commercialName(companyUserVM.getCommercialName())

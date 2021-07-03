@@ -28,7 +28,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Getter
 @Setter
-@ToString
 @Table(name = "stl_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
@@ -127,5 +126,50 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public int hashCode() {
         // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return (
+            "User{" +
+            "id=" +
+            id +
+            ", login='" +
+            login +
+            '\'' +
+            ", password='" +
+            password +
+            '\'' +
+            ", firstName='" +
+            firstName +
+            '\'' +
+            ", lastName='" +
+            lastName +
+            '\'' +
+            ", email='" +
+            email +
+            '\'' +
+            ", activated=" +
+            activated +
+            ", langKey='" +
+            langKey +
+            '\'' +
+            ", imageUrl='" +
+            imageUrl +
+            '\'' +
+            ", activationKey='" +
+            activationKey +
+            '\'' +
+            ", resetKey='" +
+            resetKey +
+            '\'' +
+            ", resetDate=" +
+            resetDate +
+            ", company=" +
+            company +
+            ", authorities=" +
+            authorities +
+            '}'
+        );
     }
 }

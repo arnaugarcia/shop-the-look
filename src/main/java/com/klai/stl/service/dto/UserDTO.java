@@ -1,8 +1,16 @@
 package com.klai.stl.service.dto;
 
-import static java.util.Optional.ofNullable;
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
+import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static java.util.stream.Collectors.toSet;
+import static lombok.AccessLevel.NONE;
 
+import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.User;
+import com.klai.stl.security.AuthoritiesConstants;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import lombok.*;
 
 /**
@@ -18,12 +26,14 @@ public class UserDTO {
 
     private Long id;
 
+    @NotNull
     private String login;
 
     private String firstName;
 
     private String lastName;
 
+    @NotNull
     private String email;
 
     private String imageUrl;
@@ -31,8 +41,6 @@ public class UserDTO {
     private boolean activated = false;
 
     private String langKey;
-
-    private String companyReference;
 
     public UserDTO(User user) {
         this.id = user.getId();
@@ -43,6 +51,5 @@ public class UserDTO {
         this.imageUrl = user.getImageUrl();
         this.activated = user.isActivated();
         this.langKey = user.getLangKey();
-        ofNullable(user.getCompany()).ifPresent(company -> this.companyReference = company.getReference());
     }
 }

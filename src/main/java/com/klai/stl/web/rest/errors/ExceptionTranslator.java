@@ -130,6 +130,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleNifAlreadyUsedException(
+        com.klai.stl.service.exception.NIFAlreadyRegistered ex,
+        NativeWebRequest request
+    ) {
+        NIFAlreadyUsedException problem = new NIFAlreadyUsedException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
         com.klai.stl.service.UsernameAlreadyUsedException ex,
         NativeWebRequest request
