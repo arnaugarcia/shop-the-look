@@ -19,9 +19,9 @@ public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     @Mapping(target = "removeUser", ignore = true)
     Company toEntity(CompanyDTO companyDTO);
 
-    @Named("cif")
+    @Named("nif")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "cif", source = "cif")
+    @Mapping(target = "nif", source = "nif")
     CompanyDTO toDtoCif(Company company);
 }

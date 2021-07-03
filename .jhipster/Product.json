@@ -53,7 +53,7 @@
       "otherEntityRelationshipName": "product",
       "relationshipValidateRules": "required",
       "relationshipName": "company",
-      "otherEntityField": "cif"
+      "otherEntityField": "nif"
     },
     {
       "relationshipType": "many-to-one",

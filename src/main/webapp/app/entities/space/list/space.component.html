@@ -56,7 +56,7 @@
           <td>{{ space.visible }}</td>
           <td>
             <div *ngIf="space.company">
-              <a [routerLink]="['/company', space.company?.id, 'view']">{{ space.company?.cif }}</a>
+              <a [routerLink]="['/company', space.company?.id, 'view']">{{ space.company?.nif }}</a>
             </div>
           </td>
           <td class="text-right">

@@ -18,9 +18,37 @@
         <dd>
           <span>{{ company.name }}</span>
         </dd>
-        <dt><span stlTranslate="shopTheLookApp.company.cif">Cif</span></dt>
+        <dt><span stlTranslate="shopTheLookApp.company.commercialName">Commercial Name</span></dt>
         <dd>
-          <span>{{ company.cif }}</span>
+          <span>{{ company.commercialName }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.nif">Nif</span></dt>
+        <dd>
+          <span>{{ company.nif }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.logo">Logo</span></dt>
+        <dd>
+          <span>{{ company.logo }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.vat">Vat</span></dt>
+        <dd>
+          <span>{{ company.vat }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.url">Url</span></dt>
+        <dd>
+          <span>{{ company.url }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.phone">Phone</span></dt>
+        <dd>
+          <span>{{ company.phone }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.email">Email</span></dt>
+        <dd>
+          <span>{{ company.email }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.type">Type</span></dt>
+        <dd>
+          <span stlTranslate="{{ 'shopTheLookApp.CompanyType.' + company.type }}">{{ company.type }}</span>
         </dd>
         <dt><span stlTranslate="shopTheLookApp.company.token">Token</span></dt>
         <dd>
@@ -37,6 +65,12 @@
         <dt><span stlTranslate="shopTheLookApp.company.companySize">Company Size</span></dt>
         <dd>
           <span stlTranslate="{{ 'shopTheLookApp.CompanySize.' + company.companySize }}">{{ company.companySize }}</span>
+        </dd>
+        <dt><span stlTranslate="shopTheLookApp.company.billingAddress">Billing Address</span></dt>
+        <dd>
+          <div *ngIf="company.billingAddress">
+            <a [routerLink]="['/billing-address', company.billingAddress?.id, 'view']">{{ company.billingAddress?.id }}</a>
+          </div>
         </dd>
         <dt><span stlTranslate="shopTheLookApp.company.user">User</span></dt>
         <dd>

@@ -59,7 +59,10 @@ public class Product implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "products", "importedProducts", "spaces", "users", "subscriptionPlan" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "billingAddress", "products", "importedProducts", "spaces", "users", "subscriptionPlan" },
+        allowSetters = true
+    )
     private Company company;
 
     @ManyToOne

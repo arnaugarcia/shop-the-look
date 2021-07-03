@@ -34,11 +34,19 @@
         <tr>
           <th scope="col"><span stlTranslate="global.field.id">ID</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.name">Name</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.company.cif">Cif</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.commercialName">Commercial Name</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.nif">Nif</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.logo">Logo</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.vat">Vat</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.url">Url</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.phone">Phone</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.email">Email</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.type">Type</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.token">Token</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.reference">Reference</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.industry">Industry</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.companySize">Company Size</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.billingAddress">Billing Address</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.user">User</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.subscriptionPlan">Subscription Plan</span></th>
           <th scope="col"></th>
@@ -50,11 +58,23 @@
             <a [routerLink]="['/company', company.id, 'view']">{{ company.id }}</a>
           </td>
           <td>{{ company.name }}</td>
-          <td>{{ company.cif }}</td>
+          <td>{{ company.commercialName }}</td>
+          <td>{{ company.nif }}</td>
+          <td>{{ company.logo }}</td>
+          <td>{{ company.vat }}</td>
+          <td>{{ company.url }}</td>
+          <td>{{ company.phone }}</td>
+          <td>{{ company.email }}</td>
+          <td stlTranslate="{{ 'shopTheLookApp.CompanyType.' + company.type }}">{{ company.type }}</td>
           <td>{{ company.token }}</td>
           <td>{{ company.reference }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.CompanyIndustry.' + company.industry }}">{{ company.industry }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.CompanySize.' + company.companySize }}">{{ company.companySize }}</td>
+          <td>
+            <div *ngIf="company.billingAddress">
+              <a [routerLink]="['/billing-address', company.billingAddress?.id, 'view']">{{ company.billingAddress?.id }}</a>
+            </div>
+          </td>
           <td>
             <span *ngFor="let user of company.users; let last = last"> {{ user.login }}{{ last ? '' : ', ' }} </span>
           </td>
@@ -67,7 +87,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/company', company.reference, 'view']"
+                [routerLink]="['/company', company.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >

@@ -7,7 +7,7 @@ import com.klai.stl.domain.enumeration.GoogleFeedProductCondition;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -83,7 +83,10 @@ public class GoogleFeedProduct implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "products", "importedProducts", "spaces", "users", "subscriptionPlan" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "billingAddress", "products", "importedProducts", "spaces", "users", "subscriptionPlan" },
+        allowSetters = true
+    )
     private Company company;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

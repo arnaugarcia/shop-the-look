@@ -7,9 +7,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
-import com.klai.stl.domain.*;
+import com.klai.stl.domain.Company;
+import com.klai.stl.domain.GoogleFeedProduct;
+import com.klai.stl.domain.Product;
+import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
+import com.klai.stl.domain.enumeration.CompanyType;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
@@ -27,6 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,8 +49,29 @@ class CompanyResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CIF = "AAAAAAAAAA";
-    private static final String UPDATED_CIF = "BBBBBBBBBB";
+    private static final String DEFAULT_COMMERCIAL_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_COMMERCIAL_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NIF = "AAAAAAAAAA";
+    private static final String UPDATED_NIF = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOGO = "AAAAAAAAAA";
+    private static final String UPDATED_LOGO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_VAT = "AAAAAAAAAA";
+    private static final String UPDATED_VAT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_URL = "AAAAAAAAAA";
+    private static final String UPDATED_URL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PHONE = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final CompanyType DEFAULT_TYPE = CompanyType.PRIVATE;
+    private static final CompanyType UPDATED_TYPE = CompanyType.SELF_EMPLOYEE;
 
     private static final String DEFAULT_TOKEN = "AAAAAAAAAA";
     private static final String UPDATED_TOKEN = "BBBBBBBBBB";
@@ -54,7 +80,7 @@ class CompanyResourceIT {
     private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
 
     private static final CompanyIndustry DEFAULT_INDUSTRY = CompanyIndustry.AUTOMOTIVE;
-    private static final CompanyIndustry UPDATED_INDUSTRY = CompanyIndustry.CLOTHES;
+    private static final CompanyIndustry UPDATED_INDUSTRY = CompanyIndustry.PHARMACY_COSMETICS;
 
     private static final CompanySize DEFAULT_COMPANY_SIZE = CompanySize.STARTUP;
     private static final CompanySize UPDATED_COMPANY_SIZE = CompanySize.SMALL;
@@ -94,11 +120,38 @@ class CompanyResourceIT {
     public static Company createEntity(EntityManager em) {
         Company company = new Company()
             .name(DEFAULT_NAME)
-            .cif(DEFAULT_CIF)
-            .reference(DEFAULT_REFERENCE)
+            .commercialName(DEFAULT_COMMERCIAL_NAME)
+            .nif(DEFAULT_NIF)
+            .logo(DEFAULT_LOGO)
+            .vat(DEFAULT_VAT)
+            .url(DEFAULT_URL)
+            .phone(DEFAULT_PHONE)
+            .email(DEFAULT_EMAIL)
+            .type(DEFAULT_TYPE)
             .token(DEFAULT_TOKEN)
+            .reference(DEFAULT_REFERENCE)
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
+        // Add required entity
+        Product product;
+        if (TestUtil.findAll(em, Product.class).isEmpty()) {
+            product = ProductResourceIT.createEntity(em);
+            em.persist(product);
+            em.flush();
+        } else {
+            product = TestUtil.findAll(em, Product.class).get(0);
+        }
+        company.getProducts().add(product);
+        // Add required entity
+        GoogleFeedProduct googleFeedProduct;
+        if (TestUtil.findAll(em, GoogleFeedProduct.class).isEmpty()) {
+            googleFeedProduct = GoogleFeedProductResourceIT.createEntity(em);
+            em.persist(googleFeedProduct);
+            em.flush();
+        } else {
+            googleFeedProduct = TestUtil.findAll(em, GoogleFeedProduct.class).get(0);
+        }
+        company.getImportedProducts().add(googleFeedProduct);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -110,7 +163,11 @@ class CompanyResourceIT {
     public static Company createBasicEntity() {
         return new Company()
             .name(DEFAULT_NAME)
-            .cif(DEFAULT_CIF)
+            .nif(DEFAULT_NIF)
+            .commercialName(DEFAULT_COMMERCIAL_NAME)
+            .email(DEFAULT_EMAIL)
+            .logo(DEFAULT_LOGO)
+            .phone(DEFAULT_PHONE)
             .reference(DEFAULT_REFERENCE)
             .token(DEFAULT_TOKEN)
             .industry(DEFAULT_INDUSTRY)
@@ -119,14 +176,21 @@ class CompanyResourceIT {
 
     /**
      * Create an updated entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Company createUpdatedEntity(EntityManager em) {
         Company company = new Company()
             .name(UPDATED_NAME)
-            .cif(UPDATED_CIF)
+            .commercialName(UPDATED_COMMERCIAL_NAME)
+            .nif(UPDATED_NIF)
+            .logo(UPDATED_LOGO)
+            .vat(UPDATED_VAT)
+            .url(UPDATED_URL)
+            .phone(UPDATED_PHONE)
+            .email(UPDATED_EMAIL)
+            .type(UPDATED_TYPE)
             .token(UPDATED_TOKEN)
             .reference(UPDATED_REFERENCE)
             .industry(UPDATED_INDUSTRY)
@@ -156,16 +220,6 @@ class CompanyResourceIT {
         em.persist(user);
         em.flush();
         company.getUsers().add(user);
-        // Add required entity
-        SubscriptionPlan subscriptionPlan;
-        if (TestUtil.findAll(em, SubscriptionPlan.class).isEmpty()) {
-            subscriptionPlan = SubscriptionPlanResourceIT.createUpdatedEntity(em);
-            em.persist(subscriptionPlan);
-            em.flush();
-        } else {
-            subscriptionPlan = TestUtil.findAll(em, SubscriptionPlan.class).get(0);
-        }
-        company.setSubscriptionPlan(subscriptionPlan);
         return company;
     }
 
@@ -189,9 +243,16 @@ class CompanyResourceIT {
         assertThat(companyList).hasSize(databaseSizeBeforeCreate + 1);
         Company testCompany = companyList.get(companyList.size() - 1);
         assertThat(testCompany.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testCompany.getCif()).isEqualTo(DEFAULT_CIF);
+        assertThat(testCompany.getCommercialName()).isEqualTo(DEFAULT_COMMERCIAL_NAME);
+        assertThat(testCompany.getNif()).isEqualTo(DEFAULT_NIF);
+        assertThat(testCompany.getLogo()).isEqualTo(DEFAULT_LOGO);
+        assertThat(testCompany.getVat()).isEqualTo(DEFAULT_VAT);
+        assertThat(testCompany.getUrl()).isEqualTo(DEFAULT_URL);
+        assertThat(testCompany.getPhone()).isEqualTo(DEFAULT_PHONE);
+        assertThat(testCompany.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testCompany.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testCompany.getToken()).isEqualTo(DEFAULT_TOKEN);
-        assertThat(testCompany.getReference()).isNotBlank();
+        assertThat(testCompany.getReference()).isEqualTo(DEFAULT_REFERENCE);
         assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
     }
@@ -235,10 +296,64 @@ class CompanyResourceIT {
 
     @Test
     @Transactional
-    void checkCifIsRequired() throws Exception {
+    void checkNifIsRequired() throws Exception {
         int databaseSizeBeforeTest = companyRepository.findAll().size();
         // set the field null
-        company.setCif(null);
+        company.setNif(null);
+
+        // Create the Company, which fails.
+        CompanyDTO companyDTO = companyMapper.toDto(company);
+
+        restCompanyMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Company> companyList = companyRepository.findAll();
+        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkUrlIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyRepository.findAll().size();
+        // set the field null
+        company.setUrl(null);
+
+        // Create the Company, which fails.
+        CompanyDTO companyDTO = companyMapper.toDto(company);
+
+        restCompanyMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Company> companyList = companyRepository.findAll();
+        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkPhoneIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyRepository.findAll().size();
+        // set the field null
+        company.setPhone(null);
+
+        // Create the Company, which fails.
+        CompanyDTO companyDTO = companyMapper.toDto(company);
+
+        restCompanyMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Company> companyList = companyRepository.findAll();
+        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkEmailIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyRepository.findAll().size();
+        // set the field null
+        company.setEmail(null);
 
         // Create the Company, which fails.
         CompanyDTO companyDTO = companyMapper.toDto(company);
@@ -300,7 +415,14 @@ class CompanyResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cif").value(hasItem(DEFAULT_CIF)))
+            .andExpect(jsonPath("$.[*].commercialName").value(hasItem(DEFAULT_COMMERCIAL_NAME)))
+            .andExpect(jsonPath("$.[*].nif").value(hasItem(DEFAULT_NIF)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(DEFAULT_LOGO)))
+            .andExpect(jsonPath("$.[*].vat").value(hasItem(DEFAULT_VAT)))
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].token").value(hasItem(DEFAULT_TOKEN)))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].industry").value(hasItem(DEFAULT_INDUSTRY.toString())))
@@ -333,12 +455,19 @@ class CompanyResourceIT {
 
         // Get the company
         restCompanyMockMvc
-            .perform(get(ENTITY_API_URL_ID, company.getReference()))
+            .perform(get(ENTITY_API_URL_ID, company.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(company.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cif").value(DEFAULT_CIF))
+            .andExpect(jsonPath("$.commercialName").value(DEFAULT_COMMERCIAL_NAME))
+            .andExpect(jsonPath("$.nif").value(DEFAULT_NIF))
+            .andExpect(jsonPath("$.logo").value(DEFAULT_LOGO))
+            .andExpect(jsonPath("$.vat").value(DEFAULT_VAT))
+            .andExpect(jsonPath("$.url").value(DEFAULT_URL))
+            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.token").value(DEFAULT_TOKEN))
             .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.industry").value(DEFAULT_INDUSTRY.toString()))
@@ -366,7 +495,14 @@ class CompanyResourceIT {
         em.detach(updatedCompany);
         updatedCompany
             .name(UPDATED_NAME)
-            .cif(UPDATED_CIF)
+            .commercialName(UPDATED_COMMERCIAL_NAME)
+            .nif(UPDATED_NIF)
+            .logo(UPDATED_LOGO)
+            .vat(UPDATED_VAT)
+            .url(UPDATED_URL)
+            .phone(UPDATED_PHONE)
+            .email(UPDATED_EMAIL)
+            .type(UPDATED_TYPE)
             .token(UPDATED_TOKEN)
             .reference(UPDATED_REFERENCE)
             .industry(UPDATED_INDUSTRY)
@@ -386,7 +522,14 @@ class CompanyResourceIT {
         assertThat(companyList).hasSize(databaseSizeBeforeUpdate);
         Company testCompany = companyList.get(companyList.size() - 1);
         assertThat(testCompany.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCompany.getCif()).isEqualTo(UPDATED_CIF);
+        assertThat(testCompany.getCommercialName()).isEqualTo(UPDATED_COMMERCIAL_NAME);
+        assertThat(testCompany.getNif()).isEqualTo(UPDATED_NIF);
+        assertThat(testCompany.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testCompany.getVat()).isEqualTo(UPDATED_VAT);
+        assertThat(testCompany.getUrl()).isEqualTo(UPDATED_URL);
+        assertThat(testCompany.getPhone()).isEqualTo(UPDATED_PHONE);
+        assertThat(testCompany.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testCompany.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testCompany.getToken()).isEqualTo(UPDATED_TOKEN);
         assertThat(testCompany.getReference()).isEqualTo(UPDATED_REFERENCE);
         assertThat(testCompany.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
@@ -470,7 +613,14 @@ class CompanyResourceIT {
         Company partialUpdatedCompany = new Company();
         partialUpdatedCompany.setId(company.getId());
 
-        partialUpdatedCompany.cif(UPDATED_CIF).token(UPDATED_TOKEN).industry(UPDATED_INDUSTRY);
+        partialUpdatedCompany
+            .commercialName(UPDATED_COMMERCIAL_NAME)
+            .nif(UPDATED_NIF)
+            .vat(UPDATED_VAT)
+            .phone(UPDATED_PHONE)
+            .token(UPDATED_TOKEN)
+            .reference(UPDATED_REFERENCE)
+            .companySize(UPDATED_COMPANY_SIZE);
 
         restCompanyMockMvc
             .perform(
@@ -485,11 +635,18 @@ class CompanyResourceIT {
         assertThat(companyList).hasSize(databaseSizeBeforeUpdate);
         Company testCompany = companyList.get(companyList.size() - 1);
         assertThat(testCompany.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testCompany.getCif()).isEqualTo(UPDATED_CIF);
+        assertThat(testCompany.getCommercialName()).isEqualTo(UPDATED_COMMERCIAL_NAME);
+        assertThat(testCompany.getNif()).isEqualTo(UPDATED_NIF);
+        assertThat(testCompany.getLogo()).isEqualTo(DEFAULT_LOGO);
+        assertThat(testCompany.getVat()).isEqualTo(UPDATED_VAT);
+        assertThat(testCompany.getUrl()).isEqualTo(DEFAULT_URL);
+        assertThat(testCompany.getPhone()).isEqualTo(UPDATED_PHONE);
+        assertThat(testCompany.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testCompany.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testCompany.getToken()).isEqualTo(UPDATED_TOKEN);
-        assertThat(testCompany.getReference()).isEqualTo(DEFAULT_REFERENCE);
-        assertThat(testCompany.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
-        assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
+        assertThat(testCompany.getReference()).isEqualTo(UPDATED_REFERENCE);
+        assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
+        assertThat(testCompany.getCompanySize()).isEqualTo(UPDATED_COMPANY_SIZE);
     }
 
     @Test
@@ -506,7 +663,14 @@ class CompanyResourceIT {
 
         partialUpdatedCompany
             .name(UPDATED_NAME)
-            .cif(UPDATED_CIF)
+            .commercialName(UPDATED_COMMERCIAL_NAME)
+            .nif(UPDATED_NIF)
+            .logo(UPDATED_LOGO)
+            .vat(UPDATED_VAT)
+            .url(UPDATED_URL)
+            .phone(UPDATED_PHONE)
+            .email(UPDATED_EMAIL)
+            .type(UPDATED_TYPE)
             .token(UPDATED_TOKEN)
             .reference(UPDATED_REFERENCE)
             .industry(UPDATED_INDUSTRY)
@@ -525,7 +689,14 @@ class CompanyResourceIT {
         assertThat(companyList).hasSize(databaseSizeBeforeUpdate);
         Company testCompany = companyList.get(companyList.size() - 1);
         assertThat(testCompany.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCompany.getCif()).isEqualTo(UPDATED_CIF);
+        assertThat(testCompany.getCommercialName()).isEqualTo(UPDATED_COMMERCIAL_NAME);
+        assertThat(testCompany.getNif()).isEqualTo(UPDATED_NIF);
+        assertThat(testCompany.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testCompany.getVat()).isEqualTo(UPDATED_VAT);
+        assertThat(testCompany.getUrl()).isEqualTo(UPDATED_URL);
+        assertThat(testCompany.getPhone()).isEqualTo(UPDATED_PHONE);
+        assertThat(testCompany.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testCompany.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testCompany.getToken()).isEqualTo(UPDATED_TOKEN);
         assertThat(testCompany.getReference()).isEqualTo(UPDATED_REFERENCE);
         assertThat(testCompany.getIndustry()).isEqualTo(UPDATED_INDUSTRY);

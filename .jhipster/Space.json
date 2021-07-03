@@ -43,7 +43,7 @@
       "otherEntityRelationshipName": "space",
       "relationshipValidateRules": "required",
       "relationshipName": "company",
-      "otherEntityField": "cif"
+      "otherEntityField": "nif"
     }
   ],
   "entityTableName": "space",

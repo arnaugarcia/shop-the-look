@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
         Added the entity GoogleFeedProduct.
@@ -13,10 +15,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="sku" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="description" type="varchar(255)">
                 <constraints nullable="false" />
@@ -77,9 +79,9 @@
     -->
     <changeSet id="20210630191349-1-data" author="jhipster" context="faker">
         <loadData
-            file="config/liquibase/fake-data/google_feed_product.csv"
-            separator=";"
-            tableName="google_feed_product">
+                  file="config/liquibase/fake-data/google_feed_product.csv"
+                  separator=";"
+                  tableName="google_feed_product">
             <column name="id" type="numeric"/>
             <column name="sku" type="string"/>
             <column name="name" type="string"/>

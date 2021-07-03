@@ -1,7 +1,11 @@
-import { browser, ExpectedConditions as ec } from 'protractor';
+import { browser, ExpectedConditions as ec /* , promise */ } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-import { ProductComponentsPage, ProductUpdatePage } from './product.page-object';
+import {
+  ProductComponentsPage,
+  /* ProductDeleteDialog, */
+  ProductUpdatePage,
+} from './product.page-object';
 
 const expect = chai.expect;
 

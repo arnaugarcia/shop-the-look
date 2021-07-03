@@ -53,7 +53,7 @@
         <dt><span stlTranslate="shopTheLookApp.product.company">Company</span></dt>
         <dd>
           <div *ngIf="product.company">
-            <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.cif }}</a>
+            <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.nif }}</a>
           </div>
         </dd>
         <dt><span stlTranslate="shopTheLookApp.product.coordinate">Coordinate</span></dt>

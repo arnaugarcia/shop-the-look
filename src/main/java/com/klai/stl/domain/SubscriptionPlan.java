@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -50,7 +50,10 @@ public class SubscriptionPlan implements Serializable {
 
     @OneToMany(mappedBy = "subscriptionPlan")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "products", "importedProducts", "spaces", "users", "subscriptionPlan" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "billingAddress", "products", "importedProducts", "spaces", "users", "subscriptionPlan" },
+        allowSetters = true
+    )
     private Set<Company> companies = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

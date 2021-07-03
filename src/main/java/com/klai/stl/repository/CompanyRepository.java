@@ -29,7 +29,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     Optional<Company> findByToken(String token);
 
-    Optional<Company> findByCif(String cif);
+    Optional<Company> findByNif(String nif);
 
     Optional<Company> findByReference(String reference);
 }

@@ -107,7 +107,7 @@ public class AccountResource {
         CompanyDTO companyDTO = CompanyDTO
             .builder()
             .name(companyUserVM.getName())
-            .cif(companyUserVM.getCif())
+            .nif(companyUserVM.getCif())
             .industry(companyUserVM.getIndustry())
             .companySize(companyUserVM.getSize())
             .token(tokenService.generateToken())

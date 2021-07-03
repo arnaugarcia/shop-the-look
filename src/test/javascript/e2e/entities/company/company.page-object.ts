@@ -1,4 +1,4 @@
-import { by, element, ElementFinder } from 'protractor';
+import { element, by, ElementFinder } from 'protractor';
 
 export class CompanyComponentsPage {
   createButton = element(by.id('jh-create-entity'));
@@ -31,12 +31,20 @@ export class CompanyUpdatePage {
 
   idInput = element(by.id('field_id'));
   nameInput = element(by.id('field_name'));
-  cifInput = element(by.id('field_cif'));
+  commercialNameInput = element(by.id('field_commercialName'));
+  nifInput = element(by.id('field_nif'));
+  logoInput = element(by.id('field_logo'));
+  vatInput = element(by.id('field_vat'));
+  urlInput = element(by.id('field_url'));
+  phoneInput = element(by.id('field_phone'));
+  emailInput = element(by.id('field_email'));
+  typeSelect = element(by.id('field_type'));
   tokenInput = element(by.id('field_token'));
   referenceInput = element(by.id('field_reference'));
   industrySelect = element(by.id('field_industry'));
   companySizeSelect = element(by.id('field_companySize'));
 
+  billingAddressSelect = element(by.id('field_billingAddress'));
   userSelect = element(by.id('field_user'));
   subscriptionPlanSelect = element(by.id('field_subscriptionPlan'));
 
@@ -60,12 +68,72 @@ export class CompanyUpdatePage {
     return await this.nameInput.getAttribute('value');
   }
 
-  async setCifInput(cif: string): Promise<void> {
-    await this.cifInput.sendKeys(cif);
+  async setCommercialNameInput(commercialName: string): Promise<void> {
+    await this.commercialNameInput.sendKeys(commercialName);
   }
 
-  async getCifInput(): Promise<string> {
-    return await this.cifInput.getAttribute('value');
+  async getCommercialNameInput(): Promise<string> {
+    return await this.commercialNameInput.getAttribute('value');
+  }
+
+  async setNifInput(nif: string): Promise<void> {
+    await this.nifInput.sendKeys(nif);
+  }
+
+  async getNifInput(): Promise<string> {
+    return await this.nifInput.getAttribute('value');
+  }
+
+  async setLogoInput(logo: string): Promise<void> {
+    await this.logoInput.sendKeys(logo);
+  }
+
+  async getLogoInput(): Promise<string> {
+    return await this.logoInput.getAttribute('value');
+  }
+
+  async setVatInput(vat: string): Promise<void> {
+    await this.vatInput.sendKeys(vat);
+  }
+
+  async getVatInput(): Promise<string> {
+    return await this.vatInput.getAttribute('value');
+  }
+
+  async setUrlInput(url: string): Promise<void> {
+    await this.urlInput.sendKeys(url);
+  }
+
+  async getUrlInput(): Promise<string> {
+    return await this.urlInput.getAttribute('value');
+  }
+
+  async setPhoneInput(phone: string): Promise<void> {
+    await this.phoneInput.sendKeys(phone);
+  }
+
+  async getPhoneInput(): Promise<string> {
+    return await this.phoneInput.getAttribute('value');
+  }
+
+  async setEmailInput(email: string): Promise<void> {
+    await this.emailInput.sendKeys(email);
+  }
+
+  async getEmailInput(): Promise<string> {
+    return await this.emailInput.getAttribute('value');
+  }
+
+  async setTypeSelect(type: string): Promise<void> {
+    await this.typeSelect.sendKeys(type);
+  }
+
+  async getTypeSelect(): Promise<string> {
+    return await this.typeSelect.element(by.css('option:checked')).getText();
+  }
+
+  async typeSelectLastOption(): Promise<void> {
+    await this.typeSelect.all(by.tagName('option')).last().click();
   }
 
   async setTokenInput(token: string): Promise<void> {
@@ -106,6 +174,22 @@ export class CompanyUpdatePage {
 
   async companySizeSelectLastOption(): Promise<void> {
     await this.companySizeSelect.all(by.tagName('option')).last().click();
+  }
+
+  async billingAddressSelectLastOption(): Promise<void> {
+    await this.billingAddressSelect.all(by.tagName('option')).last().click();
+  }
+
+  async billingAddressSelectOption(option: string): Promise<void> {
+    await this.billingAddressSelect.sendKeys(option);
+  }
+
+  getBillingAddressSelect(): ElementFinder {
+    return this.billingAddressSelect;
+  }
+
+  async getBillingAddressSelectedOption(): Promise<string> {
+    return await this.billingAddressSelect.element(by.css('option:checked')).getText();
   }
 
   async userSelectLastOption(): Promise<void> {

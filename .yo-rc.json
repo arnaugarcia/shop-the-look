@@ -35,7 +35,17 @@
     "clientTheme": "none",
     "clientThemeVariant": "",
     "applicationIndex": 0,
-    "entities": ["Company", "Space", "SpaceTemplate", "Photo", "SubscriptionPlan", "Product", "GoogleFeedProduct", "Coordinate"],
+    "entities": [
+      "Company",
+      "Space",
+      "SpaceTemplate",
+      "Photo",
+      "SubscriptionPlan",
+      "Product",
+      "GoogleFeedProduct",
+      "Coordinate",
+      "BillingAddress"
+    ],
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
     "blueprints": [],
@@ -44,6 +54,6 @@
     "creationTimestamp": 1624558808913,
     "jwtSecretKey": "Y2I3ODEwMzI5MjdlNTEwNDU0YTc1NDk4ZjRiYzE1NGEyOTNiYWUxMWEzZjNhOTNlM2JhYjYzM2M5MjgwMmI5OTZlZDQ1ZWUzZDExMDc0ZDg2MjI1MGYyMTI1ODg0NDdmNTk3ZDg4ZTc0Y2I2MzdjYTYzMjBlNmFiMTFmODMzMWY=",
     "devServerPort": 4200,
-    "lastLiquibaseTimestamp": 1625080430000
+    "lastLiquibaseTimestamp": 1625245379000
   }
 }

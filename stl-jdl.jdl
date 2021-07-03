@@ -149,10 +149,10 @@ enum GoogleFeedProductAvailability {
 }
 
 relationship OneToMany {
-    Company{product(sku) required} to Product{company(cif) required},
-    Company{importedProduct(sku) required} to GoogleFeedProduct{company(cif) required},
+    Company{product(sku) required} to Product{company(nif) required},
+    Company{importedProduct(sku) required} to GoogleFeedProduct{company(nif) required},
 
-    Company{space(reference)} to Space{company(cif) required},
+    Company{space(reference)} to Space{company(nif) required},
 
     Space{photo(name) required} to Photo{space(reference)},
 
@@ -160,7 +160,7 @@ relationship OneToMany {
 
     Photo{coordinate} to Coordinate{photo required},
 
-    SubscriptionPlan{company(cif) required} to Company{subscriptionPlan(name)},
+    SubscriptionPlan{company(nif) required} to Company{subscriptionPlan(name)},
 
     Coordinate{product(sku) required} to Product{coordinate}
 }

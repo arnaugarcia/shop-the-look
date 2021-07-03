@@ -8,16 +8,22 @@
     -->
     <changeSet id="20210630191343-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="subscription_plan_id"
+        <addForeignKeyConstraint baseColumnNames="billing_address_id"
                                  baseTableName="company"
-                                 constraintName="fk_company__subscription_plan_id"
+                                 constraintName="fk_company__billing_address_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="subscription_plan"/>
+                                 referencedTableName="billing_address"/>
 
         <addForeignKeyConstraint baseColumnNames="company_id"
                                  baseTableName="stl_user"
                                  constraintName="fk_user_company"
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="subscription_plan_id"
+                                 baseTableName="company"
+                                 constraintName="fk_company__subscription_plan_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="subscription_plan"/>
     </changeSet>
 </databaseChangeLog>

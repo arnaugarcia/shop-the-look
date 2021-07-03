@@ -39,7 +39,7 @@
       "otherEntityRelationshipName": "subscriptionPlan",
       "relationshipValidateRules": "required",
       "relationshipName": "company",
-      "otherEntityField": "cif"
+      "otherEntityField": "nif"
     }
   ],
   "entityTableName": "subscription_plan",
