@@ -1,5 +1,7 @@
 package com.klai.stl.security;
 
+import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.security.core.Authentication;
@@ -69,6 +71,26 @@ public final class SecurityUtils {
     public static boolean hasCurrentUserThisAuthority(String authority) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && getAuthorities(authentication).anyMatch(authority::equals);
+    }
+
+    /**
+     * Checks if the current user is Manager.
+     *
+     * @return true if the current user has the authority MANAGER, false otherwise.
+     */
+    public static boolean isCurrentUserManager() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && getAuthorities(authentication).anyMatch(MANAGER::equals);
+    }
+
+    /**
+     * Checks if the current user is an administrator.
+     *
+     * @return true if the current user has the authority ADMIN, false otherwise.
+     */
+    public static boolean isCurrentUserIsAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && getAuthorities(authentication).anyMatch(MANAGER::equals);
     }
 
     private static Stream<String> getAuthorities(Authentication authentication) {
