@@ -19,10 +19,20 @@ public class CompanyUserVM extends ManagedUserVM {
     @NotNull
     private String name;
 
+    private String commercialName;
+
+    private String vat;
+
     @NotNull
     private String cif;
 
     private CompanyIndustry industry;
 
     private CompanySize size;
+
+    @NotNull
+    private String phone;
+
+    @NotNull
+    private String url;
 }
