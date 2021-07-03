@@ -86,7 +86,7 @@ class CompanyResourceIT {
     private static final CompanySize UPDATED_COMPANY_SIZE = CompanySize.SMALL;
 
     private static final String ENTITY_API_URL = "/api/companies";
-    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{reference}";
 
     private static Random random = new Random();
     private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
@@ -164,6 +164,7 @@ class CompanyResourceIT {
         return new Company()
             .name(DEFAULT_NAME)
             .nif(DEFAULT_NIF)
+            .url(DEFAULT_URL)
             .commercialName(DEFAULT_COMMERCIAL_NAME)
             .email(DEFAULT_EMAIL)
             .logo(DEFAULT_LOGO)
@@ -252,7 +253,7 @@ class CompanyResourceIT {
         assertThat(testCompany.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testCompany.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testCompany.getToken()).isEqualTo(DEFAULT_TOKEN);
-        assertThat(testCompany.getReference()).isEqualTo(DEFAULT_REFERENCE);
+        assertThat(testCompany.getReference()).isNotBlank();
         assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
     }
@@ -455,7 +456,7 @@ class CompanyResourceIT {
 
         // Get the company
         restCompanyMockMvc
-            .perform(get(ENTITY_API_URL_ID, company.getId()))
+            .perform(get(ENTITY_API_URL_ID, company.getReference()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(company.getId().intValue()))

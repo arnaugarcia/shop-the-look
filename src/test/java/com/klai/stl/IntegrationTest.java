@@ -1,6 +1,5 @@
 package com.klai.stl;
 
-import com.klai.stl.ShopTheLookApp;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

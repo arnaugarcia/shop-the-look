@@ -158,7 +158,11 @@ class AccountResourceIT {
         companyUserVM.setFirstName("Alice");
         companyUserVM.setLastName("Test");
         companyUserVM.setCif(COMPANY_CIF);
+        companyUserVM.setPhone("692464645");
+        companyUserVM.setUrl("https://weareklai.com");
+        companyUserVM.setCommercialName("Klai");
         companyUserVM.setName("Company");
+        companyUserVM.setVat("VAT");
         companyUserVM.setIndustry(CompanyIndustry.AUTOMOTIVE);
         companyUserVM.setSize(CompanySize.INTERNATIONAL);
         companyUserVM.setEmail("company-test-register-valid@example.com");
@@ -186,6 +190,9 @@ class AccountResourceIT {
         assertThat(company.getIndustry()).isEqualTo(companyUserVM.getIndustry());
         assertThat(company.getNif()).isEqualTo(companyUserVM.getCif());
         assertThat(company.getName()).isEqualTo(companyUserVM.getName());
+        assertThat(company.getVat()).isEqualTo(companyUserVM.getVat());
+        assertThat(company.getUrl()).isEqualTo(companyUserVM.getUrl());
+        assertThat(company.getCommercialName()).isEqualTo(companyUserVM.getCommercialName());
         assertThat(company.getUsers()).isNotNull();
         assertThat(company.getUsers()).hasSize(1);
         assertThat(company.getToken()).isNotNull();
