@@ -10,7 +10,7 @@ import org.mapstruct.Named;
 /**
  * Mapper for the entity {@link BillingAddress} and its DTO {@link BillingAddressDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring")
 public interface BillingAddressMapper extends EntityMapper<BillingAddressDTO, BillingAddress> {
     @Named("id")
     @BeanMapping(ignoreByDefault = true)
