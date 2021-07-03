@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class EmployeeResourceIT {
 
-    private static final String ENTITY_API_URL = "/api/employee";
+    private static final String ENTITY_API_URL = "/api/employees";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired

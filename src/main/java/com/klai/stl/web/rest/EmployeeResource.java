@@ -67,7 +67,7 @@ public class EmployeeResource {
         }
     )
     @ApiOperation(value = "Creates a new employee associated to the current logged manager")
-    @PostMapping("/employee")
+    @PostMapping("/employees")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\")")
     public ResponseEntity<User> createEmployee(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) throws URISyntaxException {
         log.info("Creating a new employee with email {}", employeeRequestDTO.getEmail());
@@ -77,7 +77,7 @@ public class EmployeeResource {
         User employee = employeeService.createEmployee(employeeRequestDTO);
         mailService.sendCreationEmail(employee);
         return ResponseEntity
-            .created(new URI("/api/users"))
+            .created(new URI("/api/empoyees"))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
             .body(employee);
     }
