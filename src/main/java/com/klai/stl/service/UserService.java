@@ -11,6 +11,7 @@ import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import com.klai.stl.service.exception.EmployeeNotFound;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -305,20 +306,14 @@ public class UserService {
      *
      * @param updateRequest first name of user.
      */
-    public void updateUser(UpdateEmployeeRequestDTO updateRequest) {
-        SecurityUtils
-            .getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .ifPresent(
-                user -> {
-                    user.setFirstName(updateRequest.getFirstName());
-                    user.setLastName(updateRequest.getLastName());
-                    user.setLangKey(updateRequest.getLangKey());
-                    user.setImageUrl(updateRequest.getImageUrl());
-                    this.clearUserCaches(user);
-                    log.debug("Changed Information for User: {}", user);
-                }
-            );
+    public void updateUser(UpdateEmployeeRequestDTO updateRequest, String login) {
+        final User user = userRepository.findOneByLogin(login).orElseThrow(EmployeeNotFound::new);
+        user.setFirstName(updateRequest.getFirstName());
+        user.setLastName(updateRequest.getLastName());
+        user.setLangKey(updateRequest.getLangKey());
+        user.setImageUrl(updateRequest.getImageUrl());
+        userRepository.save(user);
+        this.clearUserCaches(user);
     }
 
     @Transactional
@@ -380,6 +375,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     @Transactional(readOnly = true)

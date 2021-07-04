@@ -4,6 +4,7 @@ import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static java.util.Optional.ofNullable;
 
 import com.klai.stl.domain.User;
+import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.UserService;
@@ -45,9 +46,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public User updateEmployee(UpdateEmployeeRequestDTO employeeRequest, String login) {
-        userService.getUserWithAuthoritiesByLogin(login).orElseThrow(() -> new EmployeeNotFound(login));
-        userService.updateUser(employeeRequest);
+        final User user = userService.getUserWithAuthoritiesByLogin(login).orElseThrow(() -> new EmployeeNotFound(login));
+        if (SecurityUtils.isCurrentUserManager()) {
+            checkLoginBelongsToCompany(login, findCurrentUserCompanyReference(ofNullable(user.getCompany().getReference())));
+        }
+        userService.updateUser(employeeRequest, login);
         return userService.getUserWithAuthoritiesByLogin(login).get();
+    }
+
+    private void checkLoginBelongsToCompany(String login, String currentUserCompanyReference) {
+        companyService
+            .findOne(currentUserCompanyReference)
+            .getUsers()
+            .stream()
+            .filter(userDTO -> userDTO.getLogin().equals(login))
+            .findFirst()
+            .orElseThrow(() -> new EmployeeNotFound(login));
     }
 
     private String findCurrentUserCompanyReference(Optional<String> companyReference) {

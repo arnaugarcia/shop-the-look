@@ -336,7 +336,7 @@ class EmployeeResourceIT {
                     .contentType(APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(updateRequest))
             )
-            .andExpect(status().isForbidden());
+            .andExpect(status().isNotFound());
     }
 
     @Test

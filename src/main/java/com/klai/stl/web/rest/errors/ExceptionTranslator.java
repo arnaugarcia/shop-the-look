@@ -145,6 +145,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleEmployeeNotFoundException(
+        com.klai.stl.service.exception.EmployeeNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, "Employee not found", "employee", "employeenotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleNifAlreadyUsedException(
         com.klai.stl.service.exception.NIFAlreadyRegistered ex,
         NativeWebRequest request
