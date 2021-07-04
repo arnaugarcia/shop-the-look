@@ -67,7 +67,10 @@ public class EmployeeResource {
             @ApiResponse(code = 401, message = "Not Authorized"),
         }
     )
-    @ApiOperation(value = "Creates a new employee associated to the current logged manager")
+    @ApiOperation(
+        value = "Creates a new employee",
+        notes = "If the current user is a Manager, it will attach his company. If the current user is and Admin it's REQUIRED to inform the companyReference field in the request"
+    )
     @PostMapping("/employees")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<User> createEmployee(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) throws URISyntaxException {
