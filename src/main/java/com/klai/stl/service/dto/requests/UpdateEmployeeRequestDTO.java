@@ -12,7 +12,7 @@ public final class UpdateEmployeeRequestDTO extends EmployeeRequest {
 
     @Builder
     @Jacksonized
-    public UpdateEmployeeRequestDTO(String firstName, String lastName, String imageUrl, String langKey, String companyReference) {
-        super(firstName, lastName, imageUrl, langKey, companyReference);
+    public UpdateEmployeeRequestDTO(String firstName, String lastName, String imageUrl, String langKey) {
+        super(firstName, lastName, imageUrl, langKey);
     }
 }

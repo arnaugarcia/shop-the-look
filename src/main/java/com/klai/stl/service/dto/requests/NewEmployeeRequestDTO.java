@@ -6,8 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.Builder;
+import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 /**
@@ -25,6 +25,8 @@ public final class NewEmployeeRequestDTO extends EmployeeRequest {
     @Size(min = 5, max = 254)
     private final String email;
 
+    private final String companyReference;
+
     @Builder
     @Jacksonized
     public NewEmployeeRequestDTO(
@@ -36,8 +38,9 @@ public final class NewEmployeeRequestDTO extends EmployeeRequest {
         String login,
         String email
     ) {
-        super(firstName, lastName, imageUrl, langKey, companyReference);
+        super(firstName, lastName, imageUrl, langKey);
         this.login = login;
         this.email = email;
+        this.companyReference = companyReference;
     }
 }
