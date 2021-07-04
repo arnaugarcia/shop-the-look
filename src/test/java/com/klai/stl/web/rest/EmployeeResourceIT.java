@@ -13,8 +13,8 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
-import com.klai.stl.service.dto.EmployeeRequestDTO;
 import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -61,9 +61,9 @@ class EmployeeResourceIT {
 
     private User employee;
 
-    private EmployeeRequestDTO employeeAdminRequest;
+    private NewEmployeeRequestDTO employeeAdminRequest;
 
-    private EmployeeRequestDTO employeeRequest;
+    private NewEmployeeRequestDTO employeeRequest;
 
     @BeforeEach
     public void initTest() {
@@ -73,8 +73,8 @@ class EmployeeResourceIT {
         employeeRequest = createRequest();
     }
 
-    private EmployeeRequestDTO createRequest() {
-        return EmployeeRequestDTO
+    private NewEmployeeRequestDTO createRequest() {
+        return NewEmployeeRequestDTO
             .builder()
             .email(EMPLOYEE_EMAIL)
             .firstName(EMPLOYEE_FIRSTNAME)
@@ -85,8 +85,8 @@ class EmployeeResourceIT {
             .build();
     }
 
-    private EmployeeRequestDTO createAdminRequest() {
-        return EmployeeRequestDTO
+    private NewEmployeeRequestDTO createAdminRequest() {
+        return NewEmployeeRequestDTO
             .builder()
             .email(EMPLOYEE_EMAIL)
             .firstName(EMPLOYEE_FIRSTNAME)
@@ -127,17 +127,6 @@ class EmployeeResourceIT {
         assertThat(result.getLangKey()).isEqualTo(EMPLOYEE_LANG_KEY);
         assertThat(result.getLogin()).isEqualTo(EMPLOYEE_LOGIN);
         assertThat(result.isActivated()).isTrue();
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser(authorities = { MANAGER })
-    void createEmployeeWithExistingId() throws Exception {
-        UserDTO userDTO = createAUserDTO();
-        userDTO.setId(1L);
-        restPhotoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
-            .andExpect(status().isBadRequest());
     }
 
     @Test
