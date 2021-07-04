@@ -15,6 +15,7 @@ import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -64,6 +65,8 @@ class EmployeeResourceIT {
     private NewEmployeeRequestDTO employeeAdminRequest;
 
     private NewEmployeeRequestDTO employeeRequest;
+
+    private UpdateEmployeeRequestDTO updateRequest;
 
     @BeforeEach
     public void initTest() {
@@ -210,4 +213,21 @@ class EmployeeResourceIT {
             .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeAdminRequest)))
             .andExpect(status().isForbidden());
     }
+
+    @Test
+    @Transactional
+    public void updateEmployee() {
+        // employeeRequest
+
+        //        When
+
+        //        Then
+    }
+    // TODO: Check user is updated
+
+    // TODO: Check if admin can update
+
+    // TODO: Check that a user cannot update employees
+
+    // TODO: Check that a manager only can update his employees
 }
