@@ -424,7 +424,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "delete-current-employee", authorities = { ADMIN })
+    @WithMockUser(username = "delete-current-employee", authorities = { MANAGER })
     public void deleteCurrentManager() throws Exception {
         final String login = "delete-current-employee";
         final User user = UserResourceIT.createEntity(login);
@@ -433,5 +433,12 @@ class EmployeeResourceIT {
         em.persist(company);
 
         restPhotoMockMvc.perform(delete(ENTITY_API_URL_LOGIN, login).contentType(APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void removeEmployeeAsEmployee() throws Exception {
+        restPhotoMockMvc.perform(delete(ENTITY_API_URL_LOGIN, "login").contentType(APPLICATION_JSON)).andExpect(status().isForbidden());
     }
 }
