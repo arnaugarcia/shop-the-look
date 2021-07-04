@@ -3,6 +3,7 @@ package com.klai.stl.web.rest;
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
+import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.service.EmployeeService;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiResponses;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,14 +103,14 @@ public class EmployeeResource {
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<User> updateEmployee(
         @Valid @RequestBody UpdateEmployeeRequestDTO updateEmployeeRequestDTO,
-        @PathVariable String login
+        @PathVariable @NotBlank final String login
     ) throws URISyntaxException {
         log.info("Updating an employee with login {}", login);
         User employee = employeeService.updateEmployee(updateEmployeeRequestDTO, login);
         mailService.sendCreationEmail(employee);
         return ResponseEntity
             .created(new URI("/api/empoyees/" + login))
-            .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
+            .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
             .body(employee);
     }
 }
