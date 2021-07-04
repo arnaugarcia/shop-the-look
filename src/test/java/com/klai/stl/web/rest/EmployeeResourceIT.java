@@ -398,17 +398,27 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(authorities = { ADMIN })
     public void deleteEmployeeAsAdmin() throws Exception {
-        Company company1 = CompanyResourceIT.createBasicEntity();
-        final User manager = UserResourceIT.createEntity("manager-update-employee-company");
-        company1.addUser(manager);
-        em.persist(manager);
-        em.persist(company1);
+        company.addUser(employee);
+        em.persist(employee);
+
+        em.persist(company);
+
+        final Optional<Company> beforeDelete = companyRepository.findByReferenceWithEagerRelationships(company.getReference());
+
+        assertThat(beforeDelete).isPresent();
+
+        int databaseSizeBeforeDelete = beforeDelete.get().getUsers().size();
+        assertThat(databaseSizeBeforeDelete).isEqualTo(1);
+
         restPhotoMockMvc
-            .perform(
-                delete(ENTITY_API_URL_LOGIN, employee.getLogin())
-                    .contentType(APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updateRequest))
-            )
+            .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
             .andExpect(status().isOk());
+
+        final Optional<Company> afterDelete = companyRepository.findByReferenceWithEagerRelationships(company.getReference());
+
+        assertThat(afterDelete).isPresent();
+
+        int databaseSizeAfterDelete = afterDelete.get().getUsers().size();
+        assertThat(databaseSizeAfterDelete).isEqualTo(0);
     }
 }
