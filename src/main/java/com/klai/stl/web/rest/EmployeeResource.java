@@ -7,7 +7,7 @@ import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 import com.klai.stl.domain.User;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.MailService;
-import com.klai.stl.service.dto.EmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.*;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -20,10 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing users (only when current user has MANAGER role)
@@ -55,7 +52,7 @@ public class EmployeeResource {
      * mail with an activation link.
      * The user needs to be activated on creation.
      *
-     * @param employeeRequestDTO the employee to create.
+     * @param newEmployeeRequestDTO the employee to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
@@ -73,15 +70,44 @@ public class EmployeeResource {
     )
     @PostMapping("/employees")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
-    public ResponseEntity<User> createEmployee(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) throws URISyntaxException {
-        log.info("Creating a new employee with email {}", employeeRequestDTO.getEmail());
-        if (employeeRequestDTO.getId() != null) {
-            throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        User employee = employeeService.createEmployee(employeeRequestDTO);
+    public ResponseEntity<User> createEmployee(@Valid @RequestBody NewEmployeeRequestDTO newEmployeeRequestDTO) throws URISyntaxException {
+        log.info("Creating a new employee with email {}", newEmployeeRequestDTO.getEmail());
+        User employee = employeeService.createEmployee(newEmployeeRequestDTO);
         mailService.sendCreationEmail(employee);
         return ResponseEntity
             .created(new URI("/api/empoyees"))
+            .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
+            .body(employee);
+    }
+
+    /**
+     * {@code PUT  /employee}  : Updates an employee.
+     * <p>
+     * Updates an employee.
+     *
+     * @param updateEmployeeRequestDTO the employee to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the updated employee, or with status {@code 400 (Bad Request)} if the company doesn't exists.
+     * @throws BadRequestAlertException {@code 400 (Bad Request)} if the company doesn't exists or the data isn't valid.
+     */
+    @ApiResponses(
+        value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Not Authorized"),
+        }
+    )
+    @ApiOperation(value = "Updates an employee")
+    @PutMapping("/employees/{login}")
+    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
+    public ResponseEntity<User> updateEmployee(
+        @Valid @RequestBody UpdateEmployeeRequestDTO updateEmployeeRequestDTO,
+        @PathVariable String login
+    ) throws URISyntaxException {
+        log.info("Updating an employee with login {}", login);
+        User employee = employeeService.updateEmployee(updateEmployeeRequestDTO, login);
+        mailService.sendCreationEmail(employee);
+        return ResponseEntity
+            .created(new URI("/api/empoyees/" + login))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
             .body(employee);
     }

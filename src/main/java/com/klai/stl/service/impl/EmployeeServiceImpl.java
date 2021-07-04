@@ -7,7 +7,9 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
-import com.klai.stl.service.dto.EmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.EmployeeRequest;
+import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
 import com.klai.stl.service.exception.CompanyReferenceNotFound;
 import org.springframework.stereotype.Service;
 
@@ -23,29 +25,35 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public User createEmployee(EmployeeRequestDTO employeeRequestDTO) {
-        final String companyReference = findCurrentUserCompanyReference(employeeRequestDTO);
+    public User createEmployee(NewEmployeeRequestDTO newEmployeeRequestDTO) {
+        final String companyReference = findCurrentUserCompanyReference(newEmployeeRequestDTO);
         final AdminUserDTO user = AdminUserDTO
             .builder()
-            .email(employeeRequestDTO.getEmail())
-            .firstName(employeeRequestDTO.getFirstName())
-            .lastName(employeeRequestDTO.getLastName())
-            .login(employeeRequestDTO.getLogin())
-            .langKey(employeeRequestDTO.getLangKey())
-            .imageUrl(employeeRequestDTO.getImageUrl())
+            .email(newEmployeeRequestDTO.getEmail())
+            .firstName(newEmployeeRequestDTO.getFirstName())
+            .lastName(newEmployeeRequestDTO.getLastName())
+            .login(newEmployeeRequestDTO.getLogin())
+            .langKey(newEmployeeRequestDTO.getLangKey())
+            .imageUrl(newEmployeeRequestDTO.getImageUrl())
             .build();
         final User employee = userService.createUser(user);
         companyService.addEmployee(employee, companyReference);
         return employee;
     }
 
-    private String findCurrentUserCompanyReference(EmployeeRequestDTO employeeRequestDTO) {
+    @Override
+    public User updateEmployee(UpdateEmployeeRequestDTO employeeRequest, String login) {
+        final String companyReference = findCurrentUserCompanyReference(employeeRequest);
+        return null;
+    }
+
+    private String findCurrentUserCompanyReference(EmployeeRequest newEmployeeRequestDTO) {
         final String companyReference;
         if (isCurrentUserAdmin()) {
-            if (employeeRequestDTO.getCompanyReference().isEmpty()) {
+            if (newEmployeeRequestDTO.getCompanyReference().isEmpty()) {
                 throw new CompanyReferenceNotFound();
             }
-            companyReference = companyService.findOne(employeeRequestDTO.getCompanyReference()).getReference();
+            companyReference = companyService.findOne(newEmployeeRequestDTO.getCompanyReference()).getReference();
         } else {
             companyReference = this.userService.getUserWithAuthorities().orElseThrow().getCompany().getReference();
         }
