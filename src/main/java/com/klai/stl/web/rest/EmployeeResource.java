@@ -57,7 +57,7 @@ public class EmployeeResource {
      *
      * @param employeeRequestDTO the employee to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
-     * @throws URISyntaxException       if the Location URI syntax is incorrect.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
     @ApiResponses(
