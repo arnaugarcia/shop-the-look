@@ -5,8 +5,7 @@ import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.web.rest.UserResourceIT.createAUserDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
@@ -362,5 +361,54 @@ class EmployeeResourceIT {
                     .content(TestUtil.convertObjectToJsonBytes(updateRequest))
             )
             .andExpect(status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = { MANAGER })
+    public void deleteEmployee() throws Exception {
+        final User manager = UserResourceIT.createEntity(em);
+        company.addUser(employee);
+        em.persist(employee);
+        company.addUser(manager);
+        em.persist(manager);
+
+        em.persist(company);
+
+        final Optional<Company> beforeDelete = companyRepository.findByReferenceWithEagerRelationships(company.getReference());
+
+        assertThat(beforeDelete).isPresent();
+
+        int databaseSizeBeforeDelete = beforeDelete.get().getUsers().size();
+        assertThat(databaseSizeBeforeDelete).isEqualTo(2);
+
+        restPhotoMockMvc
+            .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        final Optional<Company> afterDelete = companyRepository.findByReferenceWithEagerRelationships(company.getReference());
+
+        assertThat(afterDelete).isPresent();
+
+        int databaseSizeAfterDelete = afterDelete.get().getUsers().size();
+        assertThat(databaseSizeAfterDelete).isEqualTo(1);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = { ADMIN })
+    public void deleteEmployeeAsAdmin() throws Exception {
+        Company company1 = CompanyResourceIT.createBasicEntity();
+        final User manager = UserResourceIT.createEntity("manager-update-employee-company");
+        company1.addUser(manager);
+        em.persist(manager);
+        em.persist(company1);
+        restPhotoMockMvc
+            .perform(
+                delete(ENTITY_API_URL_LOGIN, employee.getLogin())
+                    .contentType(APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updateRequest))
+            )
+            .andExpect(status().isOk());
     }
 }
