@@ -10,6 +10,7 @@ import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -293,6 +294,27 @@ public class UserService {
                     }
                     user.setLangKey(langKey);
                     user.setImageUrl(imageUrl);
+                    this.clearUserCaches(user);
+                    log.debug("Changed Information for User: {}", user);
+                }
+            );
+    }
+
+    /**
+     * Update basic information (first name, last name, email, language) for the current user.
+     *
+     * @param updateRequest first name of user.
+     */
+    public void updateUser(UpdateEmployeeRequestDTO updateRequest) {
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(
+                user -> {
+                    user.setFirstName(updateRequest.getFirstName());
+                    user.setLastName(updateRequest.getLastName());
+                    user.setLangKey(updateRequest.getLangKey());
+                    user.setImageUrl(updateRequest.getImageUrl());
                     this.clearUserCaches(user);
                     log.debug("Changed Information for User: {}", user);
                 }
