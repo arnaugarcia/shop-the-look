@@ -2,8 +2,7 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
-import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
+import static tech.jhipster.web.util.HeaderUtil.*;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.service.EmployeeService;
@@ -78,7 +77,7 @@ public class EmployeeResource {
         mailService.sendCreationEmail(employee);
         return ResponseEntity
             .created(new URI("/api/empoyees"))
-            .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
+            .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
             .body(employee);
     }
 

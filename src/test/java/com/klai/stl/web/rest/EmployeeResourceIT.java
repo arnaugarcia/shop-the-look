@@ -6,6 +6,7 @@ import static com.klai.stl.web.rest.UserResourceIT.createAUserDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
@@ -87,7 +88,13 @@ class EmployeeResourceIT {
     }
 
     private UpdateEmployeeRequestDTO createUpdateRequest() {
-        return UpdateEmployeeRequestDTO.builder().build();
+        return UpdateEmployeeRequestDTO
+            .builder()
+            .firstName(UPDATED_EMPLOYEE_FIRSTNAME)
+            .lastName(UPDATED_EMPLOYEE_LASTNAME)
+            .imageUrl(UPDATED_EMPLOYEE_IMAGE)
+            .langKey(UPDATED_EMPLOYEE_LANG_KEY)
+            .build();
     }
 
     private NewEmployeeRequestDTO createRequest() {
@@ -232,16 +239,128 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    public void updateEmployee() {
-        //        When
+    @WithMockUser(username = "manager-update-employee", authorities = { MANAGER })
+    public void updateEmployee() throws Exception {
+        final String login = "employee-login";
+        final User manager = UserResourceIT.createEntity("manager-update-employee");
+        final User employee = UserResourceIT.createEntity(login);
+        manager.setCompany(company);
+        employee.setCompany(company);
+        em.persist(manager);
+        em.persist(employee);
+        company.addUser(manager);
+        company.addUser(employee);
+        em.persist(company);
 
-        //        Then
+        restPhotoMockMvc
+            .perform(
+                put(ENTITY_API_URL_LOGIN, login).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updateRequest))
+            )
+            .andExpect(status().isCreated());
+
+        final Optional<User> oneByLogin = userRepository.findOneWithAuthoritiesByLogin(login);
+        assertThat(oneByLogin).isPresent();
+        User result = oneByLogin.get();
+
+        assertThat(result.getFirstName()).isEqualTo(UPDATED_EMPLOYEE_FIRSTNAME);
+        assertThat(result.getLastName()).isEqualTo(UPDATED_EMPLOYEE_LASTNAME);
+        assertThat(result.getImageUrl()).isEqualTo(UPDATED_EMPLOYEE_IMAGE);
+        assertThat(result.getLangKey()).isEqualTo(UPDATED_EMPLOYEE_LANG_KEY);
+        assertThat(result.getCompany()).isNotNull();
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
     }
-    // TODO: Check user is updated
 
-    // TODO: Check if admin can update
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin-update-employee", authorities = { ADMIN })
+    public void updateEmployeeAsAdmin() throws Exception {
+        final String login = "employee-login";
+        final User manager = UserResourceIT.createEntity("admin-update-employee");
+        final User employee = UserResourceIT.createEntity(login);
+        manager.setCompany(company);
+        employee.setCompany(company);
+        em.persist(manager);
+        em.persist(employee);
+        company.addUser(manager);
+        company.addUser(employee);
+        em.persist(company);
 
-    // TODO: Check that a user cannot update employees
+        restPhotoMockMvc
+            .perform(
+                put(ENTITY_API_URL_LOGIN, login).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updateRequest))
+            )
+            .andExpect(status().isCreated());
 
-    // TODO: Check that a manager only can update his employees
+        final Optional<User> oneByLogin = userRepository.findOneWithAuthoritiesByLogin(login);
+        assertThat(oneByLogin).isPresent();
+        User result = oneByLogin.get();
+
+        assertThat(result.getFirstName()).isEqualTo(UPDATED_EMPLOYEE_FIRSTNAME);
+        assertThat(result.getLastName()).isEqualTo(UPDATED_EMPLOYEE_LASTNAME);
+        assertThat(result.getImageUrl()).isEqualTo(UPDATED_EMPLOYEE_IMAGE);
+        assertThat(result.getLangKey()).isEqualTo(UPDATED_EMPLOYEE_LANG_KEY);
+        assertThat(result.getCompany()).isNotNull();
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    void updateEmployeeAsUser() throws Exception {
+        restPhotoMockMvc
+            .perform(
+                put(ENTITY_API_URL_LOGIN, "login").contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updateRequest))
+            )
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager-update-employee-company", authorities = { MANAGER })
+    public void updateEmployeeFromOtherCompany() throws Exception {
+        Company company1 = CompanyResourceIT.createBasicEntity();
+        final User manager = UserResourceIT.createEntity("manager-update-employee-company");
+        company1.addUser(manager);
+        em.persist(manager);
+        em.persist(company1);
+
+        Company company2 = CompanyResourceIT.createBasicEntity();
+        final User employee = UserResourceIT.createEntity(em);
+        company2.addUser(employee);
+        em.persist(employee);
+        em.persist(company2);
+
+        restPhotoMockMvc
+            .perform(
+                put(ENTITY_API_URL_LOGIN, employee.getLogin())
+                    .contentType(APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updateRequest))
+            )
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin-update-employee-company", authorities = { ADMIN })
+    public void updateEmployeeFromOtherCompanyAsAdmin() throws Exception {
+        Company company1 = CompanyResourceIT.createBasicEntity();
+        final User manager = UserResourceIT.createEntity("admin-update-employee-company");
+        company1.addUser(manager);
+        em.persist(manager);
+        em.persist(company1);
+
+        Company company2 = CompanyResourceIT.createBasicEntity();
+        final User employee = UserResourceIT.createEntity(em);
+        company2.addUser(employee);
+        em.persist(employee);
+        em.persist(company2);
+
+        restPhotoMockMvc
+            .perform(
+                put(ENTITY_API_URL_LOGIN, employee.getLogin())
+                    .contentType(APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updateRequest))
+            )
+            .andExpect(status().isCreated());
+    }
 }

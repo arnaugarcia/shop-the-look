@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
@@ -36,6 +37,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils;
 
 /**
  * Integration tests for the {@link CompanyResource} REST controller.
@@ -163,14 +165,14 @@ class CompanyResourceIT {
     public static Company createBasicEntity() {
         return new Company()
             .name(DEFAULT_NAME)
-            .nif(DEFAULT_NIF)
+            .nif(randomAlphanumeric(8))
             .url(DEFAULT_URL)
             .commercialName(DEFAULT_COMMERCIAL_NAME)
             .email(DEFAULT_EMAIL)
             .logo(DEFAULT_LOGO)
             .phone(DEFAULT_PHONE)
-            .reference(DEFAULT_REFERENCE)
-            .token(DEFAULT_TOKEN)
+            .reference(randomAlphanumeric(5))
+            .token(randomAlphanumeric(10))
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
     }
