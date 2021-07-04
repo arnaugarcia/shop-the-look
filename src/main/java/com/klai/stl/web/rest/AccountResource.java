@@ -19,6 +19,7 @@ import com.klai.stl.web.rest.errors.LoginAlreadyUsedException;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
@@ -127,6 +128,15 @@ public class AccountResource {
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
+    }
+
+    /**
+     * Gets a list of all roles.
+     * @return a string list of all roles.
+     */
+    @GetMapping("/authorities")
+    public List<String> getAuthorities() {
+        return userService.getAuthorities();
     }
 
     /**
