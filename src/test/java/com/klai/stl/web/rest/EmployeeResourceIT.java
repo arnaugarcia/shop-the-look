@@ -1,9 +1,10 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static com.klai.stl.web.rest.CompanyResourceIT.createBasicEntity;
 import static com.klai.stl.web.rest.UserResourceIT.createAUserDTO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,7 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +33,14 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 class EmployeeResourceIT {
+
+    private static final String EMPLOYEE_EMAIL = "email@email.com";
+    private static final String EMPLOYEE_FIRSTNAME = "EMPLOYEE_FIRSTNAME";
+    private static final String EMPLOYEE_LASTNAME = "EMPLOYEE_LASTNAME";
+    private static final String EMPLOYEE_IMAGE = "EMPLOYEE_IMAGE";
+    private static final String EMPLOYEE_LANG_KEY = "ca";
+    private static final String EMPLOYEE_LOGIN = "employee";
+    private static final String EMPLOYEE_COMPANY = "COMPANY";
 
     private static final String ENTITY_API_URL = "/api/employees";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -53,17 +61,41 @@ class EmployeeResourceIT {
 
     private User employee;
 
-    private static final String EMPLOYEE_EMAIL = "email@email.com";
-    private static final String EMPLOYEE_FIRSTNAME = "EMPLOYEE_FIRSTNAME";
-    private static final String EMPLOYEE_LASTNAME = "EMPLOYEE_LASTNAME";
-    private static final String EMPLOYEE_IMAGE = "EMPLOYEE_IMAGE";
-    private static final String EMPLOYEE_LANG_KEY = "ca";
-    private static final String EMPLOYEE_LOGIN = "employee";
+    private EmployeeRequestDTO employeeAdminRequest;
+
+    private EmployeeRequestDTO employeeRequest;
 
     @BeforeEach
     public void initTest() {
         company = CompanyResourceIT.createBasicEntity();
         employee = UserResourceIT.createEntity(em);
+        employeeAdminRequest = createAdminRequest();
+        employeeRequest = createRequest();
+    }
+
+    private EmployeeRequestDTO createRequest() {
+        return EmployeeRequestDTO
+            .builder()
+            .email(EMPLOYEE_EMAIL)
+            .firstName(EMPLOYEE_FIRSTNAME)
+            .lastName(EMPLOYEE_LASTNAME)
+            .langKey(EMPLOYEE_LANG_KEY)
+            .login(EMPLOYEE_LOGIN)
+            .imageUrl(EMPLOYEE_IMAGE)
+            .build();
+    }
+
+    private EmployeeRequestDTO createAdminRequest() {
+        return EmployeeRequestDTO
+            .builder()
+            .email(EMPLOYEE_EMAIL)
+            .firstName(EMPLOYEE_FIRSTNAME)
+            .lastName(EMPLOYEE_LASTNAME)
+            .langKey(EMPLOYEE_LANG_KEY)
+            .login(EMPLOYEE_LOGIN)
+            .imageUrl(EMPLOYEE_IMAGE)
+            .companyReference(EMPLOYEE_COMPANY)
+            .build();
     }
 
     @Test
@@ -77,19 +109,8 @@ class EmployeeResourceIT {
         company.addUser(employee);
         int databaseSizeBeforeCreate = companyRepository.findByNif(company.getNif()).get().getUsers().size();
 
-        // Create the user
-        final EmployeeRequestDTO requestDTO = EmployeeRequestDTO
-            .builder()
-            .email(EMPLOYEE_EMAIL)
-            .firstName(EMPLOYEE_FIRSTNAME)
-            .lastName(EMPLOYEE_LASTNAME)
-            .imageUrl(EMPLOYEE_IMAGE)
-            .langKey(EMPLOYEE_LANG_KEY)
-            .login(EMPLOYEE_LOGIN)
-            .build();
-
         restPhotoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(requestDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeRequest)))
             .andExpect(status().isCreated());
 
         // Validate the User in the database
@@ -115,7 +136,7 @@ class EmployeeResourceIT {
         UserDTO userDTO = createAUserDTO();
         userDTO.setId(1L);
         restPhotoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
             .andExpect(status().isBadRequest());
     }
 
@@ -134,7 +155,7 @@ class EmployeeResourceIT {
         userDTO.setLogin(EXISTING_LOGIN);
 
         restPhotoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
             .andExpect(status().isBadRequest());
     }
 
@@ -154,7 +175,32 @@ class EmployeeResourceIT {
         userDTO.setEmail(EXISTING_EMAIL);
 
         restPhotoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userDTO)))
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = { ADMIN })
+    void createUserAsAdmin() throws Exception {
+        company.setReference(EMPLOYEE_COMPANY);
+        em.persist(company);
+
+        restPhotoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeAdminRequest)))
+            .andExpect(status().isCreated());
+
+        final Optional<User> oneByLogin = userRepository.findOneWithAuthoritiesByLogin(EMPLOYEE_LOGIN);
+        assertThat(oneByLogin).isPresent();
+        User result = oneByLogin.get();
+        assertThat(result.getAuthorities()).hasSize(1);
+        assertThat(result.getEmail()).isEqualTo(EMPLOYEE_EMAIL);
+        assertThat(result.getFirstName()).isEqualTo(EMPLOYEE_FIRSTNAME);
+        assertThat(result.getLastName()).isEqualTo(EMPLOYEE_LASTNAME);
+        assertThat(result.getLangKey()).isEqualTo(EMPLOYEE_LANG_KEY);
+        assertThat(result.getLogin()).isEqualTo(EMPLOYEE_LOGIN);
+        assertThat(result.isActivated()).isTrue();
+        assertThat(result.getCompany()).isNotNull();
+        assertThat(result.getCompany().getReference()).isEqualTo(EMPLOYEE_COMPANY);
     }
 }
