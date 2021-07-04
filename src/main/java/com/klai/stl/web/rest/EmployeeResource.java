@@ -1,5 +1,6 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
@@ -56,7 +57,7 @@ public class EmployeeResource {
      *
      * @param employeeRequestDTO the employee to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
-     * @throws URISyntaxException       if the Location URI syntax is incorrect.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
     @ApiResponses(
@@ -66,9 +67,12 @@ public class EmployeeResource {
             @ApiResponse(code = 401, message = "Not Authorized"),
         }
     )
-    @ApiOperation(value = "Creates a new employee associated to the current logged manager")
-    @PostMapping("/employee")
-    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\")")
+    @ApiOperation(
+        value = "Creates a new employee",
+        notes = "If the current user is a Manager, it will attach his company. If the current user is and Admin it's REQUIRED to inform the companyReference field in the request"
+    )
+    @PostMapping("/employees")
+    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<User> createEmployee(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) throws URISyntaxException {
         log.info("Creating a new employee with email {}", employeeRequestDTO.getEmail());
         if (employeeRequestDTO.getId() != null) {
@@ -77,7 +81,7 @@ public class EmployeeResource {
         User employee = employeeService.createEmployee(employeeRequestDTO);
         mailService.sendCreationEmail(employee);
         return ResponseEntity
-            .created(new URI("/api/users"))
+            .created(new URI("/api/empoyees"))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
             .body(employee);
     }

@@ -58,10 +58,14 @@ public interface CompanyService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<CompanyDTO> findOne(Long id);
+    CompanyDTO findOne(Long id);
 
-    @Transactional(readOnly = true)
-    Optional<CompanyDTO> findOne(String reference);
+    /**
+     * Get the company by reference
+     * @param reference the reference to query
+     * @return the entity
+     */
+    CompanyDTO findOne(String reference);
 
     /**
      * Delete the "id" company.

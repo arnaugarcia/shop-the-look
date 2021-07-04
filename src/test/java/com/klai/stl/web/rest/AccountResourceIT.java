@@ -1,8 +1,9 @@
 package com.klai.stl.web.rest;
 
-import static com.klai.stl.security.AuthoritiesConstants.USER;
+import static com.klai.stl.security.AuthoritiesConstants.*;
 import static com.klai.stl.web.rest.AccountResourceIT.TEST_USER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -20,7 +21,6 @@ import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
-import com.klai.stl.web.rest.vm.CompanyUserVM;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
@@ -137,6 +137,10 @@ class AccountResourceIT {
         validUser.setFirstName("Alice");
         validUser.setLastName("Test");
         validUser.setEmail("test-register-valid@example.com");
+        validUser.setPhone("692464645");
+        validUser.setNif("CIF");
+        validUser.setName("User name");
+        validUser.setUrl("https://weareklai.com");
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(USER));
@@ -151,13 +155,24 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    void getAllAuthorities() throws Exception {
+        restAccountMockMvc
+            .perform(get("/api/authorities").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").value(hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN)));
+    }
+
+    @Test
+    @Transactional
     void testRegisterValidCompany() throws Exception {
-        CompanyUserVM companyUserVM = new CompanyUserVM();
+        ManagedUserVM companyUserVM = new ManagedUserVM();
         companyUserVM.setLogin("company-test-register-valid");
         companyUserVM.setPassword("password");
         companyUserVM.setFirstName("Alice");
         companyUserVM.setLastName("Test");
-        companyUserVM.setCif(COMPANY_CIF);
+        companyUserVM.setNif(COMPANY_CIF);
         companyUserVM.setPhone("692464645");
         companyUserVM.setUrl("https://weareklai.com");
         companyUserVM.setCommercialName("Klai");
@@ -173,9 +188,7 @@ class AccountResourceIT {
 
         restAccountMockMvc
             .perform(
-                post("/api/register/company")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(companyUserVM))
+                post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyUserVM))
             )
             .andExpect(status().isCreated());
 
@@ -188,7 +201,7 @@ class AccountResourceIT {
         final Company company = companyOptional.get();
         assertThat(company.getCompanySize()).isEqualTo(companyUserVM.getSize());
         assertThat(company.getIndustry()).isEqualTo(companyUserVM.getIndustry());
-        assertThat(company.getNif()).isEqualTo(companyUserVM.getCif());
+        assertThat(company.getNif()).isEqualTo(companyUserVM.getNif());
         assertThat(company.getName()).isEqualTo(companyUserVM.getName());
         assertThat(company.getVat()).isEqualTo(companyUserVM.getVat());
         assertThat(company.getUrl()).isEqualTo(companyUserVM.getUrl());
@@ -296,6 +309,10 @@ class AccountResourceIT {
         firstUser.setFirstName("Alice");
         firstUser.setLastName("Something");
         firstUser.setEmail("alice@example.com");
+        firstUser.setPhone("692464645");
+        firstUser.setNif("CIF");
+        firstUser.setName("User name");
+        firstUser.setUrl("https://weareklai.com");
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(USER));
@@ -307,6 +324,11 @@ class AccountResourceIT {
         secondUser.setFirstName(firstUser.getFirstName());
         secondUser.setLastName(firstUser.getLastName());
         secondUser.setEmail("alice2@example.com");
+        secondUser.setNif("CIF2");
+        secondUser.setUrl(firstUser.getUrl());
+        secondUser.setUrl(firstUser.getUrl());
+        secondUser.setPhone(firstUser.getPhone());
+        secondUser.setName(firstUser.getName());
         secondUser.setImageUrl(firstUser.getImageUrl());
         secondUser.setLangKey(firstUser.getLangKey());
         secondUser.setCreatedBy(firstUser.getCreatedBy());
@@ -338,10 +360,63 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    void testRegisterDuplicateNif() throws Exception {
+        // First registration
+        ManagedUserVM firstUser = new ManagedUserVM();
+        firstUser.setLogin("alice");
+        firstUser.setPassword("password");
+        firstUser.setFirstName("Alice");
+        firstUser.setLastName("Something");
+        firstUser.setEmail("alice@example.com");
+        firstUser.setPhone("692464645");
+        firstUser.setNif("NIF");
+        firstUser.setName("User name");
+        firstUser.setUrl("https://weareklai.com");
+        firstUser.setImageUrl("http://placehold.it/50x50");
+        firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        firstUser.setAuthorities(Collections.singleton(USER));
+
+        // Duplicated NIF
+        ManagedUserVM secondUser = new ManagedUserVM();
+        secondUser.setLogin("alice2");
+        secondUser.setPassword(firstUser.getPassword());
+        secondUser.setFirstName(firstUser.getFirstName());
+        secondUser.setLastName(firstUser.getLastName());
+        secondUser.setEmail("alice2@example.com");
+        secondUser.setNif(firstUser.getNif());
+        secondUser.setUrl(firstUser.getUrl());
+        secondUser.setUrl(firstUser.getUrl());
+        secondUser.setPhone(firstUser.getPhone());
+        secondUser.setName(firstUser.getName());
+        secondUser.setImageUrl(firstUser.getImageUrl());
+        secondUser.setLangKey(firstUser.getLangKey());
+        secondUser.setCreatedBy(firstUser.getCreatedBy());
+        secondUser.setCreatedDate(firstUser.getCreatedDate());
+        secondUser.setLastModifiedBy(firstUser.getLastModifiedBy());
+        secondUser.setLastModifiedDate(firstUser.getLastModifiedDate());
+        secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+
+        // First user
+        restAccountMockMvc
+            .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(firstUser)))
+            .andExpect(status().isCreated());
+
+        // Second user
+        restAccountMockMvc
+            .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(secondUser)))
+            .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @Transactional
     void testRegisterDuplicateEmail() throws Exception {
         // First user
         ManagedUserVM firstUser = new ManagedUserVM();
         firstUser.setLogin("test-register-duplicate-email");
+        firstUser.setPhone("692464645");
+        firstUser.setNif("CIF1");
+        firstUser.setName("User name");
+        firstUser.setUrl("https://weareklai.com");
         firstUser.setPassword("password");
         firstUser.setFirstName("Alice");
         firstUser.setLastName("Test");
@@ -365,6 +440,10 @@ class AccountResourceIT {
         secondUser.setFirstName(firstUser.getFirstName());
         secondUser.setLastName(firstUser.getLastName());
         secondUser.setEmail(firstUser.getEmail());
+        secondUser.setNif("CIF2");
+        secondUser.setUrl(firstUser.getUrl());
+        secondUser.setPhone(firstUser.getPhone());
+        secondUser.setName(firstUser.getName());
         secondUser.setImageUrl(firstUser.getImageUrl());
         secondUser.setLangKey(firstUser.getLangKey());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
@@ -388,6 +467,10 @@ class AccountResourceIT {
         userWithUpperCaseEmail.setFirstName(firstUser.getFirstName());
         userWithUpperCaseEmail.setLastName(firstUser.getLastName());
         userWithUpperCaseEmail.setEmail("TEST-register-duplicate-email@example.com");
+        userWithUpperCaseEmail.setNif("CIF3");
+        userWithUpperCaseEmail.setUrl(firstUser.getUrl());
+        userWithUpperCaseEmail.setPhone(firstUser.getPhone());
+        userWithUpperCaseEmail.setName(firstUser.getName());
         userWithUpperCaseEmail.setImageUrl(firstUser.getImageUrl());
         userWithUpperCaseEmail.setLangKey(firstUser.getLangKey());
         userWithUpperCaseEmail.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
@@ -422,6 +505,10 @@ class AccountResourceIT {
         validUser.setPassword("password");
         validUser.setFirstName("Bad");
         validUser.setLastName("Guy");
+        validUser.setPhone("692464645");
+        validUser.setNif("CIF");
+        validUser.setName("User name");
+        validUser.setUrl("https://weareklai.com");
         validUser.setEmail("badguy@example.com");
         validUser.setActivated(true);
         validUser.setImageUrl("http://placehold.it/50x50");
@@ -434,7 +521,7 @@ class AccountResourceIT {
 
         Optional<User> userDup = userRepository.findOneWithAuthoritiesByLogin("badguy");
         assertThat(userDup).isPresent();
-        assertThat(userDup.get().getAuthorities()).hasSize(1).containsExactly(authorityRepository.findById(USER).get());
+        assertThat(userDup.get().getAuthorities()).hasSize(2).doesNotContain(authorityRepository.findById(ADMIN).get());
     }
 
     @Test

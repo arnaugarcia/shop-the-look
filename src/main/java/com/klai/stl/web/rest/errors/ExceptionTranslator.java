@@ -1,5 +1,7 @@
 package com.klai.stl.web.rest.errors;
 
+import static com.klai.stl.web.rest.errors.ErrorConstants.NOT_FOUND;
+
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -122,6 +124,32 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         NativeWebRequest request
     ) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleCompanyNotFoundException(
+        com.klai.stl.service.exception.CompanyNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, "Company not found", "company", "companynotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleNifAlreadyUsedException(
+        com.klai.stl.service.exception.NIFAlreadyRegistered ex,
+        NativeWebRequest request
+    ) {
+        NIFAlreadyUsedException problem = new NIFAlreadyUsedException();
         return create(
             problem,
             request,

@@ -9,6 +9,7 @@ import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.exception.CompanyNotFound;
+import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +46,9 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = companyMapper.toEntity(companyDTO);
         if (isEmpty(companyDTO.getId())) {
             company.setReference(generateReference());
+            if (companyRepository.findByNif(company.getNif()).isPresent()) {
+                throw new NIFAlreadyRegistered();
+            }
         }
         return saveAndTransform(company);
     }
@@ -103,16 +107,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CompanyDTO> findOne(Long id) {
+    public CompanyDTO findOne(Long id) {
         log.debug("Request to get Company : {}", id);
-        return companyRepository.findOneWithEagerRelationships(id).map(companyMapper::toDto);
+        return companyRepository.findOneWithEagerRelationships(id).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CompanyDTO> findOne(String reference) {
+    public CompanyDTO findOne(String reference) {
         log.debug("Request to get Company : {}", reference);
-        return findByReference(reference).map(companyMapper::toDto);
+        return findByReference(reference).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
     }
 
     private Optional<Company> findByReference(String reference) {
