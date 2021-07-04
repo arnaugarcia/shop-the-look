@@ -407,15 +407,23 @@ public class Company implements Serializable {
 
     public Company addUser(User user) {
         this.users.add(user);
+        user.setCompany(this);
         return this;
     }
 
     public Company removeUser(User user) {
         this.users.remove(user);
+        user.setCompany(null);
         return this;
     }
 
     public void setUsers(Set<User> users) {
+        if (this.users != null) {
+            this.users.forEach(i -> i.setCompany(null));
+        }
+        if (users != null) {
+            users.forEach(i -> i.setCompany(this));
+        }
         this.users = users;
     }
 
