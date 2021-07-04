@@ -16,7 +16,6 @@ public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     @Mapping(target = "subscriptionPlan", source = "subscriptionPlan", qualifiedByName = "name")
     CompanyDTO toDto(Company s);
 
-    @Mapping(target = "removeUser", ignore = true)
     Company toEntity(CompanyDTO companyDTO);
 
     @Named("nif")
