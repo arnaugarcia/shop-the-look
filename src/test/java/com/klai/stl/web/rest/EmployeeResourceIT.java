@@ -421,4 +421,17 @@ class EmployeeResourceIT {
         int databaseSizeAfterDelete = afterDelete.get().getUsers().size();
         assertThat(databaseSizeAfterDelete).isEqualTo(0);
     }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "delete-current-employee", authorities = { ADMIN })
+    public void deleteCurrentManager() throws Exception {
+        final String login = "delete-current-employee";
+        final User user = UserResourceIT.createEntity(login);
+        company.addUser(user);
+        em.persist(user);
+        em.persist(company);
+
+        restPhotoMockMvc.perform(delete(ENTITY_API_URL_LOGIN, login).contentType(APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
 }
