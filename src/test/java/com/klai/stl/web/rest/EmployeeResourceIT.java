@@ -35,16 +35,25 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class EmployeeResourceIT {
 
-    private static final String EMPLOYEE_EMAIL = "email@email.com";
+    private static final String EMPLOYEE_EMAIL = "employee@email.com";
+
     private static final String EMPLOYEE_FIRSTNAME = "EMPLOYEE_FIRSTNAME";
+    private static final String UPDATED_EMPLOYEE_FIRSTNAME = "UPDATED_EMPLOYEE_FIRSTNAME";
+
     private static final String EMPLOYEE_LASTNAME = "EMPLOYEE_LASTNAME";
+    private static final String UPDATED_EMPLOYEE_LASTNAME = "UPDATED_EMPLOYEE_LASTNAME";
+
     private static final String EMPLOYEE_IMAGE = "EMPLOYEE_IMAGE";
+    private static final String UPDATED_EMPLOYEE_IMAGE = "UPDATED_EMPLOYEE_IMAGE";
+
     private static final String EMPLOYEE_LANG_KEY = "ca";
+    private static final String UPDATED_EMPLOYEE_LANG_KEY = "es";
+
     private static final String EMPLOYEE_LOGIN = "employee";
     private static final String EMPLOYEE_COMPANY = "COMPANY";
 
     private static final String ENTITY_API_URL = "/api/employees";
-    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+    private static final String ENTITY_API_URL_LOGIN = ENTITY_API_URL + "/{login}";
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -74,6 +83,11 @@ class EmployeeResourceIT {
         employee = UserResourceIT.createEntity(em);
         employeeAdminRequest = createAdminRequest();
         employeeRequest = createRequest();
+        updateRequest = createUpdateRequest();
+    }
+
+    private UpdateEmployeeRequestDTO createUpdateRequest() {
+        return UpdateEmployeeRequestDTO.builder().build();
     }
 
     private NewEmployeeRequestDTO createRequest() {
@@ -125,6 +139,7 @@ class EmployeeResourceIT {
         User result = oneByLogin.get();
         assertThat(result.getAuthorities()).hasSize(1);
         assertThat(result.getEmail()).isEqualTo(EMPLOYEE_EMAIL);
+        assertThat(result.getImageUrl()).isEqualTo(EMPLOYEE_IMAGE);
         assertThat(result.getFirstName()).isEqualTo(EMPLOYEE_FIRSTNAME);
         assertThat(result.getLastName()).isEqualTo(EMPLOYEE_LASTNAME);
         assertThat(result.getLangKey()).isEqualTo(EMPLOYEE_LANG_KEY);
@@ -191,6 +206,7 @@ class EmployeeResourceIT {
         assertThat(result.getLastName()).isEqualTo(EMPLOYEE_LASTNAME);
         assertThat(result.getLangKey()).isEqualTo(EMPLOYEE_LANG_KEY);
         assertThat(result.getLogin()).isEqualTo(EMPLOYEE_LOGIN);
+        assertThat(result.getImageUrl()).isEqualTo(EMPLOYEE_IMAGE);
         assertThat(result.isActivated()).isTrue();
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isEqualTo(EMPLOYEE_COMPANY);
@@ -217,8 +233,6 @@ class EmployeeResourceIT {
     @Test
     @Transactional
     public void updateEmployee() {
-        // employeeRequest
-
         //        When
 
         //        Then
