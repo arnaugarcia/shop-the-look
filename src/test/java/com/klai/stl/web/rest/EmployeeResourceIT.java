@@ -203,4 +203,22 @@ class EmployeeResourceIT {
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isEqualTo(EMPLOYEE_COMPANY);
     }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = { ADMIN })
+    void createUserAsAdminWithNotExistingCompany() throws Exception {
+        restPhotoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeAdminRequest)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    void createEmployeeAsUser() throws Exception {
+        restPhotoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeAdminRequest)))
+            .andExpect(status().isForbidden());
+    }
 }
