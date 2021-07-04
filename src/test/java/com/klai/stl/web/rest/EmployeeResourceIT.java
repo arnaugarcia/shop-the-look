@@ -51,6 +51,8 @@ class EmployeeResourceIT {
 
     private Company company;
 
+    private User employee;
+
     private static final String EMPLOYEE_EMAIL = "email@email.com";
     private static final String EMPLOYEE_FIRSTNAME = "EMPLOYEE_FIRSTNAME";
     private static final String EMPLOYEE_LASTNAME = "EMPLOYEE_LASTNAME";
@@ -60,18 +62,19 @@ class EmployeeResourceIT {
 
     @BeforeEach
     public void initTest() {
-        company = createBasicEntity();
+        company = CompanyResourceIT.createBasicEntity();
+        employee = UserResourceIT.createEntity(em);
     }
 
     @Test
     @Transactional
     @WithMockUser(username = "create-employee", authorities = { MANAGER })
     void createEmployee() throws Exception {
-        final User manager = UserResourceIT.createEntity("create-employee");
+        employee.setLogin("create-employee");
         em.persist(company);
-        manager.setCompany(company);
-        em.persist(manager);
-        company.addUser(manager);
+        employee.setCompany(company);
+        em.persist(employee);
+        company.addUser(employee);
         int databaseSizeBeforeCreate = companyRepository.findByNif(company.getNif()).get().getUsers().size();
 
         // Create the user
@@ -140,12 +143,12 @@ class EmployeeResourceIT {
     @WithMockUser(username = "create-employee-existing-email", authorities = { MANAGER })
     void createUserWithExistingEmail() throws Exception {
         final String EXISTING_EMAIL = "employee@email.com";
-        final User manager = UserResourceIT.createEntity(EXISTING_EMAIL);
-        manager.setEmail(EXISTING_EMAIL);
-        manager.setLogin("create-employee-existing-email");
-        manager.setCompany(company);
-        em.persist(manager);
-        company.addUser(manager);
+        employee.setEmail(EXISTING_EMAIL);
+        employee.setEmail(EXISTING_EMAIL);
+        employee.setLogin("create-employee-existing-email");
+        employee.setCompany(company);
+        em.persist(employee);
+        company.addUser(employee);
         em.persist(company);
         UserDTO userDTO = createAUserDTO();
         userDTO.setEmail(EXISTING_EMAIL);
