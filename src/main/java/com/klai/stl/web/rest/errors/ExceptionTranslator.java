@@ -1,5 +1,7 @@
 package com.klai.stl.web.rest.errors;
 
+import static com.klai.stl.web.rest.errors.ErrorConstants.NOT_FOUND;
+
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -134,7 +136,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         com.klai.stl.service.exception.CompanyNotFound ex,
         NativeWebRequest request
     ) {
-        CompanyNotFound problem = new CompanyNotFound();
+        NotFoundException problem = new NotFoundException(NOT_FOUND, "Company not found", "company", "companynotfound");
         return create(
             problem,
             request,

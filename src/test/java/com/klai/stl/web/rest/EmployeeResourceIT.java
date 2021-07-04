@@ -123,6 +123,7 @@ class EmployeeResourceIT {
         final String EXISTING_LOGIN = "create-employee-existing-login";
         final User manager = UserResourceIT.createEntity(EXISTING_LOGIN);
         manager.setLogin(EXISTING_LOGIN);
+        manager.setCompany(company);
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
@@ -142,6 +143,7 @@ class EmployeeResourceIT {
         final User manager = UserResourceIT.createEntity(EXISTING_EMAIL);
         manager.setEmail(EXISTING_EMAIL);
         manager.setLogin("create-employee-existing-email");
+        manager.setCompany(company);
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);

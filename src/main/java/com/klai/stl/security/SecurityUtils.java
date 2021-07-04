@@ -1,5 +1,6 @@
 package com.klai.stl.security;
 
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 
 import java.util.Optional;
@@ -88,9 +89,9 @@ public final class SecurityUtils {
      *
      * @return true if the current user has the authority ADMIN, false otherwise.
      */
-    public static boolean isCurrentUserIsAdmin() {
+    public static boolean isCurrentUserAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && getAuthorities(authentication).anyMatch(MANAGER::equals);
+        return authentication != null && getAuthorities(authentication).anyMatch(ADMIN::equals);
     }
 
     private static Stream<String> getAuthorities(Authentication authentication) {

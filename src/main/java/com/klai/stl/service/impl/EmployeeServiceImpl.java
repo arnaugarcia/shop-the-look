@@ -1,6 +1,6 @@
 package com.klai.stl.service.impl;
 
-import static com.klai.stl.security.SecurityUtils.isCurrentUserIsAdmin;
+import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.service.CompanyService;
@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private String findCurrentUserCompanyReference(EmployeeRequestDTO employeeRequestDTO) {
         final String companyReference;
-        if (isCurrentUserIsAdmin()) {
+        if (isCurrentUserAdmin()) {
             if (employeeRequestDTO.getCompanyReference().isEmpty()) {
                 throw new CompanyReferenceNotFound();
             }
