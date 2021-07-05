@@ -54,6 +54,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return userService.getUserWithAuthoritiesByLogin(login).get();
     }
 
+    @Override
+    public void removeEmployee(String login) {}
+
     private void checkLoginBelongsToCompany(String login, String currentUserCompanyReference) {
         companyService
             .findOne(currentUserCompanyReference)

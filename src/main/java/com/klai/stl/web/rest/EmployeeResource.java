@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import tech.jhipster.web.util.HeaderUtil;
 
 /**
  * REST controller for managing users (only when current user has MANAGER role)
@@ -111,5 +112,18 @@ public class EmployeeResource {
             .created(new URI("/api/empoyees/" + login))
             .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
             .body(employee);
+    }
+
+    /**
+     * {@code DELETE  /employee/:login} : delete the "login" employee.
+     *
+     * @param login the login of the employee to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/employees/{login}")
+    public ResponseEntity<Void> removeEmployee(@PathVariable String login) {
+        log.debug("REST request to delete an employee : {}", login);
+        employeeService.removeEmployee(login);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, login)).build();
     }
 }

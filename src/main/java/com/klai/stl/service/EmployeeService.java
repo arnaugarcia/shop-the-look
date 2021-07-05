@@ -18,4 +18,6 @@ public interface EmployeeService {
      * @return the updated user
      */
     User updateEmployee(UpdateEmployeeRequestDTO employeeRequest, String login);
+
+    void removeEmployee(String login);
 }
