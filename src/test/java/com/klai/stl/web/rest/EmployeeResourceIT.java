@@ -365,11 +365,12 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = { MANAGER })
+    @WithMockUser(username = "remove-employee", authorities = { MANAGER })
     public void removeEmployee() throws Exception {
-        final User manager = UserResourceIT.createEntity(em);
-        company.addUser(employee);
+        final User manager = UserResourceIT.createEntity("remove-employee");
         em.persist(employee);
+        em.persist(manager);
+        company.addUser(employee);
         company.addUser(manager);
         em.persist(manager);
 
@@ -396,10 +397,42 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = { ADMIN })
-    public void removeEmployeeAsAdmin() throws Exception {
-        company.addUser(employee);
+    @WithMockUser(authorities = { MANAGER })
+    public void removeYourself() throws Exception {
+        final User manager = UserResourceIT.createEntity(em);
         em.persist(employee);
+        em.persist(manager);
+        company.addUser(employee);
+        company.addUser(manager);
+        em.persist(manager);
+        em.persist(company);
+
+        restPhotoMockMvc
+            .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = { MANAGER })
+    public void removeEmployeeWithNoCompanyAssociated() throws Exception {
+        em.persist(employee);
+
+        restPhotoMockMvc
+            .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "remove-employee-admin", authorities = { ADMIN })
+    public void removeEmployeeAsAdmin() throws Exception {
+        final User manager = UserResourceIT.createEntity("remove-employee-admin");
+        em.persist(employee);
+        em.persist(manager);
+        company.addUser(employee);
+        company.addUser(manager);
+        em.persist(manager);
 
         em.persist(company);
 
@@ -408,7 +441,7 @@ class EmployeeResourceIT {
         assertThat(beforeDelete).isPresent();
 
         int databaseSizeBeforeDelete = beforeDelete.get().getUsers().size();
-        assertThat(databaseSizeBeforeDelete).isEqualTo(1);
+        assertThat(databaseSizeBeforeDelete).isEqualTo(2);
 
         restPhotoMockMvc
             .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
@@ -419,7 +452,7 @@ class EmployeeResourceIT {
         assertThat(afterDelete).isPresent();
 
         int databaseSizeAfterDelete = afterDelete.get().getUsers().size();
-        assertThat(databaseSizeAfterDelete).isEqualTo(0);
+        assertThat(databaseSizeAfterDelete).isEqualTo(1);
     }
 
     @Test
@@ -438,7 +471,14 @@ class EmployeeResourceIT {
     @Test
     @Transactional
     @WithMockUser
-    public void removeEmployeeAsEmployee() throws Exception {
+    public void removeEmployeeAsUser() throws Exception {
         restPhotoMockMvc.perform(delete(ENTITY_API_URL_LOGIN, "login").contentType(APPLICATION_JSON)).andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    public void removeNotExistingEmployee() throws Exception {
+        restPhotoMockMvc.perform(delete(ENTITY_API_URL_LOGIN, "login").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 }

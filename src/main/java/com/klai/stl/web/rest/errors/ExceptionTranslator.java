@@ -1,5 +1,6 @@
 package com.klai.stl.web.rest.errors;
 
+import static com.klai.stl.web.rest.errors.ErrorConstants.DEFAULT_TYPE;
 import static com.klai.stl.web.rest.errors.ErrorConstants.NOT_FOUND;
 
 import java.net.URI;
@@ -72,7 +73,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         String requestUri = nativeRequest != null ? nativeRequest.getRequestURI() : StringUtils.EMPTY;
         ProblemBuilder builder = Problem
             .builder()
-            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
+            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? DEFAULT_TYPE : problem.getType())
             .withStatus(problem.getStatus())
             .withTitle(problem.getTitle())
             .with(PATH_KEY, requestUri);
@@ -150,6 +151,42 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         NativeWebRequest request
     ) {
         NotFoundException problem = new NotFoundException(NOT_FOUND, "Employee not found", "employee", "employeenotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleCompanyNotAssociatedException(
+        com.klai.stl.service.exception.CompanyNotAssociated ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(
+            DEFAULT_TYPE,
+            "No company was found for user " + ex.getLogin(),
+            "employee",
+            "employeenotasociated"
+        );
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleYourselfDeletionException(
+        com.klai.stl.service.exception.OwnDeletionException ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(
+            DEFAULT_TYPE,
+            "Cannot remove yourself from a company",
+            "employee",
+            "employeenotasociated"
+        );
         return create(
             problem,
             request,

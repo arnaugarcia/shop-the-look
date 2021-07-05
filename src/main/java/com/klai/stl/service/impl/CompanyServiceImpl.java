@@ -55,7 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private String generateReference() {
         String reference = randomAlphanumeric(5);
-        if (findByReference(reference).isEmpty()) {
+        if (companyRepository.findByReference(reference).isEmpty()) {
             return reference;
         }
         return generateReference();
@@ -96,9 +96,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO addEmployee(User employee, String companyReference) {
-        final Company company = findByReference(companyReference).orElseThrow(CompanyNotFound::new);
+        final Company company = findByReferenceOrThrow(companyReference);
         company.addUser(employee);
         return saveAndTransform(company);
+    }
+
+    @Override
+    public void removeEmployee(User user, String companyReference) {
+        final Company company = companyRepository.findByUser(user.getLogin()).orElseThrow(CompanyNotFound::new);
+        company.removeUser(user);
+        companyRepository.save(company);
     }
 
     public Page<CompanyDTO> findAllWithEagerRelationships(Pageable pageable) {
@@ -116,16 +123,16 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional(readOnly = true)
     public CompanyDTO findOne(String reference) {
         log.debug("Request to get Company : {}", reference);
-        return findByReference(reference).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
-    }
-
-    private Optional<Company> findByReference(String reference) {
-        return companyRepository.findByReference(reference);
+        return companyRepository.findByReference(reference).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Company : {}", id);
         companyRepository.deleteById(id);
+    }
+
+    private Company findByReferenceOrThrow(String companyReference) {
+        return companyRepository.findByReference(companyReference).orElseThrow(CompanyNotFound::new);
     }
 }

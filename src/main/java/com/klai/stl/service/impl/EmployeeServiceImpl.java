@@ -1,7 +1,8 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
-import static java.util.Optional.ofNullable;
+import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
+import static java.util.Objects.isNull;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.security.SecurityUtils;
@@ -9,11 +10,15 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
+import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import com.klai.stl.service.exception.CompanyNotAssociated;
 import com.klai.stl.service.exception.CompanyReferenceNotFound;
 import com.klai.stl.service.exception.EmployeeNotFound;
-import java.util.Optional;
+import com.klai.stl.service.exception.OwnDeletionException;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +34,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public User createEmployee(NewEmployeeRequestDTO newEmployeeRequestDTO) {
-        final String companyReference = findCurrentUserCompanyReference(ofNullable(newEmployeeRequestDTO.getCompanyReference()));
+        final String companyReference;
+        if (isCurrentUserAdmin()) {
+            if (isNull(newEmployeeRequestDTO.getCompanyReference())) {
+                throw new CompanyReferenceNotFound();
+            }
+            companyReference = newEmployeeRequestDTO.getCompanyReference();
+        } else {
+            companyReference = findCurrentUserCompanyReference();
+        }
+
         final AdminUserDTO user = AdminUserDTO
             .builder()
             .email(newEmployeeRequestDTO.getEmail())
@@ -46,37 +60,61 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public User updateEmployee(UpdateEmployeeRequestDTO employeeRequest, String login) {
-        final User user = userService.getUserWithAuthoritiesByLogin(login).orElseThrow(() -> new EmployeeNotFound(login));
         if (SecurityUtils.isCurrentUserManager()) {
-            checkLoginBelongsToCompany(login, findCurrentUserCompanyReference(ofNullable(user.getCompany().getReference())));
+            checkLoginBelongsToCompany(login, findCurrentUserCompanyReference());
         }
         userService.updateUser(employeeRequest, login);
         return userService.getUserWithAuthoritiesByLogin(login).get();
     }
 
     @Override
-    public void removeEmployee(String login) {}
+    public void removeEmployee(String login) {
+        if (isRemovingHimself(login)) {
+            throw new OwnDeletionException();
+        }
+        if (isCurrentUserManager()) {
+            final String currentUserCompanyReference = findCurrentUserCompanyReference();
+            checkLoginBelongsToCompany(login, currentUserCompanyReference);
+        }
+        companyService.removeEmployee(findUserByLogin(login), findUserCompanyReference(login));
+        userService.deleteUser(login);
+    }
+
+    private boolean isRemovingHimself(String login) {
+        return findUserByLogin(login).getLogin().equals(login);
+    }
+
+    private Predicate<UserDTO> byLogin(String login) {
+        return userDTO -> userDTO.getLogin().equals(login);
+    }
+
+    private Supplier<EmployeeNotFound> employeeNotFound(String login) {
+        return () -> new EmployeeNotFound(login);
+    }
 
     private void checkLoginBelongsToCompany(String login, String currentUserCompanyReference) {
         companyService
             .findOne(currentUserCompanyReference)
             .getUsers()
             .stream()
-            .filter(userDTO -> userDTO.getLogin().equals(login))
+            .filter(byLogin(login))
             .findFirst()
-            .orElseThrow(() -> new EmployeeNotFound(login));
+            .orElseThrow(employeeNotFound(login));
     }
 
-    private String findCurrentUserCompanyReference(Optional<String> companyReference) {
-        final String result;
-        if (isCurrentUserAdmin()) {
-            if (companyReference.isEmpty()) {
-                throw new CompanyReferenceNotFound();
-            }
-            result = companyService.findOne(companyReference.get()).getReference();
-        } else {
-            result = this.userService.getUserWithAuthorities().orElseThrow().getCompany().getReference();
+    private String findUserCompanyReference(String login) {
+        User user = findUserByLogin(login);
+        if (isNull(user.getCompany())) {
+            throw new CompanyNotAssociated(user.getLogin());
         }
-        return result;
+        return user.getCompany().getReference();
+    }
+
+    private User findUserByLogin(String login) {
+        return userService.getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
+    }
+
+    private String findCurrentUserCompanyReference() {
+        return findUserCompanyReference(SecurityUtils.getCurrentUserLogin().get());
     }
 }

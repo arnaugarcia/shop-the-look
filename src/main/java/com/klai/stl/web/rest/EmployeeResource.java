@@ -121,6 +121,7 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/employees/{login}")
+    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<Void> removeEmployee(@PathVariable String login) {
         log.debug("REST request to delete an employee : {}", login);
         employeeService.removeEmployee(login);

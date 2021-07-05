@@ -37,5 +37,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     Optional<Company> findByNif(String nif);
 
-    Optional<Company> findByReference(String reference);
+    @Query("select company from Company company left join fetch company.users where company.reference =:reference")
+    Optional<Company> findByReference(@Param("reference") String reference);
+
+    @Query("select company from Company company left join fetch company.users users where users.login = :login")
+    Optional<Company> findByUser(@Param("login") String login);
 }

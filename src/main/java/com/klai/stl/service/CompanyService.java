@@ -73,4 +73,11 @@ public interface CompanyService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Removes the employee from the desired company
+     * @param user the employee to remove
+     * @param companyReference the reference of the company
+     */
+    void removeEmployee(User user, String companyReference);
 }
