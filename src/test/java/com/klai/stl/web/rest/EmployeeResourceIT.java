@@ -366,7 +366,7 @@ class EmployeeResourceIT {
     @Test
     @Transactional
     @WithMockUser(authorities = { MANAGER })
-    public void deleteEmployee() throws Exception {
+    public void removeEmployee() throws Exception {
         final User manager = UserResourceIT.createEntity(em);
         company.addUser(employee);
         em.persist(employee);
@@ -397,7 +397,7 @@ class EmployeeResourceIT {
     @Test
     @Transactional
     @WithMockUser(authorities = { ADMIN })
-    public void deleteEmployeeAsAdmin() throws Exception {
+    public void removeEmployeeAsAdmin() throws Exception {
         company.addUser(employee);
         em.persist(employee);
 
@@ -424,8 +424,8 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "delete-current-employee", authorities = { MANAGER })
-    public void deleteCurrentManager() throws Exception {
+    @WithMockUser(username = "remove-current-employee", authorities = { MANAGER })
+    public void removeCurrentManager() throws Exception {
         final String login = "delete-current-employee";
         final User user = UserResourceIT.createEntity(login);
         company.addUser(user);
