@@ -384,7 +384,7 @@ class EmployeeResourceIT {
 
         restPhotoMockMvc
             .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
 
         final Optional<Company> afterDelete = companyRepository.findByReferenceWithEagerRelationships(company.getReference());
 
@@ -412,7 +412,7 @@ class EmployeeResourceIT {
 
         restPhotoMockMvc
             .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
 
         final Optional<Company> afterDelete = companyRepository.findByReferenceWithEagerRelationships(company.getReference());
 
