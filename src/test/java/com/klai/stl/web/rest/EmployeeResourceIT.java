@@ -457,7 +457,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "remove-current-employee", authorities = { MANAGER })
+    @WithMockUser(username = "delete-current-employee", authorities = { MANAGER })
     public void removeCurrentManager() throws Exception {
         final String login = "delete-current-employee";
         final User user = UserResourceIT.createEntity(login);
@@ -477,7 +477,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
+    @WithMockUser(username = "not-existing-user", authorities = MANAGER)
     public void removeNotExistingEmployee() throws Exception {
         restPhotoMockMvc.perform(delete(ENTITY_API_URL_LOGIN, "login").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
     }

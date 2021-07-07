@@ -69,19 +69,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void removeEmployee(String login) {
-        if (isRemovingHimself(login)) {
+        final User currentUser = userService.getUserWithAuthorities().orElseThrow(EmployeeNotFound::new);
+        if (currentUser.getLogin().equals(login)) {
             throw new OwnDeletionException();
         }
+
         if (isCurrentUserManager()) {
             final String currentUserCompanyReference = findCurrentUserCompanyReference();
             checkLoginBelongsToCompany(login, currentUserCompanyReference);
         }
         companyService.removeEmployee(findUserByLogin(login), findUserCompanyReference(login));
         userService.deleteUser(login);
-    }
-
-    private boolean isRemovingHimself(String login) {
-        return userService.getUserWithAuthorities().stream().anyMatch(user -> user.getLogin().equals(login));
     }
 
     private Predicate<UserDTO> byLogin(String login) {
