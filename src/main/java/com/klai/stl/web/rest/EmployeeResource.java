@@ -11,6 +11,7 @@ import com.klai.stl.service.EmployeeQueryService;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.MailService;
 import com.klai.stl.service.criteria.EmployeeCriteria;
+import com.klai.stl.service.dto.EmployeeDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
@@ -134,9 +135,9 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
      */
     @GetMapping("/employees")
-    public ResponseEntity<List<UserDTO>> getAllEmployees(EmployeeCriteria criteria, Pageable pageable) {
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees(EmployeeCriteria criteria, Pageable pageable) {
         log.debug("REST request to get all employees");
-        final Page<UserDTO> page = employeeQueryService.findByCriteria(criteria, pageable);
+        final Page<EmployeeDTO> page = employeeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = generatePaginationHttpHeaders(fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
