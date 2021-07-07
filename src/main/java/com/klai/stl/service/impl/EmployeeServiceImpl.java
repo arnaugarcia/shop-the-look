@@ -81,7 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private boolean isRemovingHimself(String login) {
-        return findUserByLogin(login).getLogin().equals(login);
+        return userService.getUserWithAuthorities().stream().anyMatch(user -> user.getLogin().equals(login));
     }
 
     private Predicate<UserDTO> byLogin(String login) {
