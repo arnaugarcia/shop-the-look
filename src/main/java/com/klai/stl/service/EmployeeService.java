@@ -1,8 +1,10 @@
 package com.klai.stl.service;
 
 import com.klai.stl.domain.User;
+import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import java.util.List;
 
 public interface EmployeeService {
     /**
@@ -19,5 +21,9 @@ public interface EmployeeService {
      */
     User updateEmployee(UpdateEmployeeRequestDTO employeeRequest, String login);
 
+    /**
+     * Removes the employee and deletes the account. If the user is the current user it throws an Exception.
+     * @param login the login of the user to remove
+     */
     void removeEmployee(String login);
 }
