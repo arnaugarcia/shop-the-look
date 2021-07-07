@@ -91,6 +91,7 @@ public class EmployeeQueryService extends QueryService<User> {
     }
 
     private Specification<User> nameLike(String name) {
-        return (root, query, builder) -> builder.like(builder.concat(root.get(User_.firstName), root.get(User_.lastName)), name);
+        return (root, query, builder) ->
+            builder.like(builder.concat(root.get(User_.firstName), builder.concat(" ", root.get(User_.lastName))), "%" + name + "%");
     }
 }
