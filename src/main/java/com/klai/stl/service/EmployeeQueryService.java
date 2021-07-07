@@ -25,7 +25,7 @@ import tech.jhipster.service.QueryService;
  * Service for executing complex queries for {@link User} entities in the database.
  * The main input is a {@link com.klai.stl.service.criteria.EmployeeCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link com.klai.stl.service.dto.UserDTO} or a {@link Page} of {@link com.klai.stl.service.dto.UserDTO} which fulfills the criteria.
+ * It returns a {@link List} of {@link com.klai.stl.service.dto.EmployeeDTO} or a {@link Page} of {@link com.klai.stl.service.dto.UserDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
