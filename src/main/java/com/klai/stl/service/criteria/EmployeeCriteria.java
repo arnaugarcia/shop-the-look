@@ -22,14 +22,14 @@ public class EmployeeCriteria implements Serializable, Criteria {
 
     private StringFilter login;
 
-    private StringFilter company;
+    private String company;
 
     public EmployeeCriteria() {}
 
     public EmployeeCriteria(EmployeeCriteria other) {
         this.name = other.name == null ? null : other.name.copy();
         this.login = other.login == null ? null : other.login.copy();
-        this.company = other.company == null ? null : other.company.copy();
+        this.company = other.company;
     }
 
     @Override
@@ -67,18 +67,11 @@ public class EmployeeCriteria implements Serializable, Criteria {
         this.login = login;
     }
 
-    public StringFilter getCompany() {
+    public String getCompany() {
         return company;
     }
 
-    public StringFilter company() {
-        if (company == null) {
-            company = new StringFilter();
-        }
-        return company;
-    }
-
-    public void setCompany(StringFilter company) {
+    public void setCompany(String company) {
         this.company = company;
     }
 
