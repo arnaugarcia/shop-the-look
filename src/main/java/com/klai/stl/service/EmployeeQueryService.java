@@ -2,16 +2,16 @@ package com.klai.stl.service;
 
 import static javax.persistence.criteria.JoinType.LEFT;
 
-import com.klai.stl.domain.*;
+import com.klai.stl.domain.Company;
+import com.klai.stl.domain.Company_;
+import com.klai.stl.domain.User;
+import com.klai.stl.domain.User_;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.service.criteria.EmployeeCriteria;
 import com.klai.stl.service.dto.EmployeeDTO;
 import com.klai.stl.service.exception.EmployeeNotFound;
 import java.util.List;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.SetJoin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
-import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Service for executing complex queries for {@link User} entities in the database.
