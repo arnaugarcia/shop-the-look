@@ -67,13 +67,17 @@ public class EmployeeQueryService extends QueryService<User> {
 
         if (!currentUser.isAdmin()) {
             specification = specification.and(byCompanyReference(currentUser.getCompany().getReference()));
+        } else {
+            specification = specification.and(byCompanyReference(criteria.getCompany()));
         }
 
         if (criteria != null) {
             if (criteria.getName() != null) {
                 specification = specification.and(nameLike(criteria.getName()));
             }
-            if (criteria.getLogin() != null) {}
+            if (criteria.getLogin() != null) {
+                specification = specification.and(loginLike(criteria.getLogin()));
+            }
         }
 
         return specification;
@@ -93,5 +97,9 @@ public class EmployeeQueryService extends QueryService<User> {
     private Specification<User> nameLike(String name) {
         return (root, query, builder) ->
             builder.like(builder.concat(root.get(User_.firstName), builder.concat(" ", root.get(User_.lastName))), "%" + name + "%");
+    }
+
+    private Specification<User> loginLike(String login) {
+        return (root, query, builder) -> builder.like(root.get(User_.login), login);
     }
 }
