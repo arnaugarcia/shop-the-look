@@ -2,23 +2,33 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static tech.jhipster.web.util.HeaderUtil.*;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
+import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
 
 import com.klai.stl.domain.User;
+import com.klai.stl.service.EmployeeQueryService;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.MailService;
-import com.klai.stl.service.dto.requests.*;
+import com.klai.stl.service.criteria.EmployeeCriteria;
+import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +52,12 @@ public class EmployeeResource {
 
     private final MailService mailService;
 
-    public EmployeeResource(EmployeeService employeeService, MailService mailService) {
+    private final EmployeeQueryService employeeQueryService;
+
+    public EmployeeResource(EmployeeService employeeService, MailService mailService, EmployeeQueryService employeeQueryService) {
         this.employeeService = employeeService;
         this.mailService = mailService;
+        this.employeeQueryService = employeeQueryService;
     }
 
     /**
@@ -112,6 +125,20 @@ public class EmployeeResource {
             .created(new URI("/api/empoyees/" + login))
             .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
             .body(employee);
+    }
+
+    /**
+     * {@code GET  /employees} : get all the employees.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
+     */
+    @GetMapping("/employees")
+    public ResponseEntity<List<UserDTO>> getAllEmployees(EmployeeCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get all employees");
+        final Page<UserDTO> page = employeeQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = generatePaginationHttpHeaders(fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
