@@ -88,7 +88,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @Cache(usage = READ_WRITE)
     private Company company;
 
