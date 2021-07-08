@@ -11,6 +11,7 @@ import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.MailService;
 import com.klai.stl.service.criteria.EmployeeCriteria;
 import com.klai.stl.service.dto.EmployeeDTO;
+import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
 import com.klai.stl.service.impl.EmployeeQueryService;
@@ -134,6 +135,7 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
      */
     @GetMapping("/employees")
+    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees(EmployeeCriteria criteria, Pageable pageable) {
         log.debug("REST request to get all employees");
         final Page<EmployeeDTO> page = employeeQueryService.findByCriteria(criteria, pageable);
@@ -153,5 +155,32 @@ public class EmployeeResource {
         log.debug("REST request to delete an employee : {}", login);
         employeeService.removeEmployee(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, login)).build();
+    }
+
+    /**
+     * {@code PUT  /employee}  : Makes an employee a manager.
+     * <p>
+     * Makes an employee a manager.
+     *
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the updated employee, or with status {@code 400 (Bad Request)} if the company doesn't exists.
+     * @throws BadRequestAlertException {@code 400 (Bad Request)} if the company doesn't exists or the data isn't valid.
+     */
+    @ApiResponses(
+        value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Not Authorized"),
+        }
+    )
+    @ApiOperation(value = "Makes an a employee a manager")
+    @PutMapping("/employees/{login}/manager")
+    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
+    public ResponseEntity<UserDTO> updateEmployee(@PathVariable @NotBlank final String login) throws URISyntaxException {
+        log.info("Updating an employee with login {}", login);
+        UserDTO employee = employeeService.toggleEmployee(login);
+        return ResponseEntity
+            .created(new URI("/api/empoyees/" + login + "/manager"))
+            .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employee.getId().toString()))
+            .body(employee);
     }
 }

@@ -1,6 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.domain.User;
+import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
 
@@ -24,4 +25,11 @@ public interface EmployeeService {
      * @param login the login of the user to remove
      */
     void removeEmployee(String login);
+
+    /**
+     * Toggle manager authority to the specified login
+     * @param login the login of the user
+     * @return a user with the complete set
+     */
+    UserDTO toggleEmployee(String login);
 }

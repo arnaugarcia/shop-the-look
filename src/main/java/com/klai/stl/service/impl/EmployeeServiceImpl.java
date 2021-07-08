@@ -82,6 +82,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         userService.deleteUser(login);
     }
 
+    @Override
+    public UserDTO toggleEmployee(String login) {
+        //final User userByLogin = findUserByLogin(login);
+        return null;
+    }
+
     private Predicate<UserDTO> byLogin(String login) {
         return userDTO -> userDTO.getLogin().equals(login);
     }

@@ -636,4 +636,98 @@ class EmployeeResourceIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user")
+    public void makeAnEmployeeAManager() throws Exception {
+        User user = userRepository.findOneWithAuthoritiesByLogin("user").get();
+        assertThat(user).isNotNull();
+        assertThat(user.getAuthorities()).isNotNull();
+        assertThat(user.getAuthorities()).hasSize(1);
+
+        restPhotoMockMvc.perform(put(ENTITY_API_URL_LOGIN + "/manager", "user").contentType(APPLICATION_JSON)).andExpect(status().isOk());
+
+        User result = userRepository.findOneWithAuthoritiesByLogin("user").get();
+        assertThat(result).isNotNull();
+        assertThat(result.getAuthorities()).isNotNull();
+        assertThat(result.getAuthorities()).hasSize(2);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager-guilty")
+    public void makeAnAdminManager() throws Exception {
+        UserResourceIT.createEntity("manager-guilty");
+
+        restPhotoMockMvc
+            .perform(put(ENTITY_API_URL_LOGIN + "/manager", "admin").contentType(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user")
+    public void makeAEmployeeAManagerAsUser() throws Exception {
+        restPhotoMockMvc
+            .perform(put(ENTITY_API_URL_LOGIN + "/manager", "user").contentType(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager")
+    public void makeAEmployeeAManagerThatNotExists() throws Exception {
+        restPhotoMockMvc
+            .perform(put(ENTITY_API_URL_LOGIN + "/manager", "randomUser").contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin", authorities = { ADMIN })
+    public void makeAEmployeeAManagerThatNotExistsAsAdmin() throws Exception {
+        restPhotoMockMvc
+            .perform(put(ENTITY_API_URL_LOGIN + "/manager", "randomUser").contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager-guilty")
+    public void makeAEmployeeAManagerFromOtherCompany() throws Exception {
+        User manager = UserResourceIT.createEntity("manager-guilty");
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+
+        User otherEmployee = UserResourceIT.createEntity(em);
+        em.persist(otherEmployee);
+        Company otherCompany = CompanyResourceIT.createBasicEntity();
+        otherCompany.addUser(otherEmployee);
+        em.persist(otherCompany);
+
+        restPhotoMockMvc
+            .perform(put(ENTITY_API_URL_LOGIN + "/manager", otherEmployee.getLogin()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin", authorities = { ADMIN })
+    public void removeManagerPrivilegesAsAdmin() throws Exception {
+        User manager = userRepository.findOneWithAuthoritiesByLogin("manager").get();
+        assertThat(manager).isNotNull();
+        assertThat(manager.getAuthorities()).isNotNull();
+        assertThat(manager.getAuthorities()).hasSize(2);
+
+        restPhotoMockMvc
+            .perform(put(ENTITY_API_URL_LOGIN + "/manager", "manager").contentType(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+
+        User result = userRepository.findOneWithAuthoritiesByLogin("manager").get();
+        assertThat(result).isNotNull();
+        assertThat(result.getAuthorities()).isNotNull();
+        assertThat(result.getAuthorities()).hasSize(1);
+    }
 }
