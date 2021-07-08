@@ -175,7 +175,7 @@ public class EmployeeResource {
     @ApiOperation(value = "Makes an a employee a manager")
     @PutMapping("/employees/{login}/manager")
     @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
-    public ResponseEntity<UserDTO> updateEmployee(@PathVariable @NotBlank final String login) throws URISyntaxException {
+    public ResponseEntity<UserDTO> toggleManagerPrivileges(@PathVariable @NotBlank final String login) throws URISyntaxException {
         log.info("Updating an employee with login {}", login);
         UserDTO employee = employeeService.toggleEmployee(login);
         return ResponseEntity
