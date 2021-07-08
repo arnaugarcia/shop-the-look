@@ -1,10 +1,10 @@
 package com.klai.stl.web.rest;
 
 import com.klai.stl.repository.PhotoRepository;
-import com.klai.stl.service.PhotoQueryService;
 import com.klai.stl.service.PhotoService;
 import com.klai.stl.service.criteria.PhotoCriteria;
 import com.klai.stl.service.dto.PhotoDTO;
+import com.klai.stl.service.impl.PhotoQueryService;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;

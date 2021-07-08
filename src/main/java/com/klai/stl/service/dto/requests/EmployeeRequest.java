@@ -18,6 +18,4 @@ public abstract class EmployeeRequest {
 
     @Size(min = 2, max = 10)
     private final String langKey;
-
-    private final String companyReference;
 }

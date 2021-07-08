@@ -1,10 +1,10 @@
 package com.klai.stl.web.rest;
 
 import com.klai.stl.repository.SpaceRepository;
-import com.klai.stl.service.SpaceQueryService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.criteria.SpaceCriteria;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.impl.SpaceQueryService;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;

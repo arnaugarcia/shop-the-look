@@ -3,6 +3,10 @@ package com.klai.stl.service.exception;
 public class EmployeeNotFound extends RuntimeException {
 
     public EmployeeNotFound() {
-        super("No user was found for this company");
+        super("Employee not found");
+    }
+
+    public EmployeeNotFound(String login) {
+        super("Employee wth login " + login + " not found");
     }
 }

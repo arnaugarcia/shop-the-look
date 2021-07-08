@@ -27,9 +27,19 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("select company from Company company left join fetch company.users where company.id =:id")
     Optional<Company> findOneWithEagerRelationships(@Param("id") Long id);
 
+    @Query("select company from Company company left join fetch company.users where company.nif =:nif")
+    Optional<Company> findByNifWithEagerRelationships(@Param("nif") String nif);
+
+    @Query("select company from Company company left join fetch company.users where company.reference =:reference")
+    Optional<Company> findByReferenceWithEagerRelationships(@Param("reference") String reference);
+
     Optional<Company> findByToken(String token);
 
     Optional<Company> findByNif(String nif);
 
-    Optional<Company> findByReference(String reference);
+    @Query("select company from Company company left join fetch company.users where company.reference =:reference")
+    Optional<Company> findByReference(@Param("reference") String reference);
+
+    @Query("select company from Company company left join fetch company.users users where users.login = :login")
+    Optional<Company> findByUser(@Param("login") String login);
 }

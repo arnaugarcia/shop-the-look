@@ -1,13 +1,7 @@
 package com.klai.stl.service.dto;
 
-import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
-import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static java.util.stream.Collectors.toSet;
-import static lombok.AccessLevel.NONE;
-
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.User;
-import com.klai.stl.security.AuthoritiesConstants;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
@@ -42,6 +36,8 @@ public class UserDTO {
 
     private String langKey;
 
+    private Set<String> authorities;
+
     public UserDTO(User user) {
         this.id = user.getId();
         this.login = user.getLogin();
@@ -51,5 +47,6 @@ public class UserDTO {
         this.imageUrl = user.getImageUrl();
         this.activated = user.isActivated();
         this.langKey = user.getLangKey();
+        this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
     }
 }

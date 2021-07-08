@@ -10,10 +10,18 @@ import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import com.klai.stl.service.exception.EmailAlreadyUsedException;
+import com.klai.stl.service.exception.EmployeeNotFound;
+import com.klai.stl.service.exception.InvalidPasswordException;
+import com.klai.stl.service.exception.UsernameAlreadyUsedException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -219,6 +227,18 @@ public class UserService {
         return user;
     }
 
+    public void addAuthority(String login, String authority) {
+        final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
+        authorityRepository.findById(authority).ifPresent(user.getAuthorities()::add);
+        userRepository.save(user);
+    }
+
+    public void removeAuthority(String login, String authority) {
+        final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
+        authorityRepository.findById(authority).ifPresent(user.getAuthorities()::remove);
+        userRepository.save(user);
+    }
+
     /**
      * Update all information for a specific user, and return the modified user.
      *
@@ -299,6 +319,21 @@ public class UserService {
             );
     }
 
+    /**
+     * Update basic information (first name, last name, email, language) for the current user.
+     *
+     * @param updateRequest first name of user.
+     */
+    public void updateUser(UpdateEmployeeRequestDTO updateRequest, String login) {
+        final User user = userRepository.findOneByLogin(login).orElseThrow(EmployeeNotFound::new);
+        user.setFirstName(updateRequest.getFirstName());
+        user.setLastName(updateRequest.getLastName());
+        user.setLangKey(updateRequest.getLangKey());
+        user.setImageUrl(updateRequest.getImageUrl());
+        userRepository.save(user);
+        this.clearUserCaches(user);
+    }
+
     @Transactional
     public void changePassword(String currentClearTextPassword, String newPassword) {
         SecurityUtils
@@ -358,6 +393,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     @Transactional(readOnly = true)
