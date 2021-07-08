@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
+import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
@@ -526,7 +527,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin")
+    @WithMockUser(username = "admin", authorities = { ADMIN })
     public void findingAllEmployees() throws Exception {
         User manager = UserResourceIT.createEntity(em);
         em.persist(manager);
@@ -542,7 +543,7 @@ class EmployeeResourceIT {
         restPhotoMockMvc
             .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(5)));
+            .andExpect(jsonPath("$", hasSize(6)));
     }
 
     @Test
@@ -639,16 +640,29 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "user")
+    @WithMockUser(username = "employee-manager", authorities = { MANAGER })
     public void makeAnEmployeeAManager() throws Exception {
-        User user = userRepository.findOneWithAuthoritiesByLogin("user").get();
+        final User manager = UserResourceIT.createEntity("employee-manager");
+        em.persist(manager);
+        company.addUser(manager);
+        User employee = UserResourceIT.createEntity("employee");
+        Authority authority = new Authority();
+        authority.setName(USER);
+        employee.getAuthorities().add(authority);
+        company.addUser(employee);
+        em.persist(employee);
+        em.persist(company);
+
+        User user = userRepository.findOneWithAuthoritiesByLogin(employee.getLogin()).get();
         assertThat(user).isNotNull();
         assertThat(user.getAuthorities()).isNotNull();
         assertThat(user.getAuthorities()).hasSize(1);
 
-        restPhotoMockMvc.perform(put(ENTITY_API_URL_LOGIN + "/manager", "user").contentType(APPLICATION_JSON)).andExpect(status().isOk());
+        restPhotoMockMvc
+            .perform(put(ENTITY_API_URL_LOGIN + "/manager", employee.getLogin()).contentType(APPLICATION_JSON))
+            .andExpect(status().isCreated());
 
-        User result = userRepository.findOneWithAuthoritiesByLogin("user").get();
+        User result = userRepository.findOneWithAuthoritiesByLogin(employee.getLogin()).get();
         assertThat(result).isNotNull();
         assertThat(result.getAuthorities()).isNotNull();
         assertThat(result.getAuthorities()).hasSize(2);
@@ -676,7 +690,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "manager")
+    @WithMockUser(username = "manager", authorities = { MANAGER })
     public void makeAEmployeeAManagerThatNotExists() throws Exception {
         restPhotoMockMvc
             .perform(put(ENTITY_API_URL_LOGIN + "/manager", "randomUser").contentType(APPLICATION_JSON))
@@ -694,7 +708,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "manager-guilty")
+    @WithMockUser(username = "manager-guilty", authorities = { MANAGER })
     public void makeAEmployeeAManagerFromOtherCompany() throws Exception {
         User manager = UserResourceIT.createEntity("manager-guilty");
         em.persist(manager);
@@ -723,7 +737,7 @@ class EmployeeResourceIT {
 
         restPhotoMockMvc
             .perform(put(ENTITY_API_URL_LOGIN + "/manager", "manager").contentType(APPLICATION_JSON))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isCreated());
 
         User result = userRepository.findOneWithAuthoritiesByLogin("manager").get();
         assertThat(result).isNotNull();
