@@ -46,7 +46,7 @@ import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils;
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-class CompanyResourceIT {
+public class CompanyResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";

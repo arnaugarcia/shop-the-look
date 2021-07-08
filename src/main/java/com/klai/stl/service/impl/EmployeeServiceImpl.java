@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             .langKey(newEmployeeRequestDTO.getLangKey())
             .imageUrl(newEmployeeRequestDTO.getImageUrl())
             .build();
-        final User employee = userService.createUser(user);
+        final User employee = userService.createEmployee(user);
         companyService.addEmployee(employee, companyReference);
         return employee;
     }

@@ -9,6 +9,7 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.dto.AdminUserDTO;
@@ -68,6 +69,9 @@ class UserResourceIT {
     private UserRepository userRepository;
 
     @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -80,6 +84,8 @@ class UserResourceIT {
     private MockMvc restUserMockMvc;
 
     private User user;
+
+    private Company company;
 
     @BeforeEach
     public void setup() {
@@ -128,10 +134,11 @@ class UserResourceIT {
     /**
      * Setups the database with one user.
      */
-    public static User initTestUser(UserRepository userRepository, EntityManager em) {
+    public static User initTestUser(UserRepository userRepository, Company company, EntityManager em) {
         User user = createEntity(em);
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
+        user.setCompany(company);
         return user;
     }
 
@@ -149,7 +156,8 @@ class UserResourceIT {
 
     @BeforeEach
     public void initTest() {
-        user = initTestUser(userRepository, em);
+        company = companyRepository.save(CompanyResourceIT.createBasicEntity());
+        user = initTestUser(userRepository, company, em);
     }
 
     @Test
@@ -444,8 +452,7 @@ class UserResourceIT {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
 
-        User anotherUser = new User();
-        anotherUser.setLogin("jhipster");
+        User anotherUser = createEntity("jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
@@ -453,6 +460,7 @@ class UserResourceIT {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setCompany(company);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -487,8 +495,7 @@ class UserResourceIT {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
-        User anotherUser = new User();
-        anotherUser.setLogin("jhipster");
+        User anotherUser = createEntity("jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
@@ -496,6 +503,7 @@ class UserResourceIT {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setCompany(company);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user

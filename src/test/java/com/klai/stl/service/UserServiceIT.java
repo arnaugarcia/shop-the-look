@@ -5,9 +5,12 @@ import static org.mockito.Mockito.when;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.config.Constants;
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.service.dto.AdminUserDTO;
+import com.klai.stl.web.rest.CompanyResourceIT;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -48,6 +51,9 @@ class UserServiceIT {
     private UserRepository userRepository;
 
     @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -60,6 +66,7 @@ class UserServiceIT {
 
     @BeforeEach
     public void init() {
+        Company company = companyRepository.save(CompanyResourceIT.createBasicEntity());
         user = new User();
         user.setLogin(DEFAULT_LOGIN);
         user.setPassword(RandomStringUtils.random(60));
@@ -69,6 +76,7 @@ class UserServiceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        user.setCompany(company);
 
         when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now()));
         auditingHandler.setDateTimeProvider(dateTimeProvider);

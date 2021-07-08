@@ -4,8 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.klai.stl.IntegrationTest;
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
+import com.klai.stl.web.rest.CompanyResourceIT;
 import java.util.Locale;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +38,12 @@ class DomainUserDetailsServiceIT {
     @Autowired
     private UserDetailsService domainUserDetailsService;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+
     @BeforeEach
     public void init() {
+        final Company company = companyRepository.save(CompanyResourceIT.createBasicEntity());
         User userOne = new User();
         userOne.setLogin(USER_ONE_LOGIN);
         userOne.setPassword(RandomStringUtils.random(60));
@@ -45,6 +52,7 @@ class DomainUserDetailsServiceIT {
         userOne.setFirstName("userOne");
         userOne.setLastName("doe");
         userOne.setLangKey("en");
+        userOne.setCompany(company);
         userRepository.save(userOne);
 
         User userTwo = new User();
@@ -55,6 +63,7 @@ class DomainUserDetailsServiceIT {
         userTwo.setFirstName("userTwo");
         userTwo.setLastName("doe");
         userTwo.setLangKey("en");
+        userTwo.setCompany(company);
         userRepository.save(userTwo);
 
         User userThree = new User();
@@ -65,6 +74,7 @@ class DomainUserDetailsServiceIT {
         userThree.setFirstName("userThree");
         userThree.setLastName("doe");
         userThree.setLangKey("en");
+        userThree.setCompany(company);
         userRepository.save(userThree);
     }
 
