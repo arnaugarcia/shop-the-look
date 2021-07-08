@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
 import static java.util.Objects.isNull;
@@ -84,8 +85,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public UserDTO toggleEmployee(String login) {
-        //final User userByLogin = findUserByLogin(login);
-        return null;
+        final User userByLogin = findUserByLogin(login);
+        if (isCurrentUserManager()) {
+            checkLoginBelongsToCompany(userByLogin.getLogin(), findCurrentUserCompanyReference());
+        }
+        if (userByLogin.isManager()) {
+            userService.removeAuthority(userByLogin.getLogin(), MANAGER);
+        } else {
+            userService.addAuthority(userByLogin.getLogin(), MANAGER);
+        }
+        return new UserDTO(findUserByLogin(login));
     }
 
     private Predicate<UserDTO> byLogin(String login) {

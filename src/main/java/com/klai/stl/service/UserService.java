@@ -19,6 +19,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -222,6 +225,18 @@ public class UserService {
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
+    }
+
+    public void addAuthority(String login, String authority) {
+        final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
+        authorityRepository.findById(authority).ifPresent(user.getAuthorities()::add);
+        userRepository.save(user);
+    }
+
+    public void removeAuthority(String login, String authority) {
+        final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
+        authorityRepository.findById(authority).ifPresent(user.getAuthorities()::remove);
+        userRepository.save(user);
     }
 
     /**
