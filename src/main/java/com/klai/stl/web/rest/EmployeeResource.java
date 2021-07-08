@@ -7,14 +7,13 @@ import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
 
 import com.klai.stl.domain.User;
-import com.klai.stl.service.EmployeeQueryService;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.MailService;
 import com.klai.stl.service.criteria.EmployeeCriteria;
 import com.klai.stl.service.dto.EmployeeDTO;
-import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import com.klai.stl.service.impl.EmployeeQueryService;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

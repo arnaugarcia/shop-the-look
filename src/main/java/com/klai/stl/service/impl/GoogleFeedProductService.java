@@ -1,4 +1,4 @@
-package com.klai.stl.service;
+package com.klai.stl.service.impl;
 
 import com.klai.stl.domain.GoogleFeedProduct;
 import com.klai.stl.repository.GoogleFeedProductRepository;

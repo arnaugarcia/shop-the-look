@@ -1,4 +1,4 @@
-package com.klai.stl.service;
+package com.klai.stl.service.impl;
 
 import static javax.persistence.criteria.JoinType.LEFT;
 
@@ -7,6 +7,7 @@ import com.klai.stl.domain.Company_;
 import com.klai.stl.domain.User;
 import com.klai.stl.domain.User_;
 import com.klai.stl.repository.UserRepository;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.criteria.EmployeeCriteria;
 import com.klai.stl.service.dto.EmployeeDTO;
 import com.klai.stl.service.exception.EmployeeNotFound;

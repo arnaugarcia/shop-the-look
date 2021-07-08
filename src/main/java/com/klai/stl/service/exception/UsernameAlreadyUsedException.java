@@ -1,4 +1,4 @@
-package com.klai.stl.service;
+package com.klai.stl.service.exception;
 
 public class UsernameAlreadyUsedException extends RuntimeException {
 

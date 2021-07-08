@@ -1,4 +1,4 @@
-package com.klai.stl.service;
+package com.klai.stl.service.impl;
 
 import com.klai.stl.domain.*; // for static metamodels
 import com.klai.stl.domain.Space;

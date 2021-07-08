@@ -1,10 +1,10 @@
 package com.klai.stl.web.rest;
 
 import com.klai.stl.repository.ProductRepository;
-import com.klai.stl.service.ProductQueryService;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
+import com.klai.stl.service.impl.ProductQueryService;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;

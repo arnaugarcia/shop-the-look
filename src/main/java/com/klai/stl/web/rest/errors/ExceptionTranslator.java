@@ -3,6 +3,7 @@ package com.klai.stl.web.rest.errors;
 import static com.klai.stl.web.rest.errors.ErrorConstants.DEFAULT_TYPE;
 import static com.klai.stl.web.rest.errors.ErrorConstants.NOT_FOUND;
 
+import com.klai.stl.service.exception.UsernameAlreadyUsedException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -121,7 +122,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(
-        com.klai.stl.service.EmailAlreadyUsedException ex,
+        com.klai.stl.service.exception.EmailAlreadyUsedException ex,
         NativeWebRequest request
     ) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
@@ -208,10 +209,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
-        com.klai.stl.service.UsernameAlreadyUsedException ex,
-        NativeWebRequest request
-    ) {
+    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(UsernameAlreadyUsedException ex, NativeWebRequest request) {
         LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
         return create(
             problem,
@@ -222,7 +220,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(
-        com.klai.stl.service.InvalidPasswordException ex,
+        com.klai.stl.service.exception.InvalidPasswordException ex,
         NativeWebRequest request
     ) {
         return create(new InvalidPasswordException(), request);
