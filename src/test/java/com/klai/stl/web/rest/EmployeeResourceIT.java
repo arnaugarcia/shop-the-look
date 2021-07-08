@@ -547,7 +547,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin")
+    @WithMockUser(username = "admin", authorities = { ADMIN })
     public void findingAllEmployeesByReferenceAsAdmin() throws Exception {
         User manager = UserResourceIT.createEntity(em);
         em.persist(manager);
