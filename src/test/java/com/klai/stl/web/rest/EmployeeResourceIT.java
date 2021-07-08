@@ -1,7 +1,6 @@
 package com.klai.stl.web.rest;
 
-import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
-import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static com.klai.stl.security.AuthoritiesConstants.*;
 import static com.klai.stl.web.rest.UserResourceIT.createAUserDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -527,7 +526,7 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = ADMIN)
+    @WithMockUser(username = "admin")
     public void findingAllEmployees() throws Exception {
         User manager = UserResourceIT.createEntity(em);
         em.persist(manager);
@@ -543,6 +542,98 @@ class EmployeeResourceIT {
         restPhotoMockMvc
             .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)));
+            .andExpect(jsonPath("$", hasSize(5)));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin")
+    public void findingAllEmployeesByReferenceAsAdmin() throws Exception {
+        User manager = UserResourceIT.createEntity(em);
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+
+        restPhotoMockMvc
+            .perform(get(ENTITY_API_URL + "?company=" + company.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "company-manager", authorities = { MANAGER })
+    public void findingAllEmployeesByReferenceAsManager() throws Exception {
+        User manager = UserResourceIT.createEntity("company-manager");
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+
+        restPhotoMockMvc
+            .perform(get(ENTITY_API_URL + "?company=" + company.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "company-manager-wrong", authorities = { MANAGER })
+    public void notFindingEmployeesByReferenceAsManager() throws Exception {
+        User manager = UserResourceIT.createEntity("company-manager-wrong");
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+
+        Company company2 = CompanyResourceIT.createBasicEntity();
+        User user1 = UserResourceIT.createEntity(em);
+        company2.addUser(user1);
+
+        User user2 = UserResourceIT.createEntity(em);
+        company2.addUser(user2);
+
+        User user3 = UserResourceIT.createEntity(em);
+        company2.addUser(user3);
+        em.persist(company2);
+
+        restPhotoMockMvc
+            .perform(get(ENTITY_API_URL + "?company=" + company2.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager-employee", authorities = { MANAGER })
+    public void findingEmployeeByLogin() throws Exception {
+        User manager = UserResourceIT.createEntity("manager-employee");
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+
+        restPhotoMockMvc
+            .perform(get(ENTITY_API_URL + "?login=" + manager.getLogin()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager-gossip", authorities = { MANAGER })
+    public void notFindingEmployeeByLoginOfOtherCompany() throws Exception {
+        User manager = UserResourceIT.createEntity("manager-gossip");
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+
+        User user = UserResourceIT.createEntity(em);
+        Company company2 = CompanyResourceIT.createBasicEntity();
+        company2.addUser(user);
+        em.persist(user);
+        em.persist(company2);
+
+        restPhotoMockMvc
+            .perform(get(ENTITY_API_URL + "?login=" + user.getLogin()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(0)));
     }
 }
