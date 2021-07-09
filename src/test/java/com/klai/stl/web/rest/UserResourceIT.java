@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.Company;
+import com.klai.stl.domain.Product;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
@@ -109,6 +110,9 @@ class UserResourceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        user.setCompany(company);
         return user;
     }
 
@@ -118,7 +122,7 @@ class UserResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which has a required relationship to the User entity.
      */
-    public static User createEntity(String login) {
+    public static User createEntity(EntityManager em, String login) {
         User user = new User();
         user.setLogin(login);
         user.setPassword(RandomStringUtils.random(60));
@@ -128,6 +132,17 @@ class UserResourceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        user.setCompany(company);
         return user;
     }
 
@@ -156,7 +171,7 @@ class UserResourceIT {
 
     @BeforeEach
     public void initTest() {
-        company = companyRepository.save(CompanyResourceIT.createBasicEntity());
+        company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
         user = initTestUser(userRepository, company, em);
     }
 
@@ -287,7 +302,7 @@ class UserResourceIT {
     @Test
     @Transactional
     public void createAUserWithACompany() throws Exception {
-        final Company company = CompanyResourceIT.createBasicEntity();
+        final Company company = CompanyResourceIT.createBasicEntity(em);
         em.persist(company);
         user.setCompany(company);
         userRepository.saveAndFlush(user);
@@ -452,7 +467,7 @@ class UserResourceIT {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
 
-        User anotherUser = createEntity("jhipster");
+        User anotherUser = createEntity(em, "jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
@@ -495,7 +510,7 @@ class UserResourceIT {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
-        User anotherUser = createEntity("jhipster");
+        User anotherUser = createEntity(em, "jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
@@ -551,6 +566,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testUserEquals() throws Exception {
         TestUtil.equalsVerifier(User.class);
         User user1 = new User();
@@ -565,6 +581,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testUserDTOtoUser() {
         AdminUserDTO userDTO = new AdminUserDTO();
         userDTO.setId(DEFAULT_ID);
@@ -596,6 +613,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testUserToUserDTO() {
         user.setId(DEFAULT_ID);
         user.setCreatedBy(DEFAULT_LOGIN);
@@ -627,6 +645,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testAuthorityEquals() {
         Authority authorityA = new Authority();
         assertThat(authorityA).isNotEqualTo(null).isNotEqualTo(new Object());

@@ -12,17 +12,11 @@ import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
-import com.klai.stl.service.exception.EmailAlreadyUsedException;
-import com.klai.stl.service.exception.EmployeeNotFound;
-import com.klai.stl.service.exception.InvalidPasswordException;
-import com.klai.stl.service.exception.UsernameAlreadyUsedException;
+import com.klai.stl.service.exception.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -45,6 +39,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final CompanyRepository companyRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -56,13 +52,13 @@ public class UserService {
         CompanyRepository companyRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager,
-        TokenService tokenService
+        CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.companyRepository = companyRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -123,13 +119,15 @@ public class UserService {
         return newUser;
     }
 
-    public User registerManager(AdminUserDTO userDTO, String password) {
+    public User registerManager(AdminUserDTO userDTO, String companyReference, String password) {
         checkIfEmailOrLoginIsUsed(userDTO);
+        final Company company = companyRepository.findByReference(companyReference).orElseThrow(CompanyNotFound::new);
         User newUser = buildUser(userDTO, password);
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         authorityRepository.findById(AuthoritiesConstants.MANAGER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
+        newUser.setCompany(company);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);

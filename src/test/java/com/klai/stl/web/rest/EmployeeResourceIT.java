@@ -81,7 +81,7 @@ class EmployeeResourceIT {
 
     @BeforeEach
     public void initTest() {
-        company = CompanyResourceIT.createBasicEntity();
+        company = CompanyResourceIT.createBasicEntity(em);
         employee = UserResourceIT.createEntity(em);
         employeeAdminRequest = createAdminRequest();
         employeeRequest = createRequest();
@@ -160,7 +160,7 @@ class EmployeeResourceIT {
     @WithMockUser(username = "create-employee-existing-login", authorities = { MANAGER })
     void createUserWithExistingLogin() throws Exception {
         final String EXISTING_LOGIN = "create-employee-existing-login";
-        final User manager = UserResourceIT.createEntity(EXISTING_LOGIN);
+        final User manager = UserResourceIT.createEntity(em, EXISTING_LOGIN);
         manager.setLogin(EXISTING_LOGIN);
         manager.setCompany(company);
         em.persist(manager);
@@ -243,8 +243,8 @@ class EmployeeResourceIT {
     @WithMockUser(username = "manager-update-employee", authorities = { MANAGER })
     public void updateEmployee() throws Exception {
         final String login = "employee-login";
-        final User manager = UserResourceIT.createEntity("manager-update-employee");
-        final User employee = UserResourceIT.createEntity(login);
+        final User manager = UserResourceIT.createEntity(em, "manager-update-employee");
+        final User employee = UserResourceIT.createEntity(em, login);
         manager.setCompany(company);
         employee.setCompany(company);
         em.persist(manager);
@@ -276,8 +276,8 @@ class EmployeeResourceIT {
     @WithMockUser(username = "admin-update-employee", authorities = { ADMIN })
     public void updateEmployeeAsAdmin() throws Exception {
         final String login = "employee-login";
-        final User manager = UserResourceIT.createEntity("admin-update-employee");
-        final User employee = UserResourceIT.createEntity(login);
+        final User manager = UserResourceIT.createEntity(em, "admin-update-employee");
+        final User employee = UserResourceIT.createEntity(em, login);
         manager.setCompany(company);
         employee.setCompany(company);
         em.persist(manager);
@@ -319,13 +319,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-update-employee-company", authorities = { MANAGER })
     public void updateEmployeeFromOtherCompany() throws Exception {
-        Company company1 = CompanyResourceIT.createBasicEntity();
-        final User manager = UserResourceIT.createEntity("manager-update-employee-company");
+        Company company1 = CompanyResourceIT.createBasicEntity(em);
+        final User manager = UserResourceIT.createEntity(em, "manager-update-employee-company");
         company1.addUser(manager);
         em.persist(manager);
         em.persist(company1);
 
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         final User employee = UserResourceIT.createEntity(em);
         company2.addUser(employee);
         em.persist(employee);
@@ -344,13 +344,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "admin-update-employee-company", authorities = { ADMIN })
     public void updateEmployeeFromOtherCompanyAsAdmin() throws Exception {
-        Company company1 = CompanyResourceIT.createBasicEntity();
-        final User manager = UserResourceIT.createEntity("admin-update-employee-company");
+        Company company1 = CompanyResourceIT.createBasicEntity(em);
+        final User manager = UserResourceIT.createEntity(em, "admin-update-employee-company");
         company1.addUser(manager);
         em.persist(manager);
         em.persist(company1);
 
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         final User employee = UserResourceIT.createEntity(em);
         company2.addUser(employee);
         em.persist(employee);
@@ -369,7 +369,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "remove-employee", authorities = { MANAGER })
     public void removeEmployee() throws Exception {
-        final User manager = UserResourceIT.createEntity("remove-employee");
+        final User manager = UserResourceIT.createEntity(em, "remove-employee");
         em.persist(employee);
         em.persist(manager);
         company.addUser(employee);
@@ -429,7 +429,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "remove-employee-admin", authorities = { ADMIN })
     public void removeEmployeeAsAdmin() throws Exception {
-        final User manager = UserResourceIT.createEntity("remove-employee-admin");
+        final User manager = UserResourceIT.createEntity(em, "remove-employee-admin");
         em.persist(employee);
         em.persist(manager);
         company.addUser(employee);
@@ -462,7 +462,7 @@ class EmployeeResourceIT {
     @WithMockUser(username = "delete-current-employee", authorities = { MANAGER })
     public void removeCurrentManager() throws Exception {
         final String login = "delete-current-employee";
-        final User user = UserResourceIT.createEntity(login);
+        final User user = UserResourceIT.createEntity(em, login);
         company.addUser(user);
         em.persist(user);
         em.persist(company);
@@ -489,7 +489,7 @@ class EmployeeResourceIT {
     @WithMockUser(username = "find-manager-employees", authorities = MANAGER)
     public void findUsersAsManager() throws Exception {
         User employee = UserResourceIT.createEntity(em);
-        User manager = UserResourceIT.createEntity("find-manager-employees");
+        User manager = UserResourceIT.createEntity(em, "find-manager-employees");
         em.persist(employee);
         em.persist(manager);
 
@@ -508,13 +508,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "find-manager", authorities = MANAGER)
     public void findingOnlyYourEmployeesAsManager() throws Exception {
-        User manager = UserResourceIT.createEntity("find-manager");
+        User manager = UserResourceIT.createEntity(em, "find-manager");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -535,7 +535,7 @@ class EmployeeResourceIT {
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -565,7 +565,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "company-manager", authorities = { MANAGER })
     public void findingAllEmployeesByReferenceAsManager() throws Exception {
-        User manager = UserResourceIT.createEntity("company-manager");
+        User manager = UserResourceIT.createEntity(em, "company-manager");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
@@ -580,12 +580,12 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "company-manager-wrong", authorities = { MANAGER })
     public void notFindingEmployeesByReferenceAsManager() throws Exception {
-        User manager = UserResourceIT.createEntity("company-manager-wrong");
+        User manager = UserResourceIT.createEntity(em, "company-manager-wrong");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         User user1 = UserResourceIT.createEntity(em);
         company2.addUser(user1);
 
@@ -606,7 +606,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-employee", authorities = { MANAGER })
     public void findingEmployeeByLogin() throws Exception {
-        User manager = UserResourceIT.createEntity("manager-employee");
+        User manager = UserResourceIT.createEntity(em, "manager-employee");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
@@ -621,13 +621,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-gossip", authorities = { MANAGER })
     public void notFindingEmployeeByLoginOfOtherCompany() throws Exception {
-        User manager = UserResourceIT.createEntity("manager-gossip");
+        User manager = UserResourceIT.createEntity(em, "manager-gossip");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -642,10 +642,10 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "employee-manager", authorities = { MANAGER })
     public void makeAnEmployeeAManager() throws Exception {
-        final User manager = UserResourceIT.createEntity("employee-manager");
+        final User manager = UserResourceIT.createEntity(em, "employee-manager");
         em.persist(manager);
         company.addUser(manager);
-        User employee = UserResourceIT.createEntity("employee");
+        User employee = UserResourceIT.createEntity(em, "employee-2");
         Authority authority = new Authority();
         authority.setName(USER);
         employee.getAuthorities().add(authority);
@@ -672,7 +672,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-guilty")
     public void makeAnAdminManager() throws Exception {
-        UserResourceIT.createEntity("manager-guilty");
+        UserResourceIT.createEntity(em, "manager-guilty");
 
         restPhotoMockMvc
             .perform(put(ENTITY_API_URL_LOGIN + "/manager", "admin").contentType(APPLICATION_JSON))
@@ -710,14 +710,14 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-guilty", authorities = { MANAGER })
     public void makeAEmployeeAManagerFromOtherCompany() throws Exception {
-        User manager = UserResourceIT.createEntity("manager-guilty");
+        User manager = UserResourceIT.createEntity(em, "manager-guilty");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
         User otherEmployee = UserResourceIT.createEntity(em);
         em.persist(otherEmployee);
-        Company otherCompany = CompanyResourceIT.createBasicEntity();
+        Company otherCompany = CompanyResourceIT.createBasicEntity(em);
         otherCompany.addUser(otherEmployee);
         em.persist(otherCompany);
 

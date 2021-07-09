@@ -15,6 +15,7 @@ import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.web.rest.vm.LoginVM;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ class UserJWTControllerIT {
     private UserRepository userRepository;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private CompanyRepository companyRepository;
 
     @Autowired
@@ -47,7 +51,7 @@ class UserJWTControllerIT {
 
     @BeforeEach
     void beforeEach() {
-        company = companyRepository.save(CompanyResourceIT.createBasicEntity());
+        company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
     }
 
     @Test
@@ -98,6 +102,7 @@ class UserJWTControllerIT {
     }
 
     @Test
+    @Transactional
     void testAuthorizeFails() throws Exception {
         LoginVM login = new LoginVM();
         login.setUsername("wrong-user");

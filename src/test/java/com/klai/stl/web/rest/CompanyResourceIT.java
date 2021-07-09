@@ -32,12 +32,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils;
 
 /**
  * Integration tests for the {@link CompanyResource} REST controller.
@@ -162,8 +160,8 @@ public class CompanyResourceIT {
         return company;
     }
 
-    public static Company createBasicEntity() {
-        return new Company()
+    public static Company createBasicEntity(EntityManager em) {
+        Company company = new Company()
             .name(DEFAULT_NAME)
             .nif(randomAlphanumeric(8))
             .url(DEFAULT_URL)
@@ -175,6 +173,8 @@ public class CompanyResourceIT {
             .token(randomAlphanumeric(10))
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
+        em.persist(company);
+        return company;
     }
 
     /**

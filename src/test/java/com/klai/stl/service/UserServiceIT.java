@@ -1,21 +1,21 @@
 package com.klai.stl.service;
 
+import static com.klai.stl.web.rest.CompanyResourceIT.createBasicEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.klai.stl.IntegrationTest;
-import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
-import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.web.rest.CompanyResourceIT;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
 
@@ -62,11 +60,14 @@ class UserServiceIT {
     @MockBean
     private DateTimeProvider dateTimeProvider;
 
+    @Autowired
+    private EntityManager em;
+
     private User user;
 
     @BeforeEach
     public void init() {
-        Company company = companyRepository.save(CompanyResourceIT.createBasicEntity());
+        Company company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
         user = new User();
         user.setLogin(DEFAULT_LOGIN);
         user.setPassword(RandomStringUtils.random(60));

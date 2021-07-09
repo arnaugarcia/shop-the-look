@@ -10,6 +10,7 @@ import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.web.rest.CompanyResourceIT;
 import java.util.Locale;
+import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,9 +42,12 @@ class DomainUserDetailsServiceIT {
     @Autowired
     private CompanyRepository companyRepository;
 
+    @Autowired
+    private EntityManager em;
+
     @BeforeEach
     public void init() {
-        final Company company = companyRepository.save(CompanyResourceIT.createBasicEntity());
+        final Company company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
         User userOne = new User();
         userOne.setLogin(USER_ONE_LOGIN);
         userOne.setPassword(RandomStringUtils.random(60));

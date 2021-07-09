@@ -28,7 +28,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -67,7 +69,18 @@ class AccountResourceIT {
     @Autowired
     private MockMvc restAccountMockMvc;
 
+    @Autowired
+    private EntityManager em;
+
+    private Company company;
+
+    @BeforeEach
+    void beforeEach() {
+        company = companyRepository.saveAndFlush(CompanyResourceIT.createBasicEntity(em));
+    }
+
     @Test
+    @Transactional
     @WithUnauthenticatedMockUser
     void testNonAuthenticatedUser() throws Exception {
         restAccountMockMvc
@@ -77,6 +90,7 @@ class AccountResourceIT {
     }
 
     @Test
+    @Transactional
     void testAuthenticatedUser() throws Exception {
         restAccountMockMvc
             .perform(
@@ -94,6 +108,7 @@ class AccountResourceIT {
     }
 
     @Test
+    @Transactional
     void testGetExistingAccount() throws Exception {
         Set<String> authorities = new HashSet<>();
         authorities.add(AuthoritiesConstants.ADMIN);
@@ -106,7 +121,8 @@ class AccountResourceIT {
         user.setImageUrl("http://placehold.it/50x50");
         user.setLangKey("en");
         user.setAuthorities(authorities);
-        userService.createEmployee(user);
+        user.setCompanyReference(company.getReference());
+        userService.createAdmin(user);
 
         restAccountMockMvc
             .perform(get("/api/account").accept(MediaType.APPLICATION_JSON))
@@ -122,6 +138,7 @@ class AccountResourceIT {
     }
 
     @Test
+    @Transactional
     void testGetUnknownAccount() throws Exception {
         restAccountMockMvc
             .perform(get("/api/account").accept(MediaType.APPLICATION_PROBLEM_JSON))
@@ -534,6 +551,7 @@ class AccountResourceIT {
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(false);
         user.setActivationKey(activationKey);
+        user.setCompany(company);
 
         userRepository.saveAndFlush(user);
 
@@ -558,6 +576,8 @@ class AccountResourceIT {
         user.setEmail("save-account@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -594,7 +614,7 @@ class AccountResourceIT {
         user.setEmail("save-invalid-email@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-
+        user.setCompany(company);
         userRepository.saveAndFlush(user);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -623,6 +643,8 @@ class AccountResourceIT {
         user.setEmail("save-existing-email@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
@@ -630,6 +652,7 @@ class AccountResourceIT {
         anotherUser.setEmail("save-existing-email2@example.com");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
+        anotherUser.setCompany(company);
 
         userRepository.saveAndFlush(anotherUser);
 
@@ -660,6 +683,8 @@ class AccountResourceIT {
         user.setEmail("save-existing-email-and-login@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -689,6 +714,7 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-wrong-existing-password");
         user.setEmail("change-password-wrong-existing-password@example.com");
+        user.setCompany(company);
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -713,6 +739,8 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password");
         user.setEmail("change-password@example.com");
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -736,6 +764,8 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-small");
         user.setEmail("change-password-too-small@example.com");
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MIN_LENGTH - 1);
@@ -761,6 +791,8 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-long");
         user.setEmail("change-password-too-long@example.com");
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MAX_LENGTH + 1);
@@ -786,6 +818,8 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-empty");
         user.setEmail("change-password-empty@example.com");
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -808,6 +842,7 @@ class AccountResourceIT {
         user.setActivated(true);
         user.setLogin("password-reset");
         user.setEmail("password-reset@example.com");
+        user.setCompany(company);
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -823,6 +858,8 @@ class AccountResourceIT {
         user.setActivated(true);
         user.setLogin("password-reset-upper-case");
         user.setEmail("password-reset-upper-case@example.com");
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -831,6 +868,7 @@ class AccountResourceIT {
     }
 
     @Test
+    @Transactional
     void testRequestPasswordResetWrongEmail() throws Exception {
         restAccountMockMvc
             .perform(post("/api/account/reset-password/init").content("password-reset-wrong-email@example.com"))
@@ -846,6 +884,8 @@ class AccountResourceIT {
         user.setEmail("finish-password-reset@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key");
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
@@ -873,6 +913,8 @@ class AccountResourceIT {
         user.setEmail("finish-password-reset-too-small@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key too small");
+        user.setCompany(company);
+
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
