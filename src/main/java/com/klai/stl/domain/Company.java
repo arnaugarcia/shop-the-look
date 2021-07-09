@@ -99,8 +99,8 @@ public class Company implements Serializable {
 
     @OneToMany(mappedBy = "company")
     @Cache(usage = READ_WRITE)
-    @NotNull
     @JsonIgnoreProperties(value = { "company" })
+    @NotNull
     private Set<User> users = new HashSet<>();
 
     @ManyToOne
