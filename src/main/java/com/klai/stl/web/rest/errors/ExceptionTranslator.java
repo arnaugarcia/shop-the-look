@@ -25,11 +25,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.zalando.problem.DefaultProblem;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
+import org.zalando.problem.*;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
@@ -139,6 +135,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         NativeWebRequest request
     ) {
         NotFoundException problem = new NotFoundException(NOT_FOUND, "Company not found", "company", "companynotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleBadOwnerException(com.klai.stl.service.exception.BadOwnerException ex, NativeWebRequest request) {
+        ForbiddenException problem = new ForbiddenException(NOT_FOUND, "You aren't the owner of this", "user", "forbidden");
         return create(
             problem,
             request,
