@@ -20,7 +20,7 @@ import tech.jhipster.web.util.HeaderUtil;
  * REST controller for managing {@link com.klai.stl.domain.BillingAddress}.
  */
 @RestController
-@RequestMapping("/api/company/{reference}")
+@RequestMapping("/api/companies/{reference}")
 public class BillingAddressResource {
 
     private final Logger log = LoggerFactory.getLogger(BillingAddressResource.class);
