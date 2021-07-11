@@ -1,7 +1,6 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.BillingAddressDTO;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -9,7 +8,7 @@ import java.util.Optional;
  */
 public interface BillingAddressService {
     /**
-     * Save a billingAddress.
+     * Save a billingAddress if the billing address not exists it'll create it.
      *
      * @param billingAddressDTO the entity to save.
      * @return the persisted entity.
@@ -17,18 +16,10 @@ public interface BillingAddressService {
     BillingAddressDTO save(BillingAddressDTO billingAddressDTO);
 
     /**
-     * Updated a billingAddress.
-     *
-     * @param billingAddressDTO the entity to update.
-     * @return the updated entity.
-     */
-    BillingAddressDTO update(BillingAddressDTO billingAddressDTO);
-
-    /**
      * Get the "id" billingAddress.
      *
-     * @param id the id of the entity.
+     * @param companyReference the company reference
      * @return the entity.
      */
-    Optional<BillingAddressDTO> findOne(Long id);
+    Optional<BillingAddressDTO> find(String companyReference);
 }

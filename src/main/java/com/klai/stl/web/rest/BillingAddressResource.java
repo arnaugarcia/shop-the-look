@@ -1,5 +1,7 @@
 package com.klai.stl.web.rest;
 
+import static tech.jhipster.web.util.ResponseUtil.wrapOrNotFound;
+
 import com.klai.stl.domain.BillingAddress;
 import com.klai.stl.repository.BillingAddressRepository;
 import com.klai.stl.service.BillingAddressService;
@@ -41,31 +43,7 @@ public class BillingAddressResource {
     }
 
     /**
-     * {@code POST  /billing} : Create a new billing.
-     *
-     * @param billingAddressDTO the billingAddressDTO to create.
-     * @param reference         the reference of a company
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new billingAddressDTO, or with status {@code 400 (Bad Request)} if the billingAddress has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/billing")
-    public ResponseEntity<BillingAddressDTO> createBillingAddress(
-        @Valid @RequestBody BillingAddressDTO billingAddressDTO,
-        @PathVariable String reference
-    ) throws URISyntaxException {
-        log.debug("REST request to save BillingAddress : {}", billingAddressDTO);
-        if (billingAddressDTO.getId() != null) {
-            throw new BadRequestAlertException("A new billingAddress cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        BillingAddressDTO result = billingAddressService.save(billingAddressDTO);
-        return ResponseEntity
-            .created(new URI("/api/billing-addresses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * {@code PUT  /billing} : Updates an existing billingAddress.
+     * {@code PUT  /billing} : Updates or creates an existing billingAddress.
      *
      * @param billingAddressDTO the billingAddressDTO to update.
      * @param reference         the reference of a company
@@ -74,7 +52,7 @@ public class BillingAddressResource {
      * or with status {@code 500 (Internal Server Error)} if the billingAddressDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/billing-addresses/")
+    @PutMapping("/billing")
     public ResponseEntity<BillingAddressDTO> updateBillingAddress(
         final Long id,
         @Valid @RequestBody BillingAddressDTO billingAddressDTO,
@@ -106,8 +84,8 @@ public class BillingAddressResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of billingAddresses in body.
      */
     @GetMapping("/billing")
-    public List<BillingAddress> getBillingAddress(@PathVariable String reference) {
+    public ResponseEntity<BillingAddressDTO> getBillingAddress(@PathVariable String reference) {
         log.debug("REST request to get all BillingAddresses");
-        return billingAddressRepository.findAll();
+        return wrapOrNotFound(billingAddressService.find(reference));
     }
 }

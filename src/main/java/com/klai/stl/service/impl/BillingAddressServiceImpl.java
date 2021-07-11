@@ -5,11 +5,7 @@ import com.klai.stl.repository.BillingAddressRepository;
 import com.klai.stl.service.BillingAddressService;
 import com.klai.stl.service.dto.BillingAddressDTO;
 import com.klai.stl.service.mapper.BillingAddressMapper;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -42,14 +38,9 @@ public class BillingAddressServiceImpl implements BillingAddressService {
     }
 
     @Override
-    public BillingAddressDTO update(BillingAddressDTO billingAddressDTO) {
-        return null;
-    }
-
-    @Override
     @Transactional(readOnly = true)
-    public Optional<BillingAddressDTO> findOne(Long id) {
-        log.debug("Request to get BillingAddress : {}", id);
-        return billingAddressRepository.findById(id).map(billingAddressMapper::toDto);
+    public Optional<BillingAddressDTO> find(String companyReference) {
+        log.debug("Request to get billing for company: {}", companyReference);
+        return billingAddressRepository.findByCompanyReference(companyReference).map(billingAddressMapper::toDto);
     }
 }
