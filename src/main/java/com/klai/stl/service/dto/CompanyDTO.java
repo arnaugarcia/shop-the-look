@@ -57,6 +57,7 @@ public class CompanyDTO implements Serializable {
 
     private BillingAddressDTO billingAddress;
 
+    @Builder.Default
     private Set<UserDTO> users = new HashSet<>();
 
     private SubscriptionPlanDTO subscriptionPlan;

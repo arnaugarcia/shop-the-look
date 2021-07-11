@@ -1,5 +1,6 @@
 package com.klai.stl.web.rest;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -18,10 +19,7 @@ import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.mapper.UserMapper;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -102,16 +100,24 @@ class UserResourceIT {
      */
     public static User createEntity(EntityManager em) {
         User user = new User();
-        user.setLogin(DEFAULT_LOGIN + RandomStringUtils.randomAlphabetic(5));
+        user.setLogin(DEFAULT_LOGIN + randomAlphabetic(5).toLowerCase(Locale.ROOT));
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-        user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
+        user.setEmail(randomAlphabetic(5).toLowerCase(Locale.ROOT) + DEFAULT_EMAIL);
         user.setFirstName(DEFAULT_FIRSTNAME);
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
 
-        final Company company = CompanyResourceIT.createBasicEntity(em);
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
         user.setCompany(company);
         return user;
     }
@@ -127,7 +133,7 @@ class UserResourceIT {
         user.setLogin(login);
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-        user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
+        user.setEmail(randomAlphabetic(5) + DEFAULT_EMAIL);
         user.setFirstName(DEFAULT_FIRSTNAME);
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);

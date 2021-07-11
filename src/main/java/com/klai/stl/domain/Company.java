@@ -98,9 +98,8 @@ public class Company implements Serializable {
     private Set<Space> spaces = new HashSet<>();
 
     @OneToMany(mappedBy = "company")
-    @Cache(usage = READ_WRITE)
-    @JsonIgnoreProperties(value = { "company" })
-    @NotNull
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
     private Set<User> users = new HashSet<>();
 
     @ManyToOne

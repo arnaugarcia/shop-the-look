@@ -128,6 +128,8 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.MANAGER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         newUser.setCompany(company);
+        company.addUser(newUser);
+        companyRepository.save(company);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
@@ -220,6 +222,7 @@ public class UserService {
         } else {
             authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(user.getAuthorities()::add);
         }
+        companyRepository.findByReference(userDTO.getCompanyReference()).ifPresent(user::setCompany);
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
@@ -322,7 +325,7 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository
-            .findOneByLogin(login)
+            .findOneWithAuthoritiesByLogin(login)
             .ifPresent(
                 user -> {
                     userRepository.delete(user);
