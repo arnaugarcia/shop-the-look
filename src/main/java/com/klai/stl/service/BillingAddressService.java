@@ -11,10 +11,12 @@ public interface BillingAddressService {
     /**
      * Save a billingAddress if the billing address not exists it'll create it.
      *
+     *
+     * @param companyReference the company reference
      * @param billingAddressRequest the request of an entity to save
      * @return the persisted entity.
      */
-    BillingAddressDTO save(BillingAddressRequest billingAddressRequest);
+    BillingAddressDTO save(String companyReference, BillingAddressRequest billingAddressRequest);
 
     /**
      * Get the "id" billingAddress.

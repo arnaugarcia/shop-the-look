@@ -1,12 +1,11 @@
 package com.klai.stl.web.rest;
 
+import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 import static tech.jhipster.web.util.ResponseUtil.wrapOrNotFound;
 
-import com.klai.stl.repository.BillingAddressRepository;
 import com.klai.stl.service.BillingAddressService;
 import com.klai.stl.service.dto.BillingAddressDTO;
 import com.klai.stl.service.dto.requests.BillingAddressRequest;
-import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import java.net.URISyntaxException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.jhipster.web.util.HeaderUtil;
 
 /**
  * REST controller for managing {@link com.klai.stl.domain.BillingAddress}.
@@ -32,11 +30,8 @@ public class BillingAddressResource {
 
     private final BillingAddressService billingAddressService;
 
-    private final BillingAddressRepository billingAddressRepository;
-
-    public BillingAddressResource(BillingAddressService billingAddressService, BillingAddressRepository billingAddressRepository) {
+    public BillingAddressResource(BillingAddressService billingAddressService) {
         this.billingAddressService = billingAddressService;
-        this.billingAddressRepository = billingAddressRepository;
     }
 
     /**
@@ -51,20 +46,15 @@ public class BillingAddressResource {
      */
     @PutMapping("/billing")
     public ResponseEntity<BillingAddressDTO> updateBillingAddress(
-        final Long id,
         @Valid @RequestBody BillingAddressRequest billingAddressRequest,
         @PathVariable String reference
     ) throws URISyntaxException {
-        log.debug("REST request to update BillingAddress : {}, {}", id, billingAddressRequest);
+        log.debug("REST request to update BillingAddress for company {} with data {}", reference, billingAddressRequest);
 
-        if (!billingAddressRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        BillingAddressDTO result = billingAddressService.save(billingAddressRequest);
+        BillingAddressDTO result = billingAddressService.save(reference, billingAddressRequest);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, billingAddressRequest.toString()))
+            .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, billingAddressRequest.toString()))
             .body(result);
     }
 
