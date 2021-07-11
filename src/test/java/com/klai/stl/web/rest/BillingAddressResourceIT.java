@@ -106,7 +106,7 @@ class BillingAddressResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -124,7 +124,7 @@ class BillingAddressResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -186,7 +186,7 @@ class BillingAddressResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
 
         final Optional<BillingAddress> billingAddress = billingAddressRepository.findByCompanyReference(company.getReference());
         assertThat(billingAddress).isPresent();
@@ -212,7 +212,7 @@ class BillingAddressResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
 
         final Optional<BillingAddress> billingAddress = billingAddressRepository.findByCompanyReference(company.getReference());
         assertThat(billingAddress).isPresent();
@@ -262,7 +262,7 @@ class BillingAddressResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
 
         final Optional<BillingAddress> billingAddress = billingAddressRepository.findByCompanyReference(company.getReference());
         assertThat(billingAddress).isPresent();
