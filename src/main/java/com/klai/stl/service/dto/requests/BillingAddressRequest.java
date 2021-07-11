@@ -3,10 +3,12 @@ package com.klai.stl.service.dto.requests;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
 @Value
 @Builder
-public class BillingAddressRequest {
+@Jacksonized
+public final class BillingAddressRequest {
 
     @NotNull
     private String address;
