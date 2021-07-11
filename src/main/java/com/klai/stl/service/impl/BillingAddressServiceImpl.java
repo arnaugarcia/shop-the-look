@@ -49,12 +49,14 @@ public class BillingAddressServiceImpl implements BillingAddressService {
         log.debug("Request to save billing address {} for company {}", billingAddressRequest, companyReference);
 
         Company company = findCompanyByReference(companyReference);
-
         if (isCurrentUserManager()) {
             checkIfCurrentUserBelongsTo(company);
         }
 
-        final BillingAddress result = billingAddressRepository.save(billingAddressMapper.toEntity(billingAddressRequest));
+        final BillingAddress billingAddress = billingAddressMapper.toEntity(billingAddressRequest);
+        billingAddress.setCompany(company);
+
+        final BillingAddress result = billingAddressRepository.save(billingAddress);
         return billingAddressMapper.toDto(result);
     }
 
@@ -62,6 +64,12 @@ public class BillingAddressServiceImpl implements BillingAddressService {
     @Transactional(readOnly = true)
     public Optional<BillingAddressDTO> find(String companyReference) {
         log.debug("Request to get billing for company: {}", companyReference);
+
+        Company company = findCompanyByReference(companyReference);
+        if (isCurrentUserManager()) {
+            checkIfCurrentUserBelongsTo(company);
+        }
+
         return billingAddressRepository.findByCompanyReference(companyReference).map(billingAddressMapper::toDto);
     }
 
