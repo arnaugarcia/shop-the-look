@@ -4,6 +4,7 @@ import com.klai.stl.domain.BillingAddress;
 import com.klai.stl.repository.BillingAddressRepository;
 import com.klai.stl.service.BillingAddressService;
 import com.klai.stl.service.dto.BillingAddressDTO;
+import com.klai.stl.service.dto.requests.BillingAddressRequest;
 import com.klai.stl.service.mapper.BillingAddressMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -30,9 +31,9 @@ public class BillingAddressServiceImpl implements BillingAddressService {
     }
 
     @Override
-    public BillingAddressDTO save(BillingAddressDTO billingAddressDTO) {
-        log.debug("Request to save BillingAddress : {}", billingAddressDTO);
-        BillingAddress billingAddress = billingAddressMapper.toEntity(billingAddressDTO);
+    public BillingAddressDTO save(BillingAddressRequest billingAddressRequest) {
+        log.debug("Request to save BillingAddress : {}", billingAddressRequest);
+        BillingAddress billingAddress = billingAddressMapper.toEntity(billingAddressRequest);
         billingAddress = billingAddressRepository.save(billingAddress);
         return billingAddressMapper.toDto(billingAddress);
     }

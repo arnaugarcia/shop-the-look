@@ -1,6 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.BillingAddressDTO;
+import com.klai.stl.service.dto.requests.BillingAddressRequest;
 import java.util.Optional;
 
 /**
@@ -10,10 +11,10 @@ public interface BillingAddressService {
     /**
      * Save a billingAddress if the billing address not exists it'll create it.
      *
-     * @param billingAddressDTO the entity to save.
+     * @param billingAddressRequest the request of an entity to save
      * @return the persisted entity.
      */
-    BillingAddressDTO save(BillingAddressDTO billingAddressDTO);
+    BillingAddressDTO save(BillingAddressRequest billingAddressRequest);
 
     /**
      * Get the "id" billingAddress.

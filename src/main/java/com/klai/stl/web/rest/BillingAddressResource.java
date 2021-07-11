@@ -2,15 +2,12 @@ package com.klai.stl.web.rest;
 
 import static tech.jhipster.web.util.ResponseUtil.wrapOrNotFound;
 
-import com.klai.stl.domain.BillingAddress;
 import com.klai.stl.repository.BillingAddressRepository;
 import com.klai.stl.service.BillingAddressService;
 import com.klai.stl.service.dto.BillingAddressDTO;
+import com.klai.stl.service.dto.requests.BillingAddressRequest;
 import com.klai.stl.web.rest.errors.BadRequestAlertException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,35 +42,29 @@ public class BillingAddressResource {
     /**
      * {@code PUT  /billing} : Updates or creates an existing billingAddress.
      *
-     * @param billingAddressDTO the billingAddressDTO to update.
+     * @param billingAddressRequest the billingAddressRequest to update.
      * @param reference         the reference of a company
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated billingAddressDTO,
-     * or with status {@code 400 (Bad Request)} if the billingAddressDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the billingAddressDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated billingAddressRequest,
+     * or with status {@code 400 (Bad Request)} if the billingAddressRequest is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the billingAddressRequest couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/billing")
     public ResponseEntity<BillingAddressDTO> updateBillingAddress(
         final Long id,
-        @Valid @RequestBody BillingAddressDTO billingAddressDTO,
+        @Valid @RequestBody BillingAddressRequest billingAddressRequest,
         @PathVariable String reference
     ) throws URISyntaxException {
-        log.debug("REST request to update BillingAddress : {}, {}", id, billingAddressDTO);
-        if (billingAddressDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, billingAddressDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
+        log.debug("REST request to update BillingAddress : {}, {}", id, billingAddressRequest);
 
         if (!billingAddressRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        BillingAddressDTO result = billingAddressService.save(billingAddressDTO);
+        BillingAddressDTO result = billingAddressService.save(billingAddressRequest);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, billingAddressDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, billingAddressRequest.toString()))
             .body(result);
     }
 
