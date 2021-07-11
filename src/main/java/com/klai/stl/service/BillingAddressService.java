@@ -1,7 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.BillingAddressDTO;
-import java.util.List;
+import com.klai.stl.service.dto.requests.BillingAddressRequest;
 import java.util.Optional;
 
 /**
@@ -9,46 +9,20 @@ import java.util.Optional;
  */
 public interface BillingAddressService {
     /**
-     * Save a billingAddress.
+     * Save a billingAddress if the billing address not exists it'll create it.
      *
-     * @param billingAddressDTO the entity to save.
+     *
+     * @param companyReference the company reference
+     * @param billingAddressRequest the request of an entity to save
      * @return the persisted entity.
      */
-    BillingAddressDTO save(BillingAddressDTO billingAddressDTO);
-
-    /**
-     * Partially updates a billingAddress.
-     *
-     * @param billingAddressDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<BillingAddressDTO> partialUpdate(BillingAddressDTO billingAddressDTO);
-
-    /**
-     * Get all the billingAddresses.
-     *
-     * @return the list of entities.
-     */
-    List<BillingAddressDTO> findAll();
-    /**
-     * Get all the BillingAddressDTO where Company is {@code null}.
-     *
-     * @return the {@link List} of entities.
-     */
-    List<BillingAddressDTO> findAllWhereCompanyIsNull();
+    BillingAddressDTO save(String companyReference, BillingAddressRequest billingAddressRequest);
 
     /**
      * Get the "id" billingAddress.
      *
-     * @param id the id of the entity.
+     * @param companyReference the company reference
      * @return the entity.
      */
-    Optional<BillingAddressDTO> findOne(Long id);
-
-    /**
-     * Delete the "id" billingAddress.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
+    Optional<BillingAddressDTO> find(String companyReference);
 }

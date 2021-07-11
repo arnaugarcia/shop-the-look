@@ -2,37 +2,21 @@ package com.klai.stl.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.BillingAddress} entity.
  */
 public class BillingAddressDTO implements Serializable {
 
-    private Long id;
-
-    @NotNull
     private String address;
 
-    @NotNull
     private String city;
 
-    @NotNull
     private String province;
 
-    @NotNull
     private String zipCode;
 
-    @NotNull
     private String country;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getAddress() {
         return address;
@@ -76,35 +60,43 @@ public class BillingAddressDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof BillingAddressDTO)) {
-            return false;
-        }
-
-        BillingAddressDTO billingAddressDTO = (BillingAddressDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, billingAddressDTO.id);
+        if (this == o) return true;
+        if (!(o instanceof BillingAddressDTO)) return false;
+        BillingAddressDTO that = (BillingAddressDTO) o;
+        return (
+            Objects.equals(getAddress(), that.getAddress()) &&
+            Objects.equals(getCity(), that.getCity()) &&
+            Objects.equals(getProvince(), that.getProvince()) &&
+            Objects.equals(getZipCode(), that.getZipCode()) &&
+            Objects.equals(getCountry(), that.getCountry())
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hash(getAddress(), getCity(), getProvince(), getZipCode(), getCountry());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "BillingAddressDTO{" +
-            "id=" + getId() +
-            ", address='" + getAddress() + "'" +
-            ", city='" + getCity() + "'" +
-            ", province='" + getProvince() + "'" +
-            ", zipCode='" + getZipCode() + "'" +
-            ", country='" + getCountry() + "'" +
-            "}";
+        return (
+            "BillingAddressDTO{" +
+            "address='" +
+            address +
+            '\'' +
+            ", city='" +
+            city +
+            '\'' +
+            ", province='" +
+            province +
+            '\'' +
+            ", zipCode='" +
+            zipCode +
+            '\'' +
+            ", country='" +
+            country +
+            '\'' +
+            '}'
+        );
     }
 }

@@ -1,18 +1,20 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
+import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.BillingAddress;
+import com.klai.stl.domain.Company;
+import com.klai.stl.domain.User;
 import com.klai.stl.repository.BillingAddressRepository;
-import com.klai.stl.service.dto.BillingAddressDTO;
-import com.klai.stl.service.mapper.BillingAddressMapper;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
+import com.klai.stl.service.dto.requests.BillingAddressRequest;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,17 +48,10 @@ class BillingAddressResourceIT {
     private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
     private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
 
-    private static final String ENTITY_API_URL = "/api/billing-addresses";
-    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
-
-    private static Random random = new Random();
-    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+    private static final String ENTITY_API_URL = "/api/companies/{reference}/billing";
 
     @Autowired
     private BillingAddressRepository billingAddressRepository;
-
-    @Autowired
-    private BillingAddressMapper billingAddressMapper;
 
     @Autowired
     private EntityManager em;
@@ -64,220 +59,240 @@ class BillingAddressResourceIT {
     @Autowired
     private MockMvc restBillingAddressMockMvc;
 
+    private BillingAddressRequest billingAddressRequest;
+
+    private BillingAddressRequest updateBillingAddressRequest;
+
     private BillingAddress billingAddress;
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static BillingAddress createEntity(EntityManager em) {
-        BillingAddress billingAddress = new BillingAddress()
+    public static BillingAddressRequest createRequest() {
+        return BillingAddressRequest
+            .builder()
             .address(DEFAULT_ADDRESS)
             .city(DEFAULT_CITY)
             .province(DEFAULT_PROVINCE)
             .zipCode(DEFAULT_ZIP_CODE)
-            .country(DEFAULT_COUNTRY);
-        return billingAddress;
+            .country(DEFAULT_COUNTRY)
+            .build();
     }
 
-    /**
-     * Create an updated entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static BillingAddress createUpdatedEntity(EntityManager em) {
-        BillingAddress billingAddress = new BillingAddress()
+    public static BillingAddressRequest createUpdateRequest() {
+        return BillingAddressRequest
+            .builder()
             .address(UPDATED_ADDRESS)
             .city(UPDATED_CITY)
             .province(UPDATED_PROVINCE)
             .zipCode(UPDATED_ZIP_CODE)
-            .country(UPDATED_COUNTRY);
-        return billingAddress;
+            .country(UPDATED_COUNTRY)
+            .build();
+    }
+
+    public static BillingAddress createEntity() {
+        final BillingAddress result = new BillingAddress();
+        result.setAddress(DEFAULT_ADDRESS);
+        result.setCity(DEFAULT_CITY);
+        result.setProvince(DEFAULT_PROVINCE);
+        result.setZipCode(DEFAULT_ZIP_CODE);
+        result.setCountry(DEFAULT_COUNTRY);
+        return result;
     }
 
     @BeforeEach
-    public void initTest() {
-        billingAddress = createEntity(em);
+    void initTest() {
+        billingAddressRequest = createRequest();
+        updateBillingAddressRequest = createUpdateRequest();
+        billingAddress = createEntity();
     }
 
     @Test
     @Transactional
+    @WithMockUser(username = "manager-billing", authorities = MANAGER)
     void createBillingAddress() throws Exception {
-        int databaseSizeBeforeCreate = billingAddressRepository.findAll().size();
-        // Create the BillingAddress
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
+        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
+
         restBillingAddressMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isCreated());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeCreate + 1);
-        BillingAddress testBillingAddress = billingAddressList.get(billingAddressList.size() - 1);
-        assertThat(testBillingAddress.getAddress()).isEqualTo(DEFAULT_ADDRESS);
-        assertThat(testBillingAddress.getCity()).isEqualTo(DEFAULT_CITY);
-        assertThat(testBillingAddress.getProvince()).isEqualTo(DEFAULT_PROVINCE);
-        assertThat(testBillingAddress.getZipCode()).isEqualTo(DEFAULT_ZIP_CODE);
-        assertThat(testBillingAddress.getCountry()).isEqualTo(DEFAULT_COUNTRY);
+            .andExpect(status().isOk());
     }
 
     @Test
     @Transactional
-    void createBillingAddressWithExistingId() throws Exception {
-        // Create the BillingAddress with an existing ID
-        billingAddress.setId(1L);
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
+    @WithMockUser(authorities = ADMIN)
+    void createBillingAddressAsAdmin() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
 
-        int databaseSizeBeforeCreate = billingAddressRepository.findAll().size();
-
-        // An entity with an existing ID cannot be created, so this API call must fail
         restBillingAddressMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isBadRequest());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeCreate);
+            .andExpect(status().isOk());
     }
 
     @Test
     @Transactional
-    void checkAddressIsRequired() throws Exception {
-        int databaseSizeBeforeTest = billingAddressRepository.findAll().size();
-        // set the field null
-        billingAddress.setAddress(null);
-
-        // Create the BillingAddress, which fails.
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
+    @WithMockUser(authorities = ADMIN)
+    void queryBillingAddressOfACompanyThatNotExistsAsAdmin() throws Exception {
         restBillingAddressMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeTest);
+            .perform(get(ENTITY_API_URL, "BAD_REFERENCE").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void checkCityIsRequired() throws Exception {
-        int databaseSizeBeforeTest = billingAddressRepository.findAll().size();
-        // set the field null
-        billingAddress.setCity(null);
-
-        // Create the BillingAddress, which fails.
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
+    @WithMockUser(authorities = MANAGER)
+    void queryBillingAddressOfACompanyThatNotExistsAsManager() throws Exception {
         restBillingAddressMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeTest);
+            .perform(get(ENTITY_API_URL, "BAD_REFERENCE").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void checkProvinceIsRequired() throws Exception {
-        int databaseSizeBeforeTest = billingAddressRepository.findAll().size();
-        // set the field null
-        billingAddress.setProvince(null);
-
-        // Create the BillingAddress, which fails.
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
+    @WithMockUser(authorities = MANAGER)
+    void updateBillingAddressOfACompanyThatNotExistsAsManager() throws Exception {
         restBillingAddressMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                put(ENTITY_API_URL, "BAD_REFERENCE")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isBadRequest());
-
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeTest);
+            .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void checkZipCodeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = billingAddressRepository.findAll().size();
-        // set the field null
-        billingAddress.setZipCode(null);
-
-        // Create the BillingAddress, which fails.
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
+    @WithMockUser(authorities = ADMIN)
+    void updateBillingAddressOfACompanyThatNotExistsAsAdmin() throws Exception {
         restBillingAddressMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                put(ENTITY_API_URL, "BAD_REFERENCE")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isBadRequest());
-
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeTest);
+            .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void checkCountryIsRequired() throws Exception {
-        int databaseSizeBeforeTest = billingAddressRepository.findAll().size();
-        // set the field null
-        billingAddress.setCountry(null);
-
-        // Create the BillingAddress, which fails.
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
+    @WithMockUser(username = "manager-billing", authorities = MANAGER)
+    void updateBillingAddress() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
 
         restBillingAddressMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isOk());
 
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeTest);
+        final Optional<BillingAddress> billingAddress = billingAddressRepository.findByCompanyReference(company.getReference());
+        assertThat(billingAddress).isPresent();
+        BillingAddress result = billingAddress.get();
+        assertThat(result.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(result.getCity()).isEqualTo(UPDATED_CITY);
+        assertThat(result.getProvince()).isEqualTo(UPDATED_PROVINCE);
+        assertThat(result.getCountry()).isEqualTo(UPDATED_COUNTRY);
     }
 
     @Test
     @Transactional
-    void getAllBillingAddresses() throws Exception {
-        // Initialize the database
-        billingAddressRepository.saveAndFlush(billingAddress);
+    @WithMockUser(authorities = ADMIN)
+    void updateBillingAddressAsAdmin() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
 
-        // Get all the billingAddressList
         restBillingAddressMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
+            )
+            .andExpect(status().isOk());
+
+        final Optional<BillingAddress> billingAddress = billingAddressRepository.findByCompanyReference(company.getReference());
+        assertThat(billingAddress).isPresent();
+        BillingAddress result = billingAddress.get();
+        assertThat(result.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(result.getCity()).isEqualTo(UPDATED_CITY);
+        assertThat(result.getProvince()).isEqualTo(UPDATED_PROVINCE);
+        assertThat(result.getCountry()).isEqualTo(UPDATED_COUNTRY);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "bad-manager", authorities = MANAGER)
+    void updateBillingAddressOfOtherCompanyAsManager() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "bad-manager");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
+
+        final Company otherCompany = CompanyResourceIT.createBasicEntity(em);
+        final User otherUser = UserResourceIT.createEntity(em);
+        otherCompany.addUser(otherUser);
+        em.persist(otherCompany);
+        em.persist(otherUser);
+
+        restBillingAddressMockMvc
+            .perform(
+                put(ENTITY_API_URL, otherCompany.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
+            )
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager-billing", authorities = MANAGER)
+    void findsYourBillingAddressAsManager() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
+
+        restBillingAddressMockMvc
+            .perform(
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
+            )
+            .andExpect(status().isOk());
+
+        final Optional<BillingAddress> billingAddress = billingAddressRepository.findByCompanyReference(company.getReference());
+        assertThat(billingAddress).isPresent();
+        BillingAddress result = billingAddress.get();
+        assertThat(result.getAddress()).isEqualTo(DEFAULT_ADDRESS);
+        assertThat(result.getCity()).isEqualTo(DEFAULT_CITY);
+        assertThat(result.getProvince()).isEqualTo(DEFAULT_PROVINCE);
+        assertThat(result.getCountry()).isEqualTo(DEFAULT_COUNTRY);
+
+        restBillingAddressMockMvc
+            .perform(
+                get(ENTITY_API_URL, company.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
+            )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(billingAddress.getId().intValue())))
-            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
-            .andExpect(jsonPath("$.[*].province").value(hasItem(DEFAULT_PROVINCE)))
-            .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)))
-            .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)));
-    }
-
-    @Test
-    @Transactional
-    void getBillingAddress() throws Exception {
-        // Initialize the database
-        billingAddressRepository.saveAndFlush(billingAddress);
-
-        // Get the billingAddress
-        restBillingAddressMockMvc
-            .perform(get(ENTITY_API_URL_ID, billingAddress.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(billingAddress.getId().intValue()))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
             .andExpect(jsonPath("$.city").value(DEFAULT_CITY))
             .andExpect(jsonPath("$.province").value(DEFAULT_PROVINCE))
@@ -287,272 +302,99 @@ class BillingAddressResourceIT {
 
     @Test
     @Transactional
-    void getNonExistingBillingAddress() throws Exception {
-        // Get the billingAddress
-        restBillingAddressMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    void putNewBillingAddress() throws Exception {
-        // Initialize the database
-        billingAddressRepository.saveAndFlush(billingAddress);
-
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-
-        // Update the billingAddress
-        BillingAddress updatedBillingAddress = billingAddressRepository.findById(billingAddress.getId()).get();
-        // Disconnect from session so that the updates on updatedBillingAddress are not directly saved in db
-        em.detach(updatedBillingAddress);
-        updatedBillingAddress
-            .address(UPDATED_ADDRESS)
-            .city(UPDATED_CITY)
-            .province(UPDATED_PROVINCE)
-            .zipCode(UPDATED_ZIP_CODE)
-            .country(UPDATED_COUNTRY);
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(updatedBillingAddress);
+    @WithMockUser(username = "bad-manager", authorities = MANAGER)
+    void notFindsBillingOfOtherCompany() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "bad-manager");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
 
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, billingAddressDTO.getId())
+                put(ENTITY_API_URL, company.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
             )
             .andExpect(status().isOk());
 
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
-        BillingAddress testBillingAddress = billingAddressList.get(billingAddressList.size() - 1);
-        assertThat(testBillingAddress.getAddress()).isEqualTo(UPDATED_ADDRESS);
-        assertThat(testBillingAddress.getCity()).isEqualTo(UPDATED_CITY);
-        assertThat(testBillingAddress.getProvince()).isEqualTo(UPDATED_PROVINCE);
-        assertThat(testBillingAddress.getZipCode()).isEqualTo(UPDATED_ZIP_CODE);
-        assertThat(testBillingAddress.getCountry()).isEqualTo(UPDATED_COUNTRY);
-    }
+        final User otherManager = UserResourceIT.createEntity(em, "other-manager");
+        final Company otherCompany = CompanyResourceIT.createBasicEntity(em);
+        otherCompany.addUser(otherManager);
+        em.persist(otherCompany);
 
-    @Test
-    @Transactional
-    void putNonExistingBillingAddress() throws Exception {
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-        billingAddress.setId(count.incrementAndGet());
+        final Optional<BillingAddress> badManagerBilling = billingAddressRepository.findByCompanyReference(company.getReference());
+        assertThat(badManagerBilling).isPresent();
+        BillingAddress result = badManagerBilling.get();
+        assertThat(result.getAddress()).isEqualTo(DEFAULT_ADDRESS);
+        assertThat(result.getCity()).isEqualTo(DEFAULT_CITY);
+        assertThat(result.getProvince()).isEqualTo(DEFAULT_PROVINCE);
+        assertThat(result.getCountry()).isEqualTo(DEFAULT_COUNTRY);
 
-        // Create the BillingAddress
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
+        billingAddressRepository.save(billingAddress);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, billingAddressDTO.getId())
+                get(ENTITY_API_URL, otherCompany.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isBadRequest());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
+            .andExpect(status().isForbidden());
     }
 
     @Test
     @Transactional
-    void putWithIdMismatchBillingAddress() throws Exception {
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-        billingAddress.setId(count.incrementAndGet());
+    @WithMockUser(authorities = ADMIN)
+    void findsBillingAddressAsAdmin() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
 
-        // Create the BillingAddress
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
+        BillingAddress billingAddress = new BillingAddress();
+        billingAddress.setAddress(DEFAULT_ADDRESS);
+        billingAddress.setCity(DEFAULT_CITY);
+        billingAddress.setProvince(DEFAULT_PROVINCE);
+        billingAddress.setCountry(DEFAULT_COUNTRY);
+        billingAddress.setZipCode(DEFAULT_ZIP_CODE);
+        billingAddress.setCompany(company);
+        billingAddressRepository.save(billingAddress);
 
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                get(ENTITY_API_URL, company.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isBadRequest());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
+            .andExpect(jsonPath("$.city").value(DEFAULT_CITY))
+            .andExpect(jsonPath("$.province").value(DEFAULT_PROVINCE))
+            .andExpect(jsonPath("$.zipCode").value(DEFAULT_ZIP_CODE))
+            .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY));
     }
 
     @Test
     @Transactional
-    void putWithMissingIdPathParamBillingAddress() throws Exception {
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-        billingAddress.setId(count.incrementAndGet());
-
-        // Create the BillingAddress
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+    void notFindsBillingAddressAsUser() throws Exception {
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
+                get(ENTITY_API_URL, "COMPANY_REFERENCE")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
+            .andExpect(status().isForbidden());
     }
 
     @Test
     @Transactional
-    void partialUpdateBillingAddressWithPatch() throws Exception {
-        // Initialize the database
-        billingAddressRepository.saveAndFlush(billingAddress);
-
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-
-        // Update the billingAddress using partial update
-        BillingAddress partialUpdatedBillingAddress = new BillingAddress();
-        partialUpdatedBillingAddress.setId(billingAddress.getId());
-
-        partialUpdatedBillingAddress.address(UPDATED_ADDRESS);
-
+    void notUpdatesBillingAddressAsUser() throws Exception {
         restBillingAddressMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedBillingAddress.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBillingAddress))
+                put(ENTITY_API_URL, "COMPANY_REFERENCE")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isOk());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
-        BillingAddress testBillingAddress = billingAddressList.get(billingAddressList.size() - 1);
-        assertThat(testBillingAddress.getAddress()).isEqualTo(UPDATED_ADDRESS);
-        assertThat(testBillingAddress.getCity()).isEqualTo(DEFAULT_CITY);
-        assertThat(testBillingAddress.getProvince()).isEqualTo(DEFAULT_PROVINCE);
-        assertThat(testBillingAddress.getZipCode()).isEqualTo(DEFAULT_ZIP_CODE);
-        assertThat(testBillingAddress.getCountry()).isEqualTo(DEFAULT_COUNTRY);
-    }
-
-    @Test
-    @Transactional
-    void fullUpdateBillingAddressWithPatch() throws Exception {
-        // Initialize the database
-        billingAddressRepository.saveAndFlush(billingAddress);
-
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-
-        // Update the billingAddress using partial update
-        BillingAddress partialUpdatedBillingAddress = new BillingAddress();
-        partialUpdatedBillingAddress.setId(billingAddress.getId());
-
-        partialUpdatedBillingAddress
-            .address(UPDATED_ADDRESS)
-            .city(UPDATED_CITY)
-            .province(UPDATED_PROVINCE)
-            .zipCode(UPDATED_ZIP_CODE)
-            .country(UPDATED_COUNTRY);
-
-        restBillingAddressMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedBillingAddress.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBillingAddress))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
-        BillingAddress testBillingAddress = billingAddressList.get(billingAddressList.size() - 1);
-        assertThat(testBillingAddress.getAddress()).isEqualTo(UPDATED_ADDRESS);
-        assertThat(testBillingAddress.getCity()).isEqualTo(UPDATED_CITY);
-        assertThat(testBillingAddress.getProvince()).isEqualTo(UPDATED_PROVINCE);
-        assertThat(testBillingAddress.getZipCode()).isEqualTo(UPDATED_ZIP_CODE);
-        assertThat(testBillingAddress.getCountry()).isEqualTo(UPDATED_COUNTRY);
-    }
-
-    @Test
-    @Transactional
-    void patchNonExistingBillingAddress() throws Exception {
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-        billingAddress.setId(count.incrementAndGet());
-
-        // Create the BillingAddress
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restBillingAddressMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, billingAddressDTO.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithIdMismatchBillingAddress() throws Exception {
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-        billingAddress.setId(count.incrementAndGet());
-
-        // Create the BillingAddress
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restBillingAddressMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithMissingIdPathParamBillingAddress() throws Exception {
-        int databaseSizeBeforeUpdate = billingAddressRepository.findAll().size();
-        billingAddress.setId(count.incrementAndGet());
-
-        // Create the BillingAddress
-        BillingAddressDTO billingAddressDTO = billingAddressMapper.toDto(billingAddress);
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restBillingAddressMockMvc
-            .perform(
-                patch(ENTITY_API_URL)
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(billingAddressDTO))
-            )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the BillingAddress in the database
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void deleteBillingAddress() throws Exception {
-        // Initialize the database
-        billingAddressRepository.saveAndFlush(billingAddress);
-
-        int databaseSizeBeforeDelete = billingAddressRepository.findAll().size();
-
-        // Delete the billingAddress
-        restBillingAddressMockMvc
-            .perform(delete(ENTITY_API_URL_ID, billingAddress.getId()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<BillingAddress> billingAddressList = billingAddressRepository.findAll();
-        assertThat(billingAddressList).hasSize(databaseSizeBeforeDelete - 1);
+            .andExpect(status().isForbidden());
     }
 }
