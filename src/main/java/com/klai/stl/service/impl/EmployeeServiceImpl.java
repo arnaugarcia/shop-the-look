@@ -40,6 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (isNull(newEmployeeRequestDTO.getCompanyReference())) {
                 throw new CompanyReferenceNotFound();
             }
+            companyService.findOne(newEmployeeRequestDTO.getCompanyReference());
             companyReference = newEmployeeRequestDTO.getCompanyReference();
         } else {
             companyReference = findCurrentUserCompanyReference();
@@ -53,8 +54,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             .login(newEmployeeRequestDTO.getLogin())
             .langKey(newEmployeeRequestDTO.getLangKey())
             .imageUrl(newEmployeeRequestDTO.getImageUrl())
+            .companyReference(companyReference)
             .build();
-        final User employee = userService.createUser(user);
+        final User employee = userService.createEmployee(user);
         companyService.addEmployee(employee, companyReference);
         return employee;
     }

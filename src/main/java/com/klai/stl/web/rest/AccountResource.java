@@ -83,9 +83,6 @@ public class AccountResource {
         if (isPasswordLengthInvalid(companyUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerManager(companyUserVM, companyUserVM.getPassword());
-        Set<UserDTO> users = new HashSet<>();
-        users.add(new UserDTO(user));
         CompanyDTO companyDTO = CompanyDTO
             .builder()
             .name(companyUserVM.getName())
@@ -98,9 +95,9 @@ public class AccountResource {
             .industry(companyUserVM.getIndustry())
             .companySize(companyUserVM.getSize())
             .token(tokenService.generateToken())
-            .users(users)
             .build();
-        companyService.save(companyDTO);
+        final CompanyDTO company = companyService.save(companyDTO);
+        User user = userService.registerManager(companyUserVM, company.getReference(), companyUserVM.getPassword());
         mailService.sendActivationEmail(user);
     }
 

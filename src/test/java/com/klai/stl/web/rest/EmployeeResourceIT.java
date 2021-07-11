@@ -2,6 +2,7 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.*;
 import static com.klai.stl.web.rest.UserResourceIT.createAUserDTO;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -18,9 +19,11 @@ import com.klai.stl.repository.UserRepository;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.EntityManager;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class EmployeeResourceIT {
 
-    private static final String EMPLOYEE_EMAIL = "employee@email.com";
+    private static final String EMPLOYEE_EMAIL = randomAlphabetic(10).toLowerCase(Locale.ROOT) + "employee@email.com";
 
     private static final String EMPLOYEE_FIRSTNAME = "EMPLOYEE_FIRSTNAME";
     private static final String UPDATED_EMPLOYEE_FIRSTNAME = "UPDATED_EMPLOYEE_FIRSTNAME";
@@ -51,7 +54,7 @@ class EmployeeResourceIT {
     private static final String EMPLOYEE_LANG_KEY = "ca";
     private static final String UPDATED_EMPLOYEE_LANG_KEY = "es";
 
-    private static final String EMPLOYEE_LOGIN = "employee";
+    private static final String EMPLOYEE_LOGIN = "enmployee" + randomAlphabetic(10).toLowerCase(Locale.ROOT);
     private static final String EMPLOYEE_COMPANY = "COMPANY";
 
     private static final String ENTITY_API_URL = "/api/employees";
@@ -81,9 +84,9 @@ class EmployeeResourceIT {
 
     @BeforeEach
     public void initTest() {
-        company = CompanyResourceIT.createBasicEntity();
+        company = CompanyResourceIT.createBasicEntity(em);
         employee = UserResourceIT.createEntity(em);
-        employeeAdminRequest = createAdminRequest();
+        employeeAdminRequest = createAdminRequest(company.getReference());
         employeeRequest = createRequest();
         updateRequest = createUpdateRequest();
     }
@@ -110,7 +113,7 @@ class EmployeeResourceIT {
             .build();
     }
 
-    private NewEmployeeRequestDTO createAdminRequest() {
+    private NewEmployeeRequestDTO createAdminRequest(String companyReference) {
         return NewEmployeeRequestDTO
             .builder()
             .email(EMPLOYEE_EMAIL)
@@ -119,7 +122,7 @@ class EmployeeResourceIT {
             .langKey(EMPLOYEE_LANG_KEY)
             .login(EMPLOYEE_LOGIN)
             .imageUrl(EMPLOYEE_IMAGE)
-            .companyReference(EMPLOYEE_COMPANY)
+            .companyReference(companyReference)
             .build();
     }
 
@@ -127,6 +130,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "create-employee", authorities = { MANAGER })
     void createEmployee() throws Exception {
+        final Company company = CompanyResourceIT.createBasicEntity(em);
         employee.setLogin("create-employee");
         em.persist(company);
         employee.setCompany(company);
@@ -160,7 +164,7 @@ class EmployeeResourceIT {
     @WithMockUser(username = "create-employee-existing-login", authorities = { MANAGER })
     void createUserWithExistingLogin() throws Exception {
         final String EXISTING_LOGIN = "create-employee-existing-login";
-        final User manager = UserResourceIT.createEntity(EXISTING_LOGIN);
+        final User manager = UserResourceIT.createEntity(em, EXISTING_LOGIN);
         manager.setLogin(EXISTING_LOGIN);
         manager.setCompany(company);
         em.persist(manager);
@@ -198,34 +202,43 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(authorities = { ADMIN })
     void createUserAsAdmin() throws Exception {
-        company.setReference(EMPLOYEE_COMPANY);
         em.persist(company);
 
         restPhotoMockMvc
             .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeAdminRequest)))
             .andExpect(status().isCreated());
 
-        final Optional<User> oneByLogin = userRepository.findOneWithAuthoritiesByLogin(EMPLOYEE_LOGIN);
+        final Optional<User> oneByLogin = userRepository.findOneWithAuthoritiesByLogin(employeeAdminRequest.getLogin());
         assertThat(oneByLogin).isPresent();
         User result = oneByLogin.get();
         assertThat(result.getAuthorities()).hasSize(1);
-        assertThat(result.getEmail()).isEqualTo(EMPLOYEE_EMAIL);
+        assertThat(result.getEmail()).isEqualTo(employeeAdminRequest.getEmail());
         assertThat(result.getFirstName()).isEqualTo(EMPLOYEE_FIRSTNAME);
         assertThat(result.getLastName()).isEqualTo(EMPLOYEE_LASTNAME);
         assertThat(result.getLangKey()).isEqualTo(EMPLOYEE_LANG_KEY);
-        assertThat(result.getLogin()).isEqualTo(EMPLOYEE_LOGIN);
+        assertThat(result.getLogin()).isEqualTo(employeeAdminRequest.getLogin());
         assertThat(result.getImageUrl()).isEqualTo(EMPLOYEE_IMAGE);
         assertThat(result.isActivated()).isTrue();
         assertThat(result.getCompany()).isNotNull();
-        assertThat(result.getCompany().getReference()).isEqualTo(EMPLOYEE_COMPANY);
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
     }
 
     @Test
     @Transactional
     @WithMockUser(authorities = { ADMIN })
     void createUserAsAdminWithNotExistingCompany() throws Exception {
+        final NewEmployeeRequestDTO employeeRequest = NewEmployeeRequestDTO
+            .builder()
+            .email(randomAlphabetic(10).toLowerCase(Locale.ROOT) + EMPLOYEE_EMAIL)
+            .firstName(EMPLOYEE_FIRSTNAME)
+            .lastName(EMPLOYEE_LASTNAME)
+            .langKey(EMPLOYEE_LANG_KEY)
+            .login(EMPLOYEE_LOGIN + randomAlphabetic(10).toLowerCase(Locale.ROOT))
+            .imageUrl(EMPLOYEE_IMAGE)
+            .companyReference("COMPANY_REFERENCE_NOT_EXISTING")
+            .build();
         restPhotoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeAdminRequest)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(employeeRequest)))
             .andExpect(status().isNotFound());
     }
 
@@ -243,8 +256,8 @@ class EmployeeResourceIT {
     @WithMockUser(username = "manager-update-employee", authorities = { MANAGER })
     public void updateEmployee() throws Exception {
         final String login = "employee-login";
-        final User manager = UserResourceIT.createEntity("manager-update-employee");
-        final User employee = UserResourceIT.createEntity(login);
+        final User manager = UserResourceIT.createEntity(em, "manager-update-employee");
+        final User employee = UserResourceIT.createEntity(em, login);
         manager.setCompany(company);
         employee.setCompany(company);
         em.persist(manager);
@@ -276,8 +289,8 @@ class EmployeeResourceIT {
     @WithMockUser(username = "admin-update-employee", authorities = { ADMIN })
     public void updateEmployeeAsAdmin() throws Exception {
         final String login = "employee-login";
-        final User manager = UserResourceIT.createEntity("admin-update-employee");
-        final User employee = UserResourceIT.createEntity(login);
+        final User manager = UserResourceIT.createEntity(em, "admin-update-employee");
+        final User employee = UserResourceIT.createEntity(em, login);
         manager.setCompany(company);
         employee.setCompany(company);
         em.persist(manager);
@@ -319,13 +332,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-update-employee-company", authorities = { MANAGER })
     public void updateEmployeeFromOtherCompany() throws Exception {
-        Company company1 = CompanyResourceIT.createBasicEntity();
-        final User manager = UserResourceIT.createEntity("manager-update-employee-company");
+        Company company1 = CompanyResourceIT.createBasicEntity(em);
+        final User manager = UserResourceIT.createEntity(em, "manager-update-employee-company");
         company1.addUser(manager);
         em.persist(manager);
         em.persist(company1);
 
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         final User employee = UserResourceIT.createEntity(em);
         company2.addUser(employee);
         em.persist(employee);
@@ -344,13 +357,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "admin-update-employee-company", authorities = { ADMIN })
     public void updateEmployeeFromOtherCompanyAsAdmin() throws Exception {
-        Company company1 = CompanyResourceIT.createBasicEntity();
-        final User manager = UserResourceIT.createEntity("admin-update-employee-company");
+        Company company1 = CompanyResourceIT.createBasicEntity(em);
+        final User manager = UserResourceIT.createEntity(em, "admin-update-employee-company");
         company1.addUser(manager);
         em.persist(manager);
         em.persist(company1);
 
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         final User employee = UserResourceIT.createEntity(em);
         company2.addUser(employee);
         em.persist(employee);
@@ -369,7 +382,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "remove-employee", authorities = { MANAGER })
     public void removeEmployee() throws Exception {
-        final User manager = UserResourceIT.createEntity("remove-employee");
+        final User manager = UserResourceIT.createEntity(em, "remove-employee");
         em.persist(employee);
         em.persist(manager);
         company.addUser(employee);
@@ -399,29 +412,16 @@ class EmployeeResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = { MANAGER })
+    @WithMockUser(username = "removing-yourself", authorities = { MANAGER })
     public void removeYourself() throws Exception {
         final User manager = UserResourceIT.createEntity(em);
-        em.persist(employee);
+        manager.setLogin("removing-yourself");
         em.persist(manager);
-        company.addUser(employee);
         company.addUser(manager);
-        em.persist(manager);
         em.persist(company);
 
         restPhotoMockMvc
-            .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser(authorities = { MANAGER })
-    public void removeEmployeeWithNoCompanyAssociated() throws Exception {
-        em.persist(employee);
-
-        restPhotoMockMvc
-            .perform(delete(ENTITY_API_URL_LOGIN, employee.getLogin()).contentType(APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_LOGIN, "removing-yourself").contentType(APPLICATION_JSON))
             .andExpect(status().isBadRequest());
     }
 
@@ -429,7 +429,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "remove-employee-admin", authorities = { ADMIN })
     public void removeEmployeeAsAdmin() throws Exception {
-        final User manager = UserResourceIT.createEntity("remove-employee-admin");
+        final User manager = UserResourceIT.createEntity(em, "remove-employee-admin");
         em.persist(employee);
         em.persist(manager);
         company.addUser(employee);
@@ -462,7 +462,7 @@ class EmployeeResourceIT {
     @WithMockUser(username = "delete-current-employee", authorities = { MANAGER })
     public void removeCurrentManager() throws Exception {
         final String login = "delete-current-employee";
-        final User user = UserResourceIT.createEntity(login);
+        final User user = UserResourceIT.createEntity(em, login);
         company.addUser(user);
         em.persist(user);
         em.persist(company);
@@ -489,7 +489,7 @@ class EmployeeResourceIT {
     @WithMockUser(username = "find-manager-employees", authorities = MANAGER)
     public void findUsersAsManager() throws Exception {
         User employee = UserResourceIT.createEntity(em);
-        User manager = UserResourceIT.createEntity("find-manager-employees");
+        User manager = UserResourceIT.createEntity(em, "find-manager-employees");
         em.persist(employee);
         em.persist(manager);
 
@@ -508,13 +508,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "find-manager", authorities = MANAGER)
     public void findingOnlyYourEmployeesAsManager() throws Exception {
-        User manager = UserResourceIT.createEntity("find-manager");
+        User manager = UserResourceIT.createEntity(em, "find-manager");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -535,7 +535,7 @@ class EmployeeResourceIT {
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -565,7 +565,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "company-manager", authorities = { MANAGER })
     public void findingAllEmployeesByReferenceAsManager() throws Exception {
-        User manager = UserResourceIT.createEntity("company-manager");
+        User manager = UserResourceIT.createEntity(em, "company-manager");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
@@ -580,12 +580,12 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "company-manager-wrong", authorities = { MANAGER })
     public void notFindingEmployeesByReferenceAsManager() throws Exception {
-        User manager = UserResourceIT.createEntity("company-manager-wrong");
+        User manager = UserResourceIT.createEntity(em, "company-manager-wrong");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         User user1 = UserResourceIT.createEntity(em);
         company2.addUser(user1);
 
@@ -606,7 +606,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-employee", authorities = { MANAGER })
     public void findingEmployeeByLogin() throws Exception {
-        User manager = UserResourceIT.createEntity("manager-employee");
+        User manager = UserResourceIT.createEntity(em, "manager-employee");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
@@ -621,13 +621,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-gossip", authorities = { MANAGER })
     public void notFindingEmployeeByLoginOfOtherCompany() throws Exception {
-        User manager = UserResourceIT.createEntity("manager-gossip");
+        User manager = UserResourceIT.createEntity(em, "manager-gossip");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity();
+        Company company2 = CompanyResourceIT.createBasicEntity(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -642,10 +642,10 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "employee-manager", authorities = { MANAGER })
     public void makeAnEmployeeAManager() throws Exception {
-        final User manager = UserResourceIT.createEntity("employee-manager");
+        final User manager = UserResourceIT.createEntity(em, "employee-manager");
         em.persist(manager);
         company.addUser(manager);
-        User employee = UserResourceIT.createEntity("employee");
+        User employee = UserResourceIT.createEntity(em, "employee-2");
         Authority authority = new Authority();
         authority.setName(USER);
         employee.getAuthorities().add(authority);
@@ -672,7 +672,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-guilty")
     public void makeAnAdminManager() throws Exception {
-        UserResourceIT.createEntity("manager-guilty");
+        UserResourceIT.createEntity(em, "manager-guilty");
 
         restPhotoMockMvc
             .perform(put(ENTITY_API_URL_LOGIN + "/manager", "admin").contentType(APPLICATION_JSON))
@@ -710,14 +710,14 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-guilty", authorities = { MANAGER })
     public void makeAEmployeeAManagerFromOtherCompany() throws Exception {
-        User manager = UserResourceIT.createEntity("manager-guilty");
+        User manager = UserResourceIT.createEntity(em, "manager-guilty");
         em.persist(manager);
         company.addUser(manager);
         em.persist(company);
 
         User otherEmployee = UserResourceIT.createEntity(em);
         em.persist(otherEmployee);
-        Company otherCompany = CompanyResourceIT.createBasicEntity();
+        Company otherCompany = CompanyResourceIT.createBasicEntity(em);
         otherCompany.addUser(otherEmployee);
         em.persist(otherCompany);
 

@@ -1,5 +1,6 @@
 package com.klai.stl.web.rest;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -8,7 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.Company;
+import com.klai.stl.domain.Product;
 import com.klai.stl.domain.User;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.dto.AdminUserDTO;
@@ -16,10 +19,7 @@ import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.mapper.UserMapper;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -68,6 +68,9 @@ class UserResourceIT {
     private UserRepository userRepository;
 
     @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -80,6 +83,8 @@ class UserResourceIT {
     private MockMvc restUserMockMvc;
 
     private User user;
+
+    private Company company;
 
     @BeforeEach
     public void setup() {
@@ -95,14 +100,25 @@ class UserResourceIT {
      */
     public static User createEntity(EntityManager em) {
         User user = new User();
-        user.setLogin(DEFAULT_LOGIN + RandomStringUtils.randomAlphabetic(5));
+        user.setLogin(DEFAULT_LOGIN + randomAlphabetic(5).toLowerCase(Locale.ROOT));
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-        user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
+        user.setEmail(randomAlphabetic(5).toLowerCase(Locale.ROOT) + DEFAULT_EMAIL);
         user.setFirstName(DEFAULT_FIRSTNAME);
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        user.setCompany(company);
         return user;
     }
 
@@ -112,26 +128,38 @@ class UserResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which has a required relationship to the User entity.
      */
-    public static User createEntity(String login) {
+    public static User createEntity(EntityManager em, String login) {
         User user = new User();
         user.setLogin(login);
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-        user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
+        user.setEmail(randomAlphabetic(5) + DEFAULT_EMAIL);
         user.setFirstName(DEFAULT_FIRSTNAME);
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+
+        // Add required entity
+        Company company;
+        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+            company = CompanyResourceIT.createEntity(em);
+            em.persist(company);
+            em.flush();
+        } else {
+            company = TestUtil.findAll(em, Company.class).get(0);
+        }
+        user.setCompany(company);
         return user;
     }
 
     /**
      * Setups the database with one user.
      */
-    public static User initTestUser(UserRepository userRepository, EntityManager em) {
+    public static User initTestUser(UserRepository userRepository, Company company, EntityManager em) {
         User user = createEntity(em);
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
+        user.setCompany(company);
         return user;
     }
 
@@ -149,7 +177,8 @@ class UserResourceIT {
 
     @BeforeEach
     public void initTest() {
-        user = initTestUser(userRepository, em);
+        company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
+        user = initTestUser(userRepository, company, em);
     }
 
     @Test
@@ -279,7 +308,7 @@ class UserResourceIT {
     @Test
     @Transactional
     public void createAUserWithACompany() throws Exception {
-        final Company company = CompanyResourceIT.createBasicEntity();
+        final Company company = CompanyResourceIT.createBasicEntity(em);
         em.persist(company);
         user.setCompany(company);
         userRepository.saveAndFlush(user);
@@ -444,8 +473,7 @@ class UserResourceIT {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
 
-        User anotherUser = new User();
-        anotherUser.setLogin("jhipster");
+        User anotherUser = createEntity(em, "jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
@@ -453,6 +481,7 @@ class UserResourceIT {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setCompany(company);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -487,8 +516,7 @@ class UserResourceIT {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
-        User anotherUser = new User();
-        anotherUser.setLogin("jhipster");
+        User anotherUser = createEntity(em, "jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
@@ -496,6 +524,7 @@ class UserResourceIT {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setCompany(company);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -543,6 +572,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testUserEquals() throws Exception {
         TestUtil.equalsVerifier(User.class);
         User user1 = new User();
@@ -557,6 +587,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testUserDTOtoUser() {
         AdminUserDTO userDTO = new AdminUserDTO();
         userDTO.setId(DEFAULT_ID);
@@ -588,6 +619,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testUserToUserDTO() {
         user.setId(DEFAULT_ID);
         user.setCreatedBy(DEFAULT_LOGIN);
@@ -619,6 +651,7 @@ class UserResourceIT {
     }
 
     @Test
+    @Transactional
     void testAuthorityEquals() {
         Authority authorityA = new Authority();
         assertThat(authorityA).isNotEqualTo(null).isNotEqualTo(new Object());

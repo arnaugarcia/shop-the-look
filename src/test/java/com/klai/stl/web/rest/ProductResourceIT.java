@@ -382,25 +382,6 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    void getAllProductsBySkuIsEqualToSomething() throws Exception {
-        // Initialize the database
-        productRepository.saveAndFlush(product);
-        Company company = CompanyResourceIT.createEntity(em);
-        em.persist(company);
-        em.flush();
-        product.setCompany(company);
-        productRepository.saveAndFlush(product);
-        Long companyId = company.getId();
-
-        // Get all the productList where sku equals to DEFAULT_SKU
-        defaultProductShouldBeFound("sku.equals=" + DEFAULT_SKU);
-
-        // Get all the productList where sku equals to UPDATED_SKU
-        defaultProductShouldNotBeFound("sku.equals=" + UPDATED_SKU);
-    }
-
-    @Test
-    @Transactional
     void getAllProductsBySkuIsNotEqualToSomething() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
@@ -1060,25 +1041,6 @@ class ProductResourceIT {
 
         // Get all the productList where category does not contain UPDATED_CATEGORY
         defaultProductShouldBeFound("category.doesNotContain=" + UPDATED_CATEGORY);
-    }
-
-    @Test
-    @Transactional
-    void getAllProductsByCompanyIsEqualToSomething() throws Exception {
-        // Initialize the database
-        productRepository.saveAndFlush(product);
-        Company company = CompanyResourceIT.createEntity(em);
-        em.persist(company);
-        em.flush();
-        product.setCompany(company);
-        productRepository.saveAndFlush(product);
-        Long companyId = company.getId();
-
-        // Get all the productList where company equals to companyId
-        defaultProductShouldBeFound("companyId.equals=" + companyId);
-
-        // Get all the productList where company equals to (companyId + 1)
-        defaultProductShouldNotBeFound("companyId.equals=" + (companyId + 1));
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.klai.stl.service;
 
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Authority;
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.AuthorityRepository;
 import com.klai.stl.repository.CompanyRepository;
@@ -11,17 +12,11 @@ import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
-import com.klai.stl.service.exception.EmailAlreadyUsedException;
-import com.klai.stl.service.exception.EmployeeNotFound;
-import com.klai.stl.service.exception.InvalidPasswordException;
-import com.klai.stl.service.exception.UsernameAlreadyUsedException;
+import com.klai.stl.service.exception.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -44,6 +39,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final CompanyRepository companyRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -55,13 +52,13 @@ public class UserService {
         CompanyRepository companyRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager,
-        TokenService tokenService
+        CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.companyRepository = companyRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -122,13 +119,17 @@ public class UserService {
         return newUser;
     }
 
-    public User registerManager(AdminUserDTO userDTO, String password) {
+    public User registerManager(AdminUserDTO userDTO, String companyReference, String password) {
         checkIfEmailOrLoginIsUsed(userDTO);
+        final Company company = companyRepository.findByReference(companyReference).orElseThrow(CompanyNotFound::new);
         User newUser = buildUser(userDTO, password);
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         authorityRepository.findById(AuthoritiesConstants.MANAGER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
+        newUser.setCompany(company);
+        company.addUser(newUser);
+        companyRepository.save(company);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
@@ -188,7 +189,7 @@ public class UserService {
         return true;
     }
 
-    public User createUser(AdminUserDTO userDTO) {
+    public User createEmployee(AdminUserDTO userDTO) {
         checkIfEmailOrLoginIsUsed(userDTO);
 
         User user = new User();
@@ -221,6 +222,49 @@ public class UserService {
         } else {
             authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(user.getAuthorities()::add);
         }
+        companyRepository.findByReference(userDTO.getCompanyReference()).ifPresent(user::setCompany);
+        userRepository.save(user);
+        this.clearUserCaches(user);
+        log.debug("Created Information for User: {}", user);
+        return user;
+    }
+
+    public User createAdmin(AdminUserDTO userDTO) {
+        checkIfEmailOrLoginIsUsed(userDTO);
+
+        User user = new User();
+        user.setLogin(userDTO.getLogin().toLowerCase());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        if (userDTO.getEmail() != null) {
+            user.setEmail(userDTO.getEmail().toLowerCase());
+        }
+        user.setImageUrl(userDTO.getImageUrl());
+        if (userDTO.getLangKey() == null) {
+            user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
+        } else {
+            user.setLangKey(userDTO.getLangKey());
+        }
+        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        user.setPassword(encryptedPassword);
+        user.setResetKey(RandomUtil.generateResetKey());
+        user.setResetDate(Instant.now());
+        user.setActivated(true);
+        if (userDTO.getAuthorities() != null) {
+            Set<Authority> authorities = userDTO
+                .getAuthorities()
+                .stream()
+                .map(authorityRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+            user.setAuthorities(authorities);
+        } else {
+            authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(user.getAuthorities()::add);
+        }
+        Company company = new Company();
+        company.setId(1L);
+        user.setCompany(company);
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
@@ -281,7 +325,7 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository
-            .findOneByLogin(login)
+            .findOneWithAuthoritiesByLogin(login)
             .ifPresent(
                 user -> {
                     userRepository.delete(user);
