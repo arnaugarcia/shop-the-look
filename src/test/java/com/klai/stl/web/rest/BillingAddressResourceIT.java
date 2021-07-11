@@ -59,8 +59,6 @@ class BillingAddressResourceIT {
     @Autowired
     private MockMvc restBillingAddressMockMvc;
 
-    private BillingAddress billingAddress;
-
     private BillingAddressRequest billingAddressRequest;
 
     private BillingAddressRequest updateBillingAddressRequest;
@@ -87,46 +85,10 @@ class BillingAddressResourceIT {
             .build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static BillingAddress createEntity(EntityManager em) {
-        BillingAddress billingAddress = new BillingAddress()
-            .address(DEFAULT_ADDRESS)
-            .city(DEFAULT_CITY)
-            .province(DEFAULT_PROVINCE)
-            .zipCode(DEFAULT_ZIP_CODE)
-            .country(DEFAULT_COUNTRY);
-        return billingAddress;
-    }
-
     @BeforeEach
-    void beforeEach() {
+    void initTest() {
         billingAddressRequest = createRequest();
-    }
-
-    /**
-     * Create an updated entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static BillingAddress createUpdatedEntity(EntityManager em) {
-        BillingAddress billingAddress = new BillingAddress()
-            .address(UPDATED_ADDRESS)
-            .city(UPDATED_CITY)
-            .province(UPDATED_PROVINCE)
-            .zipCode(UPDATED_ZIP_CODE)
-            .country(UPDATED_COUNTRY);
-        return billingAddress;
-    }
-
-    @BeforeEach
-    public void initTest() {
-        billingAddress = createEntity(em);
+        updateBillingAddressRequest = createUpdateRequest();
     }
 
     @Test
@@ -327,6 +289,7 @@ class BillingAddressResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(authorities = ADMIN)
     void findsBillingAddressAsAdmin() throws Exception {
         final User manager = UserResourceIT.createEntity(em, "manager-billing");
         final Company company = CompanyResourceIT.createBasicEntity(em);
