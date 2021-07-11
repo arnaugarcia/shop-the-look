@@ -1,6 +1,6 @@
 package com.klai.stl.domain;
 
-import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE;
+import static javax.persistence.CascadeType.REMOVE;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
@@ -78,7 +78,7 @@ public class Company implements Serializable {
     private CompanySize companySize;
 
     @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
-    @OneToOne
+    @OneToOne(cascade = REMOVE)
     @JoinColumn(unique = true)
     private BillingAddress billingAddress;
 
