@@ -63,6 +63,8 @@ class BillingAddressResourceIT {
 
     private BillingAddressRequest updateBillingAddressRequest;
 
+    private BillingAddress billingAddress;
+
     public static BillingAddressRequest createRequest() {
         return BillingAddressRequest
             .builder()
@@ -85,10 +87,21 @@ class BillingAddressResourceIT {
             .build();
     }
 
+    public static BillingAddress createEntity() {
+        final BillingAddress result = new BillingAddress();
+        result.setAddress(DEFAULT_ADDRESS);
+        result.setCity(DEFAULT_CITY);
+        result.setProvince(DEFAULT_PROVINCE);
+        result.setZipCode(DEFAULT_ZIP_CODE);
+        result.setCountry(DEFAULT_COUNTRY);
+        return result;
+    }
+
     @BeforeEach
     void initTest() {
         billingAddressRequest = createRequest();
         updateBillingAddressRequest = createUpdateRequest();
+        billingAddress = createEntity();
     }
 
     @Test
@@ -285,6 +298,47 @@ class BillingAddressResourceIT {
             .andExpect(jsonPath("$.province").value(DEFAULT_PROVINCE))
             .andExpect(jsonPath("$.zipCode").value(DEFAULT_ZIP_CODE))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "bad-manager", authorities = MANAGER)
+    void notFindsBillingOfOtherCompany() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "bad-manager");
+        final Company company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(manager);
+        em.persist(company);
+
+        restBillingAddressMockMvc
+            .perform(
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
+            )
+            .andExpect(status().isOk());
+
+        final User otherManager = UserResourceIT.createEntity(em, "other-manager");
+        final Company otherCompany = CompanyResourceIT.createBasicEntity(em);
+        otherCompany.addUser(otherManager);
+        em.persist(otherCompany);
+
+        final Optional<BillingAddress> badManagerBilling = billingAddressRepository.findByCompanyReference(company.getReference());
+        assertThat(badManagerBilling).isPresent();
+        BillingAddress result = badManagerBilling.get();
+        assertThat(result.getAddress()).isEqualTo(DEFAULT_ADDRESS);
+        assertThat(result.getCity()).isEqualTo(DEFAULT_CITY);
+        assertThat(result.getProvince()).isEqualTo(DEFAULT_PROVINCE);
+        assertThat(result.getCountry()).isEqualTo(DEFAULT_COUNTRY);
+
+        billingAddressRepository.save(billingAddress);
+
+        restBillingAddressMockMvc
+            .perform(
+                get(ENTITY_API_URL, otherCompany.getReference())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
+            )
+            .andExpect(status().isForbidden());
     }
 
     @Test
