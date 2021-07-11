@@ -42,45 +42,8 @@ public class BillingAddressServiceImpl implements BillingAddressService {
     }
 
     @Override
-    public Optional<BillingAddressDTO> partialUpdate(BillingAddressDTO billingAddressDTO) {
-        log.debug("Request to partially update BillingAddress : {}", billingAddressDTO);
-
-        return billingAddressRepository
-            .findById(billingAddressDTO.getId())
-            .map(
-                existingBillingAddress -> {
-                    billingAddressMapper.partialUpdate(existingBillingAddress, billingAddressDTO);
-
-                    return existingBillingAddress;
-                }
-            )
-            .map(billingAddressRepository::save)
-            .map(billingAddressMapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<BillingAddressDTO> findAll() {
-        log.debug("Request to get all BillingAddresses");
-        return billingAddressRepository
-            .findAll()
-            .stream()
-            .map(billingAddressMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    /**
-     *  Get all the billingAddresses where Company is {@code null}.
-     *  @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public List<BillingAddressDTO> findAllWhereCompanyIsNull() {
-        log.debug("Request to get all billingAddresses where Company is null");
-        return StreamSupport
-            .stream(billingAddressRepository.findAll().spliterator(), false)
-            .filter(billingAddress -> billingAddress.getCompany() == null)
-            .map(billingAddressMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+    public BillingAddressDTO update(BillingAddressDTO billingAddressDTO) {
+        return null;
     }
 
     @Override
@@ -88,11 +51,5 @@ public class BillingAddressServiceImpl implements BillingAddressService {
     public Optional<BillingAddressDTO> findOne(Long id) {
         log.debug("Request to get BillingAddress : {}", id);
         return billingAddressRepository.findById(id).map(billingAddressMapper::toDto);
-    }
-
-    @Override
-    public void delete(Long id) {
-        log.debug("Request to delete BillingAddress : {}", id);
-        billingAddressRepository.deleteById(id);
     }
 }

@@ -17,25 +17,12 @@ public interface BillingAddressService {
     BillingAddressDTO save(BillingAddressDTO billingAddressDTO);
 
     /**
-     * Partially updates a billingAddress.
+     * Updated a billingAddress.
      *
-     * @param billingAddressDTO the entity to update partially.
-     * @return the persisted entity.
+     * @param billingAddressDTO the entity to update.
+     * @return the updated entity.
      */
-    Optional<BillingAddressDTO> partialUpdate(BillingAddressDTO billingAddressDTO);
-
-    /**
-     * Get all the billingAddresses.
-     *
-     * @return the list of entities.
-     */
-    List<BillingAddressDTO> findAll();
-    /**
-     * Get all the BillingAddressDTO where Company is {@code null}.
-     *
-     * @return the {@link List} of entities.
-     */
-    List<BillingAddressDTO> findAllWhereCompanyIsNull();
+    BillingAddressDTO update(BillingAddressDTO billingAddressDTO);
 
     /**
      * Get the "id" billingAddress.
@@ -44,11 +31,4 @@ public interface BillingAddressService {
      * @return the entity.
      */
     Optional<BillingAddressDTO> findOne(Long id);
-
-    /**
-     * Delete the "id" billingAddress.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
 }
