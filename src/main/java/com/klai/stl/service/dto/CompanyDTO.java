@@ -55,8 +55,6 @@ public class CompanyDTO implements Serializable {
 
     private CompanySize companySize;
 
-    private BillingAddressDTO billingAddress;
-
     @Builder.Default
     private Set<UserDTO> users = new HashSet<>();
 
@@ -174,14 +172,6 @@ public class CompanyDTO implements Serializable {
         this.companySize = companySize;
     }
 
-    public BillingAddressDTO getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(BillingAddressDTO billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
     public Set<UserDTO> getUsers() {
         return users;
     }
@@ -237,7 +227,6 @@ public class CompanyDTO implements Serializable {
             ", reference='" + getReference() + "'" +
             ", industry='" + getIndustry() + "'" +
             ", companySize='" + getCompanySize() + "'" +
-            ", billingAddress=" + getBillingAddress() +
             ", users=" + getUsers() +
             ", subscriptionPlan=" + getSubscriptionPlan() +
             "}";
