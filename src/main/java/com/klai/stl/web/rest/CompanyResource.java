@@ -93,22 +93,11 @@ public class CompanyResource {
     public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody UpdateCompanyRequest companyRequest) {
         log.debug("REST request to update Company: {}", companyRequest);
 
-        CompanyDTO result = companyService.save(companyRequest);
+        CompanyDTO result = companyService.update(companyRequest);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
-    }
-
-    /**
-     * {@code GET  /companies} : get all the companies.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of companies in body.
-     */
-    @GetMapping("/companies")
-    public List<CompanyDTO> getAllCompanies() {
-        log.debug("REST request to get all Companies");
-        return companyService.findAll();
     }
 
     /**

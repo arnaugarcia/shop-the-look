@@ -2,7 +2,6 @@ package com.klai.stl.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
@@ -19,7 +18,6 @@ import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.mapper.CompanyMapper;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -31,7 +29,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -432,24 +429,6 @@ public class CompanyResourceIT {
             .andExpect(jsonPath("$.[*].companySize").value(hasItem(DEFAULT_COMPANY_SIZE.toString())));
     }
 
-    @SuppressWarnings({ "unchecked" })
-    void getAllCompaniesWithEagerRelationshipsIsEnabled() throws Exception {
-        when(companyServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restCompanyMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(companyServiceMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllCompaniesWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(companyServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restCompanyMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(companyServiceMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
     @Test
     @Transactional
     void getCompany() throws Exception {
@@ -514,7 +493,7 @@ public class CompanyResourceIT {
 
         restCompanyMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, companyDTO.getId())
+                put(ENTITY_API_URL_ID, companyDTO.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(companyDTO))
             )
@@ -551,7 +530,7 @@ public class CompanyResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCompanyMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, companyDTO.getId())
+                put(ENTITY_API_URL_ID, companyDTO.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(companyDTO))
             )
@@ -718,7 +697,7 @@ public class CompanyResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCompanyMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, companyDTO.getId())
+                patch(ENTITY_API_URL_ID, companyDTO.getReference())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(companyDTO))
             )

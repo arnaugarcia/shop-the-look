@@ -1,13 +1,14 @@
 package com.klai.stl.service.impl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import com.klai.stl.service.exception.CompanyNotFound;
 import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
@@ -38,15 +39,20 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDTO save(CompanyDTO companyDTO) {
+    public CompanyDTO save(NewCompanyRequest companyDTO) {
         log.debug("Request to save Company : {}", companyDTO);
         Company company = companyMapper.toEntity(companyDTO);
-        if (isEmpty(companyDTO.getId())) {
-            company.setReference(generateReference());
-            if (companyRepository.findByNif(company.getNif()).isPresent()) {
-                throw new NIFAlreadyRegistered();
-            }
+        company.setReference(generateReference());
+        if (companyRepository.findByNif(company.getNif()).isPresent()) {
+            throw new NIFAlreadyRegistered();
         }
+
+        return saveAndTransform(company);
+    }
+
+    @Override
+    public CompanyDTO update(UpdateCompanyRequest companyDTO) {
+        Company company = companyMapper.toEntity(companyDTO);
         return saveAndTransform(company);
     }
 

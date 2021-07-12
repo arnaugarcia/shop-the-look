@@ -2,6 +2,8 @@ package com.klai.stl.service;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import java.util.List;
 
 /**
@@ -14,7 +16,15 @@ public interface CompanyService {
      * @param companyDTO the entity to save.
      * @return the persisted entity.
      */
-    CompanyDTO save(CompanyDTO companyDTO);
+    CompanyDTO save(NewCompanyRequest companyDTO);
+
+    /**
+     * Save a company.
+     *
+     * @param companyDTO the entity to save.
+     * @return the persisted entity.
+     */
+    CompanyDTO update(UpdateCompanyRequest companyDTO);
 
     /**
      * Get all the companies.
