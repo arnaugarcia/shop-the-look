@@ -19,8 +19,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class CompanyDTO implements Serializable {
 
-    private Long id;
-
     @NotNull
     private String name;
 

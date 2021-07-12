@@ -1,9 +1,15 @@
 package com.klai.stl.web.rest;
 
-import com.klai.stl.repository.CompanyRepository;
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
+
 import com.klai.stl.service.CompanyService;
+import com.klai.stl.service.criteria.CompanyCriteria;
 import com.klai.stl.service.dto.CompanyDTO;
-import com.klai.stl.web.rest.errors.BadRequestAlertException;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.impl.CompanyQueryService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -11,7 +17,11 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 
@@ -31,54 +41,62 @@ public class CompanyResource {
 
     private final CompanyService companyService;
 
-    private final CompanyRepository companyRepository;
+    private final CompanyQueryService companyQueryService;
 
-    public CompanyResource(CompanyService companyService, CompanyRepository companyRepository) {
+    public CompanyResource(CompanyService companyService, CompanyQueryService companyQueryService) {
         this.companyService = companyService;
-        this.companyRepository = companyRepository;
+        this.companyQueryService = companyQueryService;
     }
 
     /**
      * {@code POST  /companies} : Create a new company.
      *
-     * @param companyDTO the companyDTO to create.
+     * @param companyRequest the request to create a company
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new companyDTO, or with status {@code 400 (Bad Request)} if the company has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/companies")
-    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO companyDTO) throws URISyntaxException {
-        log.debug("REST request to save Company : {}", companyDTO);
-        if (companyDTO.getId() != null) {
-            throw new BadRequestAlertException("A new company cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        CompanyDTO result = companyService.save(companyDTO);
+    @PreAuthorize("hasAuthority(\"" + ADMIN + "\")")
+    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody NewCompanyRequest companyRequest) throws URISyntaxException {
+        log.debug("REST request to save Company: {}", companyRequest);
+        CompanyDTO result = companyService.save(companyRequest);
         return ResponseEntity
-            .created(new URI("/api/companies/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .created(new URI("/api/companies/" + result.getReference()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
+    }
+
+    /**
+     * {@code GET  /companies} : get all the companies.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of companies in body.
+     */
+    @GetMapping("/companies")
+    @PreAuthorize("hasAuthority(\"" + ADMIN + "\")")
+    public ResponseEntity<List<CompanyDTO>> getAllCompanies(CompanyCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get companies by criteria: {}", criteria);
+        Page<CompanyDTO> entityList = companyQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = generatePaginationHttpHeaders(fromCurrentRequest(), entityList);
+        return ResponseEntity.ok().headers(headers).body(entityList.getContent());
     }
 
     /**
      * {@code PUT  /companies/:id} : Updates an existing company.
      *
-     * @param reference the id of the companyDTO to save.
-     * @param companyDTO the companyDTO to update.
+     * @param companyRequest the company request to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated companyDTO,
      * or with status {@code 400 (Bad Request)} if the companyDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the companyDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/companies/{reference}")
-    public ResponseEntity<CompanyDTO> updateCompany(
-        @PathVariable(value = "reference", required = false) final String reference,
-        @Valid @RequestBody CompanyDTO companyDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Company : {}, {}", reference, companyDTO);
+    @PutMapping("/companies")
+    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody UpdateCompanyRequest companyRequest) {
+        log.debug("REST request to update Company: {}", companyRequest);
 
-        CompanyDTO result = companyService.save(companyDTO);
+        CompanyDTO result = companyService.save(companyRequest);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, companyDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
     }
 
@@ -100,6 +118,7 @@ public class CompanyResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the companyDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/companies/{reference}")
+    @PreAuthorize("hasAuthority(\"" + ADMIN + "\")")
     public ResponseEntity<CompanyDTO> getCompany(@PathVariable String reference) {
         log.debug("REST request to get Company : {}", reference);
         CompanyDTO companyDTO = companyService.findOne(reference);
@@ -113,6 +132,7 @@ public class CompanyResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/companies/{reference}")
+    @PreAuthorize("hasAuthority(\"" + ADMIN + "\")")
     public ResponseEntity<Void> deleteCompany(@PathVariable String reference) {
         log.debug("REST request to delete Company : {}", reference);
         companyService.delete(reference);
