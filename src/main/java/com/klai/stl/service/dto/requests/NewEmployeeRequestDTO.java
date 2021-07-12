@@ -2,6 +2,7 @@ package com.klai.stl.service.dto.requests;
 
 import static com.klai.stl.config.Constants.LOGIN_REGEX;
 
+import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -14,7 +15,7 @@ import lombok.extern.jackson.Jacksonized;
  * A DTO a request to create or update an employee
  */
 @Value
-public final class NewEmployeeRequestDTO extends EmployeeRequest {
+public final class NewEmployeeRequestDTO extends EmployeeRequest implements Serializable {
 
     @NotBlank
     @Pattern(regexp = LOGIN_REGEX)

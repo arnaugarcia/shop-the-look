@@ -13,9 +13,9 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = { UserMapper.class, SubscriptionPlanMapper.class })
 public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     @Mapping(target = "users", source = "users")
-    @Mapping(target = "subscriptionPlan", source = "subscriptionPlan", qualifiedByName = "name")
     CompanyDTO toDto(Company s);
 
+    @Mapping(source = "subscriptionPlan", target = "subscriptionPlan")
     Company toEntity(CompanyDTO companyDTO);
 
     @Named("nif")

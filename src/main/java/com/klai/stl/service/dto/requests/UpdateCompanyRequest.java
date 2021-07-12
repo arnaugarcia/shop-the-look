@@ -3,32 +3,31 @@ package com.klai.stl.service.dto.requests;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.domain.enumeration.CompanyType;
-import com.klai.stl.service.dto.SubscriptionPlanDTO;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 @Value
-public final class UpdateCompanyRequest extends CompanyRequest {
+public final class UpdateCompanyRequest extends CompanyRequest implements Serializable {
 
     private final String reference;
 
     @Builder
     @Jacksonized
     public UpdateCompanyRequest(
-        @NotNull String name,
+        String name,
         String commercialName,
-        @NotNull String nif,
+        String nif,
         String logo,
         String vat,
-        @NotNull String url,
-        @NotNull String phone,
-        @NotNull String email,
+        String url,
+        String phone,
+        String email,
         CompanyType type,
         CompanyIndustry industry,
         CompanySize companySize,
-        SubscriptionPlanDTO subscriptionPlan,
+        String subscriptionPlan,
         String reference
     ) {
         super(name, commercialName, nif, logo, vat, url, phone, email, type, industry, companySize, subscriptionPlan);

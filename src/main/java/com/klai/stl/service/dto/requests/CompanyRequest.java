@@ -3,7 +3,6 @@ package com.klai.stl.service.dto.requests;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.domain.enumeration.CompanyType;
-import com.klai.stl.service.dto.SubscriptionPlanDTO;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,5 +38,5 @@ public abstract class CompanyRequest {
 
     private final CompanySize companySize;
 
-    private final SubscriptionPlanDTO subscriptionPlan;
+    private final String subscriptionPlan;
 }
