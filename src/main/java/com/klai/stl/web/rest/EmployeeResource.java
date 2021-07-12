@@ -1,7 +1,5 @@
 package com.klai.stl.web.rest;
 
-import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
-import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
@@ -31,7 +29,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 
@@ -85,7 +82,6 @@ public class EmployeeResource {
         notes = "If the current user is a Manager, it will attach his company. If the current user is and Admin it's REQUIRED to inform the companyReference field in the request"
     )
     @PostMapping("/employees")
-    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<User> createEmployee(@Valid @RequestBody NewEmployeeRequestDTO newEmployeeRequestDTO) throws URISyntaxException {
         log.info("Creating a new employee with email {}", newEmployeeRequestDTO.getEmail());
         User employee = employeeService.createEmployee(newEmployeeRequestDTO);
@@ -114,7 +110,6 @@ public class EmployeeResource {
     )
     @ApiOperation(value = "Updates an employee")
     @PutMapping("/employees/{login}")
-    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<User> updateEmployee(
         @Valid @RequestBody UpdateEmployeeRequestDTO updateEmployeeRequestDTO,
         @PathVariable @NotBlank final String login
@@ -135,7 +130,6 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
      */
     @GetMapping("/employees")
-    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees(EmployeeCriteria criteria, Pageable pageable) {
         log.debug("REST request to get all employees");
         final Page<EmployeeDTO> page = employeeQueryService.findByCriteria(criteria, pageable);
@@ -150,7 +144,6 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/employees/{login}")
-    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<Void> removeEmployee(@PathVariable String login) {
         log.debug("REST request to delete an employee : {}", login);
         employeeService.removeEmployee(login);
@@ -174,7 +167,6 @@ public class EmployeeResource {
     )
     @ApiOperation(value = "Makes an a employee a manager")
     @PutMapping("/employees/{login}/manager")
-    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<UserDTO> toggleManagerPrivileges(@PathVariable @NotBlank final String login) throws URISyntaxException {
         log.info("Updating an employee with login {}", login);
         UserDTO employee = employeeService.toggleEmployee(login);
