@@ -13,7 +13,6 @@ import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,23 +66,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Optional<CompanyDTO> partialUpdate(CompanyDTO companyDTO) {
-        log.debug("Request to partially update Company : {}", companyDTO);
-
-        return companyRepository
-            .findById(companyDTO.getId())
-            .map(
-                existingCompany -> {
-                    companyMapper.partialUpdate(existingCompany, companyDTO);
-
-                    return existingCompany;
-                }
-            )
-            .map(companyRepository::save)
-            .map(companyMapper::toDto);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<CompanyDTO> findAll() {
         log.debug("Request to get all Companies");
@@ -127,9 +109,9 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void delete(Long id) {
-        log.debug("Request to delete Company : {}", id);
-        companyRepository.deleteById(id);
+    public void delete(String reference) {
+        log.debug("Request to delete Company: {}", reference);
+        companyRepository.deleteByReference(reference);
     }
 
     private Company findByReferenceOrThrow(String companyReference) {

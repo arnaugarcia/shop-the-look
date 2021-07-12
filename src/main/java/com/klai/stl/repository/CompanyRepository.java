@@ -42,4 +42,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("select company from Company company left join fetch company.users users where users.login = :login")
     Optional<Company> findByUser(@Param("login") String login);
+
+    void deleteByReference(String reference);
 }
