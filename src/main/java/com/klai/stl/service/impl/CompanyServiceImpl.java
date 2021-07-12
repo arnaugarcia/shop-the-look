@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,17 +86,6 @@ public class CompanyServiceImpl implements CompanyService {
         final Company company = companyRepository.findByUser(user.getLogin()).orElseThrow(CompanyNotFound::new);
         company.removeUser(user);
         companyRepository.save(company);
-    }
-
-    public Page<CompanyDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return companyRepository.findAllWithEagerRelationships(pageable).map(companyMapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public CompanyDTO findOne(Long id) {
-        log.debug("Request to get Company : {}", id);
-        return companyRepository.findOneWithEagerRelationships(id).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
     }
 
     @Override
