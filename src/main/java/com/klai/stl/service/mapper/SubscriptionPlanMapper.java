@@ -1,5 +1,7 @@
 package com.klai.stl.service.mapper;
 
+import static java.util.Objects.isNull;
+
 import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
 import org.mapstruct.BeanMapping;
@@ -19,6 +21,9 @@ public interface SubscriptionPlanMapper extends EntityMapper<SubscriptionPlanDTO
     SubscriptionPlanDTO toDtoName(SubscriptionPlan subscriptionPlan);
 
     default String toName(SubscriptionPlan subscriptionPlan) {
+        if (isNull(subscriptionPlan)) {
+            return null;
+        }
         return subscriptionPlan.getName();
     }
 
