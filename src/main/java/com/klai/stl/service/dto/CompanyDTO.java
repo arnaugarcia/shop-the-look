@@ -10,12 +10,14 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.Company} entity.
  */
 @Data
 @Builder
+@Jacksonized
 @AllArgsConstructor
 public class CompanyDTO implements Serializable {
 
