@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.Company;
-import com.klai.stl.domain.Product;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
@@ -119,6 +118,7 @@ class UserResourceIT {
             company = TestUtil.findAll(em, Company.class).get(0);
         }
         user.setCompany(company);
+        em.persist(user);
         return user;
     }
 

@@ -1,6 +1,7 @@
 package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
+import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
 
@@ -90,6 +91,7 @@ public class CompanyResource {
      * or with status {@code 500 (Internal Server Error)} if the companyDTO couldn't be updated.
      */
     @PutMapping("/companies")
+    @PreAuthorize("hasAnyAuthority(\"" + MANAGER + "\", \"" + ADMIN + "\")")
     public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody UpdateCompanyRequest companyRequest) {
         log.debug("REST request to update Company: {}", companyRequest);
 
@@ -107,7 +109,6 @@ public class CompanyResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the companyDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/companies/{reference}")
-    @PreAuthorize("hasAuthority(\"" + ADMIN + "\")")
     public ResponseEntity<CompanyDTO> getCompany(@PathVariable String reference) {
         log.debug("REST request to get Company : {}", reference);
         CompanyDTO companyDTO = companyService.findOne(reference);

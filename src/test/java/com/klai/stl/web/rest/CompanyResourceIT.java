@@ -1,23 +1,27 @@
 package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.*;
+import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.IntegrationTest;
-import com.klai.stl.domain.Company;
-import com.klai.stl.domain.User;
+import com.klai.stl.domain.*;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.domain.enumeration.CompanyType;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import com.klai.stl.service.mapper.CompanyMapper;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,6 +106,10 @@ public class CompanyResourceIT {
 
     private Company company;
 
+    private NewCompanyRequest newCompanyRequest;
+
+    private UpdateCompanyRequest updateCompanyRequest;
+
     /**
      * Create an entity for this test.
      *
@@ -180,16 +188,53 @@ public class CompanyResourceIT {
     @BeforeEach
     public void initTest() {
         company = createEntity(em);
+        newCompanyRequest = createNewCompanyRequest();
+        updateCompanyRequest = createUpdateCompanyRequest();
+    }
+
+    private UpdateCompanyRequest createUpdateCompanyRequest() {
+        return UpdateCompanyRequest
+            .builder()
+            .name(UPDATED_NAME)
+            .commercialName(UPDATED_COMMERCIAL_NAME)
+            .nif(UPDATED_NIF)
+            .logo(UPDATED_LOGO)
+            .vat(UPDATED_VAT)
+            .url(UPDATED_URL)
+            .phone(UPDATED_PHONE)
+            .email(UPDATED_EMAIL)
+            .type(UPDATED_TYPE)
+            .reference(UPDATED_REFERENCE)
+            .industry(UPDATED_INDUSTRY)
+            .companySize(UPDATED_COMPANY_SIZE)
+            .build();
+    }
+
+    private NewCompanyRequest createNewCompanyRequest() {
+        return NewCompanyRequest
+            .builder()
+            .commercialName(DEFAULT_COMMERCIAL_NAME)
+            .companySize(DEFAULT_COMPANY_SIZE)
+            .email(DEFAULT_EMAIL)
+            .industry(DEFAULT_INDUSTRY)
+            .logo(DEFAULT_LOGO)
+            .name(DEFAULT_NAME)
+            .nif(DEFAULT_NIF)
+            .phone(DEFAULT_PHONE)
+            .type(DEFAULT_TYPE)
+            .url(DEFAULT_URL)
+            .vat(DEFAULT_VAT)
+            .build();
     }
 
     @Test
     @Transactional
-    void createCompany() throws Exception {
+    void createCompanyAsAdmin() throws Exception {
         int databaseSizeBeforeCreate = companyRepository.findAll().size();
         // Create the Company
         CompanyDTO companyDTO = companyMapper.toDto(company);
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Company in the database
@@ -213,21 +258,20 @@ public class CompanyResourceIT {
 
     @Test
     @Transactional
-    void createCompanyWithExistingId() throws Exception {
-        // Create the Company with an existing ID
-        company.setId(1L);
-        CompanyDTO companyDTO = companyMapper.toDto(company);
-
-        int databaseSizeBeforeCreate = companyRepository.findAll().size();
-
-        // An entity with an existing ID cannot be created, so this API call must fail
+    @WithMockUser
+    void createCompanyAsUser() throws Exception {
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
-            .andExpect(status().isBadRequest());
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newCompanyRequest)))
+            .andExpect(status().isForbidden());
+    }
 
-        // Validate the Company in the database
-        List<Company> companyList = companyRepository.findAll();
-        assertThat(companyList).hasSize(databaseSizeBeforeCreate);
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    void createCompanyAsManager() throws Exception {
+        restCompanyMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newCompanyRequest)))
+            .andExpect(status().isForbidden());
     }
 
     @Test
@@ -241,7 +285,7 @@ public class CompanyResourceIT {
         CompanyDTO companyDTO = companyMapper.toDto(company);
 
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isBadRequest());
 
         List<Company> companyList = companyRepository.findAll();
@@ -259,7 +303,7 @@ public class CompanyResourceIT {
         CompanyDTO companyDTO = companyMapper.toDto(company);
 
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isBadRequest());
 
         List<Company> companyList = companyRepository.findAll();
@@ -277,7 +321,7 @@ public class CompanyResourceIT {
         CompanyDTO companyDTO = companyMapper.toDto(company);
 
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isBadRequest());
 
         List<Company> companyList = companyRepository.findAll();
@@ -295,7 +339,7 @@ public class CompanyResourceIT {
         CompanyDTO companyDTO = companyMapper.toDto(company);
 
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isBadRequest());
 
         List<Company> companyList = companyRepository.findAll();
@@ -313,7 +357,7 @@ public class CompanyResourceIT {
         CompanyDTO companyDTO = companyMapper.toDto(company);
 
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isBadRequest());
 
         List<Company> companyList = companyRepository.findAll();
@@ -322,38 +366,56 @@ public class CompanyResourceIT {
 
     @Test
     @Transactional
-    void checkTokenIsRequired() throws Exception {
-        int databaseSizeBeforeTest = companyRepository.findAll().size();
-        // set the field null
-        company.setToken(null);
+    @WithMockUser(authorities = ADMIN)
+    void updateCompanyAsAdmin() throws Exception {
+        // Initialize the database
+        companyRepository.saveAndFlush(company);
 
-        // Create the Company, which fails.
-        CompanyDTO companyDTO = companyMapper.toDto(company);
-
+        // Get all the companyList
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
-            .andExpect(status().isBadRequest());
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(updateCompanyRequest)))
+            .andExpect(status().isOk());
 
-        List<Company> companyList = companyRepository.findAll();
-        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+        final Optional<Company> companyReference = companyRepository.findByReference(updateCompanyRequest.getReference());
+        assertThat(companyReference).isPresent();
+        Company result = companyReference.get();
+        assertThat(result.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(result.getCompanySize()).isEqualTo(UPDATED_COMPANY_SIZE);
+        assertThat(result.getReference()).isEqualTo(updateCompanyRequest.getReference());
+        assertThat(result.getUrl()).isEqualTo(UPDATED_URL);
+        assertThat(result.getVat()).isEqualTo(UPDATED_VAT);
+        assertThat(result.getToken()).isNotNull();
+        assertThat(result.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
+        assertThat(result.getCommercialName()).isEqualTo(UPDATED_COMMERCIAL_NAME);
+        assertThat(result.getEmail()).isEqualTo(UPDATED_EMAIL);
     }
 
     @Test
     @Transactional
-    void checkReferenceIsRequired() throws Exception {
-        int databaseSizeBeforeTest = companyRepository.findAll().size();
-        // set the field null
-        company.setReference(null);
+    @WithMockUser(username = "good-manager", authorities = MANAGER)
+    void updateCompanyAsManager() throws Exception {
+        final User manager = UserResourceIT.createEntity(em, "good-manager");
+        company.addUser(manager);
+        // Initialize the database
+        companyRepository.saveAndFlush(company);
 
-        // Create the Company, which fails.
-        CompanyDTO companyDTO = companyMapper.toDto(company);
-
+        // Get all the companyList
         restCompanyMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyDTO)))
-            .andExpect(status().isBadRequest());
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(updateCompanyRequest)))
+            .andExpect(status().isOk());
 
-        List<Company> companyList = companyRepository.findAll();
-        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+        final Optional<Company> companyReference = companyRepository.findByReference(updateCompanyRequest.getReference());
+        assertThat(companyReference).isPresent();
+        Company result = companyReference.get();
+        assertThat(result.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(result.getCompanySize()).isEqualTo(UPDATED_COMPANY_SIZE);
+        assertThat(result.getReference()).isEqualTo(updateCompanyRequest.getReference());
+        assertThat(result.getUrl()).isEqualTo(UPDATED_URL);
+        assertThat(result.getVat()).isEqualTo(UPDATED_VAT);
+        assertThat(result.getToken()).isNotNull();
+        assertThat(result.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
+        assertThat(result.getCommercialName()).isEqualTo(UPDATED_COMMERCIAL_NAME);
+        assertThat(result.getEmail()).isEqualTo(UPDATED_EMAIL);
     }
 
     @Test
@@ -368,7 +430,6 @@ public class CompanyResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].commercialName").value(hasItem(DEFAULT_COMMERCIAL_NAME)))
             .andExpect(jsonPath("$.[*].nif").value(hasItem(DEFAULT_NIF)))
@@ -378,15 +439,13 @@ public class CompanyResourceIT {
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].token").value(hasItem(DEFAULT_TOKEN)))
-            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].industry").value(hasItem(DEFAULT_INDUSTRY.toString())))
             .andExpect(jsonPath("$.[*].companySize").value(hasItem(DEFAULT_COMPANY_SIZE.toString())));
     }
 
     @Test
     @Transactional
-    @WithMockUser(authorities = ADMIN)
+    @WithMockUser
     void getAllCompaniesAsUser() throws Exception {
         // Get all the companyList
         restCompanyMockMvc.perform(get(ENTITY_API_URL)).andExpect(status().isForbidden());
@@ -412,7 +471,6 @@ public class CompanyResourceIT {
             .perform(get(ENTITY_API_URL_REFERENCE, company.getReference()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(company.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.commercialName").value(DEFAULT_COMMERCIAL_NAME))
             .andExpect(jsonPath("$.nif").value(DEFAULT_NIF))
@@ -443,7 +501,6 @@ public class CompanyResourceIT {
             .perform(get(ENTITY_API_URL_REFERENCE, company.getReference()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(company.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.commercialName").value(DEFAULT_COMMERCIAL_NAME))
             .andExpect(jsonPath("$.nif").value(DEFAULT_NIF))
@@ -462,17 +519,17 @@ public class CompanyResourceIT {
     @Test
     @Transactional
     @WithMockUser(authorities = MANAGER)
-    void getNotYourCompanyAsManager() throws Exception {
+    void getNonExistingCompanyAsManager() throws Exception {
         companyRepository.saveAndFlush(company);
 
         // Get the company
-        restCompanyMockMvc.perform(get(ENTITY_API_URL_REFERENCE, company.getReference())).andExpect(status().isNotFound());
+        restCompanyMockMvc.perform(get(ENTITY_API_URL_REFERENCE, randomAlphanumeric(5))).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
-    void getNonExistingCompany() throws Exception {
+    @WithMockUser
+    void getNonExistingCompanyAsUser() throws Exception {
         // Get the company
         restCompanyMockMvc.perform(get(ENTITY_API_URL_REFERENCE, randomAlphanumeric(5))).andExpect(status().isNotFound());
     }
@@ -492,11 +549,35 @@ public class CompanyResourceIT {
         // Initialize the database
         companyRepository.saveAndFlush(company);
 
+        final User employee = UserResourceIT.createEntity(em);
+        company.addUser(employee);
+        em.persist(employee);
+
+        final User manager = UserResourceIT.createEntity(em);
+        company.addUser(manager);
+        em.persist(manager);
+
+        final Space space = SpaceResourceIT.createEntity(em);
+        space.setCompany(company);
+        em.persist(space);
+
+        final Product product = ProductResourceIT.createEntity(em);
+        product.setCompany(company);
+
+        final Photo photo = PhotoResourceIT.createEntity(em);
+        space.addPhoto(photo);
+        em.persist(photo);
+
+        final Coordinate coordinate = CoordinateResourceIT.createEntity(em);
+        coordinate.setPhoto(photo);
+        coordinate.addProduct(product);
+        em.persist(coordinate);
+
         int databaseSizeBeforeDelete = companyRepository.findAll().size();
 
         // Delete the company
         restCompanyMockMvc
-            .perform(delete(ENTITY_API_URL_REFERENCE, company.getId()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_REFERENCE, company.getReference()).accept(APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -506,11 +587,23 @@ public class CompanyResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(authorities = ADMIN)
+    void deleteCompanyAdmin() throws Exception {
+        // Delete the company
+        final Optional<Company> company = companyRepository.findByNif("B42951921");
+        assertThat(company).isPresent();
+        restCompanyMockMvc
+            .perform(delete(ENTITY_API_URL_REFERENCE, company.get().getReference()).accept(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
     @WithMockUser(authorities = USER)
     void deleteCompanyAsUser() throws Exception {
         // Delete the company
         restCompanyMockMvc
-            .perform(delete(ENTITY_API_URL_REFERENCE, company.getReference()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_REFERENCE, company.getReference()).accept(APPLICATION_JSON))
             .andExpect(status().isForbidden());
     }
 
@@ -520,7 +613,7 @@ public class CompanyResourceIT {
     void deleteCompanyAsManager() throws Exception {
         // Delete the company
         restCompanyMockMvc
-            .perform(delete(ENTITY_API_URL_REFERENCE, company.getReference()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_REFERENCE, company.getReference()).accept(APPLICATION_JSON))
             .andExpect(status().isForbidden());
     }
 }
