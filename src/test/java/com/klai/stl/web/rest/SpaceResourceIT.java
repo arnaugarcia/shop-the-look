@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -154,7 +154,7 @@ class SpaceResourceIT {
 
     @Test
     @Transactional
-    @Ignore
+    @Disabled
     void createSpace() throws Exception {
         int databaseSizeBeforeCreate = spaceRepository.findAll().size();
         // Create the Space
@@ -821,7 +821,7 @@ class SpaceResourceIT {
 
     @Test
     @Transactional
-    @Ignore
+    @Disabled
     void putNewSpace() throws Exception {
         // Initialize the database
         spaceRepository.saveAndFlush(space);
