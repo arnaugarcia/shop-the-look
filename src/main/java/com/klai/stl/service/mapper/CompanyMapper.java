@@ -2,7 +2,8 @@ package com.klai.stl.service.mapper;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.service.dto.CompanyDTO;
-import com.klai.stl.service.dto.requests.CompanyRequest;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,5 +15,9 @@ public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     @Mapping(target = "users", source = "users")
     CompanyDTO toDto(Company s);
 
-    Company toEntity(CompanyRequest companyRequest);
+    Company toEntity(NewCompanyRequest companyRequest);
+
+    @Mapping(target = "reference", ignore = true)
+    @Mapping(target = "token", ignore = true)
+    Company toEntity(UpdateCompanyRequest companyRequest);
 }

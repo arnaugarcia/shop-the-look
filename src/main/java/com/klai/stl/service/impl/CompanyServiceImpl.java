@@ -1,15 +1,18 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
+import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.TokenService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.CompanyNotFound;
 import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
@@ -56,9 +59,24 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDTO update(UpdateCompanyRequest companyDTO) {
-        Company company = companyMapper.toEntity(companyDTO);
+    public CompanyDTO update(UpdateCompanyRequest updateCompanyRequest) {
+        String companyReference;
+        if (isCurrentUserManager()) {
+            checkIfCurrentUserBelongsTo(findByReference(updateCompanyRequest.getReference()));
+        }
+        companyRepository.findByReference(updateCompanyRequest.getReference());
+        Company company = companyMapper.toEntity(updateCompanyRequest);
         return saveAndTransform(company);
+    }
+
+    private void checkIfCurrentUserBelongsTo(Company company) {
+        final String currentUserLogin = SecurityUtils.getCurrentUserLogin().get();
+        company
+            .getUsers()
+            .stream()
+            .filter(user -> user.getLogin().equals(currentUserLogin))
+            .findFirst()
+            .orElseThrow(BadOwnerException::new);
     }
 
     private String generateReference() {
@@ -104,6 +122,13 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDTO findOne(String reference) {
         log.debug("Request to get Company : {}", reference);
         return companyRepository.findByReference(reference).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Company findByReference(String reference) {
+        log.debug("Request to get Company : {}", reference);
+        return companyRepository.findByReference(reference).orElseThrow(CompanyNotFound::new);
     }
 
     @Override

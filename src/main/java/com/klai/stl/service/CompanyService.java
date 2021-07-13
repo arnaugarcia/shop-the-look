@@ -1,5 +1,6 @@
 package com.klai.stl.service;
 
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
@@ -48,6 +49,13 @@ public interface CompanyService {
      * @return the entity
      */
     CompanyDTO findOne(String reference);
+
+    /**
+     * Get the company by reference
+     * @param reference the reference to query
+     * @return the entity
+     */
+    Company findByReference(String reference);
 
     /**
      * Delete the "id" company.
