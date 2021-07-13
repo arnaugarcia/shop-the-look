@@ -107,18 +107,6 @@ public class UserService {
             );
     }
 
-    public User registerUser(AdminUserDTO userDTO, String password) {
-        checkIfEmailOrLoginIsUsed(userDTO);
-        User newUser = buildUser(userDTO, password);
-        Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        this.clearUserCaches(newUser);
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
-    }
-
     public User registerManager(AdminUserDTO userDTO, String companyReference, String password) {
         checkIfEmailOrLoginIsUsed(userDTO);
         final Company company = companyRepository.findByReference(companyReference).orElseThrow(CompanyNotFound::new);

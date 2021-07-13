@@ -397,7 +397,7 @@ public class CompanyResourceIT {
         final User manager = UserResourceIT.createEntity(em, "good-manager");
         company.addUser(manager);
         // Initialize the database
-        companyRepository.saveAndFlush(company);
+        em.persist(company);
 
         // Get all the companyList
         restCompanyMockMvc
@@ -416,6 +416,16 @@ public class CompanyResourceIT {
         assertThat(result.getIndustry()).isEqualTo(UPDATED_INDUSTRY);
         assertThat(result.getCommercialName()).isEqualTo(UPDATED_COMMERCIAL_NAME);
         assertThat(result.getEmail()).isEqualTo(UPDATED_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    void updateCompanyAsUser() throws Exception {
+        // Get all the companyList
+        restCompanyMockMvc
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(updateCompanyRequest)))
+            .andExpect(status().isForbidden());
     }
 
     @Test

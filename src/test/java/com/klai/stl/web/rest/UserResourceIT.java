@@ -1,5 +1,6 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -118,7 +119,6 @@ class UserResourceIT {
             company = TestUtil.findAll(em, Company.class).get(0);
         }
         user.setCompany(company);
-        em.persist(user);
         return user;
     }
 
@@ -155,7 +155,7 @@ class UserResourceIT {
     /**
      * Setups the database with one user.
      */
-    public static User initTestUser(UserRepository userRepository, Company company, EntityManager em) {
+    public static User initTestUser(Company company, EntityManager em) {
         User user = createEntity(em);
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
@@ -178,7 +178,7 @@ class UserResourceIT {
     @BeforeEach
     public void initTest() {
         company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
-        user = initTestUser(userRepository, company, em);
+        user = initTestUser(company, em);
     }
 
     @Test
@@ -199,9 +199,7 @@ class UserResourceIT {
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
-            .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isCreated());
 
         // Validate the User in the database
@@ -238,9 +236,7 @@ class UserResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc
-            .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -267,9 +263,7 @@ class UserResourceIT {
 
         // Create the User
         restUserMockMvc
-            .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -296,9 +290,7 @@ class UserResourceIT {
 
         // Create the User
         restUserMockMvc
-            .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -401,9 +393,7 @@ class UserResourceIT {
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
-            .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isOk());
 
         // Validate the User in the database
@@ -447,9 +437,7 @@ class UserResourceIT {
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
-            .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isOk());
 
         // Validate the User in the database
@@ -504,9 +492,7 @@ class UserResourceIT {
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
-            .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isBadRequest());
     }
 
@@ -547,9 +533,7 @@ class UserResourceIT {
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
-            .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
-            )
+            .perform(put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(managedUserVM)))
             .andExpect(status().isBadRequest());
     }
 

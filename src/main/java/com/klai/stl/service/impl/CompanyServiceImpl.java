@@ -59,14 +59,27 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDTO update(UpdateCompanyRequest updateCompanyRequest) {
-        String companyReference;
+    public CompanyDTO update(UpdateCompanyRequest companyRequest) {
+        final Company company = findByReference(companyRequest.getReference());
         if (isCurrentUserManager()) {
-            checkIfCurrentUserBelongsTo(findByReference(updateCompanyRequest.getReference()));
+            checkIfCurrentUserBelongsTo(company);
         }
-        companyRepository.findByReference(updateCompanyRequest.getReference());
-        Company company = companyMapper.toEntity(updateCompanyRequest);
+
+        updateCompanyEntityBy(companyRequest, company);
+
         return saveAndTransform(company);
+    }
+
+    private void updateCompanyEntityBy(UpdateCompanyRequest updateCompanyRequest, Company company) {
+        company.setName(updateCompanyRequest.getName());
+        company.setCommercialName(updateCompanyRequest.getCommercialName());
+        company.setCompanySize(updateCompanyRequest.getCompanySize());
+        company.setIndustry(updateCompanyRequest.getIndustry());
+        company.setEmail(updateCompanyRequest.getEmail());
+        company.setLogo(updateCompanyRequest.getLogo());
+        company.setNif(updateCompanyRequest.getNif());
+        company.setPhone(updateCompanyRequest.getPhone());
+        company.setUrl(updateCompanyRequest.getUrl());
     }
 
     private void checkIfCurrentUserBelongsTo(Company company) {
