@@ -27,10 +27,9 @@ public final class UpdateCompanyRequest extends CompanyRequest implements Serial
         CompanyType type,
         CompanyIndustry industry,
         CompanySize companySize,
-        String subscriptionPlan,
         String reference
     ) {
-        super(name, commercialName, nif, logo, vat, url, phone, email, type, industry, companySize, subscriptionPlan);
+        super(name, commercialName, nif, logo, vat, url, phone, email, type, industry, companySize);
         this.reference = reference;
     }
 }

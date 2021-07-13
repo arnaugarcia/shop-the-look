@@ -71,7 +71,7 @@ public class AccountResource {
         if (isPasswordLengthInvalid(companyUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        NewCompanyRequest companyDTO = NewCompanyRequest
+        NewCompanyRequest companyRequest = NewCompanyRequest
             .builder()
             .name(companyUserVM.getName())
             .nif(companyUserVM.getNif())
@@ -83,7 +83,7 @@ public class AccountResource {
             .industry(companyUserVM.getIndustry())
             .companySize(companyUserVM.getSize())
             .build();
-        final CompanyDTO company = companyService.save(companyDTO);
+        final CompanyDTO company = companyService.save(companyRequest);
         User user = userService.registerManager(companyUserVM, company.getReference(), companyUserVM.getPassword());
         mailService.sendActivationEmail(user);
     }

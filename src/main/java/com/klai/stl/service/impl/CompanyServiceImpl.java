@@ -6,6 +6,7 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
+import com.klai.stl.service.TokenService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
@@ -33,16 +34,20 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyMapper companyMapper;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+    private final TokenService tokenService;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper, TokenService tokenService) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
+        this.tokenService = tokenService;
     }
 
     @Override
-    public CompanyDTO save(NewCompanyRequest companyDTO) {
-        log.debug("Request to save Company : {}", companyDTO);
-        Company company = companyMapper.toEntity(companyDTO);
+    public CompanyDTO save(NewCompanyRequest companyRequest) {
+        log.debug("Request to save Company : {}", companyRequest);
+        Company company = companyMapper.toEntity(companyRequest);
         company.setReference(generateReference());
+        company.setToken(tokenService.generateToken());
         if (companyRepository.findByNif(company.getNif()).isPresent()) {
             throw new NIFAlreadyRegistered();
         }

@@ -24,9 +24,8 @@ public final class NewCompanyRequest extends CompanyRequest implements Serializa
         String email,
         CompanyType type,
         CompanyIndustry industry,
-        CompanySize companySize,
-        String subscriptionPlan
+        CompanySize companySize
     ) {
-        super(name, commercialName, nif, logo, vat, url, phone, email, type, industry, companySize, subscriptionPlan);
+        super(name, commercialName, nif, logo, vat, url, phone, email, type, industry, companySize);
     }
 }

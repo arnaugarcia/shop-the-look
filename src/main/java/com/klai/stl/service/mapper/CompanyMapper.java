@@ -14,8 +14,5 @@ public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     @Mapping(target = "users", source = "users")
     CompanyDTO toDto(Company s);
 
-    @Mapping(source = "subscriptionPlan", target = "subscriptionPlan")
-    Company toEntity(CompanyDTO companyDTO);
-
     Company toEntity(CompanyRequest companyRequest);
 }

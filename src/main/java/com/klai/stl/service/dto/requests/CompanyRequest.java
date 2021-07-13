@@ -37,6 +37,4 @@ public abstract class CompanyRequest {
     private final CompanyIndustry industry;
 
     private final CompanySize companySize;
-
-    private final String subscriptionPlan;
 }
