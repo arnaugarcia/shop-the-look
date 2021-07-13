@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -149,7 +149,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @Ignore
+    @Disabled
     void createProduct() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
         // Create the Product
@@ -1119,7 +1119,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @Ignore
+    @Disabled
     void putNewProduct() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
