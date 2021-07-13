@@ -1,7 +1,6 @@
 package com.klai.stl.web.rest;
 
-import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
-import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static com.klai.stl.security.AuthoritiesConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -488,7 +487,8 @@ public class CompanyResourceIT {
 
     @Test
     @Transactional
-    void deleteCompany() throws Exception {
+    @WithMockUser(authorities = ADMIN)
+    void deleteCompanyAsAdmin() throws Exception {
         // Initialize the database
         companyRepository.saveAndFlush(company);
 
@@ -502,5 +502,25 @@ public class CompanyResourceIT {
         // Validate the database contains one less item
         List<Company> companyList = companyRepository.findAll();
         assertThat(companyList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = USER)
+    void deleteCompanyAsUser() throws Exception {
+        // Delete the company
+        restCompanyMockMvc
+            .perform(delete(ENTITY_API_URL_REFERENCE, company.getReference()).accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    void deleteCompanyAsManager() throws Exception {
+        // Delete the company
+        restCompanyMockMvc
+            .perform(delete(ENTITY_API_URL_REFERENCE, company.getReference()).accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isForbidden());
     }
 }
