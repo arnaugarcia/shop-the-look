@@ -12,14 +12,12 @@
                                  baseTableName="product"
                                  constraintName="fk_product__company_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="company"
-                                 onDelete="CASCADE"/>
+                                 referencedTableName="company"/>
 
         <addForeignKeyConstraint baseColumnNames="coordinate_id"
                                  baseTableName="product"
                                  constraintName="fk_product__coordinate_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="coordinate"
-                                 onDelete="CASCADE"/>
+                                 referencedTableName="coordinate"/>
     </changeSet>
 </databaseChangeLog>

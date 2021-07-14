@@ -12,15 +12,13 @@
                                  baseTableName="company"
                                  constraintName="fk_company__billing_address_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="billing_address"
-                                 onDelete="CASCADE"/>
+                                 referencedTableName="billing_address"/>
 
         <addForeignKeyConstraint baseColumnNames="company_id"
                                  baseTableName="stl_user"
                                  constraintName="fk_user_company"
                                  referencedColumnNames="id"
-                                 referencedTableName="company"
-                                 onDelete="CASCADE"/>
+                                 referencedTableName="company"/>
 
         <addForeignKeyConstraint baseColumnNames="subscription_plan_id"
                                  baseTableName="company"

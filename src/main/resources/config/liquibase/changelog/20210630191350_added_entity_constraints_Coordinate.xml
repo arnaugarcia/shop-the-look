@@ -12,7 +12,6 @@
                                  baseTableName="coordinate"
                                  constraintName="fk_coordinate__photo_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="photo"
-                                 onDelete="CASCADE"/>
+                                 referencedTableName="photo"/>
     </changeSet>
 </databaseChangeLog>
