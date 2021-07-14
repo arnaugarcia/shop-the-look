@@ -12,7 +12,8 @@
                                  baseTableName="photo"
                                  constraintName="fk_photo__space_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="space"/>
+                                 referencedTableName="space"
+                                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseColumnNames="space_template_id"
                                  baseTableName="photo"

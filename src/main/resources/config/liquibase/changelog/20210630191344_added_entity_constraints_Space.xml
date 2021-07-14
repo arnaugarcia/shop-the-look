@@ -12,6 +12,7 @@
                                  baseTableName="space"
                                  constraintName="fk_space__company_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="company"/>
+                                 referencedTableName="company"
+                                 onDelete="CASCADE"/>
     </changeSet>
 </databaseChangeLog>

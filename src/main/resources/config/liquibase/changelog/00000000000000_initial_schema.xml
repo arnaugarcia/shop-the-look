@@ -71,7 +71,8 @@
                                  baseTableName="stl_user_authority"
                                  constraintName="fk_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="stl_user"/>
+                                 referencedTableName="stl_user"
+                                 onDelete="CASCADE"/>
 
         <addNotNullConstraint   columnName="password_hash"
                                 columnDataType="varchar(60)"
