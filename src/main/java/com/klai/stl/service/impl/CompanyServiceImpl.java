@@ -1,18 +1,17 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.security.SecurityUtils.getCurrentUserLogin;
 import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
-import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.TokenService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
-import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.CompanyNotFound;
 import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
@@ -60,36 +59,33 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO update(UpdateCompanyRequest companyRequest) {
-        final Company company = findByReference(companyRequest.getReference());
+        Company company;
         if (isCurrentUserManager()) {
-            checkIfCurrentUserBelongsTo(company);
+            company = findCurrentUserCompany(getCurrentUserLogin().get());
+        } else {
+            company = findByReference(companyRequest.getReference());
         }
 
-        updateCompanyEntityBy(companyRequest, company);
+        updateEntityFieldsBy(companyRequest, company);
 
         return saveAndTransform(company);
     }
 
-    private void updateCompanyEntityBy(UpdateCompanyRequest updateCompanyRequest, Company company) {
+    private Company findCurrentUserCompany(String s) {
+        return companyRepository.findByUser(s).orElseThrow(CompanyNotFound::new);
+    }
+
+    private void updateEntityFieldsBy(UpdateCompanyRequest updateCompanyRequest, Company company) {
         company.setName(updateCompanyRequest.getName());
         company.setCommercialName(updateCompanyRequest.getCommercialName());
         company.setCompanySize(updateCompanyRequest.getCompanySize());
         company.setIndustry(updateCompanyRequest.getIndustry());
         company.setEmail(updateCompanyRequest.getEmail());
+        company.setVat(updateCompanyRequest.getVat());
         company.setLogo(updateCompanyRequest.getLogo());
         company.setNif(updateCompanyRequest.getNif());
         company.setPhone(updateCompanyRequest.getPhone());
         company.setUrl(updateCompanyRequest.getUrl());
-    }
-
-    private void checkIfCurrentUserBelongsTo(Company company) {
-        final String currentUserLogin = SecurityUtils.getCurrentUserLogin().get();
-        company
-            .getUsers()
-            .stream()
-            .filter(user -> user.getLogin().equals(currentUserLogin))
-            .findFirst()
-            .orElseThrow(BadOwnerException::new);
     }
 
     private String generateReference() {
@@ -125,7 +121,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void removeEmployee(User user, String companyReference) {
-        final Company company = companyRepository.findByUser(user.getLogin()).orElseThrow(CompanyNotFound::new);
+        final Company company = findCurrentUserCompany(user.getLogin());
         company.removeUser(user);
         companyRepository.save(company);
     }

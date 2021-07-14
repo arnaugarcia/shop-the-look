@@ -370,6 +370,21 @@ public class CompanyResourceIT {
     void updateCompanyAsAdmin() throws Exception {
         // Initialize the database
         companyRepository.saveAndFlush(company);
+        final UpdateCompanyRequest updateCompanyRequest = UpdateCompanyRequest
+            .builder()
+            .name(UPDATED_NAME)
+            .commercialName(UPDATED_COMMERCIAL_NAME)
+            .nif(UPDATED_NIF)
+            .logo(UPDATED_LOGO)
+            .vat(UPDATED_VAT)
+            .url(UPDATED_URL)
+            .phone(UPDATED_PHONE)
+            .email(UPDATED_EMAIL)
+            .type(UPDATED_TYPE)
+            .reference(company.getReference())
+            .industry(UPDATED_INDUSTRY)
+            .companySize(UPDATED_COMPANY_SIZE)
+            .build();
 
         // Get all the companyList
         restCompanyMockMvc
@@ -395,6 +410,7 @@ public class CompanyResourceIT {
     @WithMockUser(username = "good-manager", authorities = MANAGER)
     void updateCompanyAsManager() throws Exception {
         final User manager = UserResourceIT.createEntity(em, "good-manager");
+        em.persist(manager);
         company.addUser(manager);
         // Initialize the database
         em.persist(company);
@@ -404,12 +420,12 @@ public class CompanyResourceIT {
             .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(updateCompanyRequest)))
             .andExpect(status().isOk());
 
-        final Optional<Company> companyReference = companyRepository.findByReference(updateCompanyRequest.getReference());
+        final Optional<Company> companyReference = companyRepository.findByReference(company.getReference());
         assertThat(companyReference).isPresent();
         Company result = companyReference.get();
         assertThat(result.getName()).isEqualTo(UPDATED_NAME);
         assertThat(result.getCompanySize()).isEqualTo(UPDATED_COMPANY_SIZE);
-        assertThat(result.getReference()).isEqualTo(updateCompanyRequest.getReference());
+        assertThat(result.getReference()).isEqualTo(company.getReference());
         assertThat(result.getUrl()).isEqualTo(UPDATED_URL);
         assertThat(result.getVat()).isEqualTo(UPDATED_VAT);
         assertThat(result.getToken()).isNotNull();
