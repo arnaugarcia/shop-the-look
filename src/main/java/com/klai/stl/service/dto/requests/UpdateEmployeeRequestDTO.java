@@ -1,5 +1,6 @@
 package com.klai.stl.service.dto.requests;
 
+import java.io.Serializable;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -8,7 +9,7 @@ import lombok.extern.jackson.Jacksonized;
  * A DTO a request to create an employee
  */
 @Value
-public final class UpdateEmployeeRequestDTO extends EmployeeRequest {
+public final class UpdateEmployeeRequestDTO extends EmployeeRequest implements Serializable {
 
     @Builder
     @Jacksonized

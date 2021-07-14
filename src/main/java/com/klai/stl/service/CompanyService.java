@@ -1,12 +1,11 @@
 package com.klai.stl.service;
 
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Company}.
@@ -18,15 +17,15 @@ public interface CompanyService {
      * @param companyDTO the entity to save.
      * @return the persisted entity.
      */
-    CompanyDTO save(CompanyDTO companyDTO);
+    CompanyDTO save(NewCompanyRequest companyDTO);
 
     /**
-     * Partially updates a company.
+     * Save a company.
      *
-     * @param companyDTO the entity to update partially.
+     * @param companyDTO the entity to save.
      * @return the persisted entity.
      */
-    Optional<CompanyDTO> partialUpdate(CompanyDTO companyDTO);
+    CompanyDTO update(UpdateCompanyRequest companyDTO);
 
     /**
      * Get all the companies.
@@ -45,22 +44,6 @@ public interface CompanyService {
     CompanyDTO addEmployee(User user, String companyReference);
 
     /**
-     * Get all the companies with eager load of many-to-many relationships.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<CompanyDTO> findAllWithEagerRelationships(Pageable pageable);
-
-    /**
-     * Get the "id" company.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    CompanyDTO findOne(Long id);
-
-    /**
      * Get the company by reference
      * @param reference the reference to query
      * @return the entity
@@ -68,11 +51,18 @@ public interface CompanyService {
     CompanyDTO findOne(String reference);
 
     /**
+     * Get the company by reference
+     * @param reference the reference to query
+     * @return the entity
+     */
+    Company findByReference(String reference);
+
+    /**
      * Delete the "id" company.
      *
-     * @param id the id of the entity.
+     * @param reference the reference of the company.
      */
-    void delete(Long id);
+    void delete(String reference);
 
     /**
      * Removes the employee from the desired company

@@ -2,10 +2,10 @@ package com.klai.stl.service.mapper;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.service.dto.CompanyDTO;
-import org.mapstruct.BeanMapping;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link Company} and its DTO {@link CompanyDTO}.
@@ -13,14 +13,11 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = { UserMapper.class, SubscriptionPlanMapper.class })
 public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     @Mapping(target = "users", source = "users")
-    @Mapping(target = "subscriptionPlan", source = "subscriptionPlan", qualifiedByName = "name")
     CompanyDTO toDto(Company s);
 
-    Company toEntity(CompanyDTO companyDTO);
+    Company toEntity(NewCompanyRequest companyRequest);
 
-    @Named("nif")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "nif", source = "nif")
-    CompanyDTO toDtoCif(Company company);
+    @Mapping(target = "reference", ignore = true)
+    @Mapping(target = "token", ignore = true)
+    Company toEntity(UpdateCompanyRequest companyRequest);
 }

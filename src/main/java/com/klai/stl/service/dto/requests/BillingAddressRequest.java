@@ -1,5 +1,6 @@
 package com.klai.stl.service.dto.requests;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
@@ -8,20 +9,20 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 @Builder
 @Jacksonized
-public final class BillingAddressRequest {
+public final class BillingAddressRequest implements Serializable {
 
     @NotNull
-    private String address;
+    private final String address;
 
     @NotNull
-    private String city;
+    private final String city;
 
     @NotNull
-    private String province;
+    private final String province;
 
     @NotNull
-    private String zipCode;
+    private final String zipCode;
 
     @NotNull
-    private String country;
+    private final String country;
 }

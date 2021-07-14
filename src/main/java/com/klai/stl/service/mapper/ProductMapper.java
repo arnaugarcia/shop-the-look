@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { CompanyMapper.class, CoordinateMapper.class })
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
-    @Mapping(target = "company", source = "company", qualifiedByName = "nif")
+    @Mapping(target = "company", source = "company")
     @Mapping(target = "coordinate", source = "coordinate", qualifiedByName = "id")
     ProductDTO toDto(Product s);
 }

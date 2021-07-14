@@ -40,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (isNull(newEmployeeRequestDTO.getCompanyReference())) {
                 throw new CompanyReferenceNotFound();
             }
-            companyService.findOne(newEmployeeRequestDTO.getCompanyReference());
+            companyService.findByReference(newEmployeeRequestDTO.getCompanyReference());
             companyReference = newEmployeeRequestDTO.getCompanyReference();
         } else {
             companyReference = findCurrentUserCompanyReference();

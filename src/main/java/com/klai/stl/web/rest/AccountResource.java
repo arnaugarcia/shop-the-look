@@ -7,21 +7,18 @@ import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.MailService;
-import com.klai.stl.service.TokenService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
-import com.klai.stl.service.dto.UserDTO;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
 import com.klai.stl.web.rest.errors.EmailAlreadyUsedException;
 import com.klai.stl.web.rest.errors.InvalidPasswordException;
 import com.klai.stl.web.rest.errors.LoginAlreadyUsedException;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
@@ -53,20 +50,11 @@ public class AccountResource {
 
     private final CompanyService companyService;
 
-    private final TokenService tokenService;
-
-    public AccountResource(
-        UserRepository userRepository,
-        UserService userService,
-        MailService mailService,
-        CompanyService companyService,
-        TokenService tokenService
-    ) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, CompanyService companyService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.companyService = companyService;
-        this.tokenService = tokenService;
     }
 
     /**
@@ -83,7 +71,7 @@ public class AccountResource {
         if (isPasswordLengthInvalid(companyUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        CompanyDTO companyDTO = CompanyDTO
+        NewCompanyRequest companyRequest = NewCompanyRequest
             .builder()
             .name(companyUserVM.getName())
             .nif(companyUserVM.getNif())
@@ -94,9 +82,8 @@ public class AccountResource {
             .phone(companyUserVM.getPhone())
             .industry(companyUserVM.getIndustry())
             .companySize(companyUserVM.getSize())
-            .token(tokenService.generateToken())
             .build();
-        final CompanyDTO company = companyService.save(companyDTO);
+        final CompanyDTO company = companyService.save(companyRequest);
         User user = userService.registerManager(companyUserVM, company.getReference(), companyUserVM.getPassword());
         mailService.sendActivationEmail(user);
     }

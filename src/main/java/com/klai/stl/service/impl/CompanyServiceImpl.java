@@ -1,24 +1,27 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.config.Constants.ADMIN_COMPANY_NIF;
+import static com.klai.stl.security.SecurityUtils.getCurrentUserLogin;
+import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
+import com.klai.stl.service.TokenService;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.CompanyNotFound;
 import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,22 +38,56 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyMapper companyMapper;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+    private final TokenService tokenService;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper, TokenService tokenService) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
+        this.tokenService = tokenService;
     }
 
     @Override
-    public CompanyDTO save(CompanyDTO companyDTO) {
-        log.debug("Request to save Company : {}", companyDTO);
-        Company company = companyMapper.toEntity(companyDTO);
-        if (isEmpty(companyDTO.getId())) {
-            company.setReference(generateReference());
-            if (companyRepository.findByNif(company.getNif()).isPresent()) {
-                throw new NIFAlreadyRegistered();
-            }
+    public CompanyDTO save(NewCompanyRequest companyRequest) {
+        log.debug("Request to save Company : {}", companyRequest);
+        Company company = companyMapper.toEntity(companyRequest);
+        company.setReference(generateReference());
+        company.setToken(tokenService.generateToken());
+        if (companyRepository.findByNif(company.getNif()).isPresent()) {
+            throw new NIFAlreadyRegistered();
         }
+
         return saveAndTransform(company);
+    }
+
+    @Override
+    public CompanyDTO update(UpdateCompanyRequest companyRequest) {
+        Company company;
+        if (isCurrentUserManager()) {
+            company = findCurrentUserCompany(getCurrentUserLogin().get());
+        } else {
+            company = findByReference(companyRequest.getReference());
+        }
+
+        updateEntityFieldsBy(companyRequest, company);
+
+        return saveAndTransform(company);
+    }
+
+    private Company findCurrentUserCompany(String s) {
+        return companyRepository.findByUser(s).orElseThrow(CompanyNotFound::new);
+    }
+
+    private void updateEntityFieldsBy(UpdateCompanyRequest updateCompanyRequest, Company company) {
+        company.setName(updateCompanyRequest.getName());
+        company.setCommercialName(updateCompanyRequest.getCommercialName());
+        company.setCompanySize(updateCompanyRequest.getCompanySize());
+        company.setIndustry(updateCompanyRequest.getIndustry());
+        company.setEmail(updateCompanyRequest.getEmail());
+        company.setVat(updateCompanyRequest.getVat());
+        company.setLogo(updateCompanyRequest.getLogo());
+        company.setNif(updateCompanyRequest.getNif());
+        company.setPhone(updateCompanyRequest.getPhone());
+        company.setUrl(updateCompanyRequest.getUrl());
     }
 
     private String generateReference() {
@@ -64,23 +101,6 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyDTO saveAndTransform(Company company) {
         company = companyRepository.save(company);
         return companyMapper.toDto(company);
-    }
-
-    @Override
-    public Optional<CompanyDTO> partialUpdate(CompanyDTO companyDTO) {
-        log.debug("Request to partially update Company : {}", companyDTO);
-
-        return companyRepository
-            .findById(companyDTO.getId())
-            .map(
-                existingCompany -> {
-                    companyMapper.partialUpdate(existingCompany, companyDTO);
-
-                    return existingCompany;
-                }
-            )
-            .map(companyRepository::save)
-            .map(companyMapper::toDto);
     }
 
     @Override
@@ -103,20 +123,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void removeEmployee(User user, String companyReference) {
-        final Company company = companyRepository.findByUser(user.getLogin()).orElseThrow(CompanyNotFound::new);
+        final Company company = findCurrentUserCompany(user.getLogin());
         company.removeUser(user);
         companyRepository.save(company);
-    }
-
-    public Page<CompanyDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return companyRepository.findAllWithEagerRelationships(pageable).map(companyMapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public CompanyDTO findOne(Long id) {
-        log.debug("Request to get Company : {}", id);
-        return companyRepository.findOneWithEagerRelationships(id).map(companyMapper::toDto).orElseThrow(CompanyNotFound::new);
     }
 
     @Override
@@ -127,9 +136,20 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void delete(Long id) {
-        log.debug("Request to delete Company : {}", id);
-        companyRepository.deleteById(id);
+    @Transactional(readOnly = true)
+    public Company findByReference(String reference) {
+        log.debug("Request to get Company : {}", reference);
+        return companyRepository.findByReference(reference).orElseThrow(CompanyNotFound::new);
+    }
+
+    @Override
+    public void delete(String reference) {
+        log.debug("Request to delete Company: {}", reference);
+        final Company company = findByReference(reference);
+        if (company.getNif().equalsIgnoreCase(ADMIN_COMPANY_NIF)) {
+            throw new BadOwnerException();
+        }
+        companyRepository.deleteByReference(reference);
     }
 
     private Company findByReferenceOrThrow(String companyReference) {
