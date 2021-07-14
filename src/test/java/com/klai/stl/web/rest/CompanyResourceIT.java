@@ -44,6 +44,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 public class CompanyResourceIT {
 
+    private static final String ADMIN_COMPANY_NIF = "B42951921";
+
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -229,6 +231,7 @@ public class CompanyResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(authorities = ADMIN)
     void createCompanyAsAdmin() throws Exception {
         int databaseSizeBeforeCreate = companyRepository.findAll().size();
         // Create the Company
@@ -250,7 +253,7 @@ public class CompanyResourceIT {
         assertThat(testCompany.getPhone()).isEqualTo(DEFAULT_PHONE);
         assertThat(testCompany.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testCompany.getType()).isEqualTo(DEFAULT_TYPE);
-        assertThat(testCompany.getToken()).isEqualTo(DEFAULT_TOKEN);
+        assertThat(testCompany.getToken()).isNotBlank();
         assertThat(testCompany.getReference()).isNotBlank();
         assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
@@ -573,7 +576,7 @@ public class CompanyResourceIT {
     @WithMockUser(authorities = ADMIN)
     void deleteCompanyAsAdmin() throws Exception {
         // Initialize the database
-        companyRepository.saveAndFlush(company);
+        em.persist(company);
 
         final User employee = UserResourceIT.createEntity(em);
         company.addUser(employee);
@@ -616,11 +619,20 @@ public class CompanyResourceIT {
     @WithMockUser(authorities = ADMIN)
     void deleteCompanyAdmin() throws Exception {
         // Delete the company
-        final Optional<Company> company = companyRepository.findByNif("B42951921");
+        final Optional<Company> company = companyRepository.findByNif(ADMIN_COMPANY_NIF);
         assertThat(company).isPresent();
         restCompanyMockMvc
             .perform(delete(ENTITY_API_URL_REFERENCE, company.get().getReference()).accept(APPLICATION_JSON))
             .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    void deleteNonExistingCompany() throws Exception {
+        restCompanyMockMvc
+            .perform(delete(ENTITY_API_URL_REFERENCE, randomAlphanumeric(5)).accept(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test

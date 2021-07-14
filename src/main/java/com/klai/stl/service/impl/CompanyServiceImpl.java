@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.config.Constants.ADMIN_COMPANY_NIF;
 import static com.klai.stl.security.SecurityUtils.getCurrentUserLogin;
 import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -12,6 +13,7 @@ import com.klai.stl.service.TokenService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.CompanyNotFound;
 import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
@@ -143,6 +145,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void delete(String reference) {
         log.debug("Request to delete Company: {}", reference);
+        final Company company = findByReference(reference);
+        if (company.getNif().equalsIgnoreCase(ADMIN_COMPANY_NIF)) {
+            throw new BadOwnerException();
+        }
         companyRepository.deleteByReference(reference);
     }
 
