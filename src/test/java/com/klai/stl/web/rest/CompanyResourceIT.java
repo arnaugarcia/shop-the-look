@@ -10,7 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.IntegrationTest;
-import com.klai.stl.domain.*;
+import com.klai.stl.domain.Company;
+import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.domain.enumeration.CompanyType;
@@ -576,31 +577,7 @@ public class CompanyResourceIT {
     @WithMockUser(authorities = ADMIN)
     void deleteCompanyAsAdmin() throws Exception {
         // Initialize the database
-        em.persist(company);
-
-        final User employee = UserResourceIT.createEntity(em);
-        company.addUser(employee);
-        em.persist(employee);
-
-        final User manager = UserResourceIT.createEntity(em);
-        company.addUser(manager);
-        em.persist(manager);
-
-        final Space space = SpaceResourceIT.createEntity(em);
-        space.setCompany(company);
-        em.persist(space);
-
-        final Product product = ProductResourceIT.createEntity(em);
-        product.setCompany(company);
-
-        final Photo photo = PhotoResourceIT.createEntity(em);
-        space.addPhoto(photo);
-        em.persist(photo);
-
-        final Coordinate coordinate = CoordinateResourceIT.createEntity(em);
-        coordinate.setPhoto(photo);
-        coordinate.addProduct(product);
-        em.persist(coordinate);
+        companyRepository.save(company);
 
         int databaseSizeBeforeDelete = companyRepository.findAll().size();
 

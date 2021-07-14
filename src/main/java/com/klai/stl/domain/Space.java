@@ -43,7 +43,7 @@ public class Space implements Serializable {
     @Column(name = "visible")
     private Boolean visible;
 
-    @OneToMany(mappedBy = "space")
+    @OneToMany(mappedBy = "space", orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "coordinates", "space", "spaceTemplate" }, allowSetters = true)
     private Set<Photo> photos = new HashSet<>();

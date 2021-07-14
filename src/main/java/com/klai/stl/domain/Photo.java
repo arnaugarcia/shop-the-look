@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -53,7 +53,7 @@ public class Photo implements Serializable {
     @Column(name = "demo")
     private Boolean demo;
 
-    @OneToMany(mappedBy = "photo")
+    @OneToMany(mappedBy = "photo", orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "products", "photo" }, allowSetters = true)
     private Set<Coordinate> coordinates = new HashSet<>();
