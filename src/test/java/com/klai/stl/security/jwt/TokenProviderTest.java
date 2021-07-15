@@ -9,7 +9,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import tech.jhipster.config.JHipsterProperties;
 class TokenProviderTest {
 
     private static final long ONE_MINUTE = 60000;
+    private static final String COMPANY_REFERENCE = "COMPANY_REFERENCE";
 
     private Key key;
     private TokenProvider tokenProvider;
@@ -48,7 +51,7 @@ class TokenProviderTest {
     @Test
     void testReturnFalseWhenJWTisMalformed() {
         Authentication authentication = createAuthentication();
-        String token = tokenProvider.createToken(authentication, false);
+        String token = tokenProvider.createToken(authentication, COMPANY_REFERENCE, false);
         String invalidToken = token.substring(1);
         boolean isTokenValid = tokenProvider.validateToken(invalidToken);
 
@@ -60,7 +63,7 @@ class TokenProviderTest {
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", -ONE_MINUTE);
 
         Authentication authentication = createAuthentication();
-        String token = tokenProvider.createToken(authentication, false);
+        String token = tokenProvider.createToken(authentication, COMPANY_REFERENCE, false);
 
         boolean isTokenValid = tokenProvider.validateToken(token);
 

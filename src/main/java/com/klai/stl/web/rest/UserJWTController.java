@@ -1,8 +1,11 @@
 package com.klai.stl.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.klai.stl.domain.Company;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.security.jwt.JWTFilter;
 import com.klai.stl.security.jwt.TokenProvider;
+import com.klai.stl.service.exception.CompanyReferenceNotFound;
 import com.klai.stl.web.rest.vm.LoginVM;
 import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +15,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller to authenticate users.
@@ -25,9 +31,16 @@ public class UserJWTController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    private final CompanyRepository companyRepository;
+
+    public UserJWTController(
+        TokenProvider tokenProvider,
+        AuthenticationManagerBuilder authenticationManagerBuilder,
+        CompanyRepository companyRepository
+    ) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.companyRepository = companyRepository;
     }
 
     @PostMapping("/authenticate")
@@ -39,7 +52,8 @@ public class UserJWTController {
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication, loginVM.isRememberMe());
+        final Company company = companyRepository.findByUser(loginVM.getUsername()).orElseThrow(CompanyReferenceNotFound::new);
+        String jwt = tokenProvider.createToken(authentication, company.getReference(), loginVM.isRememberMe());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
