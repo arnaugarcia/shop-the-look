@@ -24,7 +24,6 @@ import tech.jhipster.config.JHipsterProperties;
 class TokenProviderTest {
 
     private static final long ONE_MINUTE = 60000;
-    private static final String COMPANY_REFERENCE = "COMPANY_REFERENCE";
 
     private Key key;
     private TokenProvider tokenProvider;
@@ -51,7 +50,7 @@ class TokenProviderTest {
     @Test
     void testReturnFalseWhenJWTisMalformed() {
         Authentication authentication = createAuthentication();
-        String token = tokenProvider.createToken(authentication, COMPANY_REFERENCE, false);
+        String token = tokenProvider.createToken(authentication, false);
         String invalidToken = token.substring(1);
         boolean isTokenValid = tokenProvider.validateToken(invalidToken);
 
@@ -63,7 +62,7 @@ class TokenProviderTest {
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", -ONE_MINUTE);
 
         Authentication authentication = createAuthentication();
-        String token = tokenProvider.createToken(authentication, COMPANY_REFERENCE, false);
+        String token = tokenProvider.createToken(authentication, false);
 
         boolean isTokenValid = tokenProvider.validateToken(token);
 
