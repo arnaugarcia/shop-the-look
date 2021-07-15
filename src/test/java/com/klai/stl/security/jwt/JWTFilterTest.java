@@ -20,9 +20,6 @@ import tech.jhipster.config.JHipsterProperties;
 
 class JWTFilterTest {
 
-    private static final long ONE_MINUTE = 60000;
-    private static final String COMPANY_REFERENCE = "COMPANY_REFERENCE";
-
     private TokenProvider tokenProvider;
 
     private JWTFilter jwtFilter;
@@ -35,7 +32,7 @@ class JWTFilterTest {
         tokenProvider = new TokenProvider(jHipsterProperties);
         ReflectionTestUtils.setField(tokenProvider, "key", Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret)));
 
-        ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", ONE_MINUTE);
+        ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", 60000);
         jwtFilter = new JWTFilter(tokenProvider);
         SecurityContextHolder.getContext().setAuthentication(null);
     }
@@ -47,7 +44,7 @@ class JWTFilterTest {
             "test-password",
             Collections.singletonList(new SimpleGrantedAuthority(AuthoritiesConstants.USER))
         );
-        String jwt = tokenProvider.createToken(authentication, COMPANY_REFERENCE, false);
+        String jwt = tokenProvider.createToken(authentication, false);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
         request.setRequestURI("/api/test");
@@ -102,7 +99,7 @@ class JWTFilterTest {
             "test-password",
             Collections.singletonList(new SimpleGrantedAuthority(AuthoritiesConstants.USER))
         );
-        String jwt = tokenProvider.createToken(authentication, COMPANY_REFERENCE, false);
+        String jwt = tokenProvider.createToken(authentication, false);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Basic " + jwt);
         request.setRequestURI("/api/test");
