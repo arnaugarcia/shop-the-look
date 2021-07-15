@@ -27,6 +27,7 @@ public class ShopTheLookApp {
     private final Environment env;
 
     public ShopTheLookApp(Environment env) {
+        System.out.println("TEST");
         this.env = env;
     }
 
