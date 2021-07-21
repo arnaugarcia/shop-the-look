@@ -11,7 +11,9 @@ import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.TokenService;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.CompanyNotFound;
@@ -126,6 +128,11 @@ public class CompanyServiceImpl implements CompanyService {
         final Company company = findCurrentUserCompany(user.getLogin());
         company.removeUser(user);
         companyRepository.save(company);
+    }
+
+    @Override
+    public PreferencesDTO updatePreferences(String companyReference, PreferencesRequest preferencesRequest) {
+        return null;
     }
 
     @Override
