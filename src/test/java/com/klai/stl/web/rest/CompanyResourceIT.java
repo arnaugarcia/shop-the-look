@@ -258,6 +258,7 @@ public class CompanyResourceIT {
         assertThat(testCompany.getReference()).isNotBlank();
         assertThat(testCompany.getIndustry()).isEqualTo(DEFAULT_INDUSTRY);
         assertThat(testCompany.getCompanySize()).isEqualTo(DEFAULT_COMPANY_SIZE);
+        assertThat(testCompany.getPreferences()).isNotNull();
     }
 
     @Test
