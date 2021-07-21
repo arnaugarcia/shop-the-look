@@ -8,7 +8,7 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.PreferencesService;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.PreferencesRequest;
-import com.klai.stl.service.exception.PreferenceNotFound;
+import com.klai.stl.service.exception.PreferencesNotFound;
 import com.klai.stl.service.mapper.PreferencesMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class PreferencesServiceImpl implements PreferencesService {
             companyService.checkCurrentUserBelongsToCompany(companyReference);
         }
 
-        final Preferences result = preferencesRepository.findByCompanyReference(companyReference).orElseThrow(PreferenceNotFound::new);
+        final Preferences result = preferencesRepository.findByCompanyReference(companyReference).orElseThrow(PreferencesNotFound::new);
 
         return preferencesMapper.toDto(result);
     }
