@@ -3,7 +3,9 @@ package com.klai.stl.service;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import java.util.List;
 
@@ -70,4 +72,12 @@ public interface CompanyService {
      * @param companyReference the reference of the company
      */
     void removeEmployee(User user, String companyReference);
+
+    /**
+     * Update the company references
+     *
+     * @param companyReference the reference of the company
+     * @return the persisted entity.
+     */
+    PreferencesDTO updatePreferences(String companyReference, PreferencesRequest preferencesRequest);
 }

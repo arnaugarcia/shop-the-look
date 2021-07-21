@@ -2,13 +2,16 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
 
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.criteria.CompanyCriteria;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import com.klai.stl.service.impl.CompanyQueryService;
 import java.net.URI;
@@ -79,7 +82,7 @@ public class CompanyResource {
         log.debug("REST request to get companies by criteria: {}", criteria);
         Page<CompanyDTO> entityList = companyQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = generatePaginationHttpHeaders(fromCurrentRequest(), entityList);
-        return ResponseEntity.ok().headers(headers).body(entityList.getContent());
+        return ok().headers(headers).body(entityList.getContent());
     }
 
     /**
@@ -96,10 +99,7 @@ public class CompanyResource {
         log.debug("REST request to update Company: {}", companyRequest);
 
         CompanyDTO result = companyService.update(companyRequest);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getReference()))
-            .body(result);
+        return ok().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getReference())).body(result);
     }
 
     /**
@@ -112,7 +112,23 @@ public class CompanyResource {
     public ResponseEntity<CompanyDTO> getCompany(@PathVariable String reference) {
         log.debug("REST request to get Company : {}", reference);
         CompanyDTO companyDTO = companyService.findOne(reference);
-        return ResponseEntity.ok(companyDTO);
+        return ok(companyDTO);
+    }
+
+    /**
+     * {@code GET  /companies/:reference/preferences} : update the company preferences
+     *
+     * @param reference the reference of the company preferences to update
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the preferencesDTO, or with status {@code 404 (Not Found)}.
+     */
+    @PutMapping("/companies/{reference}/preferences")
+    public ResponseEntity<PreferencesDTO> updatePreferences(
+        @PathVariable String reference,
+        @Valid @RequestBody PreferencesRequest preferencesRequest
+    ) {
+        log.debug("REST request to update a Company preference: {}", reference);
+        PreferencesDTO preferencesDTO = companyService.updatePreferences(reference, preferencesRequest);
+        return ok(preferencesDTO);
     }
 
     /**
