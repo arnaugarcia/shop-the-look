@@ -82,6 +82,11 @@ public class Company implements Serializable {
     @JoinColumn(unique = true)
     private BillingAddress billingAddress;
 
+    @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
+    @OneToOne(cascade = REMOVE)
+    @JoinColumn(unique = true)
+    private Preferences preferences;
+
     @OneToMany(mappedBy = "company", orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "company", "coordinate" }, allowSetters = true)
@@ -300,6 +305,19 @@ public class Company implements Serializable {
 
     public void setBillingAddress(BillingAddress billingAddress) {
         this.billingAddress = billingAddress;
+    }
+
+    public Preferences getPreferences() {
+        return this.preferences;
+    }
+
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
+    }
+
+    public Company preferences(Preferences preferences) {
+        this.setPreferences(preferences);
+        return this;
     }
 
     public Set<Product> getProducts() {

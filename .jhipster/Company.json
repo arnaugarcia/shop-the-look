@@ -73,6 +73,13 @@
       "ownerSide": true
     },
     {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "preferences",
+      "otherEntityRelationshipName": "company",
+      "relationshipName": "preferences",
+      "ownerSide": true
+    },
+    {
       "relationshipType": "one-to-many",
       "otherEntityName": "product",
       "otherEntityRelationshipName": "company",

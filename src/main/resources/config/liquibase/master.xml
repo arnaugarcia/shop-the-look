@@ -16,6 +16,7 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210630191347_added_entity_SubscriptionPlan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210721155627_added_entity_Preferences.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210630191343_added_entity_Company.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210630191344_added_entity_Space.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210630191345_added_entity_SpaceTemplate.xml" relativeToChangelogFile="false"/>

@@ -25,5 +25,11 @@
                                  constraintName="fk_company__subscription_plan_id"
                                  referencedColumnNames="id"
                                  referencedTableName="subscription_plan"/>
+
+        <addForeignKeyConstraint baseColumnNames="preferences_id"
+                                 baseTableName="company"
+                                 constraintName="fk_company__preferences_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="preferences"/>
     </changeSet>
 </databaseChangeLog>
