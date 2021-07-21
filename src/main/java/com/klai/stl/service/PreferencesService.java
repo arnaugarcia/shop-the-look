@@ -9,7 +9,7 @@ public interface PreferencesService {
      * @param companyReference the company reference
      * @return the preferences of the company
      */
-    PreferencesDTO findOne(String companyReference);
+    PreferencesDTO find(String companyReference);
 
     /**
      * Updates the preferences of the desired company

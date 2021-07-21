@@ -44,7 +44,7 @@ public class PreferencesServiceImpl implements PreferencesService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public PreferencesDTO findOne(String companyReference) {
+    public PreferencesDTO find(String companyReference) {
         log.debug("Request to get Preferences : {}", companyReference);
         return null;
     }
