@@ -8,10 +8,12 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
+import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.TokenService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.PreferencesDTO;
+import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
@@ -21,6 +23,7 @@ import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,6 +124,20 @@ public class CompanyServiceImpl implements CompanyService {
         final Company company = findByReferenceOrThrow(companyReference);
         company.addUser(employee);
         return saveAndTransform(company);
+    }
+
+    @Override
+    public void checkLoginBelongsToCompany(String login, String companyReference) {
+        findOne(companyReference).getUsers().stream().filter(byLogin(login)).findFirst().orElseThrow(BadOwnerException::new);
+    }
+
+    @Override
+    public void checkCurrentUserBelongsToCompany(String companyReference) {
+        checkLoginBelongsToCompany(SecurityUtils.getCurrentUserLogin().get(), companyReference);
+    }
+
+    private Predicate<UserDTO> byLogin(String login) {
+        return userDTO -> userDTO.getLogin().equals(login);
     }
 
     @Override

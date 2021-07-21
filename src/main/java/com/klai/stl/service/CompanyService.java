@@ -46,6 +46,23 @@ public interface CompanyService {
     CompanyDTO addEmployee(User user, String companyReference);
 
     /**
+     * Checks if the login belongs to the company
+     * @param login the user login
+     * @param companyReference the company reference
+     * @throws com.klai.stl.service.exception.CompanyNotFound if the company isn't found
+     * @throws com.klai.stl.service.exception.BadOwnerException if the owner not belongs to the company
+     */
+    void checkLoginBelongsToCompany(String login, String companyReference);
+
+    /**
+     * Checks current user belongs to company
+     * @param companyReference the company reference
+     * @throws com.klai.stl.service.exception.CompanyNotFound if the company isn't found
+     * @throws com.klai.stl.service.exception.BadOwnerException if the owner not belongs to the company
+     */
+    void checkCurrentUserBelongsToCompany(String companyReference);
+
+    /**
      * Get the company by reference
      * @param reference the reference to query
      * @return the entity

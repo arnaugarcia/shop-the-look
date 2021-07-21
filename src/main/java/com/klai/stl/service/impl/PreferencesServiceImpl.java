@@ -1,11 +1,14 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
+
 import com.klai.stl.domain.Preferences;
 import com.klai.stl.repository.PreferencesRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.PreferencesService;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.PreferencesRequest;
+import com.klai.stl.service.exception.PreferenceNotFound;
 import com.klai.stl.service.mapper.PreferencesMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +49,13 @@ public class PreferencesServiceImpl implements PreferencesService {
     @Transactional(readOnly = true)
     public PreferencesDTO find(String companyReference) {
         log.debug("Request to get Preferences : {}", companyReference);
-        return null;
+        if (isCurrentUserManager()) {
+            companyService.checkCurrentUserBelongsToCompany(companyReference);
+        }
+
+        final Preferences result = preferencesRepository.findByCompanyReference(companyReference).orElseThrow(PreferenceNotFound::new);
+
+        return preferencesMapper.toDto(result);
     }
 
     @Override
