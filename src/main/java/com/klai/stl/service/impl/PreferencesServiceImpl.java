@@ -53,15 +53,25 @@ public class PreferencesServiceImpl implements PreferencesService {
             companyService.checkCurrentUserBelongsToCompany(companyReference);
         }
 
-        final Preferences result = preferencesRepository
-            .findByCompanyReference(companyReference)
-            .orElseThrow(PreferencesNotFoundException::new);
+        final Preferences result = findPreferenceByCompanyReference(companyReference);
 
         return preferencesMapper.toDto(result);
     }
 
+    private Preferences findPreferenceByCompanyReference(String companyReference) {
+        return preferencesRepository.findByCompanyReference(companyReference).orElseThrow(PreferencesNotFoundException::new);
+    }
+
     @Override
     public PreferencesDTO update(String companyReference, PreferencesRequest preferencesRequest) {
-        return null;
+        if (isCurrentUserManager()) {
+            companyService.checkCurrentUserBelongsToCompany(companyReference);
+        }
+
+        final Preferences preferences = findPreferenceByCompanyReference(companyReference);
+        preferences.setFeedUrl(preferencesRequest.getFeedUrl());
+        preferences.setImportMethod(preferencesRequest.getImportMethod());
+
+        return preferencesMapper.toDto(preferences);
     }
 }

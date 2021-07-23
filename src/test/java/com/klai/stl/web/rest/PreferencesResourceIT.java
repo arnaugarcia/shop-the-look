@@ -191,7 +191,13 @@ class PreferencesResourceIT {
         final Company otherCompany = CompanyResourceIT.createEntity(em);
         em.persist(otherCompany);
 
-        restPreferencesMockMvc.perform(put(ENTITY_API_URL, otherCompany.getReference())).andExpect(status().isForbidden());
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL, otherCompany.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isForbidden());
     }
 
     @Test
