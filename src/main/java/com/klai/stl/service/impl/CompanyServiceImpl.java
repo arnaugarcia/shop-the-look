@@ -96,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     private String generateReference() {
-        String reference = randomAlphanumeric(5);
+        String reference = randomAlphanumeric(5).toUpperCase();
         if (companyRepository.findByReference(reference).isEmpty()) {
             return reference;
         }
