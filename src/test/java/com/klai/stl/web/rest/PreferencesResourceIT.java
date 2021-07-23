@@ -147,7 +147,7 @@ class PreferencesResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.feedUrl").value(DEFAULT_FEED_URL))
-            .andExpect(jsonPath("$.importMethod").value(DEFAULT_IMPORT_METHOD));
+            .andExpect(jsonPath("$.importMethod").value(DEFAULT_IMPORT_METHOD.toString()));
     }
 
     @Test
