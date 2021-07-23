@@ -23,7 +23,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.EntityManager;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -350,7 +349,7 @@ class EmployeeResourceIT {
                     .contentType(APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(updateRequest))
             )
-            .andExpect(status().isNotFound());
+            .andExpect(status().isForbidden());
     }
 
     @Test
@@ -723,7 +722,7 @@ class EmployeeResourceIT {
 
         restPhotoMockMvc
             .perform(put(ENTITY_API_URL_LOGIN + "/manager", otherEmployee.getLogin()).contentType(APPLICATION_JSON))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isForbidden());
     }
 
     @Test
