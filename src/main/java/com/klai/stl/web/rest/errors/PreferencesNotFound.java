@@ -7,6 +7,6 @@ public class PreferencesNotFound extends NotFoundException {
     private static final long serialVersionUID = 1L;
 
     public PreferencesNotFound() {
-        super(INTERNAL_SERVER, "No preferences are found for user (?)", "preferences", "nopreferences");
+        super(INTERNAL_SERVER, "No preferences are found for company", "preferences", "nopreferences");
     }
 }
