@@ -1,0 +1,33 @@
+{
+  "name": "Preferences",
+  "fields": [
+    {
+      "fieldName": "importMethod",
+      "fieldType": "ImportMethod",
+      "fieldValues": "CSV,TSV,FEED"
+    },
+    {
+      "fieldName": "feedUrl",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "company",
+      "otherEntityRelationshipName": "preferences",
+      "relationshipName": "company",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "preferences",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["ShopTheLook"],
+  "changelogDate": "20210721160215"
+}

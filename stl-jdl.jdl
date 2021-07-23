@@ -40,6 +40,15 @@ entity BillingAddress {
     country String required
 }
 
+entity Preferences {
+    importMethod ImportMethod,
+    feedUrl String
+}
+
+enum ImportMethod {
+	CSV, TSV, FEED
+}
+
 enum CompanyType {
     PRIVATE, SELF_EMPLOYEE
 }
@@ -166,7 +175,8 @@ relationship OneToMany {
 }
 
 relationship OneToOne {
-    Company to BillingAddress
+    Company to BillingAddress,
+    Company to Preferences
 }
 
 relationship ManyToMany {
@@ -175,7 +185,7 @@ relationship ManyToMany {
 
 dto * with mapstruct except GoogleFeedProduct
 
-service * with serviceImpl except GoogleFeedProduct, Coordinate
+service * with serviceImpl except GoogleFeedProduct, Coordinate, Preferences
 
 filter Product, GoogleFeedProduct, Space, Photo
 

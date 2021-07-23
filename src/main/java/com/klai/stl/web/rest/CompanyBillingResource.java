@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/companies/{reference}")
-public class BillingAddressResource {
+public class CompanyBillingResource {
 
-    private final Logger log = LoggerFactory.getLogger(BillingAddressResource.class);
+    private final Logger log = LoggerFactory.getLogger(CompanyBillingResource.class);
 
     private static final String ENTITY_NAME = "billingAddress";
 
@@ -30,7 +30,7 @@ public class BillingAddressResource {
 
     private final BillingAddressService billingAddressService;
 
-    public BillingAddressResource(BillingAddressService billingAddressService) {
+    public CompanyBillingResource(BillingAddressService billingAddressService) {
         this.billingAddressService = billingAddressService;
     }
 

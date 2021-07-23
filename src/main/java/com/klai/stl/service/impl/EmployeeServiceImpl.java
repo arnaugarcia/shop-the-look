@@ -18,8 +18,6 @@ import com.klai.stl.service.exception.CompanyNotAssociated;
 import com.klai.stl.service.exception.CompanyReferenceNotFound;
 import com.klai.stl.service.exception.EmployeeNotFound;
 import com.klai.stl.service.exception.OwnDeletionException;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -64,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public User updateEmployee(UpdateEmployeeRequestDTO employeeRequest, String login) {
         if (SecurityUtils.isCurrentUserManager()) {
-            checkLoginBelongsToCompany(login, findCurrentUserCompanyReference());
+            companyService.checkLoginBelongsToCompany(login, findCurrentUserCompanyReference());
         }
         userService.updateUser(employeeRequest, login);
         return userService.getUserWithAuthoritiesByLogin(login).get();
@@ -79,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (isCurrentUserManager()) {
             final String currentUserCompanyReference = findCurrentUserCompanyReference();
-            checkLoginBelongsToCompany(login, currentUserCompanyReference);
+            companyService.checkLoginBelongsToCompany(login, currentUserCompanyReference);
         }
         companyService.removeEmployee(findUserByLogin(login), findUserCompanyReference(login));
         userService.deleteUser(login);
@@ -89,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public UserDTO toggleEmployee(String login) {
         final User userByLogin = findUserByLogin(login);
         if (isCurrentUserManager()) {
-            checkLoginBelongsToCompany(userByLogin.getLogin(), findCurrentUserCompanyReference());
+            companyService.checkLoginBelongsToCompany(userByLogin.getLogin(), findCurrentUserCompanyReference());
         }
         if (userByLogin.isManager()) {
             userService.removeAuthority(userByLogin.getLogin(), MANAGER);
@@ -97,24 +95,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             userService.addAuthority(userByLogin.getLogin(), MANAGER);
         }
         return new UserDTO(findUserByLogin(login));
-    }
-
-    private Predicate<UserDTO> byLogin(String login) {
-        return userDTO -> userDTO.getLogin().equals(login);
-    }
-
-    private Supplier<EmployeeNotFound> employeeNotFound(String login) {
-        return () -> new EmployeeNotFound(login);
-    }
-
-    private void checkLoginBelongsToCompany(String login, String currentUserCompanyReference) {
-        companyService
-            .findOne(currentUserCompanyReference)
-            .getUsers()
-            .stream()
-            .filter(byLogin(login))
-            .findFirst()
-            .orElseThrow(employeeNotFound(login));
     }
 
     private String findUserCompanyReference(String login) {

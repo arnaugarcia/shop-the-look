@@ -1,6 +1,7 @@
 package com.klai.stl.web.rest;
 
-import static com.klai.stl.security.AuthoritiesConstants.*;
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
+import static com.klai.stl.security.AuthoritiesConstants.USER;
 import static com.klai.stl.web.rest.AccountResourceIT.TEST_USER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
@@ -226,6 +227,7 @@ class AccountResourceIT {
         assertThat(company.getUsers()).isNotNull();
         assertThat(company.getUsers()).hasSize(1);
         assertThat(company.getToken()).isNotNull();
+        assertThat(company.getPreferences()).isNotNull();
     }
 
     @Test

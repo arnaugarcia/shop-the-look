@@ -1,0 +1,10 @@
+{
+  "shopTheLookApp": {
+    "ImportMethod": {
+      "null": "",
+      "CSV": "CSV",
+      "TSV": "TSV",
+      "FEED": "FEED"
+    }
+  }
+}

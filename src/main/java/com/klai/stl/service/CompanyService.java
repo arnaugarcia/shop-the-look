@@ -3,7 +3,9 @@ package com.klai.stl.service;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.CompanyDTO;
+import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
 import java.util.List;
 
@@ -44,6 +46,23 @@ public interface CompanyService {
     CompanyDTO addEmployee(User user, String companyReference);
 
     /**
+     * Checks if the login belongs to the company
+     * @param login the user login
+     * @param companyReference the company reference
+     * @throws com.klai.stl.service.exception.CompanyNotFound if the company isn't found
+     * @throws com.klai.stl.service.exception.BadOwnerException if the owner not belongs to the company
+     */
+    void checkLoginBelongsToCompany(String login, String companyReference);
+
+    /**
+     * Checks current user belongs to company
+     * @param companyReference the company reference
+     * @throws com.klai.stl.service.exception.CompanyNotFound if the company isn't found
+     * @throws com.klai.stl.service.exception.BadOwnerException if the owner not belongs to the company
+     */
+    void checkCurrentUserBelongsToCompany(String companyReference);
+
+    /**
      * Get the company by reference
      * @param reference the reference to query
      * @return the entity
@@ -70,4 +89,12 @@ public interface CompanyService {
      * @param companyReference the reference of the company
      */
     void removeEmployee(User user, String companyReference);
+
+    /**
+     * Update the company references
+     *
+     * @param companyReference the reference of the company
+     * @return the persisted entity.
+     */
+    PreferencesDTO updatePreferences(String companyReference, PreferencesRequest preferencesRequest);
 }
