@@ -1,0 +1,12 @@
+package com.klai.stl.web.rest.errors;
+
+import static com.klai.stl.web.rest.errors.ErrorConstants.INTERNAL_SERVER;
+
+public class PreferencesNotFound extends InternalServerErrorException {
+
+    private static final long serialVersionUID = 1L;
+
+    public PreferencesNotFound() {
+        super(INTERNAL_SERVER, "No preferences are found for user (?)", "preferences", "nopreferences");
+    }
+}

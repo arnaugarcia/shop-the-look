@@ -225,6 +225,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handlePreferencesNotFoundException(
+        com.klai.stl.service.exception.PreferencesNotFoundException ex,
+        NativeWebRequest request
+    ) {
+        PreferencesNotFound problem = new PreferencesNotFound();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(
         com.klai.stl.service.exception.InvalidPasswordException ex,
         NativeWebRequest request
