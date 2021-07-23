@@ -39,7 +39,7 @@ class PreferencesResourceIT {
 
     private static final ImportMethod DEFAULT_IMPORT_METHOD = CSV;
 
-    private static final String DEFAULT_FEED_URL = "AAAAAAAAAA";
+    private static final String DEFAULT_FEED_URL = "https://arnaugarcia.com";
 
     private static final String ENTITY_API_URL = "/api/companies/{reference}/preferences";
 
@@ -131,6 +131,57 @@ class PreferencesResourceIT {
         Company result = byReference.get();
         assertThat(result.getPreferences().getFeedUrl()).isEqualTo(DEFAULT_FEED_URL);
         assertThat(result.getPreferences().getImportMethod()).isEqualTo(DEFAULT_IMPORT_METHOD);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    void updatingMalformedUrlPreference() throws Exception {
+        em.persist(company);
+
+        final PreferencesRequest preferencesRequest = builder().feedUrl("AAAAAAAAA").importMethod(CSV).build();
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    void updatingEmptyUrlPreference() throws Exception {
+        em.persist(company);
+
+        final PreferencesRequest preferencesRequest = builder().importMethod(CSV).build();
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    void updatingEmptyImportMethodPreference() throws Exception {
+        em.persist(company);
+
+        final PreferencesRequest preferencesRequest = builder().feedUrl(DEFAULT_FEED_URL).importMethod(null).build();
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isBadRequest());
     }
 
     @Test
