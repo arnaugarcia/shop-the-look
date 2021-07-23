@@ -4,3 +4,4 @@ user_id;authority_name
 2;ROLE_USER
 3;ROLE_USER
 3;ROLE_MANAGER
+4;ROLE_USER
