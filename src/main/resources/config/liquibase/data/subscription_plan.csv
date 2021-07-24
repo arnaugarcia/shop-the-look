@@ -1,5 +1,4 @@
 id;name          ;description  ;category;max_products;max_spaces;max_requests
-1 ;Bronze Plan   ;Bronze Plan  ;BRONZE  ;500         ;2         ;10000
-2 ;Silver Plan   ;Silver Plan  ;SILVER  ;1000        ;3         ;20000
-3 ;Gold Plan     ;Gold Plan    ;GOLD    ;5000        ;5         ;50000
-4 ;Platinum plan	;Platinum plan;PLATINUM;10000       ;10        ;100000
+1 ;Bronze Plan   ;Bronze Plan  ;BRONZE  ;500         ;3         ;10000
+2 ;Silver Plan   ;Silver Plan  ;SILVER  ;2500        ;5         ;20000
+3 ;Gold Plan     ;Gold Plan    ;GOLD    ;500000      ;100       ;5000000
