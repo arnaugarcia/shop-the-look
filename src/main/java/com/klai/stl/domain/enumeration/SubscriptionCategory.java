@@ -7,5 +7,4 @@ public enum SubscriptionCategory {
     BRONZE,
     SILVER,
     GOLD,
-    PLATINUM,
 }
