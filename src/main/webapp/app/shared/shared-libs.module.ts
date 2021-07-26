@@ -6,8 +6,11 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoreCommonModule } from '../../@core/common.module';
+import { CoreModule } from '../../@core/core.module';
+import { coreConfig } from '../app-config';
 
 @NgModule({
+  imports: [CoreModule.forRoot(coreConfig)],
   exports: [
     FormsModule,
     CommonModule,
@@ -16,6 +19,7 @@ import { CoreCommonModule } from '../../@core/common.module';
     FontAwesomeModule,
     ReactiveFormsModule,
     TranslateModule,
+    CoreModule,
     CoreCommonModule,
   ],
 })

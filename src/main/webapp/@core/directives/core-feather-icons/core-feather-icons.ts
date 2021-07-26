@@ -25,12 +25,12 @@ export class FeatherIconDirective implements OnChanges {
     this._nativeElement = this._elementRef.nativeElement;
 
     // SVG parameter
-    this.name = changes.name.currentValue;
-    this.size = changes.size.currentValue; // Set default size 14
-    this.class = changes.class.currentValue;
+    this.name = changes.name ? changes.name.currentValue : '';
+    this.size = changes.size ? changes.size.currentValue : '14'; // Set default size 14
+    this.class = changes.class ? changes.class.currentValue : '';
 
     // Create SVG
-    const svg = Feather.icons[this.name].toSvg({
+    const svg = Feather.icons[this.name]?.toSvg({
       class: this.class,
       width: this.size,
       height: this.size,
