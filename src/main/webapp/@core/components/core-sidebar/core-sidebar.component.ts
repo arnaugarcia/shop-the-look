@@ -33,25 +33,25 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 export class CoreSidebarComponent implements OnInit, OnDestroy {
   // Sidebar name (Component input)
   @Input()
-  name: string;
+  name = '';
 
   // Class name for the overlay (Component input)
   @Input()
-  overlayClass: string;
+  overlayClass = '';
 
   // Sidebar Opened
   isOpened: boolean;
 
   // Collapsible sidebar (Component input)
   @Input()
-  collapsibleSidebar: string;
+  collapsibleSidebar = '';
 
   // iscollapsibleSidebar
-  iscollapsibleSidebar: boolean;
+  iscollapsibleSidebar = false;
 
   // Collapsible Sidebar expanded
   @HostBinding('class.expanded')
-  expanded: boolean;
+  expanded = true;
 
   // Collapsed changed event
   @Output()
@@ -76,16 +76,16 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
   }
 
   // Set menu class for current menu type
-  menuClass: string;
+  menuClass: string = '';
 
   rootElement: any;
 
   // Private
   private _coreConfig: any;
   private _collapsed: boolean;
-  private _wasCollapsible: boolean;
-  private _wasCollapsed: boolean;
-  private _animationPlayer: AnimationPlayer;
+  private _wasCollapsible = false;
+  private _wasCollapsed = false;
+  private _animationPlayer: AnimationPlayer | undefined;
   private _overlay: HTMLElement | null = null;
   private _unsubscribeAll: Subject<any>;
 
@@ -183,13 +183,8 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe to app-config changes
-    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+    this._coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this._coreConfig = config;
-      if (config.layout.type == 'vertical') {
-        this.menuClass = 'vertical-menu-modern';
-      } else {
-        this.menuClass = 'horizontal-menu';
-      }
     });
 
     // Register the sidebar
@@ -347,12 +342,12 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
     this._overlay = this._renderer.createElement('div');
 
     // Add a class to the overlay element and make it visible
-    this._overlay.classList.add(this.overlayClass);
-    this._overlay.classList.add('show');
+    this._overlay?.classList.add(this.overlayClass);
+    this._overlay?.classList.add('show');
 
     // If overlayVisibility is false, set the bg transparent
     if (!this.overlayVisibility) {
-      this._overlay.classList.add('bg-transparent');
+      this._overlay?.classList.add('bg-transparent');
     }
 
     // Append the overlay element to the parent element of the sidebar
@@ -365,7 +360,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
     this._animationPlayer.play();
 
     // Add an event listener to the overlay, on click of it close the sidebar
-    this._overlay.addEventListener('click', () => {
+    this._overlay?.addEventListener('click', () => {
       this.close();
     });
     // Change detector
@@ -394,7 +389,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
       // If the overlay still exists...
       if (this._overlay) {
         // Remove the overlay
-        this._overlay.parentNode.removeChild(this._overlay);
+        this._overlay?.parentNode?.removeChild(this._overlay);
         this._overlay = null;
       }
     });

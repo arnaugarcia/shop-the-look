@@ -14,11 +14,12 @@ export class CoreSidebarService {
    * @param key
    * @returns {CoreSidebarComponent}
    */
-  getSidebarRegistry(key): CoreSidebarComponent {
+  getSidebarRegistry(key: string): CoreSidebarComponent {
     // Check if the sidebar registered
 
     if (!this._registry[key]) {
       console.warn(`The sidebar with the key '${key}' doesn't exist in the registry.`);
+      // @ts-ignore
       return;
     }
 
@@ -33,7 +34,7 @@ export class CoreSidebarService {
    * @param sidebar
    */
 
-  setSidebarRegistry(key, sidebar): void {
+  setSidebarRegistry(key: string, sidebar: CoreSidebarComponent): void {
     // Check if the key already being used
     if (this._registry[key]) {
       console.error(`The sidebar with the key '${key}' already exists. Either unregister it first or use a unique key.`);
@@ -50,7 +51,7 @@ export class CoreSidebarService {
    *
    * @param key
    */
-  removeSidebarRegistry(key): void {
+  removeSidebarRegistry(key: string): void {
     // Check if the sidebar registered
     if (!this._registry[key]) {
       console.warn(`The sidebar with the key '${key}' doesn't exist in the registry.`);

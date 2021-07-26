@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 
 import * as _ from 'lodash';
 import { CoreConfig } from '../types';
+import { coreConfig } from '../../app/app-config';
 
 // Injection token for the core custom settings
 export const CORE_CUSTOM_CONFIG = new InjectionToken('coreCustomConfig');
@@ -17,7 +18,7 @@ export class CoreConfigService {
   // Private
   public localConfig: any;
   private readonly _defaultConfig: CoreConfig;
-  private _configSubject: BehaviorSubject<CoreConfig> | undefined;
+  private _configSubject: BehaviorSubject<CoreConfig> = new BehaviorSubject<CoreConfig>(coreConfig);
 
   /**
    * Constructor
@@ -86,7 +87,7 @@ export class CoreConfigService {
    * @param data
    * @param {{emitEvent: boolean}} param
    */
-  setConfig(data: CoreConfig, param = { emitEvent: true }): void {
+  setConfig(data: any, param = { emitEvent: true }): void {
     let config;
 
     // Set config = localConfig, If we have else defaultConfig
@@ -117,7 +118,7 @@ export class CoreConfigService {
    *
    * @returns {Observable<any>}
    */
-  getConfig(): Observable<CoreConfig> | undefined {
+  getConfig(): Observable<CoreConfig> {
     return this._configSubject?.asObservable();
   }
 
