@@ -5,7 +5,7 @@ import * as Waves from 'node-waves';
 @Directive({
   selector: '[stlRippleEffect]',
 })
-export class RippleEffectDirective {
+export class RippleEffectDirective implements OnInit {
   @Input() wave: string | undefined;
 
   private _nativeElement: any;

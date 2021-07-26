@@ -6,13 +6,12 @@ import * as Feather from 'feather-icons';
   selector: '[stlDataFeather]',
 })
 export class FeatherIconDirective implements OnChanges {
-  // Private
-  private _nativeElement: any;
+  @Input() public name!: string;
+  @Input() public class!: string;
+  @Input() public size!: string;
+  @Input() public inner!: boolean;
 
-  @Input() private name!: string;
-  @Input() private class!: string;
-  @Input() private size!: string;
-  @Input() private inner!: boolean;
+  private _nativeElement: any;
 
   /**
    * Constructor

@@ -1,4 +1,4 @@
-import { trigger, transition, style, query, group, animateChild, animate, keyframes } from '@angular/animations';
+import { animate, animateChild, group, query, style, transition, trigger } from '@angular/animations';
 
 // Animation: FadeInLeft
 export const fadeInLeft = trigger('fadeInLeft', [

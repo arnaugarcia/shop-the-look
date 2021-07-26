@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import * as _ from 'lodash';
+import { CoreConfig } from '../types';
 
 // Injection token for the core custom settings
 export const CORE_CUSTOM_CONFIG = new InjectionToken('coreCustomConfig');
@@ -15,8 +16,8 @@ export const CORE_CUSTOM_CONFIG = new InjectionToken('coreCustomConfig');
 export class CoreConfigService {
   // Private
   public localConfig: any;
-  private readonly _defaultConfig: any;
-  private _configSubject: BehaviorSubject<any>;
+  private readonly _defaultConfig: CoreConfig;
+  private _configSubject: BehaviorSubject<CoreConfig> | undefined;
 
   /**
    * Constructor
@@ -24,10 +25,10 @@ export class CoreConfigService {
    * @param _config
    * @param {Router} _router
    */
-  constructor(private _router: Router, @Inject(CORE_CUSTOM_CONFIG) private _config) {
+  constructor(private _router: Router, @Inject(CORE_CUSTOM_CONFIG) private _config: CoreConfig) {
     // Get the config from local storage
     if (_config.layout.enableLocalStorage) {
-      this.localConfig = JSON.parse(localStorage.getItem('config'));
+      this.localConfig = JSON.parse(<string>localStorage.getItem('config'));
     } else {
       localStorage.removeItem('config');
     }
@@ -50,7 +51,7 @@ export class CoreConfigService {
     if (this.localConfig) {
       config = this.localConfig;
     } else {
-      config = this._configSubject.getValue();
+      config = this._configSubject?.getValue();
     }
 
     // Merge provided data with config, and create new merged config
@@ -62,12 +63,12 @@ export class CoreConfigService {
     }
 
     // Inform the observers
-    this._configSubject.next(config);
+    this._configSubject?.next(config);
   }
 
   // Get the config
-  get config(): any | Observable<any> {
-    return this._configSubject.asObservable();
+  get config(): Observable<CoreConfig> | undefined {
+    return this._configSubject?.asObservable();
   }
 
   /**
@@ -75,12 +76,57 @@ export class CoreConfigService {
    *
    * @returns {any}
    */
-  get defaultConfig(): any {
+  get defaultConfig(): CoreConfig {
     return this._defaultConfig;
   }
 
-  // Private methods
-  // -----------------------------------------------------------------------------------------------------
+  /**
+   * Set config
+   *
+   * @param data
+   * @param {{emitEvent: boolean}} param
+   */
+  setConfig(data: CoreConfig, param = { emitEvent: true }): void {
+    let config;
+
+    // Set config = localConfig, If we have else defaultConfig
+    this.localConfig = JSON.parse(<string>localStorage.getItem('config'));
+    if (this.localConfig) {
+      config = this.localConfig;
+    } else {
+      config = this._configSubject?.getValue();
+    }
+
+    // Merge provided value with config, and create new merged config
+    config = _.merge({}, config, data);
+
+    // Set config to local storage if enableLocalStorage parameter is true
+    if (config.layout.enableLocalStorage) {
+      localStorage.setItem('config', JSON.stringify(config));
+    }
+
+    // If emitEvent option is true...
+    if (param.emitEvent) {
+      // Inform the observers
+      this._configSubject?.next(config);
+    }
+  }
+
+  /**
+   * Get config
+   *
+   * @returns {Observable<any>}
+   */
+  getConfig(): Observable<CoreConfig> | undefined {
+    return this._configSubject?.asObservable();
+  }
+
+  /**
+   * Reset to the default config
+   */
+  resetConfig(): void {
+    this._configSubject?.next(_.cloneDeep(this._defaultConfig));
+  }
 
   /**
    * Initialize
@@ -95,73 +141,26 @@ export class CoreConfigService {
     // Check if localDefault (localStorage if we have else defaultConfig) is different form the default one
     this._router.events.pipe(filter(event => event instanceof ResolveEnd)).subscribe(() => {
       // Get the local config from local storage
-      this.localConfig = JSON.parse(localStorage.getItem('config'));
+      this.localConfig = JSON.parse(<string>localStorage.getItem('config'));
 
       // Set localDefault to localConfig if we have else defaultConfig
-      let localDefault = this.localConfig ? this.localConfig : this._defaultConfig;
+      const localDefault = this.localConfig ? this.localConfig : this._defaultConfig;
 
       // If localDefault is different form the provided config (page config)
-      if (!_.isEqual(this._configSubject.getValue().layout, localDefault.layout)) {
+      if (!_.isEqual(this._configSubject?.getValue().layout, localDefault.layout)) {
         // Clone the current config
-        const config = _.cloneDeep(this._configSubject.getValue());
+        const config = _.cloneDeep(this._configSubject?.getValue());
+
+        if (!config) {
+          return;
+        }
 
         // Reset the layout from the default config
         config.layout = _.cloneDeep(localDefault.layout);
 
         // Set the config
-        this._configSubject.next(config);
+        this._configSubject?.next(config);
       }
     });
-  }
-
-  // Public methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Set config
-   *
-   * @param data
-   * @param {{emitEvent: boolean}} param
-   */
-  setConfig(data, param = { emitEvent: true }): void {
-    let config;
-
-    // Set config = localConfig, If we have else defaultConfig
-    this.localConfig = JSON.parse(localStorage.getItem('config'));
-    if (this.localConfig) {
-      config = this.localConfig;
-    } else {
-      config = this._configSubject.getValue();
-    }
-
-    // Merge provided value with config, and create new merged config
-    config = _.merge({}, config, data);
-
-    // Set config to local storage if enableLocalStorage parameter is true
-    if (config.layout.enableLocalStorage) {
-      localStorage.setItem('config', JSON.stringify(config));
-    }
-
-    // If emitEvent option is true...
-    if (param.emitEvent === true) {
-      // Inform the observers
-      this._configSubject.next(config);
-    }
-  }
-
-  /**
-   * Get config
-   *
-   * @returns {Observable<any>}
-   */
-  getConfig(): Observable<any> {
-    return this._configSubject.asObservable();
-  }
-
-  /**
-   * Reset to the default config
-   */
-  resetConfig(): void {
-    this._configSubject.next(_.cloneDeep(this._defaultConfig));
   }
 }
