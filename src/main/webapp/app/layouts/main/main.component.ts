@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { CoreConfigService } from '../../../@core/services/config.service';
 import { CoreLoadingScreenService } from '../../../@core/services/loading-screen.service';
 import { Subject } from 'rxjs';
@@ -10,6 +10,7 @@ import { CoreConfig } from '../../../@core/types';
   selector: 'stl-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class MainComponent implements OnInit, OnDestroy {
   coreConfig: CoreConfig = new CoreConfig();

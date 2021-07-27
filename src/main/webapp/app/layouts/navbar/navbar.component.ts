@@ -1,4 +1,4 @@
-import { Component, HostBinding, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CoreConfigService } from '../../../@core/services/config.service';
@@ -14,6 +14,7 @@ import * as _ from 'lodash';
   selector: 'stl-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   public hiddenMenu = false;
