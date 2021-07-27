@@ -4,7 +4,7 @@
     <ul class="nav navbar-nav d-xl-none" *ngIf="!coreConfig?.layout?.menu?.hidden">
       <li class="nav-item">
         <a class="nav-link menu-toggle" (click)="toggleSidebar('menu')">
-          <span stlDataFeather="menu" class="'ficon'"></span>
+          <span [data-feather]="'menu'" [class]="'ficon'"></span>
         </a>
       </li>
     </ul>
@@ -57,10 +57,10 @@
         ></span>
       </a>
       <div ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right">
-        <a ngbDropdownItem [routerLink]="['/']"><span stlDataFeather="user" class="'mr-50'"></span>Profile</a>
+        <a ngbDropdownItem [routerLink]="['/']"><span [data-feather]="'user'" [class]="'mr-50'"></span>Profile</a>
         <div class="dropdown-divider"></div>
         <a ngbDropdownItem [routerLink]="['/pages/authentication/login-v2']">
-          <span stlDataFeather="power" class="'mr-50'"></span>Logout
+          <span [data-feather]="'power'" [class]="'mr-50'"></span>Logout
         </a>
       </div>
     </li>
