@@ -8,6 +8,6 @@
 // ================================================================================================
 
 // Overrides user variable
-@import 'scss/variables/_variables-components'; // Component custom variable override (for user purpose)
+@import '~content/scss/_bootstrap-variables'; // Component custom variable override (for user purpose)
 @import 'variables'; // Component variable
 @import 'variables-dark'; // Dark variable

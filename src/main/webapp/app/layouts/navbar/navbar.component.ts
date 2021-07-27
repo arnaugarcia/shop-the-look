@@ -1,4 +1,4 @@
-import { Component, HostBinding, HostListener, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CoreConfigService } from '../../../@core/services/config.service';
@@ -15,7 +15,7 @@ import * as _ from 'lodash';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   public hiddenMenu = false;
 
   public coreConfig: CoreConfig | undefined;
@@ -135,7 +135,7 @@ export class NavbarComponent implements OnInit {
     this._unsubscribeAll.complete();
   }
 
-  /*inProduction?: boolean;
+  /* inProduction?: boolean;
   isNavbarCollapsed = true;
   languages = LANGUAGES;
   openAPIEnabled?: boolean;
@@ -184,5 +184,5 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
-  }*/
+  } */
 }
