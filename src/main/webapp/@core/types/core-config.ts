@@ -1,7 +1,4 @@
 // prettier-ignore
-import { IUser } from '../../app/entities/user/user.model';
-import { SubscriptionCategory } from '../../app/entities/enumerations/subscription-category.model';
-import { ICompany } from '../../app/entities/company/company.model';
 
 export interface CoreConfig {
   layout: {

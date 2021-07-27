@@ -9,9 +9,21 @@ import { MenuModule } from './menu/menu.module';
 import { ContentModule } from './content/content.module';
 import { ContentHeaderModule } from './content-header/content-header.module';
 import { CoreSidebarModule } from '../../@core/components';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CustomBreakPointsProvider } from './custom-breakpoints';
 
 @NgModule({
   declarations: [ErrorComponent, MainComponent, PageRibbonComponent],
-  imports: [SharedModule, CoreSidebarModule, MenuModule, ContentModule, ContentHeaderModule, FooterModule, NavbarModule],
+  imports: [
+    SharedModule,
+    CoreSidebarModule,
+    MenuModule,
+    ContentModule,
+    ContentHeaderModule,
+    FooterModule,
+    NavbarModule,
+    FlexLayoutModule.withConfig({ disableDefaultBps: true }),
+  ],
+  providers: [CustomBreakPointsProvider],
 })
 export class LayoutsModule {}

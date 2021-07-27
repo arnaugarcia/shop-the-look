@@ -63,7 +63,7 @@ export class MainComponent implements OnInit, OnDestroy {
       }
 
       // Skin Class (Adding to body as it requires highest priority)
-      this.document.body.classList.remove('default-layout', 'bordered-layout', 'dark-layout', 'semi-dark-layout');
+      this.document.body.classList.remove('default-layout', 'dark-layout');
       this.document.body.classList.add(this.coreConfig.layout.skin + '-layout');
     });
   }
