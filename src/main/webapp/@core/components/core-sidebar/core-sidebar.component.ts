@@ -24,6 +24,7 @@ import { CoreMediaService } from '@core/services/media.service';
 import { CoreConfigService } from '@core/services/config.service';
 
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { CoreConfig } from '../../types';
 
 @Component({
   selector: 'core-sidebar',
@@ -81,7 +82,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
   rootElement: any;
 
   // Private
-  private _coreConfig: any;
+  private _coreConfig: CoreConfig | undefined;
   private _collapsed: boolean;
   private _wasCollapsible = false;
   private _wasCollapsed = false;
@@ -239,7 +240,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
       // Get the collapsible status
       const isCollapsible = this._mediaObserver.isActive(this.collapsibleSidebar);
       //! On screen resize set the config collapsed state if we have else this.collapsed
-      this._wasCollapsed = this._coreConfig.layout.menu.collapsed || this.collapsed;
+      this._wasCollapsed = this._coreConfig?.layout.menu.collapsed || this.collapsed;
 
       // If sidebar is not collapsible, switch to overlay menu (On page load without resize the window)
       // ? Improve this menu condition

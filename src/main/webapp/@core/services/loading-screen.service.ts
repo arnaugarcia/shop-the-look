@@ -11,7 +11,7 @@ import { filter, take } from 'rxjs/operators';
 })
 export class CoreLoadingScreenService {
   loadingScreenEl: any;
-  animationPlayer: AnimationPlayer;
+  animationPlayer: AnimationPlayer | undefined;
 
   /**
    * Constructor
@@ -71,7 +71,7 @@ export class CoreLoadingScreenService {
       .create(this.loadingScreenEl);
 
     setTimeout(() => {
-      this.animationPlayer.play();
+      this.animationPlayer?.play();
     }, 0);
   }
 
@@ -94,7 +94,7 @@ export class CoreLoadingScreenService {
 
     setTimeout(() => {
       this.loadingScreenEl.remove();
-      this.animationPlayer.play();
+      this.animationPlayer?.play();
     }, 0);
   }
 }

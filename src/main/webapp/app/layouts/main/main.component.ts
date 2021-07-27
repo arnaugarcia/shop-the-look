@@ -1,17 +1,81 @@
-import { Component, OnInit, RendererFactory2, Renderer2 } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import * as dayjs from 'dayjs';
-
-import { AccountService } from 'app/core/auth/account.service';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { CoreConfigService } from '../../../@core/services/config.service';
+import { CoreLoadingScreenService } from '../../../@core/services/loading-screen.service';
+import { Subject } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
+import { CoreConfig } from '../../../@core/types';
 
 @Component({
   selector: 'stl-main',
   templateUrl: './main.component.html',
 })
-export class MainComponent implements OnInit {
-  private renderer: Renderer2;
+export class MainComponent implements OnInit, OnDestroy {
+  coreConfig: CoreConfig = new CoreConfig();
+
+  private _unsubscribeAll: Subject<any>;
+
+  /**
+   * Constructor
+   *
+   * @param {DOCUMENT} document
+   * @param {Renderer2} _renderer
+   * @param {ElementRef} _elementRef
+   * @param {CoreConfigService} _coreConfigService
+   * @param _coreLoadingScreenService
+   */
+  constructor(
+    @Inject(DOCUMENT) private document: any,
+    private _renderer: Renderer2,
+    private _elementRef: ElementRef,
+    public _coreConfigService: CoreConfigService,
+    private _coreLoadingScreenService: CoreLoadingScreenService
+  ) {
+    // Set the private defaults
+    this._unsubscribeAll = new Subject();
+  }
+
+  /**
+   * On init
+   */
+  ngOnInit(): void {
+    // Subscribe to config changes
+    this._coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+
+      // Blank layout
+      if (this.coreConfig.layout.menu.hidden && this.coreConfig.layout.navbar.hidden && this.coreConfig.layout.footer.hidden) {
+        this._elementRef.nativeElement.classList.add('blank-page');
+        // ! Fix: Transition issue while coming from blank page
+        this._renderer.setAttribute(this._elementRef.nativeElement.getElementsByClassName('app-content')[0], 'style', 'transition:none');
+      } else {
+        this._elementRef.nativeElement.classList.remove('blank-page');
+        // ! Fix: Transition issue while coming from blank page
+        setTimeout(() => {
+          this._renderer.setAttribute(
+            this._elementRef.nativeElement.getElementsByClassName('app-content')[0],
+            'style',
+            'transition:300ms ease all'
+          );
+        }, 0);
+      }
+
+      // Skin Class (Adding to body as it requires highest priority)
+      this.document.body.classList.remove('default-layout', 'bordered-layout', 'dark-layout', 'semi-dark-layout');
+      this.document.body.classList.add(this.coreConfig.layout.skin + '-layout');
+    });
+  }
+
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
+  /* private renderer: Renderer2;
 
   constructor(
     private accountService: AccountService,
@@ -54,5 +118,5 @@ export class MainComponent implements OnInit {
       pageTitle = 'global.title';
     }
     this.translateService.get(pageTitle).subscribe(title => this.titleService.setTitle(title));
-  }
+  } */
 }

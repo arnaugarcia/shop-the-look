@@ -8,9 +8,10 @@ import { NavbarModule } from './navbar/navbar.module';
 import { MenuModule } from './menu/menu.module';
 import { ContentModule } from './content/content.module';
 import { ContentHeaderModule } from './content-header/content-header.module';
+import { CoreSidebarModule } from '../../@core/components';
 
 @NgModule({
   declarations: [ErrorComponent, MainComponent, PageRibbonComponent],
-  imports: [SharedModule, MenuModule, ContentModule, ContentHeaderModule, FooterModule, NavbarModule],
+  imports: [SharedModule, CoreSidebarModule, MenuModule, ContentModule, ContentHeaderModule, FooterModule, NavbarModule],
 })
 export class LayoutsModule {}

@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CoreCommonModule } from '../../@core/common.module';
 import { CoreModule } from '../../@core/core.module';
 import { coreConfig } from '../app-config';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [CoreModule.forRoot(coreConfig)],
@@ -15,6 +16,7 @@ import { coreConfig } from '../app-config';
     FormsModule,
     CommonModule,
     NgbModule,
+    BrowserAnimationsModule,
     InfiniteScrollModule,
     FontAwesomeModule,
     ReactiveFormsModule,
