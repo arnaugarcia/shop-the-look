@@ -9,6 +9,7 @@ import { CoreConfig } from '../../../@core/types';
 @Component({
   selector: 'stl-main',
   templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit, OnDestroy {
   coreConfig: CoreConfig = new CoreConfig();

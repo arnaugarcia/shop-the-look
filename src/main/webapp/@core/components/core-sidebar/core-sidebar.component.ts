@@ -120,7 +120,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
     this.hideOnEsc = false;
 
     // Layout root element
-    this.rootElement = this.document.querySelectorAll('.vertical-layout')[0] || this.document.querySelectorAll('.horizontal-layout')[0];
+    this.rootElement = this.document.querySelectorAll('.vertical-layout')[0];
 
     this.collapsedChangedEvent = new EventEmitter();
     this.openedChangedEvent = new EventEmitter();
@@ -244,7 +244,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
 
       // If sidebar is not collapsible, switch to overlay menu (On page load without resize the window)
       // ? Improve this menu condition
-      if (!isCollapsible && this.name === 'menu') {
+      if (!isCollapsible && this.name === 'menu' && this.rootElement && this.menuClass) {
         this.rootElement.classList.remove(this.menuClass);
         this.rootElement.classList.add('vertical-overlay-menu');
       }

@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   imports: [CoreModule.forRoot(coreConfig)],
   exports: [
+    CoreCommonModule,
+    CoreModule,
     FormsModule,
     CommonModule,
     NgbModule,
@@ -21,8 +23,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FontAwesomeModule,
     ReactiveFormsModule,
     TranslateModule,
-    CoreModule,
-    CoreCommonModule,
   ],
 })
 export class SharedLibsModule {}
