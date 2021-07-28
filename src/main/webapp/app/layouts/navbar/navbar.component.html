@@ -20,18 +20,6 @@
   </div>
 
   <ul class="nav navbar-nav align-items-center ml-auto">
-    <!-- ? Language selection | Uncomment if needed-->
-    <li ngbDropdown class="nav-item dropdown dropdown-language">
-      <a class="nav-link dropdown-toggle" id="dropdown-flag" ngbDropdownToggle>
-        <i class="flag-icon flag-icon-es"></i>
-        <span class="selected-language">Spanish</span>
-      </a>
-      <div ngbDropdownMenu aria-labelledby="dropdown-flag">
-        <a ngbDropdownItem> <i class="flag-icon flag-icon-us"></i> English </a>
-      </div>
-    </li>
-    <!--/ Language selection -->
-
     <!-- User Dropdown -->
     <li ngbDropdown class="nav-item dropdown-user">
       <a
@@ -46,9 +34,7 @@
           ><span class="user-status">{{ account?.authorities }}</span>
         </div>
         <span class="avatar"
-          ><img class="round" src="/content/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="40" width="40" /><span
-            class="avatar-status-online"
-          ></span
+          ><img [src]="account?.imageUrl" alt="avatar" class="round" height="40" width="40" /><span class="avatar-status-online"></span
         ></span>
       </a>
       <div ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right">
