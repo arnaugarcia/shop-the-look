@@ -8,6 +8,7 @@ export const HOME_ROUTE: Route = {
   component: HomeComponent,
   data: {
     pageTitle: 'home.title',
+    animation: 'home',
   },
   canActivate: [UserRouteAccessService],
 };
