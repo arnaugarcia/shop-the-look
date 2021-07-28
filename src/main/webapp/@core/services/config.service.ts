@@ -68,7 +68,7 @@ export class CoreConfigService {
   }
 
   // Get the config
-  get config(): Observable<CoreConfig> | undefined {
+  get config(): Observable<CoreConfig> {
     return this._configSubject?.asObservable();
   }
 

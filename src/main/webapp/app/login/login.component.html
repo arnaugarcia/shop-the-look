@@ -1,3 +1,126 @@
+<div class="auth-wrapper auth-v2">
+  <div class="auth-inner row m-0">
+    <a class="brand-logo" href="javascript:void(0);">
+      <img alt="brand-logo" height="28" src="/content/images/logo/logo.svg" />
+      <h2 class="brand-text text-primary ml-1">Shop The Look</h2>
+    </a>
+    <!-- /Brand logo-->
+    <!-- Left Text-->
+    <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+      <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
+        <img
+          [src]="coreConfig?.layout?.skin === 'dark' ? 'content/images/pages/login-v2-dark.svg' : 'content/images/pages/login-v2.svg'"
+          alt="Login V2"
+          class="img-fluid"
+        />
+      </div>
+    </div>
+    <!-- /Left Text-->
+    <!-- Login-->
+    <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+      <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+        <h2 class="card-title font-weight-bold mb-1">Welcome to Shop the Look! 👋</h2>
+        <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
+
+        <ngb-alert *ngIf="error" [dismissible]="false" [type]="'danger'">
+          <div class="alert-body">
+            <p>{{ error }}</p>
+          </div>
+        </ngb-alert>
+
+        <form (ngSubmit)="login()" [formGroup]="loginForm" class="auth-login-form mt-2">
+          <div class="form-group">
+            <label class="form-label" for="username" stlTranslate="global.form.username.label">Email</label>
+            <input
+              #username
+              [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
+              aria-describedby="login-email"
+              autofocus=""
+              class="form-control"
+              data-cy="username"
+              formControlName="username"
+              id="username"
+              name="username"
+              placeholder="{{ 'global.form.username.placeholder' | translate }}"
+              tabindex="1"
+              type="text"
+            />
+            <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+              <div *ngIf="form.email.errors.required">Email is required</div>
+              <div *ngIf="form.email.errors.email">Email must be a valid email address</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="d-flex justify-content-between">
+              <label for="password" stlTranslate="login.form.password">Password</label>
+              <a routerLink="/pages/authentication/forgot-password-v2">
+                <small>Forgot Password?</small>
+              </a>
+            </div>
+            <div class="input-group input-group-merge form-password-toggle">
+              <input
+                [ngClass]="{ 'is-invalid error': submitted && form.password.errors }"
+                [type]="passwordTextType ? 'text' : 'password'"
+                aria-describedby="login-password"
+                class="form-control form-control-merge"
+                data-cy="password"
+                formControlName="password"
+                id="password"
+                name="password"
+                placeholder="{{ 'login.form.password.placeholder' | translate }}"
+                tabindex="2"
+                type="password"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text cursor-pointer"
+                  ><i
+                    (click)="togglePasswordTextType()"
+                    [ngClass]="{
+                      'icon-eye-off': passwordTextType,
+                      'icon-eye': !passwordTextType
+                    }"
+                    class="feather font-small-4"
+                  ></i
+                ></span>
+              </div>
+            </div>
+            <div
+              *ngIf="submitted && form.password.errors"
+              [ngClass]="{ 'd-block': submitted && form.password.errors }"
+              class="invalid-feedback"
+            >
+              <div *ngIf="form.password.errors.required">Password is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" id="remember-me" tabindex="3" type="checkbox" />
+              <label class="custom-control-label" for="remember-me"> Remember Me</label>
+            </div>
+          </div>
+          <button [disabled]="loading" class="btn btn-primary btn-block" rippleEffect tabindex="4">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Sign in
+          </button>
+        </form>
+        <p class="text-center mt-2">
+          <span>New on our platform?</span><a routerLink="/pages/authentication/register-v2"><span>&nbsp;Create an account</span></a>
+        </p>
+        <div class="divider my-2">
+          <div class="divider-text">or</div>
+        </div>
+        <div class="auth-footer-btn d-flex justify-content-center">
+          <a class="btn btn-facebook" href="javascript:void(0)"><i data-feather="facebook"></i></a
+          ><a class="btn btn-twitter white" href="javascript:void(0)"><i data-feather="twitter"></i></a
+          ><a class="btn btn-google" href="javascript:void(0)"><i data-feather="mail"></i></a
+          ><a class="btn btn-github" href="javascript:void(0)"><i data-feather="github"></i></a>
+        </div>
+      </div>
+    </div>
+    <!-- /Login-->
+  </div>
+</div>
+
+<!--
 <div>
   <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-10">
@@ -55,3 +178,4 @@
     </div>
   </div>
 </div>
+-->
