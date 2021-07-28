@@ -6,6 +6,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { filter, take, takeUntil } from 'rxjs/operators';
 import { CoreConfig } from '@core/types';
+import { ProfileService } from '../profiles/profile.service';
+import { AccountService } from '../../core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'stl-menu',
@@ -17,20 +20,22 @@ export class MenuComponent implements OnInit, OnDestroy {
   coreConfig: CoreConfig | undefined;
   isCollapsed = false;
   isScrolled = false;
+  inProduction?: boolean;
+  openAPIEnabled?: boolean;
+  account: Account | null = null;
 
   @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef: PerfectScrollbarDirective | undefined;
 
   // Private
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   * Constructor
-   *
-   * @param {CoreConfigService} _coreConfigService
-   * @param {CoreSidebarService} _coreSidebarService
-   * @param {Router} _router
-   */
-  constructor(private _coreConfigService: CoreConfigService, private _coreSidebarService: CoreSidebarService, private _router: Router) {
+  constructor(
+    private coreConfigService: CoreConfigService,
+    private coreSidebarService: CoreSidebarService,
+    private router: Router,
+    private profileService: ProfileService,
+    private accountService: AccountService
+  ) {
     // Set the private defaults
     this._unsubscribeAll = new Subject();
   }
@@ -40,24 +45,30 @@ export class MenuComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe config change
-    this._coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
 
-    this.isCollapsed = this._coreSidebarService.getSidebarRegistry('menu').collapsed;
+    this.profileService.getProfileInfo().subscribe(profileInfo => {
+      this.inProduction = profileInfo.inProduction;
+      this.openAPIEnabled = profileInfo.openAPIEnabled;
+    });
+    this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+
+    this.isCollapsed = this.coreSidebarService.getSidebarRegistry('menu').collapsed;
 
     // Close the menu on router NavigationEnd (Required for small screen to close the menu on select)
-    this._router.events
+    this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         takeUntil(this._unsubscribeAll)
       )
       .subscribe(() => {
-        this._coreSidebarService.getSidebarRegistry('menu').close();
+        this.coreSidebarService.getSidebarRegistry('menu').close();
       });
 
     // scroll to active on navigation end
-    this._router.events
+    this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         take(1)
@@ -94,7 +105,7 @@ export class MenuComponent implements OnInit, OnDestroy {
    * Toggle sidebar expanded status
    */
   toggleSidebar(): void {
-    this._coreSidebarService.getSidebarRegistry('menu').toggleOpen();
+    this.coreSidebarService.getSidebarRegistry('menu').toggleOpen();
   }
 
   /**
@@ -102,7 +113,7 @@ export class MenuComponent implements OnInit, OnDestroy {
    */
   toggleSidebarCollapsible(): void {
     // Get the current menu state
-    this._coreConfigService
+    this.coreConfigService
       .getConfig()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(config => {
@@ -110,9 +121,9 @@ export class MenuComponent implements OnInit, OnDestroy {
       });
 
     if (this.isCollapsed) {
-      this._coreConfigService.setConfig({ layout: { menu: { collapsed: false } } }, { emitEvent: true });
+      this.coreConfigService.setConfig({ layout: { menu: { collapsed: false } } }, { emitEvent: true });
     } else {
-      this._coreConfigService.setConfig({ layout: { menu: { collapsed: true } } }, { emitEvent: true });
+      this.coreConfigService.setConfig({ layout: { menu: { collapsed: true } } }, { emitEvent: true });
     }
   }
 }

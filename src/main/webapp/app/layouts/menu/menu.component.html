@@ -3,9 +3,9 @@
   <ul class="nav navbar-nav flex-row">
     <li class="nav-item mr-auto">
       <!-- App Branding -->
-      <a class="navbar-brand" [routerLink]="['/']">
+      <a [routerLink]="['/']" class="navbar-brand">
         <span class="brand-logo">
-          <img src="/content/images/logo/logo.svg" alt="brand-logo" />
+          <img alt="brand-logo" src="/content/images/logo/logo.svg" />
         </span>
         <h2 class="brand-text mb-0">Klai</h2>
       </a>
@@ -13,14 +13,14 @@
 
     <!-- Menu Toggler -->
     <li class="nav-item nav-toggle">
-      <a class="nav-link modern-nav-toggle d-none d-xl-block pr-0" (click)="toggleSidebarCollapsible()">
+      <a (click)="toggleSidebarCollapsible()" class="nav-link modern-nav-toggle d-none d-xl-block pr-0">
         <i
           [ngClass]="isCollapsed === true ? 'icon-circle' : 'icon-disc'"
           class="toggle-icon feather font-medium-4 collapse-toggle-icon text-primary"
         >
         </i>
       </a>
-      <a class="nav-link modern-nav-toggle d-block d-xl-none pr-0" (click)="toggleSidebar()">
+      <a (click)="toggleSidebar()" class="nav-link modern-nav-toggle d-block d-xl-none pr-0">
         <i [data-feather]="'x'" class="font-medium-4 text-primary toggle-icon"></i>
       </a>
     </li>
@@ -29,29 +29,19 @@
 <!--/ Menu header -->
 
 <!-- Navbar shadow -->
-<div class="shadow-bottom" [ngClass]="{ 'd-block': isScrolled }"></div>
+<div [ngClass]="{ 'd-block': isScrolled }" class="shadow-bottom"></div>
 
 <!-- Main menu -->
-<div class="main-menu-content" [perfectScrollbar] (scroll)="onSidebarScroll()">
+<div (scroll)="onSidebarScroll()" [perfectScrollbar] class="main-menu-content">
   <ul class="navigation navigation-main">
-    <li class="ng-star-inserted" [routerLinkActive]="'active'">
-      <a class="d-flex align-items-center ng-star-inserted" [routerLink]="'/'">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-mail"
-        >
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-          <polyline points="22,6 12,13 2,6"></polyline>
-        </svg>
-        <span class="menu-title text-truncate ng-star-inserted">Home</span>
+    <li [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'">
+      <a [routerLink]="'/'" class="d-flex align-items-center ng-star-inserted">
+        <span class="menu-title text-truncate ng-star-inserted" stlTranslate="global.menu.home">Home</span>
+      </a>
+    </li>
+    <li *ngIf="openAPIEnabled" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'" class="nav-item">
+      <a [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active">
+        <span stlTranslate="global.menu.admin.apidocs">API</span>
       </a>
     </li>
   </ul>

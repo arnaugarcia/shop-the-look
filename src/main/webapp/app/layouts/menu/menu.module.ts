@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 
-import { CoreCommonModule } from '@core/common.module';
-
 import { MenuComponent } from 'app/layouts/menu/menu.component';
 import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { SharedModule } from '../../shared/shared.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -12,7 +11,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   declarations: [MenuComponent],
-  imports: [CoreCommonModule, PerfectScrollbarModule],
+  imports: [SharedModule, PerfectScrollbarModule],
   providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
