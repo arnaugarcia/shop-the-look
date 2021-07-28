@@ -1,10 +1,14 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, RendererFactory2, ViewEncapsulation } from '@angular/core';
 import { CoreConfigService } from '../../../@core/services/config.service';
 import { CoreLoadingScreenService } from '../../../@core/services/loading-screen.service';
 import { Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from '../../../@core/types';
+import { Title } from '@angular/platform-browser';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import * as dayjs from 'dayjs';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 @Component({
   selector: 'stl-main',
@@ -13,28 +17,25 @@ import { CoreConfig } from '../../../@core/types';
   encapsulation: ViewEncapsulation.None,
 })
 export class MainComponent implements OnInit, OnDestroy {
-  coreConfig: CoreConfig = new CoreConfig();
+  public coreConfig: CoreConfig = new CoreConfig();
 
+  private renderer: Renderer2;
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   * Constructor
-   *
-   * @param {DOCUMENT} document
-   * @param {Renderer2} _renderer
-   * @param {ElementRef} _elementRef
-   * @param {CoreConfigService} _coreConfigService
-   * @param _coreLoadingScreenService
-   */
   constructor(
     @Inject(DOCUMENT) private document: any,
-    private _renderer: Renderer2,
-    private _elementRef: ElementRef,
-    public _coreConfigService: CoreConfigService,
-    private _coreLoadingScreenService: CoreLoadingScreenService
+    private titleService: Title,
+    private elementRef: ElementRef,
+    private router: Router,
+    public coreConfigService: CoreConfigService,
+    private coreLoadingScreenService: CoreLoadingScreenService,
+    private translateService: TranslateService,
+    rootRenderer: RendererFactory2
   ) {
     // Set the private defaults
     this._unsubscribeAll = new Subject();
+    this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
+    this.elementRef.nativeElement.classList.add('vertical-layout', 'vertical-menu-modern', 'navbar-floating', 'footer-static');
   }
 
   /**
@@ -42,61 +43,11 @@ export class MainComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe to config changes
-    this._coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
 
       // Blank layout
-      if (this.coreConfig.layout.menu.hidden && this.coreConfig.layout.navbar.hidden && this.coreConfig.layout.footer.hidden) {
-        this._elementRef.nativeElement.classList.add('blank-page');
-        // ! Fix: Transition issue while coming from blank page
-        this._renderer.setAttribute(this._elementRef.nativeElement.getElementsByClassName('app-content')[0], 'style', 'transition:none');
-      } else {
-        this._elementRef.nativeElement.classList.remove('blank-page');
-        // ! Fix: Transition issue while coming from blank page
-        setTimeout(() => {
-          this._renderer.setAttribute(
-            this._elementRef.nativeElement.getElementsByClassName('app-content')[0],
-            'style',
-            'transition:300ms ease all'
-          );
-        }, 0);
-      }
-
-      // Skin Class (Adding to body as it requires highest priority)
-      this.document.body.classList.remove('default-layout', 'dark-layout');
-      this.document.body.classList.add(this.coreConfig.layout.skin + '-layout');
-    });
-  }
-
-  /**
-   * On destroy
-   */
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
-  }
-
-  /* private renderer: Renderer2;
-
-  constructor(
-    private accountService: AccountService,
-    private titleService: Title,
-    private router: Router,
-    private translateService: TranslateService,
-    rootRenderer: RendererFactory2
-  ) {
-    this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
-  }
-
-  ngOnInit(): void {
-    // try to log in automatically
-    this.accountService.identity().subscribe();
-
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.updateTitle();
-      }
+      this.applyLayoutLogic();
     });
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
@@ -104,6 +55,12 @@ export class MainComponent implements OnInit, OnDestroy {
       dayjs.locale(langChangeEvent.lang);
       this.renderer.setAttribute(document.querySelector('html'), 'lang', langChangeEvent.lang);
     });
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {
@@ -120,5 +77,27 @@ export class MainComponent implements OnInit, OnDestroy {
       pageTitle = 'global.title';
     }
     this.translateService.get(pageTitle).subscribe(title => this.titleService.setTitle(title));
-  } */
+  }
+
+  private applyLayoutLogic(): void {
+    if (this.coreConfig.layout.menu.hidden && this.coreConfig.layout.navbar.hidden && this.coreConfig.layout.footer.hidden) {
+      this.elementRef.nativeElement.classList.add('blank-page');
+      // ! Fix: Transition issue while coming from blank page
+      this.renderer.setAttribute(this.elementRef.nativeElement.getElementsByClassName('app-content')[0], 'style', 'transition:none');
+    } else {
+      this.elementRef.nativeElement.classList.remove('blank-page');
+      // ! Fix: Transition issue while coming from blank page
+      setTimeout(() => {
+        this.renderer.setAttribute(
+          this.elementRef.nativeElement.getElementsByClassName('app-content')[0],
+          'style',
+          'transition:300ms ease all'
+        );
+      }, 0);
+    }
+
+    // Skin Class (Adding to body as it requires highest priority)
+    this.document.body.classList.remove('default-layout', 'dark-layout');
+    this.document.body.classList.add(this.coreConfig.layout.skin + '-layout');
+  }
 }

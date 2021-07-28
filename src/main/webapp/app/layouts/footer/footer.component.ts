@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoreConfig } from '../../../@core/types';
 import { Subject } from 'rxjs';
 import { CoreConfigService } from '../../../@core/services/config.service';
@@ -8,7 +8,6 @@ import { VERSION } from '../../app.constants';
 @Component({
   selector: 'footer', // eslint-disable-line @angular-eslint/component-selector
   templateUrl: './footer.component.html',
-  encapsulation: ViewEncapsulation.None,
 })
 export class FooterComponent implements OnInit, OnDestroy {
   public coreConfig: CoreConfig | undefined;
