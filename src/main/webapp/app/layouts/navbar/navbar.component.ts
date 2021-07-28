@@ -11,7 +11,6 @@ import { LoginService } from '../../login/login.service';
 import { AccountService } from '../../core/auth/account.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { ProfileService } from '../profiles/profile.service';
-import { VERSION } from '../../app.constants';
 import { LANGUAGES } from '../../config/language.constants';
 import { Account } from 'app/core/auth/account.model';
 
@@ -28,10 +27,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public currentSkin = '';
   public prevSkin: string | null = '';
 
-  public inProduction?: boolean;
   public languages = LANGUAGES;
-  public openAPIEnabled?: boolean;
-  public version = '';
   public account: Account | null = null;
 
   @HostBinding('class.navbar-static-style-on-scroll')
@@ -51,21 +47,36 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private coreMediaService: CoreMediaService,
     private coreSidebarService: CoreSidebarService
   ) {
-    // Set the private defaults
-    if (VERSION) {
-      this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION;
-    }
     this._unsubscribeAll = new Subject();
   }
 
-  // Add .navbar-static-style-on-scroll on scroll using HostListener & HostBinding
-  @HostListener('window:scroll', [])
-  onWindowScroll(): void {
-    if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
-      this.windowScrolled = true;
-    } else if ((this.windowScrolled && window.pageYOffset) || document.documentElement.scrollTop || document.body.scrollTop < 10) {
-      this.windowScrolled = false;
-    }
+  /**
+   * On init
+   */
+  ngOnInit(): void {
+    // Subscribe to the config changes
+    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
+      this.coreConfig = config;
+      this.hiddenMenu = config.layout.menu.hidden;
+      this.currentSkin = config.layout.skin;
+    });
+    this.accountService.getAuthenticationState().subscribe(account => {
+      this.account = account;
+    });
+  }
+
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
+  changeLanguage(languageKey: string): void {
+    this.sessionStorageService.store('locale', languageKey);
+    this.translateService.use(languageKey);
   }
 
   /**
@@ -105,40 +116,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['']);
   }
 
-  /**
-   * On init
-   */
-  ngOnInit(): void {
-    // Subscribe to the config changes
-    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
-      this.coreConfig = config;
-      this.hiddenMenu = config.layout.menu.hidden;
-      this.currentSkin = config.layout.skin;
-    });
-    this.profileService.getProfileInfo().subscribe(profileInfo => {
-      this.inProduction = profileInfo.inProduction;
-      this.openAPIEnabled = profileInfo.openAPIEnabled;
-    });
-    this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-    });
-  }
-
-  changeLanguage(languageKey: string): void {
-    this.sessionStorageService.store('locale', languageKey);
-    this.translateService.use(languageKey);
-  }
-
-  login(): void {
-    this.router.navigate(['/login']);
-  }
-
-  /**
-   * On destroy
-   */
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+  // Add .navbar-static-style-on-scroll on scroll using HostListener & HostBinding
+  @HostListener('window:scroll', [])
+  private onWindowScroll(): void {
+    if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
+      this.windowScrolled = true;
+    } else if ((this.windowScrolled && window.pageYOffset) || document.documentElement.scrollTop || document.body.scrollTop < 10) {
+      this.windowScrolled = false;
+    }
   }
 }
