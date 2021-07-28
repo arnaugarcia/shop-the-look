@@ -3,6 +3,7 @@ import { CoreConfig } from '../../../@core/types';
 import { Subject } from 'rxjs';
 import { CoreConfigService } from '../../../@core/services/config.service';
 import { takeUntil } from 'rxjs/operators';
+import { VERSION } from '../../app.constants';
 
 @Component({
   selector: 'footer', // eslint-disable-line @angular-eslint/component-selector
@@ -11,9 +12,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class FooterComponent implements OnInit, OnDestroy {
   public coreConfig: CoreConfig | undefined;
-  public year: number = new Date().getFullYear();
+  public version = '';
 
-  // Private
   private _unsubscribeAll: Subject<any>;
 
   /**
@@ -24,6 +24,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   constructor(public _coreConfigService: CoreConfigService) {
     // Set the private defaults
     this._unsubscribeAll = new Subject();
+    if (VERSION) {
+      this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION;
+    }
   }
 
   // Lifecycle hooks
