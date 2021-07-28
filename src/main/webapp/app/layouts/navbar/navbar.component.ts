@@ -113,7 +113,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.loginService.logout();
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
   }
 
   // Add .navbar-static-style-on-scroll on scroll using HostListener & HostBinding

@@ -25,9 +25,6 @@ const LAYOUT_ROUTES = [...errorRoute];
         },
         {
           path: 'api-docs',
-          data: {
-            authorities: [Authority.USER],
-          },
           canActivate: [UserRouteAccessService],
           component: DocsComponent,
         },
