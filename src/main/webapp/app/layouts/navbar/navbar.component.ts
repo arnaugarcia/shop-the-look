@@ -4,11 +4,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { CoreConfigService } from '../../../@core/services/config.service';
 import { CoreMediaService } from '../../../@core/services/media.service';
 import { CoreSidebarService } from '../../../@core/components/core-sidebar/core-sidebar.service';
-import { MediaObserver } from '@angular/flex-layout';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from '../../../@core/types';
-import * as _ from 'lodash';
+import { LoginService } from '../../login/login.service';
+import { AccountService } from '../../core/auth/account.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { ProfileService } from '../profiles/profile.service';
+import { VERSION } from '../../app.constants';
+import { LANGUAGES } from '../../config/language.constants';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'stl-navbar',
@@ -23,12 +28,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public currentSkin = '';
   public prevSkin: string | null = '';
 
-  public languageOptions: any;
-  public navigation: any;
-  public selectedLanguage: any;
-
-  @HostBinding('class.fixed-top')
-  public isFixed = false;
+  public inProduction?: boolean;
+  public languages = LANGUAGES;
+  public openAPIEnabled?: boolean;
+  public version = '';
+  public account: Account | null = null;
 
   @HostBinding('class.navbar-static-style-on-scroll')
   public windowScrolled = false;
@@ -36,25 +40,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
   // Private
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   * Constructor
-   *
-   * @param {Router} _router
-   * @param {CoreConfigService} _coreConfigService
-   * @param {CoreSidebarService} _coreSidebarService
-   * @param {CoreMediaService} _coreMediaService
-   * @param {MediaObserver} _mediaObserver
-   * @param {TranslateService} _translateService
-   */
   constructor(
-    private _router: Router,
-    private _coreConfigService: CoreConfigService,
-    private _coreMediaService: CoreMediaService,
-    private _coreSidebarService: CoreSidebarService,
-    private _mediaObserver: MediaObserver,
-    public _translateService: TranslateService
+    private loginService: LoginService,
+    private translateService: TranslateService,
+    private sessionStorageService: SessionStorageService,
+    private accountService: AccountService,
+    private profileService: ProfileService,
+    private router: Router,
+    private coreConfigService: CoreConfigService,
+    private coreMediaService: CoreMediaService,
+    private coreSidebarService: CoreSidebarService
   ) {
     // Set the private defaults
+    if (VERSION) {
+      this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION;
+    }
     this._unsubscribeAll = new Subject();
   }
 
@@ -74,7 +74,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
    * @param key
    */
   toggleSidebar(key: string): void {
-    this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
+    this.coreSidebarService.getSidebarRegistry(key).toggleOpen();
   }
 
   /**
@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
    */
   toggleDarkSkin(): void {
     // Get the current skin
-    this._coreConfigService
+    this.coreConfigService
       .getConfig()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(config => {
@@ -93,38 +93,44 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.prevSkin = localStorage.getItem('prevSkin');
 
     if (this.currentSkin === 'dark') {
-      this._coreConfigService.setConfig({ layout: { skin: this.prevSkin ? this.prevSkin : 'default' } }, { emitEvent: true });
+      this.coreConfigService.setConfig({ layout: { skin: this.prevSkin ? this.prevSkin : 'default' } }, { emitEvent: true });
     } else {
       localStorage.setItem('prevSkin', this.currentSkin);
-      this._coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
+      this.coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
     }
   }
 
-  /**
-   * Logout method
-   */
   logout(): void {
-    this._router.navigate(['/pages/authentication/login-v2']);
+    this.loginService.logout();
+    this.router.navigate(['']);
   }
-
-  // Lifecycle Hooks
-  // -----------------------------------------------------------------------------------------------------
 
   /**
    * On init
    */
   ngOnInit(): void {
     // Subscribe to the config changes
-    this._coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
+    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
       this.coreConfig = config;
       this.hiddenMenu = config.layout.menu.hidden;
       this.currentSkin = config.layout.skin;
     });
-
-    // Set the selected language from default languageOptions
-    this.selectedLanguage = _.find(this.languageOptions, {
-      id: this._translateService.currentLang,
+    this.profileService.getProfileInfo().subscribe(profileInfo => {
+      this.inProduction = profileInfo.inProduction;
+      this.openAPIEnabled = profileInfo.openAPIEnabled;
     });
+    this.accountService.getAuthenticationState().subscribe(account => {
+      this.account = account;
+    });
+  }
+
+  changeLanguage(languageKey: string): void {
+    this.sessionStorageService.store('locale', languageKey);
+    this.translateService.use(languageKey);
+  }
+
+  login(): void {
+    this.router.navigate(['/login']);
   }
 
   /**
@@ -135,55 +141,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
-
-  /* inProduction?: boolean;
-  isNavbarCollapsed = true;
-  languages = LANGUAGES;
-  openAPIEnabled?: boolean;
-  version = '';
-  account: Account | null = null;
-
-  constructor(
-    private loginService: LoginService,
-    private translateService: TranslateService,
-    private sessionStorageService: SessionStorageService,
-    private accountService: AccountService,
-    private profileService: ProfileService,
-    private router: Router
-  ) {
-    if (VERSION) {
-      this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION;
-    }
-  }
-
-  ngOnInit(): void {
-    this.profileService.getProfileInfo().subscribe(profileInfo => {
-      this.inProduction = profileInfo.inProduction;
-      this.openAPIEnabled = profileInfo.openAPIEnabled;
-    });
-    this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
-  }
-
-  changeLanguage(languageKey: string): void {
-    this.sessionStorageService.store('locale', languageKey);
-    this.translateService.use(languageKey);
-  }
-
-  collapseNavbar(): void {
-    this.isNavbarCollapsed = true;
-  }
-
-  login(): void {
-    this.router.navigate(['/login']);
-  }
-
-  logout(): void {
-    this.collapseNavbar();
-    this.loginService.logout();
-    this.router.navigate(['']);
-  }
-
-  toggleNavbar(): void {
-    this.isNavbarCollapsed = !this.isNavbarCollapsed;
-  } */
 }

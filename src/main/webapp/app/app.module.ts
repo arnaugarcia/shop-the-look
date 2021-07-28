@@ -24,10 +24,12 @@ import { httpInterceptorProviders } from './core/interceptor';
 import { missingTranslationHandler, translatePartialLoader } from './config/translation.config';
 import { MainComponent } from './layouts/main/main.component';
 import { LayoutsModule } from './layouts/layouts.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     SharedModule,
     LayoutsModule,
     HomeModule,
