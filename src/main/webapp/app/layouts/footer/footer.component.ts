@@ -18,9 +18,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   /**
    * Constructor
    *
-   * @param {CoreConfigService} _coreConfigService
+   * @param {CoreConfigService} coreConfigService
    */
-  constructor(public _coreConfigService: CoreConfigService) {
+  constructor(private coreConfigService: CoreConfigService) {
     // Set the private defaults
     this._unsubscribeAll = new Subject();
     if (VERSION) {
@@ -36,7 +36,7 @@ export class FooterComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe to config changes
-    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
+    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
       this.coreConfig = config;
     });
   }
