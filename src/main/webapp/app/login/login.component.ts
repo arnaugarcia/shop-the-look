@@ -7,6 +7,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { CoreConfig } from '../../@core/types';
 import { Subject } from 'rxjs';
 import { CoreConfigService } from '../../@core/services/config.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'stl-login',
@@ -66,6 +67,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
       if (this.accountService.isAuthenticated()) {
         this.router.navigate(['']);
       }
+    });
+
+    // Subscribe to config changes
+    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
+      this.coreConfig = config;
     });
   }
 

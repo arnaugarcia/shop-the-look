@@ -1,4 +1,5 @@
-@import '../bootstrap-extended/include'; // Bootstrap includes
+@import '../bootstrap-extended/include';
+// Bootstrap includes
 @import '../components/include'; // Components includes
 
 $auth-1-inner-max-width: 400px !default;
@@ -32,6 +33,7 @@ $auth-1-inner-max-width: 400px !default;
           display: none;
         }
       }
+
       &:after {
         width: 272px;
         height: 272px;
@@ -50,11 +52,13 @@ $auth-1-inner-max-width: 400px !default;
 
   &.auth-v2 {
     align-items: flex-start;
+
     .auth-inner {
       height: 100vh;
       overflow-y: auto; // For v2 scroll for long auth form
       height: calc(var(--vh, 1vh) * 100);
     }
+
     .brand-logo {
       position: absolute;
       top: 2rem;
@@ -72,6 +76,7 @@ $auth-1-inner-max-width: 400px !default;
     display: flex;
     justify-content: center;
     margin: 1rem 0 2rem 0;
+
     .brand-text {
       font-weight: 600;
     }
@@ -80,6 +85,7 @@ $auth-1-inner-max-width: 400px !default;
   .auth-footer-btn {
     .btn {
       padding: 0.6rem !important;
+
       &:not(:last-child) {
         margin-right: 1rem;
       }
@@ -99,33 +105,6 @@ $auth-1-inner-max-width: 400px !default;
   background-color: $white;
 }
 
-.dark-layout {
-  .auth-wrapper .auth-bg {
-    background-color: $theme-dark-card-bg;
-  }
-}
-
-@media (max-height: 625px) {
-  .dark-layout {
-    .auth-wrapper .auth-inner {
-      background-color: $theme-dark-card-bg;
-    }
-  }
-  .auth-wrapper {
-    .auth-bg {
-      padding-top: 3rem;
-    }
-    .auth-inner {
-      background-color: $white;
-      padding-bottom: 1rem;
-    }
-    &.auth-v2 .brand-logo {
-      width: 100%;
-      display: flex;
-      justify-content: unset;
-      position: relative;
-      left: 0;
-      padding-left: 1.5rem;
-    }
-  }
+.dark-bg {
+  background-color: $theme-dark-card-bg !important;
 }
