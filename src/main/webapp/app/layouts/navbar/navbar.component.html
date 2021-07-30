@@ -43,9 +43,7 @@
           <ng-container stlTranslate="global.menu.account.main">Profile</ng-container>
         </a>
         <div class="dropdown-divider"></div>
-        <a (click)="logout()" ngbDropdownItem [routerLink]="['/pages/authentication/login-v2']">
-          <span [data-feather]="'power'" [class]="'mr-50'"></span>Logout
-        </a>
+        <a (click)="logout()" [routerLink]="['/login']" ngbDropdownItem> <span [data-feather]="'power'" [class]="'mr-50'"></span>Logout </a>
       </div>
     </li>
     <!--/ User Dropdown -->

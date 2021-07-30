@@ -53,8 +53,8 @@
           <div class="form-group">
             <div class="d-flex justify-content-between">
               <label for="password" stlTranslate="login.form.password">Password</label>
-              <a routerLink="/pages/authentication/forgot-password-v2">
-                <small>Forgot Password?</small>
+              <a routerLink="/account/reset/request">
+                <small stlTranslate="login.password.forgot">Forgot Password?</small>
               </a>
             </div>
             <div class="input-group input-group-merge form-password-toggle">
@@ -94,79 +94,29 @@
           </div>
           <div class="form-group">
             <div class="custom-control custom-checkbox">
-              <input class="custom-control-input" id="remember-me" tabindex="3" type="checkbox" />
-              <label class="custom-control-label" for="remember-me"> Remember Me</label>
+              <input
+                class="custom-control-input"
+                formControlName="rememberMe"
+                id="rememberMe"
+                name="rememberMe"
+                tabindex="3"
+                type="checkbox"
+              />
+              <label class="custom-control-label" for="rememberMe" stlTranslate="login.form.rememberme">Remember Me</label>
             </div>
           </div>
-          <button [disabled]="loading" class="btn btn-primary btn-block" rippleEffect tabindex="4">
+          <button [disabled]="loading" class="btn btn-primary btn-block" rippleEffect stlTranslate="login.form.button" tabindex="4">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Sign in
           </button>
         </form>
         <p class="text-center mt-2">
-          <span>New on our platform?</span><a routerLink="/pages/authentication/register-v2"><span>&nbsp;Create an account</span></a>
+          <span stlTranslate="global.messages.info.register.noaccount">New on our platform?</span>
+          <a routerLink="/account/register">
+            <span>&nbsp;Create an account</span>
+          </a>
         </p>
       </div>
     </div>
     <!-- /Login-->
   </div>
 </div>
-
-<!--
-<div>
-  <div class="row justify-content-center">
-    <div class="col-lg-6 col-md-8 col-sm-10">
-      <h1 stlTranslate="login.title" data-cy="loginTitle">Sign in</h1>
-      <div class="alert alert-danger" *ngIf="authenticationError" stlTranslate="login.messages.error.authentication" data-cy="loginError">
-        <strong>Failed to sign in!</strong> Please check your credentials and try again.
-      </div>
-      <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
-        <div class="form-group">
-          <label class="username-label" for="username" stlTranslate="global.form.username.label">Login</label>
-          <input
-            type="text"
-            class="form-control"
-            name="username"
-            id="username"
-            placeholder="{{ 'global.form.username.placeholder' | translate }}"
-            formControlName="username"
-            #username
-            data-cy="username"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="password" stlTranslate="login.form.password">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            name="password"
-            id="password"
-            placeholder="{{ 'login.form.password.placeholder' | translate }}"
-            formControlName="password"
-            data-cy="password"
-          />
-        </div>
-
-        <div class="form-check">
-          <label class="form-check-label" for="rememberMe">
-            <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" formControlName="rememberMe" />
-            <span stlTranslate="login.form.rememberme">Remember me</span>
-          </label>
-        </div>
-
-        <button type="submit" class="btn btn-primary" stlTranslate="login.form.button" data-cy="submit">Sign in</button>
-      </form>
-      <div class="mt-3 alert alert-warning">
-        <a class="alert-link" routerLink="/account/reset/request" stlTranslate="login.password.forgot" data-cy="forgetYourPasswordSelector"
-          >Did you forget your password?</a
-        >
-      </div>
-
-      <div class="alert alert-warning">
-        <span stlTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
-        <a class="alert-link" routerLink="/account/register" stlTranslate="global.messages.info.register.link">Register a new account</a>
-      </div>
-    </div>
-  </div>
-</div>
--->
