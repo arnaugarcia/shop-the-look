@@ -8,6 +8,10 @@ import { NgModule } from '@angular/core';
         path: 'login',
         loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
       },
+      {
+        path: 'register',
+        loadChildren: () => import('./register/register.module').then(m => m.RegisterModule),
+      },
     ]),
   ],
   exports: [RouterModule],

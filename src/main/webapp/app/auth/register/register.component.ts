@@ -5,10 +5,13 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfig } from '../../../@core/types';
 
 @Component({
   selector: 'stl-register',
   templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
@@ -34,8 +37,31 @@ export class RegisterComponent implements AfterViewInit {
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
+  coreConfig: CoreConfig = new CoreConfig();
+  passwordTextType = true;
 
-  constructor(private translateService: TranslateService, private registerService: RegisterService, private fb: FormBuilder) {}
+  constructor(
+    private coreConfigService: CoreConfigService,
+    private translateService: TranslateService,
+    private registerService: RegisterService,
+    private fb: FormBuilder
+  ) {
+    this.coreConfigService.setConfig({
+      layout: {
+        navbar: {
+          hidden: true,
+        },
+        menu: {
+          hidden: true,
+        },
+        footer: {
+          hidden: true,
+        },
+        customizer: false,
+        enableLocalStorage: false,
+      },
+    });
+  }
 
   ngAfterViewInit(): void {
     if (this.login) {
@@ -60,6 +86,13 @@ export class RegisterComponent implements AfterViewInit {
         response => this.processError(response)
       );
     }
+  }
+
+  /**
+   * Toggle password
+   */
+  togglePasswordTextType(): void {
+    this.passwordTextType = !this.passwordTextType;
   }
 
   private processError(response: HttpErrorResponse): void {
