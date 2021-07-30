@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
