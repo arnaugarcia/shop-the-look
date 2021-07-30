@@ -55,7 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe to the config changes
-    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
+    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
       this.coreConfig = config;
       this.hiddenMenu = config.layout.menu.hidden;
       this.currentSkin = config.layout.skin;

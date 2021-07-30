@@ -45,7 +45,7 @@ export class MenuComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe config change
-    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
 

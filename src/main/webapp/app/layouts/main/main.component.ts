@@ -43,7 +43,7 @@ export class MainComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe to config changes
-    this.coreConfigService.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
 
       // Blank layout
