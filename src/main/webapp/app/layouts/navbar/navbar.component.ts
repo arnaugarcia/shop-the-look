@@ -7,12 +7,12 @@ import { CoreSidebarService } from '../../../@core/components/core-sidebar/core-
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from '../../../@core/types';
-import { LoginService } from '../../login/login.service';
 import { AccountService } from '../../core/auth/account.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { ProfileService } from '../profiles/profile.service';
 import { LANGUAGES } from '../../config/language.constants';
 import { Account } from 'app/core/auth/account.model';
+import { LoginService } from '../../auth/login/login.service';
 
 @Component({
   selector: 'stl-navbar',
@@ -113,7 +113,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.loginService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   // Add .navbar-static-style-on-scroll on scroll using HostListener & HostBinding

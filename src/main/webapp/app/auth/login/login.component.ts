@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CoreConfigService } from '@core/services/config.service';
 
-import { LoginService } from 'app/login/login.service';
 import { AccountService } from 'app/core/auth/account.service';
-import { CoreConfig } from '../../@core/types';
 import { Subject } from 'rxjs';
-import { CoreConfigService } from '../../@core/services/config.service';
 import { takeUntil } from 'rxjs/operators';
+import { LoginService } from './login.service';
+import { CoreConfig } from '../../../@core/types';
 
 @Component({
   selector: 'stl-login',
