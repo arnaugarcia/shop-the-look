@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   public coreConfig: CoreConfig = new CoreConfig();
   public loading = false;
   public submitted = false;
-  public error = '';
   public passwordTextType = false;
 
   @ViewChild('username', { static: false })

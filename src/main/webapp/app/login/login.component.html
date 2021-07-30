@@ -22,9 +22,9 @@
         <h2 class="card-title font-weight-bold mb-1">Welcome to Shop the Look! 👋</h2>
         <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
 
-        <ngb-alert *ngIf="error" [dismissible]="false" [type]="'danger'">
+        <ngb-alert *ngIf="authenticationError" [dismissible]="false" [type]="'danger'">
           <div class="alert-body">
-            <p>{{ error }}</p>
+            <p stlTranslate="login.messages.error.authentication"></p>
           </div>
         </ngb-alert>
 
