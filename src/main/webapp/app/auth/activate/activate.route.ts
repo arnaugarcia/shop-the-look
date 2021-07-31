@@ -4,7 +4,7 @@ import { ActivateComponent } from './activate.component';
 
 export const activateRoute: Routes = [
   {
-    path: 'activate',
+    path: '',
     component: ActivateComponent,
     data: {
       pageTitle: 'activate.title',
