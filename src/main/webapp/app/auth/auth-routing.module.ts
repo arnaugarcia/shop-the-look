@@ -12,6 +12,10 @@ import { NgModule } from '@angular/core';
         path: 'register',
         loadChildren: () => import('./register/register.module').then(m => m.RegisterModule),
       },
+      {
+        path: 'activate',
+        loadChildren: () => import('./activate/activate.module').then(m => m.ActivateModule),
+      },
     ]),
   ],
   exports: [RouterModule],
