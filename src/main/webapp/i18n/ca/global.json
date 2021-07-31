@@ -51,7 +51,15 @@
       "confirmpassword.label": "Confirmació de la nova contrasenya",
       "confirmpassword.placeholder": "Confirmació de la nova contrasenya",
       "email.label": "Correu electrònic",
-      "email.placeholder": "Correu electrònic"
+      "email.placeholder": "Correu electrònic",
+      "companyName.placeholder": "ACME corporation",
+      "companyName.label": "Nom de l'empresa",
+      "nif.label": "NIF / CIF / NIE",
+      "phone.label": "Telèfon",
+      "nif.placeholder": "12345678E",
+      "phone.placeholder": "692000000",
+      "url.placeholder": "https://acme.inc",
+      "url.label": "URL de l'empresa"
     },
     "messages": {
       "info": {
@@ -85,6 +93,9 @@
           "invalid": "El seu compte de correu electrònic és invàlid.",
           "minlength": "El seu compte de correu electrònic ha de tenir, com a mínim, 5 caràcters",
           "maxlength": "El seu compte de correu electrònic no pot tenir més de 50 caràcters"
+        },
+        "url": {
+          "pattern": "La URL es invàlida."
         }
       }
     },

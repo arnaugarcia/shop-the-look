@@ -51,7 +51,15 @@
       "confirmpassword.label": "Confirmación de la nueva contraseña",
       "confirmpassword.placeholder": "Confirmación de la nueva contraseña",
       "email.label": "Correo electrónico",
-      "email.placeholder": "Su correo electrónico"
+      "email.placeholder": "Su correo electrónico",
+      "companyName.placeholder": "ACME corporation",
+      "companyName.label": "Nombre de la empresa",
+      "nif.label": "NIF / CIF / NIE",
+      "nif.placeholder": "12345678E",
+      "phone.label": "Número de teléfono",
+      "phone.placeholder": "692000000",
+      "url.placeholder": "https://acme.inc",
+      "url.label": "URL de la empresa"
     },
     "messages": {
       "info": {
