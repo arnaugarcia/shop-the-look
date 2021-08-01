@@ -48,7 +48,7 @@
       routerLinkActive="active"
     >
       <a class="d-flex align-items-center" (click)="adminMenuCollapsed = !adminMenuCollapsed">
-        <span [data-feather]="'tool'"></span>
+        <span [data-feather]="'settings'"></span>
         <span class="menu-title text-truncate" stlTranslate="global.menu.admin.main">Administration</span>
       </a>
       <ul class="menu-content">
@@ -86,6 +86,7 @@
     </li>
     <li *ngIf="openAPIEnabled" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'" class="nav-item">
       <a [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active" (click)="collapseMenus()">
+        <span [data-feather]="'tool'"></span>
         <span stlTranslate="global.menu.admin.apidocs">API</span>
       </a>
     </li>
