@@ -16,6 +16,14 @@ import { NgModule } from '@angular/core';
         path: 'activate',
         loadChildren: () => import('./activate/activate.module').then(m => m.ActivateModule),
       },
+      {
+        path: 'init',
+        loadChildren: () => import('./activate/activate.module').then(m => m.ActivateModule),
+      },
+      {
+        path: 'reset',
+        loadChildren: () => import('./password-reset/password-reset.module').then(m => m.PasswordResetModule),
+      },
     ]),
   ],
   exports: [RouterModule],

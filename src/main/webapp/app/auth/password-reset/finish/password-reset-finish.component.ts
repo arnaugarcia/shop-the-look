@@ -3,14 +3,21 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { PasswordResetFinishService } from './password-reset-finish.service';
+import { CoreConfig } from '../../../../@core/types';
+import { CoreConfigService } from '../../../../@core/services/config.service';
 
 @Component({
   selector: 'stl-password-reset-finish',
   templateUrl: './password-reset-finish.component.html',
+  styleUrls: ['./password-reset-finish.component.scss'],
 })
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   @ViewChild('newPassword', { static: false })
   newPassword?: ElementRef;
+
+  public coreConfig!: CoreConfig;
+
+  public submitted = false;
 
   initialized = false;
   doNotMatch = false;
@@ -22,8 +29,30 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
+  passwordTextType: 'password' | 'text' = 'password';
 
-  constructor(private passwordResetFinishService: PasswordResetFinishService, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    private coreConfigService: CoreConfigService,
+    private passwordResetFinishService: PasswordResetFinishService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {
+    this.coreConfigService.setConfig({
+      layout: {
+        navbar: {
+          hidden: true,
+        },
+        menu: {
+          hidden: true,
+        },
+        footer: {
+          hidden: true,
+        },
+        customizer: false,
+        enableLocalStorage: false,
+      },
+    });
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -40,7 +69,23 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     }
   }
 
+  get form(): any {
+    return this.passwordForm.controls;
+  }
+
+  /**
+   * Toggle password
+   */
+  togglePasswordTextType(): void {
+    if (this.passwordTextType === 'password') {
+      this.passwordTextType = 'text';
+    } else {
+      this.passwordTextType = 'password';
+    }
+  }
+
   finishReset(): void {
+    this.submitted = true;
     this.doNotMatch = false;
     this.error = false;
 

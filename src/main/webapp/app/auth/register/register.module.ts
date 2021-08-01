@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RegisterComponent } from './register.component';
-import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { registerRoute } from './register.route';
-import { PasswordStrengthBarComponent } from '../password/password-strength-bar/password-strength-bar.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [RegisterComponent, PasswordStrengthBarComponent],
+  declarations: [RegisterComponent],
   imports: [SharedModule, RouterModule.forChild(registerRoute)],
 })
 export class RegisterModule {}
