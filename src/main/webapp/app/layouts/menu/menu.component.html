@@ -35,12 +35,33 @@
 <div (scroll)="onSidebarScroll()" [perfectScrollbar] class="main-menu-content">
   <ul class="navigation navigation-main">
     <li [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'">
-      <a [routerLink]="'/'" class="d-flex align-items-center ng-star-inserted">
-        <span class="menu-title text-truncate ng-star-inserted" stlTranslate="global.menu.home">Home</span>
+      <a [routerLink]="'/'" class="d-flex align-items-center" (click)="collapseMenus()">
+        <span [data-feather]="'home'"></span>
+        <span class="menu-title text-truncate" stlTranslate="global.menu.home">Home</span>
       </a>
     </li>
+    <li
+      class="nav-item has-sub"
+      [class.open]="!adminMenuCollapsed"
+      [ngbCollapse]="false"
+      *stlHasAnyAuthority="'ROLE_ADMIN'"
+      routerLinkActive="active"
+    >
+      <a class="d-flex align-items-center" (click)="adminMenuCollapsed = !adminMenuCollapsed">
+        <span [data-feather]="'tool'"></span>
+        <span class="menu-title text-truncate" stlTranslate="global.menu.admin.main">Administration</span>
+      </a>
+      <ul class="menu-content">
+        <li routerLinkActive="active">
+          <a routerLink="admin/user-management" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.userManagement">User Management</span>
+          </a>
+        </li>
+      </ul>
+    </li>
     <li *ngIf="openAPIEnabled" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'" class="nav-item">
-      <a [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active">
+      <a [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active" (click)="collapseMenus()">
         <span stlTranslate="global.menu.admin.apidocs">API</span>
       </a>
     </li>

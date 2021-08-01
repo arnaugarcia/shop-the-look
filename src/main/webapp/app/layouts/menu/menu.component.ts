@@ -24,6 +24,12 @@ export class MenuComponent implements OnInit, OnDestroy {
   openAPIEnabled?: boolean;
   account: Account | null = null;
 
+  // Step 1:
+  // Create a property to track whether the menu is open.
+  // Start with the menu collapsed so that it does not
+  // appear initially when the page loads on a small screen!
+  public adminMenuCollapsed = true;
+
   @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef: PerfectScrollbarDirective | undefined;
 
   // Private
@@ -125,5 +131,9 @@ export class MenuComponent implements OnInit, OnDestroy {
     } else {
       this.coreConfigService.setConfig({ layout: { menu: { collapsed: true } } }, { emitEvent: true });
     }
+  }
+
+  collapseMenus(): void {
+    this.adminMenuCollapsed = true;
   }
 }
