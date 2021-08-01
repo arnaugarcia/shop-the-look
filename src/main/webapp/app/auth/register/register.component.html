@@ -1,0 +1,376 @@
+<div class='auth-wrapper auth-v2'>
+  <div class='auth-inner row m-0'>
+    <!-- Brand logo--><a class='brand-logo' href='javascript:void(0);'>
+    <img alt='brand-logo' height='28' src='/content/images/logo/logo.svg' />
+    <h2 class='brand-text text-primary ml-1'>Shop The Look</h2></a
+  >
+    <!-- /Brand logo-->
+    <!-- Left Text-->
+    <div class='d-none d-lg-flex col-lg-8 align-items-center p-5'>
+      <div class='w-100 d-lg-flex align-items-center justify-content-center px-5'>
+        <img
+          [src]="coreConfig.layout.skin === 'dark' ? '/content/images/pages/register-v2-dark.svg' : '/content/images/pages/register-v2.svg'"
+          alt='Register V2'
+          class='img-fluid'
+        />
+      </div>
+    </div>
+    <!-- /Left Text-->
+    <!-- Register-->
+    <div [class.dark-bg]="coreConfig.layout.skin == 'dark'"
+         class='d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5'>
+      <div class='col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto'>
+        <h2 class='card-title font-weight-bold mb-1'>Adventure starts here 🚀</h2>
+        <p class='card-text mb-2'>Make your app management easy and fun!</p>
+
+        <ngb-alert *ngIf='success' [dismissible]='false' [type]="'success'">
+          <div class='alert-body' stlTranslate='register.messages.success'>
+            <strong>Registration saved!</strong> Please check your email for confirmation.
+          </div>
+        </ngb-alert>
+
+        <ngb-alert *ngIf='error' [dismissible]='false' [type]="'danger'">
+          <div class='alert-body' stlTranslate='register.messages.error.fail'>
+            <strong>Registration failed!</strong> Please try again later.
+          </div>
+        </ngb-alert>
+
+        <ngb-alert *ngIf='errorUserExists' [dismissible]='false' [type]="'danger'">
+          <div class='alert-body' stlTranslate='register.messages.error.emailexists'>
+            <strong>Email is already in use!</strong> Please choose another one.
+          </div>
+        </ngb-alert>
+
+        <ngb-alert *ngIf='errorNIFExists' [dismissible]='false' [type]="'danger'">
+          <div class='alert-body' stlTranslate='register.messages.error.nifexists'>
+            <strong>This NIF is already in use!</strong> Please login
+          </div>
+        </ngb-alert>
+
+        <ngb-alert *ngIf='errorEmailExists' [dismissible]='false' [type]="'danger'">
+          <div class='alert-body' stlTranslate='register.messages.error.emailexists'>
+            <strong>Email is already in use!</strong> Please choose another one.
+          </div>
+        </ngb-alert>
+
+        <ngb-alert *ngIf='doNotMatch' [dismissible]='false' [type]="'danger'">
+          <div class='alert-body' stlTranslate='global.messages.error.dontmatch'>The password and its confirmation do
+            not match!
+          </div>
+        </ngb-alert>
+
+        <form (ngSubmit)='register()' *ngIf='!success' [formGroup]='registerForm' class='auth-register-form mt-2'>
+          <div class='form-group'>
+            <label class='form-label' for='name' stlTranslate='global.form.companyName.label'>Company Name</label>
+            <input
+              #companyName
+              [ngClass]="{ 'is-invalid error': registerForm.get('name')?.touched && registerForm.get('name')?.invalid }"
+              class='form-control'
+              data-cy='name'
+              formControlName='name'
+              id='name'
+              name='name'
+              placeholder="{{ 'global.form.companyName.placeholder' | translate }}"
+              type='text'
+            />
+            <div *ngIf="registerForm.get('name')!.invalid && registerForm.get('name')!.touched">
+              <small
+                *ngIf="registerForm.get('name')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.name.required'
+              >
+                The company name is required.
+              </small>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label class='form-label' for='nif' stlTranslate='global.form.nif.label'>NIF / CIF / NIE</label>
+            <input
+              [ngClass]="{ 'is-invalid error': registerForm.get('nif')?.touched && registerForm.get('nif')?.invalid }"
+              class='form-control'
+              data-cy='nif'
+              formControlName='nif'
+              id='nif'
+              name='nif'
+              placeholder="{{ 'global.form.nif.placeholder' | translate }}"
+              type='text'
+            />
+            <div *ngIf="registerForm.get('nif')!.invalid && registerForm.get('nif')!.touched">
+              <small
+                *ngIf="registerForm.get('nif')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.nif.required'
+              >
+                Your username is required.
+              </small>
+              <small
+                *ngIf="registerForm.get('nif')?.errors?.pattern"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.nif.pattern'
+              >
+                The NIF / CIF / NIE is invalid
+              </small>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label class='form-label' for='phone' stlTranslate='global.form.phone.label'>Phone</label>
+            <input
+              [ngClass]="{ 'is-invalid error': registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid }"
+              class='form-control'
+              data-cy='phone'
+              formControlName='phone'
+              id='phone'
+              name='phone'
+              placeholder="{{ 'global.form.phone.placeholder' | translate }}"
+              type='text'
+            />
+            <div *ngIf="registerForm.get('phone')!.invalid && registerForm.get('phone')!.touched">
+              <small
+                *ngIf="registerForm.get('phone')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.phone.required'
+              >
+                Your phone is required.
+              </small>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label class='form-label' for='login' stlTranslate='global.form.username.label'>Username</label>
+            <input
+              [ngClass]="{ 'is-invalid error': registerForm.get('login')!.touched && registerForm.get('login')?.invalid }"
+              class='form-control'
+              data-cy='username'
+              formControlName='login'
+              id='login'
+              placeholder="{{ 'global.form.username.placeholder' | translate }}"
+              name='login'
+              type='text'
+            />
+            <div *ngIf="registerForm.get('login')!.invalid && registerForm.get('login')!.touched">
+              <small
+                *ngIf="registerForm.get('login')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.login.required'>
+                Your username is required.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('login')?.errors?.minlength"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.login.minlength'>
+                Your username is required to be at least 1 character.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('login')?.errors?.maxlength"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.login.maxlength'>
+                Your username cannot be longer than 50 characters.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('login')?.errors?.pattern"
+                class='form-text text-danger'
+                stlTranslate='register.messages.validate.login.pattern'>
+                Your username can only contain letters and digits.
+              </small>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label class='form-label' for='email' stlTranslate='global.form.email.label'>Email</label>
+            <input
+              [ngClass]="{ 'is-invalid error': registerForm.get('email')!.touched && registerForm.get('email')?.invalid }"
+              class='form-control'
+              data-cy='email'
+              formControlName='email'
+              id='email'
+              placeholder="{{ 'global.form.email.placeholder' | translate }}"
+              name='email'
+              type='email'
+            />
+            <div *ngIf="registerForm.get('email')!.invalid && registerForm.get('email')!.touched">
+              <small
+                *ngIf="registerForm.get('email')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.email.required'
+              >
+                Your email is required.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('email')?.errors?.invalid"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.email.pattern'
+              >
+                Your email is invalid.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('email')?.errors?.minlength"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.email.minlength'
+              >
+                Your email is required to be at least 5 characters.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('email')?.errors?.maxlength"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.email.maxlength'
+              >
+                Your email cannot be longer than 100 characters.
+              </small>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label class='form-label' for='url' stlTranslate='global.form.url.label'>Email</label>
+            <input
+              [ngClass]="{ 'is-invalid error': registerForm.get('url')!.touched && registerForm.get('url')?.invalid }"
+              class='form-control'
+              data-cy='url'
+              formControlName='url'
+              id='url'
+              name='url'
+              placeholder="{{ 'global.form.url.placeholder' | translate }}"
+              type='url'
+            />
+            <div *ngIf="registerForm.get('url')!.invalid && registerForm.get('url')!.touched">
+              <small
+                *ngIf="registerForm.get('url')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.url.required'
+              >
+                Your company URL is required.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('url')?.errors?.pattern"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.url.pattern'
+              >
+                Your company URL is invalid.
+              </small>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label class='form-label' for='password' stlTranslate='global.form.newpassword.label'>Password</label>
+
+            <div class='input-group input-group-merge form-password-toggle'>
+              <input
+                [ngClass]="{ 'is-invalid error': registerForm.get('password')!.touched && registerForm.get('password')?.invalid }"
+                class='form-control'
+                data-cy='firstPassword'
+                formControlName='password'
+                id='password'
+                placeholder="{{ 'global.form.newpassword.placeholder' | translate }}"
+                name='password'
+                type='password'
+              />
+              <div class='input-group-append'>
+                <span class='input-group-text cursor-pointer'>
+                  <i
+                    (click)='togglePasswordTextType()'
+                    [ngClass]="{
+                      'icon-eye-off': passwordTextType,
+                      'icon-eye': !passwordTextType
+                    }"
+                    class='feather font-small-4'
+                  >
+                  </i>
+                </span>
+              </div>
+            </div>
+            <div *ngIf="registerForm.get('password')!.invalid && registerForm.get('password')!.touched">
+              <small
+                *ngIf="registerForm.get('password')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.newpassword.required'
+              >
+                Your password is required.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('password')?.errors?.minlength"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.newpassword.minlength'
+              >
+                Your password is required to be at least 4 characters.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('password')?.errors?.maxlength"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.newpassword.maxlength'
+              >
+                Your password cannot be longer than 50 characters.
+              </small>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label class='form-label' for='confirmPassword'
+                   stlTranslate='global.form.confirmpassword.label'>Password</label>
+
+            <div class='input-group input-group-merge form-password-toggle'>
+              <input
+                [ngClass]="{
+                  'is-invalid error': registerForm.get('confirmPassword')!.touched && registerForm.get('confirmPassword')?.invalid
+                }"
+                class='form-control'
+                data-cy='secondPassword'
+                formControlName='confirmPassword'
+                id='confirmPassword'
+                placeholder="{{ 'global.form.confirmpassword.placeholder' | translate }}"
+                name='confirmPassword'
+                type='password'
+              />
+            </div>
+
+            <div *ngIf="registerForm.get('confirmPassword')!.invalid && registerForm.get('confirmPassword')!.touched">
+              <small
+                *ngIf="registerForm.get('confirmPassword')?.errors?.required"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.confirmpassword.required'
+              >
+                Your confirmation password is required.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('confirmPassword')?.errors?.minlength"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.confirmpassword.minlength'
+              >
+                Your confirmation password is required to be at least 4 characters.
+              </small>
+
+              <small
+                *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength"
+                class='form-text text-danger'
+                stlTranslate='global.messages.validate.confirmpassword.maxlength'
+              >
+                Your confirmation password cannot be longer than 50 characters.
+              </small>
+            </div>
+          </div>
+          <stl-password-strength-bar
+            [passwordToCheck]="registerForm.get('password')!.value"></stl-password-strength-bar>
+          <div class='form-group'>
+            <button
+              [disabled]='registerForm.invalid'
+              class='btn btn-primary btn-block'
+              rippleEffect
+              stlTranslate='register.form.button'
+              tabindex='5'
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+        <p class='text-center mt-2'>
+          <span>Already have an account?</span>
+          <a routerLink='/auth/login'><span>&nbsp;Sign in instead</span></a>
+        </p>
+      </div>
+    </div>
+    <!-- /Register-->
+  </div>
+</div>

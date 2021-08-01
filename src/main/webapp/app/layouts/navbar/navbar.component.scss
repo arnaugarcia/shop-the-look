@@ -1,42 +1,39 @@
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import '@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
+@import '@core/scss/base/components/include'; // Components includes
 
-/* ==========================================================================
-Navbar
-========================================================================== */
-
-.navbar-version {
-  font-size: 0.65em;
-  color: $navbar-dark-color;
+// To open dd on right
+.dropdown-menu-right {
+  right: 0 !important;
+  left: auto !important;
 }
 
-.profile-image {
-  height: 1.75em;
-  width: 1.75em;
+// Cart Touchspin
+.touchspin-cart {
+  .touchspin-wrapper {
+    width: 6.4rem;
+  }
+  &:focus-within {
+    box-shadow: none !important;
+  }
 }
 
-.navbar {
-  padding: 0.2rem 1rem;
+app-navbar-bookmark {
+  display: flex;
+}
 
-  ul.navbar-nav {
-    .nav-item {
-      margin-left: 0.5em;
+// Dark Layout
+.dark-layout {
+  .navbar-container {
+    .search-input {
+      .search-list {
+        li {
+          &.auto-suggestion {
+            &:hover {
+              background-color: $theme-dark-body-bg;
+            }
+          }
+        }
+      }
     }
   }
-
-  a.nav-link {
-    font-weight: 400;
-  }
-}
-
-/* ==========================================================================
-Logo styles
-========================================================================== */
-.logo-img {
-  height: 45px;
-  width: 45px;
-  display: inline-block;
-  vertical-align: middle;
-  background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
-  background-size: contain;
 }

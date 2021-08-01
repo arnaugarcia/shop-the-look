@@ -1,78 +1,354 @@
-<div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
-  </div>
-
-  <div class="col-md-9">
-    <h1 class="display-4"><span stlTranslate="home.title">Welcome, Java Hipster!</span> (Shop The Look)</h1>
-
-    <p class="lead" stlTranslate="home.subtitle">This is your homepage</p>
-
-    <div [ngSwitch]="account !== null">
-      <div class="alert alert-success" *ngSwitchCase="true">
-        <span id="home-logged-message" *ngIf="account" stlTranslate="home.logged.message" [translateValues]="{ username: account.login }"
-          >You are logged in as user "{{ account.login }}".</span
-        >
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <div class="row match-height">
+      <!-- Medal Card -->
+      <div class="col-xl-4 col-md-6 col-12">
+        <div class="card card-congratulation-medal">
+          <div class="card-body">
+            <h5>Congratulations! 🎉 {{ account?.firstName }}!</h5>
+            <p class="card-text font-small-3">You have the Gold Suscription</p>
+            <h3 class="mb-75 mt-2">
+              <a href="javascript:void(0);">20$ Plan</a>
+            </h3>
+            <button type="button" class="btn btn-primary" rippleEffect>View my subscription</button>
+            <img src="/content/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic" />
+          </div>
+        </div>
       </div>
+      <!--/ Medal Card -->
 
-      <div class="alert alert-warning" *ngSwitchCase="false">
-        <span stlTranslate="global.messages.info.authenticated.prefix">If you want to </span>
-        <a class="alert-link" (click)="login()" stlTranslate="global.messages.info.authenticated.link">sign in</a
-        ><span stlTranslate="global.messages.info.authenticated.suffix"
-          >, you can try the default accounts:<br />- Administrator (login="admin" and password="admin") <br />- User (login="user" and
-          password="user").</span
-        >
+      <!-- Statistics Card -->
+      <div class="col-xl-8 col-md-6 col-12">
+        <div class="card card-statistics">
+          <div class="card-header">
+            <h4 class="card-title">Statistics</h4>
+            <div class="d-flex align-items-center">
+              <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
+            </div>
+          </div>
+          <div class="card-body statistics-body">
+            <div class="row">
+              <div class="col-sm-6 col-xl-3 mb-2 mb-xl-0">
+                <div class="media">
+                  <div class="avatar bg-light-primary mr-2">
+                    <div class="avatar-content">
+                      <i [data-feather]="'grid'" class="avatar-icon"></i>
+                    </div>
+                  </div>
+                  <div class="media-body my-auto">
+                    <h4 class="font-weight-bolder mb-0">3</h4>
+                    <p class="card-text font-small-3 mb-0">Spaces</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-3 mb-2 mb-xl-0">
+                <div class="media">
+                  <div class="avatar bg-light-info mr-2">
+                    <div class="avatar-content">
+                      <i [data-feather]="'user'" class="avatar-icon"></i>
+                    </div>
+                  </div>
+                  <div class="media-body my-auto">
+                    <h4 class="font-weight-bolder mb-0">5</h4>
+                    <p class="card-text font-small-3 mb-0">Employees</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-3 mb-2 mb-sm-0">
+                <div class="media">
+                  <div class="avatar bg-light-danger mr-2">
+                    <div class="avatar-content">
+                      <i [data-feather]="'box'" class="avatar-icon"></i>
+                    </div>
+                  </div>
+                  <div class="media-body my-auto">
+                    <h4 class="font-weight-bolder mb-0">2488</h4>
+                    <p class="card-text font-small-3 mb-0">Products</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-3">
+                <div class="media">
+                  <div class="avatar bg-light-success mr-2">
+                    <div class="avatar-content">
+                      <i [data-feather]="'camera'" class="avatar-icon"></i>
+                    </div>
+                  </div>
+                  <div class="media-body my-auto">
+                    <h4 class="font-weight-bolder mb-0">33</h4>
+                    <p class="card-text font-small-3 mb-0">Photos</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="alert alert-warning" *ngSwitchCase="false">
-        <span stlTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
-        <a class="alert-link" routerLink="account/register" stlTranslate="global.messages.info.register.link">Register a new account</a>
-      </div>
+      <!--/ Statistics Card -->
     </div>
 
-    <p stlTranslate="home.question">If you have any question on JHipster:</p>
-
-    <ul>
-      <li>
-        <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" stlTranslate="home.link.homepage"
-          >JHipster homepage</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://stackoverflow.com/tags/jhipster/info"
-          target="_blank"
-          rel="noopener noreferrer"
-          stlTranslate="home.link.stackoverflow"
-          >JHipster on Stack Overflow</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/jhipster/generator-jhipster/issues?state=open"
-          target="_blank"
-          rel="noopener noreferrer"
-          stlTranslate="home.link.bugtracker"
-          >JHipster bug tracker</a
-        >
-      </li>
-      <li>
-        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" stlTranslate="home.link.chat"
-          >JHipster public chat room</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer" stlTranslate="home.link.follow"
-          >follow @jhipster on Twitter</a
-        >
-      </li>
-    </ul>
-
-    <p>
-      <span stlTranslate="home.like">If you like JHipster, don't forget to give us a star on</span>
-      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" stlTranslate="home.github"
-        >GitHub</a
-      >!
-    </p>
+    <div class="row match-height">
+      <!-- Company Table -->
+      <div class="col-lg-12 col-12">
+        <div class="card card-company-table">
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Category</th>
+                    <th>Views</th>
+                    <th>Revenue</th>
+                    <th>Sales</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded"></div>
+                        <div>
+                          <div class="font-weight-bolder">Dixons</div>
+                          <div class="font-small-2 text-muted">meguc@ruj.io</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar bg-light-primary mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="monitor" class="font-medium-3"></i>
+                          </div>
+                        </div>
+                        <span>Technology</span>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bolder mb-25">23.4k</span>
+                        <span class="font-small-2 text-muted">in 24 hours</span>
+                      </div>
+                    </td>
+                    <td>$891.2</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="font-weight-bolder mr-1">68%</span>
+                        <i data-feather="trending-down" class="text-danger font-medium-1"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded"></div>
+                        <div>
+                          <div class="font-weight-bolder">Motels</div>
+                          <div class="font-small-2 text-muted">vecav@hodzi.co.uk</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar bg-light-success mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="coffee" class="font-medium-3"></i>
+                          </div>
+                        </div>
+                        <span>Grocery</span>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bolder mb-25">78k</span>
+                        <span class="font-small-2 text-muted">in 2 days</span>
+                      </div>
+                    </td>
+                    <td>$668.51</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="font-weight-bolder mr-1">97%</span>
+                        <i data-feather="trending-up" class="text-success font-medium-1"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded"></div>
+                        <div>
+                          <div class="font-weight-bolder">Zipcar</div>
+                          <div class="font-small-2 text-muted">davcilse@is.gov</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar bg-light-warning mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="watch" class="font-medium-3"></i>
+                          </div>
+                        </div>
+                        <span>Fashion</span>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bolder mb-25">162</span>
+                        <span class="font-small-2 text-muted">in 5 days</span>
+                      </div>
+                    </td>
+                    <td>$522.29</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="font-weight-bolder mr-1">62%</span>
+                        <i data-feather="trending-up" class="text-success font-medium-1"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded"></div>
+                        <div>
+                          <div class="font-weight-bolder">Owning</div>
+                          <div class="font-small-2 text-muted">us@cuhil.gov</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar bg-light-primary mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="monitor" class="font-medium-3"></i>
+                          </div>
+                        </div>
+                        <span>Technology</span>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bolder mb-25">214</span>
+                        <span class="font-small-2 text-muted">in 24 hours</span>
+                      </div>
+                    </td>
+                    <td>$291.01</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="font-weight-bolder mr-1">88%</span>
+                        <i data-feather="trending-up" class="text-success font-medium-1"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded"></div>
+                        <div>
+                          <div class="font-weight-bolder">Cafés</div>
+                          <div class="font-small-2 text-muted">pudais@jife.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar bg-light-success mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="coffee" class="font-medium-3"></i>
+                          </div>
+                        </div>
+                        <span>Grocery</span>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bolder mb-25">208</span>
+                        <span class="font-small-2 text-muted">in 1 week</span>
+                      </div>
+                    </td>
+                    <td>$783.93</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="font-weight-bolder mr-1">16%</span>
+                        <i data-feather="trending-down" class="text-danger font-medium-1"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded"></div>
+                        <div>
+                          <div class="font-weight-bolder">Kmart</div>
+                          <div class="font-small-2 text-muted">bipri@cawiw.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar bg-light-warning mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="watch" class="font-medium-3"></i>
+                          </div>
+                        </div>
+                        <span>Fashion</span>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bolder mb-25">990</span>
+                        <span class="font-small-2 text-muted">in 1 month</span>
+                      </div>
+                    </td>
+                    <td>$780.05</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="font-weight-bolder mr-1">78%</span>
+                        <i data-feather="trending-up" class="text-success font-medium-1"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded"></div>
+                        <div>
+                          <div class="font-weight-bolder">Payers</div>
+                          <div class="font-small-2 text-muted">luk@izug.io</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar bg-light-warning mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="watch" class="font-medium-3"></i>
+                          </div>
+                        </div>
+                        <span>Fashion</span>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bolder mb-25">12.9k</span>
+                        <span class="font-small-2 text-muted">in 12 hours</span>
+                      </div>
+                    </td>
+                    <td>$531.49</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="font-weight-bolder mr-1">42%</span>
+                        <i data-feather="trending-up" class="text-success font-medium-1"></i>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/ Company Table -->
+    </div>
   </div>
 </div>

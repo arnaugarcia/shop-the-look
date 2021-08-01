@@ -11,12 +11,27 @@
           "minlength": "El seu nom d'usuari ha de tenir, com a mínim, 1 caràcter",
           "maxlength": "El seu nom d'usuari no pot tenir més de 50 caràcters",
           "pattern": "Your username is invalid."
+        },
+        "name": {
+          "required": "El nom de l'empresa es necessari."
+        },
+        "phone": {
+          "required": "El número de telèfon es necessari."
+        },
+        "url": {
+          "required": "La URL de l'empresa es necessari.",
+          "pattern": "La URL sembla errònia."
+        },
+        "nif": {
+          "required": "El NIF/CIF/NIE es necessari",
+          "pattern": "El NIF/CIF/NIE es erroni."
         }
       },
       "success": "<strong>Registre guardat!</strong> Si us plau, consulti el seu compte de correu electrònic per confirmar.",
       "error": {
         "fail": "<strong>Error en registre!</strong> Si us plau, torni-ho a intentar més tard.",
         "userexists": "<strong>El nom d'usuari ja existeix!</strong> Si us plau, esculli'n un altre.",
+        "nifexists": "<strong>El NIF/NIE/CIF ja existeix!</strong> Si us plau, inici sessió.",
         "emailexists": "<strong>L'adreça de correu electronic ja existeix!</strong> Si us plau, esculli'n una altre."
       }
     }
