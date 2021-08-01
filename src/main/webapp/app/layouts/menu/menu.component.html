@@ -58,6 +58,30 @@
             <span class="menu-title text-truncate" stlTranslate="global.menu.admin.userManagement">User Management</span>
           </a>
         </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/metrics" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.metrics">Metrics</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/health" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.health">Health</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/configuration" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.configuration">Configuration</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/logs" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.logs">Logs</span>
+          </a>
+        </li>
       </ul>
     </li>
     <li *ngIf="openAPIEnabled" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'" class="nav-item">
