@@ -3,7 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { PasswordResetFinishService } from './password-reset-finish.service';
-import { CoreConfig } from '../../../../@core/types';
 import { CoreConfigService } from '../../../../@core/services/config.service';
 
 @Component({
@@ -14,8 +13,6 @@ import { CoreConfigService } from '../../../../@core/services/config.service';
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   @ViewChild('newPassword', { static: false })
   newPassword?: ElementRef;
-
-  public coreConfig!: CoreConfig;
 
   public submitted = false;
 
