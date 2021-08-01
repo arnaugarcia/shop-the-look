@@ -29,7 +29,7 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
-  passwordTextType: 'password' | 'text' = 'password';
+  passwordTextType = false;
 
   constructor(
     private coreConfigService: CoreConfigService,
@@ -77,11 +77,7 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
    * Toggle password
    */
   togglePasswordTextType(): void {
-    if (this.passwordTextType === 'password') {
-      this.passwordTextType = 'text';
-    } else {
-      this.passwordTextType = 'password';
-    }
+    this.passwordTextType = !this.passwordTextType;
   }
 
   finishReset(): void {
