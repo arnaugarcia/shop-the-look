@@ -103,7 +103,7 @@ enum PhotoOrientation {
 }
 
 enum SubscriptionCategory {
-	BRONZE, SILVER, GOLD, PLATINUM
+	BRONZE, SILVER, GOLD
 }
 
 entity Product {

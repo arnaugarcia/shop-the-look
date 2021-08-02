@@ -1,13 +1,36 @@
 <stl-page-ribbon></stl-page-ribbon>
+<!-- NAVBAR -->
+<stl-navbar
+  *ngIf="!coreConfig.layout.navbar.hidden"
+  class="header-navbar navbar navbar-expand-lg align-items-center navbar-shadow navbar-light floating-nav container-xxl"
+>
+</stl-navbar>
+<!--/ NAVBAR -->
 
-<div>
-  <router-outlet name="navbar"></router-outlet>
+<!-- MENU -->
+<core-sidebar
+  *ngIf="!coreConfig.layout.menu.hidden"
+  [collapsed]="coreConfig.layout.menu.collapsed"
+  class="main-menu menu-fixed menu-accordion menu-shadow menu-light"
+  collapsibleSidebar="bs-gt-xl"
+  name="menu"
+  overlayClass="sidenav-overlay"
+  [ngClass]="[coreConfig.layout.menu.collapsed ? '' : 'expanded']"
+>
+  <stl-menu class="vertical-menu"></stl-menu>
+</core-sidebar>
+<!--/ MENU -->
+
+<!-- APP-CONTENT -->
+<div class="app-content content">
+  <div class="content-overlay"></div>
+  <div *ngIf="!coreConfig.layout.navbar.hidden" class="header-navbar-shadow"></div>
+  <!-- CONTENT -->
+  <stl-content></stl-content>
+  <!--/ CONTENT -->
 </div>
+<!--/ APP-CONTENT -->
 
-<div class="container-fluid">
-  <div class="card jh-card">
-    <router-outlet></router-outlet>
-  </div>
-
-  <stl-footer></stl-footer>
-</div>
+<!-- FOOTER -->
+<footer *ngIf="!coreConfig.layout.footer.hidden" class="footer footer-light footer-static"></footer>
+<!--/ FOOTER -->

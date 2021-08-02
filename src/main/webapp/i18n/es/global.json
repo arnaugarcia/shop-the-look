@@ -25,7 +25,13 @@
         "sessions": "Sesiones",
         "login": "Iniciar sesión",
         "logout": "Cerrar la sesión",
-        "register": "Crear una cuenta"
+        "register": "Crear una cuenta",
+        "authorities": {
+          "ROLE_ADMIN": "Administrador",
+          "ROLE_MANAGER": "Manager",
+          "ROLE_USER": "Usuario",
+          "empty": "No hay rol"
+        }
       },
       "admin": {
         "main": "Administración",
@@ -51,7 +57,15 @@
       "confirmpassword.label": "Confirmación de la nueva contraseña",
       "confirmpassword.placeholder": "Confirmación de la nueva contraseña",
       "email.label": "Correo electrónico",
-      "email.placeholder": "Su correo electrónico"
+      "email.placeholder": "Su correo electrónico",
+      "companyName.placeholder": "ACME corporation",
+      "companyName.label": "Nombre de la empresa",
+      "nif.label": "NIF / CIF / NIE",
+      "nif.placeholder": "12345678E",
+      "phone.label": "Número de teléfono",
+      "phone.placeholder": "692000000",
+      "url.placeholder": "https://acme.inc",
+      "url.label": "URL de la empresa"
     },
     "messages": {
       "info": {

@@ -1,0 +1,95 @@
+<!-- Menu header -->
+<div class="navbar-header">
+  <ul class="nav navbar-nav flex-row">
+    <li class="nav-item mr-auto">
+      <!-- App Branding -->
+      <a [routerLink]="['/']" class="navbar-brand">
+        <span class="brand-logo">
+          <img alt="brand-logo" src="/content/images/logo/logo.svg" />
+        </span>
+        <h2 class="brand-text mb-0">Klai</h2>
+      </a>
+    </li>
+
+    <!-- Menu Toggler -->
+    <li class="nav-item nav-toggle">
+      <a (click)="toggleSidebarCollapsible()" class="nav-link modern-nav-toggle d-none d-xl-block pr-0">
+        <i
+          [ngClass]="isCollapsed === true ? 'icon-circle' : 'icon-disc'"
+          class="toggle-icon feather font-medium-4 collapse-toggle-icon text-primary"
+        >
+        </i>
+      </a>
+      <a (click)="toggleSidebar()" class="nav-link modern-nav-toggle d-block d-xl-none pr-0">
+        <i [data-feather]="'x'" class="font-medium-4 text-primary toggle-icon"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+<!--/ Menu header -->
+
+<!-- Navbar shadow -->
+<div [ngClass]="{ 'd-block': isScrolled }" class="shadow-bottom"></div>
+
+<!-- Main menu -->
+<div (scroll)="onSidebarScroll()" [perfectScrollbar] class="main-menu-content">
+  <ul class="navigation navigation-main">
+    <li [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'">
+      <a [routerLink]="'/'" class="d-flex align-items-center" (click)="collapseMenus()">
+        <span [data-feather]="'home'"></span>
+        <span class="menu-title text-truncate" stlTranslate="global.menu.home">Home</span>
+      </a>
+    </li>
+    <li
+      class="nav-item has-sub"
+      [class.open]="!adminMenuCollapsed"
+      [ngbCollapse]="false"
+      *stlHasAnyAuthority="'ROLE_ADMIN'"
+      routerLinkActive="active"
+    >
+      <a class="d-flex align-items-center" (click)="adminMenuCollapsed = !adminMenuCollapsed">
+        <span [data-feather]="'settings'"></span>
+        <span class="menu-title text-truncate" stlTranslate="global.menu.admin.main">Administration</span>
+      </a>
+      <ul class="menu-content">
+        <li routerLinkActive="active">
+          <a routerLink="admin/user-management" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.userManagement">User Management</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/metrics" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.metrics">Metrics</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/health" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.health">Health</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/configuration" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.configuration">Configuration</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="admin/logs" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="global.menu.admin.logs">Logs</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li *ngIf="openAPIEnabled" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'" class="nav-item">
+      <a [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active" (click)="collapseMenus()">
+        <span [data-feather]="'tool'"></span>
+        <span stlTranslate="global.menu.admin.apidocs">API</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<!--/ Main menu -->

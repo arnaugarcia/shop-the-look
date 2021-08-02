@@ -25,7 +25,13 @@
         "sessions": "Sessions",
         "login": "Sign in",
         "logout": "Sign out",
-        "register": "Register"
+        "register": "Register",
+        "authorities": {
+          "ROLE_ADMIN": "Administrator",
+          "ROLE_MANAGER": "Manager",
+          "ROLE_USER": "User",
+          "empty": "No role has been assigned"
+        }
       },
       "admin": {
         "main": "Administration",
@@ -51,7 +57,15 @@
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
-      "email.placeholder": "Your email"
+      "email.placeholder": "Your email",
+      "companyName.placeholder": "ACME corporation",
+      "companyName.label": "Company Name",
+      "nif.label": "NIF / CIF / NIE",
+      "phone.label": "Phone",
+      "nif.placeholder": "12345678E",
+      "phone.placeholder": "692000000",
+      "url.placeholder": "https://acme.inc",
+      "url.label": "Company URL"
     },
     "messages": {
       "info": {

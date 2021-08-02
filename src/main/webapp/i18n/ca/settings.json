@@ -12,7 +12,8 @@
     "messages": {
       "error": {
         "fail": "<strong>S'ha produït un error!</strong> Els seus ajustos no s'han pogut guardar.",
-        "emailexists": "<strong>L'adreca de correu electronic ja existeix!</strong> Si us plau, esculli'n una altre."
+        "emailexists": "<strong>L'adreca de correu electronic ja existeix!</strong> Si us plau, esculli'n una altre.",
+        "nifexists": "<strong>El NIF/NIE/CIF ja existeix!</strong> Si us plau, feu login."
       },
       "success": "<strong>Ajustos guardats!</strong>",
       "validate": {

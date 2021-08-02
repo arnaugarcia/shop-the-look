@@ -11,13 +11,28 @@
           "minlength": "Su nombre de usuario debe tener al menos 1 caracter.",
           "maxlength": "Su nombre de usuario no puede tener más de 50 caracteres.",
           "pattern": "Su nombre de usuario no es válido."
+        },
+        "name": {
+          "required": "El nombre de la empresa es obligatorio."
+        },
+        "phone": {
+          "required": "El número de teléfono es obligatorio."
+        },
+        "url": {
+          "required": "La URL de la empresa es obligatoria.",
+          "pattern": "La URL no es valida."
+        },
+        "nif": {
+          "required": "El NIF/CIF/NIE es obligatorio",
+          "pattern": "El NIF/CIF/NIE no es válido."
         }
       },
       "success": "<strong>¡Registro guardado!</strong> Por favor, revise su correo electrónico para confirmar.",
       "error": {
         "fail": "<strong>¡El registro ha fallado!</strong> Por favor, inténtelo de nuevo más tarde.",
         "userexists": "<strong>¡El nombre de usuario ya está registrado!</strong> Por favor, escoja otro usuario.",
-        "emailexists": "<strong>¡El correo electrónico ya está en uso!</strong> Por favor, escoja otro email."
+        "emailexists": "<strong>¡El correo electrónico ya está en uso!</strong> Por favor, escoja otro email.",
+        "nifexists": "<strong>¡El NIF/NIE/CIF ya está en uso!</strong> Por favor, inicie sessión."
       }
     }
   }
