@@ -25,7 +25,13 @@
         "sessions": "Sessions",
         "login": "Sign in",
         "logout": "Sign out",
-        "register": "Register"
+        "register": "Register",
+        "authorities": {
+          "ROLE_ADMIN": "Administrator",
+          "ROLE_MANAGER": "Manager",
+          "ROLE_USER": "User",
+          "empty": "No role has been assigned"
+        }
       },
       "admin": {
         "main": "Administration",
