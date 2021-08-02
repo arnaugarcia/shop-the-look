@@ -25,7 +25,13 @@
         "sessions": "Sesiones",
         "login": "Iniciar sesión",
         "logout": "Cerrar la sesión",
-        "register": "Crear una cuenta"
+        "register": "Crear una cuenta",
+        "authorities": {
+          "ROLE_ADMIN": "Administrador",
+          "ROLE_MANAGER": "Manager",
+          "ROLE_USER": "Usuario",
+          "empty": "No hay rol"
+        }
       },
       "admin": {
         "main": "Administración",
