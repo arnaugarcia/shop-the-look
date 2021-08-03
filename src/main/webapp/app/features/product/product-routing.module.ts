@@ -5,7 +5,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
 import { ProductRoutingResolveService } from './product-routing-resolve.service';
 import { ProductComponent } from './pages/list/product.component';
 import { ProductDetailComponent } from './pages/detail/product-detail.component';
-import { ProductUpdateComponent } from './pages/update/product-update.component';
+import { ProductCreateComponent } from './pages/create/product-create.component';
 
 const productRoute: Routes = [
   {
@@ -23,15 +23,7 @@ const productRoute: Routes = [
   },
   {
     path: 'new',
-    component: ProductUpdateComponent,
-    resolve: {
-      product: ProductRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    component: ProductUpdateComponent,
+    component: ProductCreateComponent,
     resolve: {
       product: ProductRoutingResolveService,
     },
