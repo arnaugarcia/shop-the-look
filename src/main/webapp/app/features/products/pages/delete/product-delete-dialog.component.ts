@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { IProduct } from '../product.model';
-import { ProductService } from '../service/product.service';
+import { ProductService } from '../../services/product.service';
+import { IProduct } from '../../models/product.model';
 
 @Component({
   templateUrl: './product-delete-dialog.component.html',

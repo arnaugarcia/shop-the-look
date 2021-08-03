@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ProductAvailability } from 'app/entities/enumerations/product-availability.model';
-import { IProduct, Product } from '../product.model';
+import { IProduct, Product } from '../models/product.model';
 
 import { ProductService } from './product.service';
 

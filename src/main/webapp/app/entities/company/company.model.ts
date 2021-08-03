@@ -1,5 +1,4 @@
 import { IBillingAddress } from 'app/entities/billing-address/billing-address.model';
-import { IProduct } from 'app/entities/product/product.model';
 import { IGoogleFeedProduct } from 'app/entities/google-feed-product/google-feed-product.model';
 import { ISpace } from 'app/entities/space/space.model';
 import { IUser } from 'app/entities/user/user.model';
@@ -7,6 +6,7 @@ import { ISubscriptionPlan } from 'app/entities/subscription-plan/subscription-p
 import { CompanyType } from 'app/entities/enumerations/company-type.model';
 import { CompanyIndustry } from 'app/entities/enumerations/company-industry.model';
 import { CompanySize } from 'app/entities/enumerations/company-size.model';
+import { IProduct } from '../../features/products/models/product.model';
 
 export interface ICompany {
   id?: number;

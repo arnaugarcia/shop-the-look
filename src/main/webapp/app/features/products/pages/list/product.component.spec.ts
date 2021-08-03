@@ -3,9 +3,8 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 
-import { ProductService } from '../service/product.service';
-
 import { ProductComponent } from './product.component';
+import { ProductService } from '../../services/product.service';
 
 describe('Component Tests', () => {
   describe('Product Management Component', () => {

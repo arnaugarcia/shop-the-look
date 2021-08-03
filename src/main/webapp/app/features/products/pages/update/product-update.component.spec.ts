@@ -1,5 +1,4 @@
-jest.mock('@angular/router');
-
+import { IProduct, Product } from '../../models/product.model';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -7,14 +6,15 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
-import { ProductService } from '../service/product.service';
-import { IProduct, Product } from '../product.model';
 import { ICompany } from 'app/entities/company/company.model';
 import { CompanyService } from 'app/entities/company/service/company.service';
 import { ICoordinate } from 'app/entities/coordinate/coordinate.model';
 import { CoordinateService } from 'app/entities/coordinate/service/coordinate.service';
 
 import { ProductUpdateComponent } from './product-update.component';
+import { ProductService } from '../../services/product.service';
+
+jest.mock('@angular/router');
 
 describe('Component Tests', () => {
   describe('Product Management Update Component', () => {

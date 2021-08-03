@@ -30,11 +30,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./subscription-plan/subscription-plan.module').then(m => m.SubscriptionPlanModule),
       },
       {
-        path: 'product',
-        data: { pageTitle: 'shopTheLookApp.product.home.title' },
-        loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
-      },
-      {
         path: 'google-feed-product',
         data: { pageTitle: 'shopTheLookApp.googleFeedProduct.home.title' },
         loadChildren: () => import('./google-feed-product/google-feed-product.module').then(m => m.GoogleFeedProductModule),

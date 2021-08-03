@@ -1,14 +1,13 @@
-jest.mock('@ng-bootstrap/ng-bootstrap');
-
-import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ProductService } from '../../services/product.service';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ProductService } from '../service/product.service';
-
 import { ProductDeleteDialogComponent } from './product-delete-dialog.component';
+
+jest.mock('@ng-bootstrap/ng-bootstrap');
 
 describe('Component Tests', () => {
   describe('Product Management Delete Component', () => {

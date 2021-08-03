@@ -5,12 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import { IProduct, Product } from '../product.model';
-import { ProductService } from '../service/product.service';
 import { ICompany } from 'app/entities/company/company.model';
 import { CompanyService } from 'app/entities/company/service/company.service';
 import { ICoordinate } from 'app/entities/coordinate/coordinate.model';
 import { CoordinateService } from 'app/entities/coordinate/service/coordinate.service';
+import { ProductService } from '../../services/product.service';
+import { IProduct, Product } from '../../models/product.model';
 
 @Component({
   selector: 'stl-product-update',
