@@ -1,20 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
 import { IProduct } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
+import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
+import { HttpResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
 
 @Component({
   selector: 'stl-product',
   templateUrl: './product.component.html',
 })
 export class ProductComponent implements OnInit {
-  products?: IProduct[];
-  isLoading = false;
+  public products: IProduct[] = [];
 
-  constructor(protected productService: ProductService, protected modalService: NgbModal) {}
+  public contentHeader: ContentHeader;
+  private isLoading = false;
+
+  constructor(protected productService: ProductService, private modalService: NgbModal) {
+    this.contentHeader = {
+      headerTitle: 'Products',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/',
+          },
+          {
+            name: 'Products',
+            isLink: false,
+            link: '/products',
+          },
+        ],
+      },
+    };
+  }
+
+  ngOnInit(): void {
+    this.loadAll();
+  }
+
+  trackId(index: number, item: IProduct): number {
+    return item.id!;
+  }
 
   loadAll(): void {
     this.isLoading = true;
@@ -28,14 +58,6 @@ export class ProductComponent implements OnInit {
         this.isLoading = false;
       }
     );
-  }
-
-  ngOnInit(): void {
-    this.loadAll();
-  }
-
-  trackId(index: number, item: IProduct): number {
-    return item.id!;
   }
 
   delete(product: IProduct): void {

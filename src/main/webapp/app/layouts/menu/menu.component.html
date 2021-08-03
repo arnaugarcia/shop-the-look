@@ -58,6 +58,12 @@
             <span class="menu-title text-truncate">Add new</span>
           </a>
         </li>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a [routerLink]="'/products/import'" class="d-flex align-items-center">
+            <span [data-feather]="'upload'"></span>
+            <span class="menu-title text-truncate">Import</span>
+          </a>
+        </li>
       </ul>
     </li>
     <li

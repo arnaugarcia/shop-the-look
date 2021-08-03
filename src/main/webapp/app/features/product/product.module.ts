@@ -7,9 +7,11 @@ import { ProductDeleteDialogComponent } from './pages/delete/product-delete-dial
 import { ProductCreateComponent } from './pages/create/product-create.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ProductImportComponent } from './pages/import/product-import.component';
 
 @NgModule({
-  declarations: [ProductComponent, ProductCreateComponent, ProductDetailComponent, ProductDeleteDialogComponent],
-  imports: [SharedModule, ProductRoutingModule, FileUploadModule, ContentHeaderModule],
+  declarations: [ProductComponent, ProductCreateComponent, ProductImportComponent, ProductDetailComponent, ProductDeleteDialogComponent],
+  imports: [SharedModule, ProductRoutingModule, NgxDatatableModule, FileUploadModule, ContentHeaderModule],
 })
 export class ProductModule {}
