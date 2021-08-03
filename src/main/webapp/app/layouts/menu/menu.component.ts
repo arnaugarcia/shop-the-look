@@ -24,15 +24,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   openAPIEnabled?: boolean;
   account: Account | null = null;
 
-  // Step 1:
-  // Create a property to track whether the menu is open.
-  // Start with the menu collapsed so that it does not
-  // appear initially when the page loads on a small screen!
   public adminMenuCollapsed = true;
+  public productsMenuCollapsed = true;
 
   @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef: PerfectScrollbarDirective | undefined;
 
-  // Private
   private _unsubscribeAll: Subject<any>;
 
   constructor(
@@ -46,9 +42,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     this._unsubscribeAll = new Subject();
   }
 
-  /**
-   * On Init
-   */
   ngOnInit(): void {
     // Subscribe config change
     this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
@@ -86,21 +79,12 @@ export class MenuComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * On Destroy
-   */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
 
-  // Public Methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On Sidebar scroll set isScrolled as true
-   */
   onSidebarScroll(): void {
     if (this.directiveRef) {
       this.isScrolled = this.directiveRef.position(true).y > 3;

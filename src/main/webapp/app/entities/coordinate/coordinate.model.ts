@@ -1,5 +1,5 @@
 import { IPhoto } from 'app/entities/photo/photo.model';
-import { IProduct } from '../../features/products/models/product.model';
+import { IProduct } from '../../features/product/models/product.model';
 
 export interface ICoordinate {
   id?: number;

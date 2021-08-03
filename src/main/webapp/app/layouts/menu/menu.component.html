@@ -40,6 +40,26 @@
         <span class="menu-title text-truncate" stlTranslate="global.menu.home">Home</span>
       </a>
     </li>
+    <li class="nav-item has-sub" [class.open]="!productsMenuCollapsed" [ngbCollapse]="false" routerLinkActive="active">
+      <a class="d-flex align-items-center" (click)="productsMenuCollapsed = !productsMenuCollapsed">
+        <span [data-feather]="'package'"></span>
+        <span class="menu-title text-truncate">Products</span>
+      </a>
+      <ul class="menu-content">
+        <li routerLinkActive="active">
+          <a routerLink="products" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'package'"></span>
+            <span class="menu-title text-truncate">All products</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="products/new" routerLinkActive="active" class="d-flex align-items-center">
+            <span [data-feather]="'file-plus'"></span>
+            <span class="menu-title text-truncate">Add new</span>
+          </a>
+        </li>
+      </ul>
+    </li>
     <li
       class="nav-item has-sub"
       [class.open]="!adminMenuCollapsed"

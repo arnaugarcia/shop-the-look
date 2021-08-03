@@ -25,6 +25,7 @@ import { missingTranslationHandler, translatePartialLoader } from './config/tran
 import { MainComponent } from './layouts/main/main.component';
 import { LayoutsModule } from './layouts/layouts.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FeaturesModule } from './features/features.module';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     LayoutsModule,
     HomeModule,
+    FeaturesModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     EntityRoutingModule,
     AppRoutingModule,

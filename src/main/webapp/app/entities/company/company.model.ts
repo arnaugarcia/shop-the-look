@@ -6,7 +6,7 @@ import { ISubscriptionPlan } from 'app/entities/subscription-plan/subscription-p
 import { CompanyType } from 'app/entities/enumerations/company-type.model';
 import { CompanyIndustry } from 'app/entities/enumerations/company-industry.model';
 import { CompanySize } from 'app/entities/enumerations/company-size.model';
-import { IProduct } from '../../features/products/models/product.model';
+import { IProduct } from '../../features/product/models/product.model';
 
 export interface ICompany {
   id?: number;
