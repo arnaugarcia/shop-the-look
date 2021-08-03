@@ -8,51 +8,37 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12 col-lg-12">
-              <div
-                ng2FileDrop
-                [ngClass]="{ 'file-drop-over': hasBaseDropZoneOver }"
-                (fileOver)="fileOverBase($event)"
-                [uploader]="uploader"
-                class="py-5 mb-3 text-center font-medium-5 text-uppercase file-drop-zone"
-              >
-                Drop CSV / TSV files to upload products
+              <div class="container file-drop-zone" stlDragAndDrop (fileDropped)="onFileDropped($event)">
+                <!--
+                <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
+-->
+                <input type="file" #fileDropRef id="fileDropRef" accept="text/csv" />
+
+                <h3>Drag and drop file here</h3>
+                <h3>or</h3>
+                <label for="fileDropRef">Browse for file</label>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-3">
-              <h4>Select files</h4>
-              <fieldset class="form-group">
-                <label for="file-upload-multiple">Multiple:</label>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" ng2FileSelect [uploader]="uploader" multiple id="file-upload-multiple" />
-                  <label class="custom-file-label">Choose file</label>
-                </div>
-              </fieldset>
-            </div>
-
-            <div class="col-lg-9 overflow-auto">
+            <div class="col-lg-12 overflow-auto">
               <div class="d-flex justify-content-between mb-1">
                 <h4>Loaded products queue</h4>
-                <p>Queue length: {{ uploader?.queue?.length }}</p>
+                <p>Queue length:</p>
               </div>
 
               <table class="table">
                 <thead>
                   <tr>
                     <th width="50%">Name</th>
-                    <th>Size</th>
-                    <th>Progress</th>
-                    <th>Status</th>
-                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of uploader.queue">
+                  <tr *ngFor="let product of products">
                     <td>
-                      <strong>{{ item?.file?.name }}</strong>
+                      <strong>{{ product.name }}</strong>
                     </td>
-                    <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB</td>
+                    <!--<td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB</td>
                     <td *ngIf="uploader.options.isHTML5">
                       <ngb-progressbar type="primary" [value]="item.progress"></ngb-progressbar>
                     </td>
@@ -67,8 +53,7 @@
                         class="btn btn-raised btn-outline-success btn-sm mr-50"
                         (click)="item.upload()"
                         [disabled]="item.isReady || item.isUploading || item.isSuccess"
-                        rippleEffect
-                      >
+                        rippleEffect>
                         <span data-feather="upload"></span>
                       </button>
                       <button
@@ -76,19 +61,17 @@
                         class="btn btn-raised btn-outline-warning btn-sm mr-50"
                         (click)="item.cancel()"
                         [disabled]="!item.isUploading"
-                        rippleEffect
-                      >
+                        rippleEffect>
                         <i data-feather="slash"></i>
                       </button>
                       <button type="button" class="btn btn-raised btn-outline-danger btn-sm" (click)="item.remove()" rippleEffect>
                         <i data-feather="trash"></i>
                       </button>
-                    </td>
+                    </td>-->
                   </tr>
                 </tbody>
               </table>
-
-              <div id="">
+              <!--<div>
                 <p class="mt-1">Queue progress:</p>
                 <ngb-progressbar class="mb-1" type="primary" [value]="uploader.progress"></ngb-progressbar>
                 <button
@@ -96,8 +79,7 @@
                   class="btn mr-1 btn-primary mb-1 mb-sm-0"
                   (click)="uploader.uploadAll()"
                   [disabled]="!uploader.getNotUploadedItems().length"
-                  rippleEffect
-                >
+                  rippleEffect>
                   <span data-feather="upload" class="mr-25"></span> Upload all
                 </button>
                 <button
@@ -105,8 +87,7 @@
                   class="btn mr-1 btn-outline-warning mb-1 mb-sm-0"
                   (click)="uploader.cancelAll()"
                   [disabled]="!uploader.isUploading"
-                  rippleEffect
-                >
+                  rippleEffect>
                   <span data-feather="slash" class="mr-25"></span> Cancel all
                 </button>
                 <button
@@ -114,11 +95,10 @@
                   class="btn btn-outline-danger mb-1 mb-sm-0"
                   (click)="uploader.clearQueue()"
                   [disabled]="!uploader.queue.length"
-                  rippleEffect
-                >
+                  rippleEffect>
                   <span data-feather="trash" class="mr-25"></span> Remove all
                 </button>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>

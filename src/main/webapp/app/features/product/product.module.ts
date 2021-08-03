@@ -5,13 +5,20 @@ import { ProductComponent } from './pages/list/product.component';
 import { ProductDetailComponent } from './pages/detail/product-detail.component';
 import { ProductDeleteDialogComponent } from './pages/delete/product-delete-dialog.component';
 import { ProductCreateComponent } from './pages/create/product-create.component';
-import { FileUploadModule } from 'ng2-file-upload';
 import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ProductImportComponent } from './pages/import/product-import.component';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import { DragAndDropDirective } from './directive/drag-and-drop.directive';
 
 @NgModule({
-  declarations: [ProductComponent, ProductCreateComponent, ProductImportComponent, ProductDetailComponent, ProductDeleteDialogComponent],
-  imports: [SharedModule, ProductRoutingModule, NgxDatatableModule, FileUploadModule, ContentHeaderModule],
+  declarations: [
+    ProductComponent,
+    ProductCreateComponent,
+    ProductImportComponent,
+    ProductDetailComponent,
+    ProductDeleteDialogComponent,
+    DragAndDropDirective,
+  ],
+  imports: [SharedModule, ProductRoutingModule, NgxFileDropModule, ContentHeaderModule],
 })
 export class ProductModule {}

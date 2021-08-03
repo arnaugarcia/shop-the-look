@@ -1,24 +1,19 @@
 import { Component } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
-
-const URL = 'https://your-url.com';
+import { Papa } from 'ngx-papaparse';
+import { IProduct, Product } from '../../models/product.model';
 
 @Component({
   selector: 'stl-product-import',
   templateUrl: './product-import.component.html',
-  styleUrls: ['./product-import.component.sass'],
+  styleUrls: ['./product-import.component.scss'],
 })
 export class ProductImportComponent {
   public contentHeader: ContentHeader;
-  public hasAnotherDropZoneOver = false;
-  public hasBaseDropZoneOver = false;
-  public uploader: FileUploader = new FileUploader({
-    url: URL,
-    isHTML5: true,
-  });
+  public products: IProduct[] = [];
+  private error = false;
 
-  constructor() {
+  constructor(private papa: Papa) {
     this.contentHeader = {
       headerTitle: 'Product importer',
       actionButton: true,
@@ -44,11 +39,38 @@ export class ProductImportComponent {
     };
   }
 
-  fileOverBase(e: any): void {
-    this.hasBaseDropZoneOver = e;
+  /**
+   * on file drop handler
+   */
+  onFileDropped($event: any): void {
+    this.error = false;
+    const file = $event[0];
+    if (file.type !== 'text/csv') {
+      this.error = true;
+      return;
+    }
+    const options: any = {
+      worker: true,
+      complete: (results: any) => {
+        this.products = results.data.map((rawProduct: any) => new Product(0, 'SKU', rawProduct[2]));
+      },
+    };
+    this.papa.parse(file, options);
+    // this.prepareFilesList($event);
   }
 
-  fileOverAnother(e: any): void {
-    this.hasAnotherDropZoneOver = e;
+  /**
+   * handle file from browsing
+   */
+  fileBrowseHandler(files: any): void {
+    //this.prepareFilesList(files);
+  }
+
+  /**
+   * Delete file from files list
+   * @param index (File index)
+   */
+  deleteFile(index: number): void {
+    // this.files.splice(index, 1);
   }
 }
