@@ -42,8 +42,8 @@
 
             <div class="col-lg-9 overflow-auto">
               <div class="d-flex justify-content-between mb-1">
-                <h4>Loaded products queue</h4>
-                <p>Queue length: {{ products.length }}</p>
+                <h4>Loaded products preview</h4>
+                <p>Loaded products: {{ products.length }}</p>
               </div>
               <table class="table">
                 <thead>
@@ -58,7 +58,7 @@
                       <span stlTranslate="shopTheLookApp.product.price">Price</span>
                     </th>
                     <th scope="col">
-                      <span>Actions</span>
+                      <span>Remove</span>
                     </th>
                   </tr>
                 </thead>
@@ -68,14 +68,8 @@
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
                     <td nowrap>
-                      <button type="button" class="btn btn-raised btn-outline-success btn-sm mr-50" [disabled]="!fileItem" rippleEffect>
-                        <span data-feather="upload"></span>
-                      </button>
-                      <button type="button" class="btn btn-raised btn-outline-warning btn-sm mr-50" [disabled]="!fileItem" rippleEffect>
-                        <i data-feather="slash"></i>
-                      </button>
-                      <button type="button" class="btn btn-raised btn-outline-danger btn-sm" (click)="removeFile()" rippleEffect>
-                        <i data-feather="trash"></i>
+                      <button type="button" class="btn btn-raised btn-outline-danger btn-sm" (click)="removeProduct(product)" rippleEffect>
+                        <i [data-feather]="'trash'"></i>
                       </button>
                     </td>
                   </tr>
@@ -103,30 +97,22 @@
               </ngb-pagination>
               <div>
                 <p class="mt-1">Upload process:</p>
-                <ngb-progressbar class="mb-1" type="primary" [value]="uploader.progress"></ngb-progressbar>
+                <ngb-progressbar class="mb-1" type="primary" [value]="progressBar"></ngb-progressbar>
                 <button
                   type="button"
                   class="btn mr-1 btn-primary mb-1 mb-sm-0"
-                  (click)="uploader.uploadAll()"
-                  [disabled]="!uploader.getNotUploadedItems().length"
+                  (click)="importProducts()"
+                  [disabled]="!products"
                   rippleEffect
                 >
-                  <span data-feather="upload" class="mr-25"></span> Upload all
-                </button>
-                <button
-                  type="button"
-                  class="btn mr-1 btn-outline-warning mb-1 mb-sm-0"
-                  (click)="uploader.cancelAll()"
-                  [disabled]="!uploader.isUploading"
-                  rippleEffect
-                >
-                  <span data-feather="slash" class="mr-25"></span> Cancel all
+                  <span data-feather="upload" class="mr-25"></span>
+                  Upload all
                 </button>
                 <button
                   type="button"
                   class="btn btn-outline-danger mb-1 mb-sm-0"
-                  (click)="uploader.clearQueue()"
-                  [disabled]="!uploader.queue.length"
+                  (click)="removeAllFromQueue()"
+                  [disabled]="!products"
                   rippleEffect
                 >
                   <span data-feather="trash" class="mr-25"></span> Remove all

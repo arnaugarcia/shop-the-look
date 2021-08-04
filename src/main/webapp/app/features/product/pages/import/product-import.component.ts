@@ -21,7 +21,8 @@ export class ProductImportComponent {
   public error = false;
   public loading = false;
   public ACCEPTED_FILES = ['text/csv, text/tsv'];
-  pageAdvancedEllipses = 7;
+  public pageAdvancedEllipses = 7;
+  public progressBar = 0;
 
   constructor(private papa: Papa) {
     this.contentHeader = {
@@ -48,7 +49,7 @@ export class ProductImportComponent {
       },
     };
     this.config = {
-      itemsPerPage: 5,
+      itemsPerPage: 10,
       currentPage: 1,
       totalItems: this.products.length,
     };
@@ -89,7 +90,19 @@ export class ProductImportComponent {
     this.papa.parse(droopedFile, options);
   }
 
-  removeFile(): void {
+  importProducts(): void {
+    this.loading = true;
+  }
+
+  removeAllFromQueue(): void {
+    this.products = [];
     this.fileItem = undefined;
+  }
+
+  removeProduct(product: IProduct): void {
+    const index = this.products.indexOf(product);
+    if (index > -1) {
+      this.products.splice(index, 1);
+    }
   }
 }
