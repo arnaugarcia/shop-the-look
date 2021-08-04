@@ -69,7 +69,13 @@
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
                     <td nowrap>
-                      <button type="button" class="btn btn-raised btn-outline-danger btn-sm" (click)="removeProduct(product)" rippleEffect>
+                      <button
+                        type="button"
+                        class="btn btn-raised btn-outline-danger btn-sm"
+                        (click)="removeProduct(product)"
+                        rippleEffect
+                        [disabled]="loading"
+                      >
                         <i [data-feather]="'trash'"></i>
                       </button>
                     </td>
@@ -103,7 +109,7 @@
                   type="button"
                   class="btn mr-1 btn-primary mb-1 mb-sm-0"
                   (click)="importProducts()"
-                  [disabled]="!products || loading"
+                  [disabled]="products.length == 0"
                   rippleEffect
                 >
                   <span data-feather="upload" class="mr-25"></span>
@@ -113,7 +119,7 @@
                   type="button"
                   class="btn btn-outline-danger mb-1 mb-sm-0"
                   (click)="removeAllFromQueue()"
-                  [disabled]="!products || loading"
+                  [disabled]="products.length == 0"
                   rippleEffect
                 >
                   <span data-feather="trash" class="mr-25"></span> Remove all
