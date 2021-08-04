@@ -33,6 +33,7 @@
                     [accept]="ACCEPTED_FILES"
                     [uploader]="uploader"
                     (onFileSelected)="onFileDropped($event)"
+                    [disabled]="!products || loading"
                     id="file-upload-multiple"
                   />
                   <label class="custom-file-label">Choose file</label>
@@ -102,7 +103,7 @@
                   type="button"
                   class="btn mr-1 btn-primary mb-1 mb-sm-0"
                   (click)="importProducts()"
-                  [disabled]="!products"
+                  [disabled]="!products || loading"
                   rippleEffect
                 >
                   <span data-feather="upload" class="mr-25"></span>
@@ -112,7 +113,7 @@
                   type="button"
                   class="btn btn-outline-danger mb-1 mb-sm-0"
                   (click)="removeAllFromQueue()"
-                  [disabled]="!products"
+                  [disabled]="!products || loading"
                   rippleEffect
                 >
                   <span data-feather="trash" class="mr-25"></span> Remove all
