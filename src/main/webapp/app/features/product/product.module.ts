@@ -10,6 +10,8 @@ import { ProductImportComponent } from './pages/import/product-import.component'
 import { DragAndDropDirective } from './directive/drag-and-drop.directive';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ImportModalSuccessComponent } from './components/import-modal-success/import-modal-success.component';
+import { ImportModalErrorComponent } from './components/import-modal-error/import-modal-error.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ProductDetailComponent,
     ProductDeleteDialogComponent,
     DragAndDropDirective,
+    ImportModalSuccessComponent,
+    ImportModalErrorComponent,
   ],
   imports: [SharedModule, ProductRoutingModule, NgxPaginationModule, ContentHeaderModule, FileUploadModule],
 })
