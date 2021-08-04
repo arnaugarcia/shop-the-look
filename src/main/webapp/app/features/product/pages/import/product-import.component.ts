@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
-import { Papa } from 'ngx-papaparse';
-import { IProduct, Product } from '../../models/product.model';
+import { Papa, ParseConfig, ParseResult } from 'ngx-papaparse';
+import { IProduct, RawProduct } from '../../models/product.model';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'stl-product-import',
@@ -10,8 +11,17 @@ import { IProduct, Product } from '../../models/product.model';
 })
 export class ProductImportComponent {
   public contentHeader: ContentHeader;
+  public hasBaseDropZoneOver = false;
+  public uploader: FileUploader = new FileUploader({
+    isHTML5: true,
+  });
+  public fileItem: File | undefined = undefined;
   public products: IProduct[] = [];
-  private error = false;
+  public config: any;
+  public error = false;
+  public loading = false;
+  public ACCEPTED_FILES = ['text/csv, text/tsv'];
+  pageAdvancedEllipses = 7;
 
   constructor(private papa: Papa) {
     this.contentHeader = {
@@ -37,40 +47,49 @@ export class ProductImportComponent {
         ],
       },
     };
+    this.config = {
+      itemsPerPage: 5,
+      currentPage: 1,
+      totalItems: this.products.length,
+    };
+  }
+
+  fileOverBase(e: any): void {
+    this.hasBaseDropZoneOver = e;
+  }
+
+  pageChanged(event: any): void {
+    this.config.currentPage = event;
   }
 
   /**
    * on file drop handler
    */
   onFileDropped($event: any): void {
+    this.loading = true;
     this.error = false;
-    const file = $event[0];
-    if (file.type !== 'text/csv') {
+    const droopedFile = $event[0];
+    if (droopedFile.type !== 'text/csv') {
       this.error = true;
       return;
     }
-    const options: any = {
+    const options: ParseConfig = {
       worker: true,
-      complete: (results: any) => {
-        this.products = results.data.map((rawProduct: any) => new Product(0, 'SKU', rawProduct[2]));
+      complete: (results: ParseResult, file?: File) => {
+        this.loading = false;
+        this.fileItem = file;
+        this.products = results.data.map((rawProduct: any) => new RawProduct(rawProduct[1], rawProduct[2], rawProduct[10]));
+        this.products.shift();
+      },
+      error: () => {
+        this.error = true;
+        this.loading = false;
       },
     };
-    this.papa.parse(file, options);
-    // this.prepareFilesList($event);
+    this.papa.parse(droopedFile, options);
   }
 
-  /**
-   * handle file from browsing
-   */
-  fileBrowseHandler(files: any): void {
-    //this.prepareFilesList(files);
-  }
-
-  /**
-   * Delete file from files list
-   * @param index (File index)
-   */
-  deleteFile(index: number): void {
-    // this.files.splice(index, 1);
+  removeFile(): void {
+    this.fileItem = undefined;
   }
 }

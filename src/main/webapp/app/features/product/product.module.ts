@@ -7,8 +7,9 @@ import { ProductDeleteDialogComponent } from './pages/delete/product-delete-dial
 import { ProductCreateComponent } from './pages/create/product-create.component';
 import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
 import { ProductImportComponent } from './pages/import/product-import.component';
-import { NgxFileDropModule } from 'ngx-file-drop';
 import { DragAndDropDirective } from './directive/drag-and-drop.directive';
+import { FileUploadModule } from 'ng2-file-upload';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,6 @@ import { DragAndDropDirective } from './directive/drag-and-drop.directive';
     ProductDeleteDialogComponent,
     DragAndDropDirective,
   ],
-  imports: [SharedModule, ProductRoutingModule, NgxFileDropModule, ContentHeaderModule],
+  imports: [SharedModule, ProductRoutingModule, NgxPaginationModule, ContentHeaderModule, FileUploadModule],
 })
 export class ProductModule {}

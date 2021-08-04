@@ -34,6 +34,10 @@ export class Product implements IProduct {
   ) {}
 }
 
+export class RawProduct implements IProduct {
+  constructor(public sku: string, public name: string, public price: string) {}
+}
+
 export function getProductIdentifier(product: IProduct): number | undefined {
   return product.id;
 }
