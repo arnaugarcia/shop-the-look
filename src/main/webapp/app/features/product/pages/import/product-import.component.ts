@@ -53,7 +53,7 @@ export class ProductImportComponent {
       },
     };
     this.config = {
-      itemsPerPage: 10,
+      itemsPerPage: 5,
       currentPage: 1,
       totalItems: this.products.length,
     };
