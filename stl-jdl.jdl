@@ -111,6 +111,7 @@ entity Product {
     name String required,
     description String required,
     link String required,
+    reference String required,
     imageLink String required,
     additionalImageLink String,
     availability ProductAvailability required,

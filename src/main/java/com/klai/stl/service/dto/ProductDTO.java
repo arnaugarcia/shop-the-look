@@ -25,6 +25,9 @@ public class ProductDTO implements Serializable {
     private String link;
 
     @NotNull
+    private String reference;
+
+    @NotNull
     private String imageLink;
 
     private String additionalImageLink;
@@ -75,6 +78,14 @@ public class ProductDTO implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public String getImageLink() {
@@ -147,6 +158,7 @@ public class ProductDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
+            ", reference='" + getReference() + "'" +
             ", imageLink='" + getImageLink() + "'" +
             ", additionalImageLink='" + getAdditionalImageLink() + "'" +
             ", availability='" + getAvailability() + "'" +

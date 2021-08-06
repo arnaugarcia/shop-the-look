@@ -39,6 +39,10 @@ public class Product implements Serializable {
     private String link;
 
     @NotNull
+    @Column(name = "reference", nullable = false)
+    private String reference;
+
+    @NotNull
     @Column(name = "image_link", nullable = false)
     private String imageLink;
 
@@ -133,6 +137,19 @@ public class Product implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public Product reference(String reference) {
+        this.reference = reference;
+        return this;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public String getImageLink() {
