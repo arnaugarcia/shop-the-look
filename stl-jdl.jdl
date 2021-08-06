@@ -189,4 +189,6 @@ service * with serviceImpl except GoogleFeedProduct, Coordinate, Preferences
 
 filter Product, GoogleFeedProduct, Space, Photo
 
+paginate Product, Space with pagination
+
 #title: stl-jdl
