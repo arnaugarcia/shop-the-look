@@ -1,21 +1,29 @@
 package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.*;
+import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
+import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.repository.ProductRepository;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.mapper.ProductMapper;
+import java.util.Optional;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for the {@link ProductResource} REST controller.
@@ -46,8 +54,8 @@ class ProductResourceIT {
     private static final ProductAvailability DEFAULT_AVAILABILITY = ProductAvailability.IN_STOCK;
     private static final ProductAvailability UPDATED_AVAILABILITY = ProductAvailability.OUT_OF_STOCK;
 
-    private static final String DEFAULT_PRICE = "AAAAAAAAAA";
-    private static final String UPDATED_PRICE = "BBBBBBBBBB";
+    private static final float DEFAULT_PRICE = 15.80f;
+    private static final float UPDATED_PRICE = 10.80f;
 
     private static final String DEFAULT_CATEGORY = "AAAAAAAAAA";
     private static final String UPDATED_CATEGORY = "BBBBBBBBBB";
@@ -55,7 +63,7 @@ class ProductResourceIT {
     private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
 
     private static final String ENTITY_API_URL = "/api/products";
-    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{sku}";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{reference}";
 
     @Autowired
     private ProductRepository productRepository;
@@ -70,6 +78,21 @@ class ProductResourceIT {
     private MockMvc restProductMockMvc;
 
     private Product product;
+
+    private Company company;
+
+    private User user;
+
+    private ProductRequest productRequest;
+
+    @BeforeEach
+    public void initTest() {
+        productRequest = buildRequest();
+        user = UserResourceIT.createEntity(em, "product-user");
+        company = CompanyResourceIT.createBasicEntity(em);
+        company.addUser(user);
+        em.persist(company);
+    }
 
     /**
      * Create an entity for this test.
@@ -87,7 +110,7 @@ class ProductResourceIT {
             .imageLink(DEFAULT_IMAGE_LINK)
             .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
             .availability(DEFAULT_AVAILABILITY)
-            .price(DEFAULT_PRICE)
+            .price("DEFAULT_PRICE")
             .category(DEFAULT_CATEGORY);
         // Add required entity
         Company company;
@@ -102,15 +125,39 @@ class ProductResourceIT {
         return product;
     }
 
-    @BeforeEach
-    public void initTest() {
-        product = createEntity(em);
+    private ProductRequest buildRequest() {
+        return ProductRequest.builder().name(DEFAULT_NAME).price(DEFAULT_PRICE).sku(DEFAULT_SKU).build();
     }
 
     @Test
     @Transactional
-    @WithMockUser(authorities = ADMIN)
-    public void createSingleProductAsAdmin() {}
+    @WithMockUser(authorities = ADMIN, username = "product-user")
+    public void createSingleProductAsAdmin() throws Exception {
+        int databaseSizeBeforeCreate = productRepository.findAll().size();
+
+        restProductMockMvc
+            .perform(
+                post(ENTITY_API_URL + "?company=" + company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(productRequest))
+            )
+            .andExpect(status().isCreated());
+
+        int databaseSizeAfterCreate = productRepository.findAll().size();
+        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
+
+        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
+        assertThat(productOptional).isPresent();
+
+        Product result = productOptional.get();
+
+        assertThat(result.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(result.getPrice()).isEqualTo(DEFAULT_PRICE);
+        assertThat(result.getSku()).isEqualTo(DEFAULT_SKU);
+        assertThat(result.getCompany()).isNotNull();
+        assertThat(result.getCompany().getReference()).isNotBlank();
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+    }
 
     @Test
     @Transactional
