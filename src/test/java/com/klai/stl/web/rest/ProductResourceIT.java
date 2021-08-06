@@ -1,6 +1,7 @@
 package com.klai.stl.web.rest;
 
-import static com.klai.stl.security.AuthoritiesConstants.*;
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
+import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static java.util.List.of;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -71,6 +73,8 @@ class ProductResourceIT {
 
     private static final String ENTITY_API_URL = "/api/products";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{reference}";
+
+    private static final String PRODUCT_USER_LOGIN = "product-user";
 
     @Autowired
     private ProductRepository productRepository;
@@ -128,7 +132,7 @@ class ProductResourceIT {
     public void initTest() {
         productRequest = buildRequest();
         productUpdateRequest = buildUpdateRequest();
-        user = UserResourceIT.createEntity(em, "product-user");
+        user = UserResourceIT.createEntity(em, PRODUCT_USER_LOGIN);
         company = createBasicCompany(em);
         company.addUser(user);
         em.persist(company);
@@ -157,7 +161,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = ADMIN, username = "product-user")
+    @WithMockUser(authorities = ADMIN, username = PRODUCT_USER_LOGIN)
     public void createSingleProductAsAdmin() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
@@ -361,7 +365,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
+    @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
     public void createASingleProductForOtherCompanyAsManager() throws Exception {
         Company company = createBasicCompany(em);
 
@@ -426,7 +430,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
+    @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
     public void updateOtherProductCompanyAsManager() throws Exception {
         Company company = createBasicCompany(em);
 
@@ -509,7 +513,7 @@ class ProductResourceIT {
     @Test
     @Transactional
     @WithMockUser
-    public void findAllProductsAsUser() {
+    public void findAllProductsAsUser() throws Exception {
         Company company1 = createBasicCompany(em);
         Company company2 = createBasicCompany(em);
         Product product1 = createProduct(em);
@@ -527,16 +531,19 @@ class ProductResourceIT {
     }
 
     @Test
+    @Disabled
     @Transactional
     @WithMockUser(authorities = ADMIN)
     public void filterProductsAsAdmin() {}
 
     @Test
+    @Disabled
     @Transactional
     @WithMockUser(authorities = MANAGER)
     public void filterProductsAsManager() {}
 
     @Test
+    @Disabled
     @Transactional
     @WithMockUser
     public void filterProductsAsUser() {}
@@ -544,30 +551,66 @@ class ProductResourceIT {
     @Test
     @Transactional
     @WithMockUser(authorities = ADMIN)
-    public void deleteProductAsAdmin() {}
+    public void deleteProductAsAdmin() throws Exception {
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+    }
 
     @Test
     @Transactional
     @WithMockUser(authorities = MANAGER)
-    public void deleteProductAsManager() {}
+    public void deleteProductAsManager() throws Exception {
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void deleteProductAsUser() {}
+    public void deleteProductAsUser() throws Exception {
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+    }
 
     @Test
     @Transactional
-    @WithMockUser(authorities = USER)
-    public void deleteOtherCompanyProductAsAdmin() {}
+    @WithMockUser(authorities = ADMIN, username = PRODUCT_USER_LOGIN)
+    public void deleteOtherCompanyProductAsAdmin() throws Exception {
+        Company company1 = createBasicCompany(em);
+        Product product1 = createProduct(em);
+        company1.addProduct(product1);
+
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+    }
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
-    public void deleteOtherCompanyProductAsManager() {}
+    @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
+    public void deleteOtherCompanyProductAsManager() throws Exception {
+        Company company1 = createBasicCompany(em);
+        Product product1 = createProduct(em);
+        company1.addProduct(product1);
+
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+    }
 
     @Test
     @Transactional
-    @WithMockUser
-    public void deleteOtherCompanyProductAsUser() {}
+    @WithMockUser(username = PRODUCT_USER_LOGIN)
+    public void deleteOtherCompanyProductAsUser() throws Exception {
+        Company company1 = createBasicCompany(em);
+        Product product1 = createProduct(em);
+        company1.addProduct(product1);
+
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+    }
 }
