@@ -16,4 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Optional<Product> findByReference(String reference);
 
     List<Product> findByCompanyReference(String reference);
+
+    Optional<Product> findBySku(String sku);
 }
