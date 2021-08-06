@@ -2,7 +2,7 @@ package com.klai.stl.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.Space} entity.
@@ -24,8 +24,6 @@ public class SpaceDTO implements Serializable {
     private Integer maxPhotos;
 
     private Boolean visible;
-
-    private CompanyDTO company;
 
     public Long getId() {
         return id;
@@ -83,14 +81,6 @@ public class SpaceDTO implements Serializable {
         this.visible = visible;
     }
 
-    public CompanyDTO getCompany() {
-        return company;
-    }
-
-    public void setCompany(CompanyDTO company) {
-        this.company = company;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -123,7 +113,6 @@ public class SpaceDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", maxPhotos=" + getMaxPhotos() +
             ", visible='" + getVisible() + "'" +
-            ", company=" + getCompany() +
             "}";
     }
 }

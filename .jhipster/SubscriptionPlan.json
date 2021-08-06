@@ -13,7 +13,7 @@
     {
       "fieldName": "category",
       "fieldType": "SubscriptionCategory",
-      "fieldValues": "BRONZE,SILVER,GOLD,PLATINUM",
+      "fieldValues": "BRONZE,SILVER,GOLD",
       "fieldValidateRules": ["required"]
     },
     {

@@ -5,12 +5,11 @@ import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.mapper.SpaceMapper;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,9 +58,9 @@ public class SpaceServiceImpl implements SpaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SpaceDTO> findAll() {
+    public Page<SpaceDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Spaces");
-        return spaceRepository.findAll().stream().map(spaceMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return spaceRepository.findAll(pageable).map(spaceMapper::toDto);
     }
 
     @Override

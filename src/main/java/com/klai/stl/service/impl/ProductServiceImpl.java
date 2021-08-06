@@ -5,12 +5,11 @@ import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.mapper.ProductMapper;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,9 +58,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll() {
+    public Page<ProductDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Products");
-        return productRepository.findAll().stream().map(productMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return productRepository.findAll(pageable).map(productMapper::toDto);
     }
 
     @Override

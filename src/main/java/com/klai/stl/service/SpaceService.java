@@ -1,8 +1,9 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.SpaceDTO;
-import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Space}.
@@ -27,9 +28,10 @@ public interface SpaceService {
     /**
      * Get all the spaces.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<SpaceDTO> findAll();
+    Page<SpaceDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" space.

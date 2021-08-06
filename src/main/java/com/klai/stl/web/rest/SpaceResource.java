@@ -16,9 +16,14 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -140,14 +145,16 @@ public class SpaceResource {
     /**
      * {@code GET  /spaces} : get all the spaces.
      *
+     * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of spaces in body.
      */
     @GetMapping("/spaces")
-    public ResponseEntity<List<SpaceDTO>> getAllSpaces(SpaceCriteria criteria) {
+    public ResponseEntity<List<SpaceDTO>> getAllSpaces(SpaceCriteria criteria, Pageable pageable) {
         log.debug("REST request to get Spaces by criteria: {}", criteria);
-        List<SpaceDTO> entityList = spaceQueryService.findByCriteria(criteria);
-        return ResponseEntity.ok().body(entityList);
+        Page<SpaceDTO> page = spaceQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**

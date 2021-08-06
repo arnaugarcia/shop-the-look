@@ -37,10 +37,6 @@ public class ProductDTO implements Serializable {
 
     private String category;
 
-    private CompanyDTO company;
-
-    private CoordinateDTO coordinate;
-
     public Long getId() {
         return id;
     }
@@ -121,22 +117,6 @@ public class ProductDTO implements Serializable {
         this.category = category;
     }
 
-    public CompanyDTO getCompany() {
-        return company;
-    }
-
-    public void setCompany(CompanyDTO company) {
-        this.company = company;
-    }
-
-    public CoordinateDTO getCoordinate() {
-        return coordinate;
-    }
-
-    public void setCoordinate(CoordinateDTO coordinate) {
-        this.coordinate = coordinate;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -172,8 +152,6 @@ public class ProductDTO implements Serializable {
             ", availability='" + getAvailability() + "'" +
             ", price='" + getPrice() + "'" +
             ", category='" + getCategory() + "'" +
-            ", company=" + getCompany() +
-            ", coordinate=" + getCoordinate() +
             "}";
     }
 }
