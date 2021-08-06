@@ -1,5 +1,6 @@
 package com.klai.stl.security;
 
+import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -8,7 +9,6 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
-import com.klai.stl.web.rest.CompanyResourceIT;
 import java.util.Locale;
 import javax.persistence.EntityManager;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -47,7 +47,7 @@ class DomainUserDetailsServiceIT {
 
     @BeforeEach
     public void init() {
-        final Company company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
+        final Company company = companyRepository.save(createBasicCompany(em));
         User userOne = new User();
         userOne.setLogin(USER_ONE_LOGIN);
         userOne.setPassword(RandomStringUtils.random(60));

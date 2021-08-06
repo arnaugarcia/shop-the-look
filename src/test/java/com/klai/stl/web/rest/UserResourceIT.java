@@ -177,7 +177,7 @@ class UserResourceIT {
 
     @BeforeEach
     public void initTest() {
-        company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
+        company = companyRepository.save(CompanyResourceIT.createBasicCompany(em));
         user = initTestUser(company, em);
     }
 
@@ -300,7 +300,7 @@ class UserResourceIT {
     @Test
     @Transactional
     public void createAUserWithACompany() throws Exception {
-        final Company company = CompanyResourceIT.createBasicEntity(em);
+        final Company company = CompanyResourceIT.createBasicCompany(em);
         em.persist(company);
         user.setCompany(company);
         userRepository.saveAndFlush(user);

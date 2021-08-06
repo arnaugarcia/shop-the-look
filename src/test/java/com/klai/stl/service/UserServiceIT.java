@@ -1,6 +1,6 @@
 package com.klai.stl.service;
 
-import static com.klai.stl.web.rest.CompanyResourceIT.createBasicEntity;
+import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -9,7 +9,6 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
-import com.klai.stl.web.rest.CompanyResourceIT;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -67,7 +66,7 @@ class UserServiceIT {
 
     @BeforeEach
     public void init() {
-        Company company = companyRepository.save(CompanyResourceIT.createBasicEntity(em));
+        Company company = companyRepository.save(createBasicCompany(em));
         user = new User();
         user.setLogin(DEFAULT_LOGIN);
         user.setPassword(RandomStringUtils.random(60));

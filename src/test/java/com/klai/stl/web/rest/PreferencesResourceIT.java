@@ -69,7 +69,7 @@ class PreferencesResourceIT {
     @BeforeEach
     public void initTest() {
         preferencesRequest = createRequest();
-        company = CompanyResourceIT.createBasicEntity(em);
+        company = CompanyResourceIT.createBasicCompany(em);
     }
 
     @Test

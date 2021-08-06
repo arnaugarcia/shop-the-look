@@ -142,7 +142,7 @@ public class CompanyResourceIT {
         return company;
     }
 
-    public static Company createBasicEntity(EntityManager em) {
+    public static Company createBasicCompany(EntityManager em) {
         Company company = new Company()
             .name(DEFAULT_NAME)
             .nif(randomAlphanumeric(8))
