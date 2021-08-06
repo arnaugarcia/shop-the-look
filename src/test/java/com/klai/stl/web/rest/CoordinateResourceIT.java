@@ -1,5 +1,7 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.web.rest.ProductResourceIT.createProduct;
+
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Coordinate;
 import com.klai.stl.domain.Photo;
@@ -30,7 +32,7 @@ class CoordinateResourceIT {
         // Add required entity
         Product product;
         if (TestUtil.findAll(em, Product.class).isEmpty()) {
-            product = ProductResourceIT.createEntity(em);
+            product = createProduct(em);
             em.persist(product);
             em.flush();
         } else {
