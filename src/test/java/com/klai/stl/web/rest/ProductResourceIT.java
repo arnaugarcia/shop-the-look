@@ -7,9 +7,10 @@ import static java.util.List.of;
 import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
@@ -98,9 +99,9 @@ class ProductResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Product createEntity(EntityManager em) {
+    public static Product createProduct(EntityManager em) {
         Product product = new Product()
-            .sku(DEFAULT_SKU)
+            .sku(DEFAULT_SKU + randomAlphabetic(5).toUpperCase(ROOT))
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
@@ -131,7 +132,7 @@ class ProductResourceIT {
         company = createBasicCompany(em);
         company.addUser(user);
         em.persist(company);
-        product = createEntity(em);
+        product = createProduct(em);
         product.setCompany(company);
         em.persist(product);
     }
@@ -468,17 +469,62 @@ class ProductResourceIT {
     @Test
     @Transactional
     @WithMockUser(authorities = ADMIN)
-    public void findAllProductsAsAdmin() {}
+    public void findAllProductsAsAdmin() throws Exception {
+        Company company1 = createBasicCompany(em);
+        Company company2 = createBasicCompany(em);
+        Product product1 = createProduct(em);
+        Product product2 = createProduct(em);
+        Product product3 = createProduct(em);
+
+        company1.addProduct(product1);
+        company1.addProduct(product2);
+        company2.addProduct(product3);
+
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(3)));
+    }
 
     @Test
     @Transactional
     @WithMockUser(authorities = MANAGER)
-    public void findAllProductsAsManager() {}
+    public void findAllProductsAsManager() throws Exception {
+        Company company1 = createBasicCompany(em);
+        Company company2 = createBasicCompany(em);
+        Product product1 = createProduct(em);
+        Product product2 = createProduct(em);
+        Product product3 = createProduct(em);
+
+        company1.addProduct(product1);
+        company1.addProduct(product2);
+        company2.addProduct(product3);
+
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void findAllProductsAsUser() {}
+    public void findAllProductsAsUser() {
+        Company company1 = createBasicCompany(em);
+        Company company2 = createBasicCompany(em);
+        Product product1 = createProduct(em);
+        Product product2 = createProduct(em);
+        Product product3 = createProduct(em);
+
+        company1.addProduct(product1);
+        company1.addProduct(product2);
+        company2.addProduct(product3);
+
+        restProductMockMvc
+            .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
+    }
 
     @Test
     @Transactional
