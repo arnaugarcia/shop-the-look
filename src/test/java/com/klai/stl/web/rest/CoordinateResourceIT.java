@@ -49,35 +49,4 @@ class CoordinateResourceIT {
         coordinate.setPhoto(photo);
         return coordinate;
     }
-
-    /**
-     * Create an updated entity for this test.
-     * <p>
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Coordinate createUpdatedEntity(EntityManager em) {
-        Coordinate coordinate = new Coordinate().x(UPDATED_X).y(UPDATED_Y);
-        // Add required entity
-        Product product;
-        if (TestUtil.findAll(em, Product.class).isEmpty()) {
-            product = ProductResourceIT.createUpdatedEntity(em);
-            em.persist(product);
-            em.flush();
-        } else {
-            product = TestUtil.findAll(em, Product.class).get(0);
-        }
-        coordinate.getProducts().add(product);
-        // Add required entity
-        Photo photo;
-        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
-            photo = PhotoResourceIT.createUpdatedEntity(em);
-            em.persist(photo);
-            em.flush();
-        } else {
-            photo = TestUtil.findAll(em, Photo.class).get(0);
-        }
-        coordinate.setPhoto(photo);
-        return coordinate;
-    }
 }
