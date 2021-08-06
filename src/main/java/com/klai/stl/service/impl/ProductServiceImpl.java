@@ -1,10 +1,14 @@
 package com.klai.stl.service.impl;
 
+import static java.util.List.of;
+import static java.util.stream.Collectors.toList;
+
 import com.klai.stl.domain.Product;
 import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.mapper.ProductMapper;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +37,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO save(ProductDTO productDTO) {
-        log.debug("Request to save Product : {}", productDTO);
-        Product product = productMapper.toEntity(productDTO);
-        product = productRepository.save(product);
-        return productMapper.toDto(product);
+        return save(of(productDTO)).get(0);
+    }
+
+    @Override
+    public List<ProductDTO> save(List<ProductDTO> products) {
+        log.debug("Request to save Product : {}", products);
+        List<Product> result = products.stream().map(productMapper::toEntity).collect(toList());
+        result = productRepository.saveAll(result);
+        return productMapper.toDto(result);
     }
 
     @Override

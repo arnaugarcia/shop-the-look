@@ -54,20 +54,17 @@ public class ProductResource {
     /**
      * {@code POST  /products} : Create a new product.
      *
-     * @param productDTO the productDTO to create.
+     * @param products the list or individual product to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productDTO, or with status {@code 400 (Bad Request)} if the product has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/products")
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) throws URISyntaxException {
-        log.debug("REST request to save Product : {}", productDTO);
-        if (productDTO.getId() != null) {
-            throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        ProductDTO result = productService.save(productDTO);
+    public ResponseEntity<List<ProductDTO>> createProduct(@Valid @RequestBody List<ProductDTO> products) throws URISyntaxException {
+        log.debug("REST request to save products with size {}", products.size());
+        List<ProductDTO> result = productService.save(products);
         return ResponseEntity
-            .created(new URI("/api/products/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .created(new URI("/api/products"))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, ENTITY_NAME))
             .body(result);
     }
 

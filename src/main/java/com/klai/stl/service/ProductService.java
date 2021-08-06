@@ -1,6 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.ProductDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,14 @@ public interface ProductService {
      * @return the persisted entity.
      */
     ProductDTO save(ProductDTO productDTO);
+
+    /**
+     * Save a product.
+     *
+     * @param products the products to save.
+     * @return the persisted entity.
+     */
+    List<ProductDTO> save(List<ProductDTO> products);
 
     /**
      * Partially updates a product.
