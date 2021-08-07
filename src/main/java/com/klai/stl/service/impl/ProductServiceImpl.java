@@ -1,6 +1,7 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
 
 import com.klai.stl.domain.Company;
@@ -52,11 +53,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> importProducts(ImportProductRequest importProductRequest, String companyReference) {
-        if (!isCurrentUserAdmin()) {
+        if (isCurrentUserAdmin() && isNull(companyReference)) {
             throw new BadOwnerException();
         }
-        Company company = companyService.findByReference(companyReference);
-        return importProducts(importProductRequest, company);
+        if (isCurrentUserAdmin()) {
+            Company company = companyService.findByReference(companyReference);
+            return importProducts(importProductRequest, company);
+        }
+        return importProducts(importProductRequest);
     }
 
     @Override
