@@ -27,15 +27,11 @@
             <column name="reference" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="image_link" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="image_link" type="varchar(255)"/>
             <column name="additional_image_link" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="availability" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="availability" type="varchar(255)"/>
             <column name="price" type="varchar(255)">
                 <constraints nullable="false" />
             </column>

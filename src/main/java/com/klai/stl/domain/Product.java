@@ -42,16 +42,14 @@ public class Product implements Serializable {
     @Column(name = "reference", nullable = false)
     private String reference;
 
-    @NotNull
-    @Column(name = "image_link", nullable = false)
+    @Column(name = "image_link")
     private String imageLink;
 
     @Column(name = "additional_image_link")
     private String additionalImageLink;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "availability", nullable = false)
+    @Column(name = "availability")
     private ProductAvailability availability;
 
     @NotNull
