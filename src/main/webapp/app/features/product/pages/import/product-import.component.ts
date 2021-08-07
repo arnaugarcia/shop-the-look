@@ -7,6 +7,7 @@ import { ProductService } from '../../services/product.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImportModalSuccessComponent } from '../../components/import-modal-success/import-modal-success.component';
 import { ImportModalErrorComponent } from '../../components/import-modal-error/import-modal-error.component';
+import { ImportProduct } from '../../models/product-import.model';
 
 @Component({
   selector: 'stl-product-import',
@@ -96,7 +97,7 @@ export class ProductImportComponent {
 
   importProducts(): void {
     this.loading = true;
-    this.productService.create(this.products).subscribe(
+    this.productService.import(new ImportProduct(this.products)).subscribe(
       () => {
         this.loading = false;
         this.modalService.open(ImportModalSuccessComponent, {

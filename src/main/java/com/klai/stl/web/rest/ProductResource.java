@@ -57,7 +57,7 @@ public class ProductResource {
     @PostMapping("/products")
     public ResponseEntity<List<ProductDTO>> createProduct(
         @Valid @RequestBody ImportProductRequest importRequest,
-        @RequestParam String companyReference
+        @RequestParam(required = false) String companyReference
     ) throws URISyntaxException {
         log.debug("REST request to save products with size {}", importRequest.getProducts().size());
         List<ProductDTO> result = productService.importProducts(importRequest, companyReference);
