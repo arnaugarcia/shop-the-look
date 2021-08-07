@@ -3,6 +3,8 @@ package com.klai.stl.web.rest;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
+import com.klai.stl.service.dto.requests.ImportProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.impl.ProductQueryService;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,41 +50,41 @@ public class ProductResource {
     /**
      * {@code POST  /products} : Create a new product.
      *
-     * @param products the list or individual product to create.
+     * @param importRequest the parameters to import and the products.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productDTO, or with status {@code 400 (Bad Request)} if the product has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/products")
-    public ResponseEntity<List<ProductDTO>> createProduct(@Valid @RequestBody List<ProductDTO> products) throws URISyntaxException {
-        log.debug("REST request to save products with size {}", products.size());
-        List<ProductDTO> result = productService.save(products);
-        return ResponseEntity
-            .created(new URI("/api/products"))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, ENTITY_NAME))
-            .body(result);
+    public ResponseEntity<List<ProductDTO>> createProduct(
+        @Valid @RequestBody ImportProductRequest importRequest,
+        @RequestParam String companyReference
+    ) throws URISyntaxException {
+        log.debug("REST request to save products with size {}", importRequest.getProducts().size());
+        List<ProductDTO> result = productService.importProducts(importRequest, companyReference);
+        return ResponseEntity.created(new URI("/api/products")).body(result);
     }
 
     /**
      * {@code PUT  /products/:id} : Updates an existing product.
      *
-     * @param id         the id of the productDTO to save.
-     * @param productDTO the productDTO to update.
+     * @param reference      the id of the productDTO to save.
+     * @param productRequest the product request to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated productDTO,
      * or with status {@code 400 (Bad Request)} if the productDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the productDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/products/{id}")
+    @PutMapping("/products/{reference}")
     public ResponseEntity<ProductDTO> updateProduct(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody ProductDTO productDTO
+        @PathVariable(value = "reference") final String reference,
+        @Valid @RequestBody ProductRequest productRequest
     ) throws URISyntaxException {
-        log.debug("REST request to update Product : {}, {}", id, productDTO);
+        log.debug("REST request to update Product : {}, {}", reference, productRequest);
 
-        ProductDTO result = productService.save(productDTO);
+        ProductDTO result = productService.update(productRequest);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productRequest.getSku().toString()))
             .body(result);
     }
 

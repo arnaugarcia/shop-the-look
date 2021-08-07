@@ -1,19 +1,23 @@
 package com.klai.stl.service.impl;
 
-import static java.util.List.of;
+import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static java.util.stream.Collectors.toList;
 
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
 import com.klai.stl.repository.ProductRepository;
+import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.ProductService;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.ProductDTO;
+import com.klai.stl.service.dto.requests.ImportProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
+import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,46 +34,55 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+    private final UserService userService;
+
+    private final CompanyService companyService;
+
+    public ProductServiceImpl(
+        ProductRepository productRepository,
+        ProductMapper productMapper,
+        UserService userService,
+        CompanyService companyService
+    ) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.userService = userService;
+        this.companyService = companyService;
     }
 
     @Override
-    public ProductDTO save(ProductDTO productDTO) {
-        return save(of(productDTO)).get(0);
+    public List<ProductDTO> importProducts(ImportProductRequest importProductRequest, String companyReference) {
+        if (!isCurrentUserAdmin()) {
+            throw new BadOwnerException();
+        }
+        Company company = companyService.findByReference(companyReference);
+        return importProducts(importProductRequest, company);
     }
 
     @Override
-    public List<ProductDTO> save(List<ProductDTO> products) {
-        log.debug("Request to save Product : {}", products);
-        List<Product> result = products.stream().map(productMapper::toEntity).collect(toList());
-        result = productRepository.saveAll(result);
-        return productMapper.toDto(result);
+    public List<ProductDTO> importProducts(ImportProductRequest importRequest) {
+        return importProducts(importRequest, userService.getCurrentUser().getCompany());
+    }
+
+    private List<ProductDTO> importProducts(ImportProductRequest importProductRequest, Company company) {
+        List<Product> products = importProductRequest
+            .getProducts()
+            .stream()
+            .map(productMapper::toEntity)
+            .peek(product -> product.setCompany(company))
+            .collect(toList());
+
+        return saveAndTransform(products);
+    }
+
+    private List<ProductDTO> saveAndTransform(List<Product> products) {
+        return productRepository.saveAll(products).stream().map(productMapper::toDto).collect(toList());
     }
 
     @Override
-    public Optional<ProductDTO> partialUpdate(ProductDTO productDTO) {
-        log.debug("Request to partially update Product : {}", productDTO);
-
-        return productRepository
-            .findById(productDTO.getId())
-            .map(
-                existingProduct -> {
-                    productMapper.partialUpdate(existingProduct, productDTO);
-
-                    return existingProduct;
-                }
-            )
-            .map(productRepository::save)
-            .map(productMapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Products");
-        return productRepository.findAll(pageable).map(productMapper::toDto);
+    public ProductDTO update(ProductRequest productRequest) {
+        log.debug("Request to save Product : {}", productRequest);
+        return null;
     }
 
     @Override

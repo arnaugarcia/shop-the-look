@@ -1,46 +1,32 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.ProductDTO;
+import com.klai.stl.service.dto.requests.ImportProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Product}.
  */
 public interface ProductService {
+    List<ProductDTO> importProducts(ImportProductRequest importProductRequest, String companyReference);
+
     /**
-     * Save a product.
+     * Update a product.
      *
-     * @param productDTO the entity to save.
+     * @param productRequest the entity to save.
      * @return the persisted entity.
      */
-    ProductDTO save(ProductDTO productDTO);
+    ProductDTO update(ProductRequest productRequest);
 
     /**
      * Save a product.
      *
-     * @param products the products to save.
-     * @return the persisted entity.
+     * @param importRequest the request containing all the products and the required parameters.
+     * @return the persisted entities.
      */
-    List<ProductDTO> save(List<ProductDTO> products);
-
-    /**
-     * Partially updates a product.
-     *
-     * @param productDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<ProductDTO> partialUpdate(ProductDTO productDTO);
-
-    /**
-     * Get all the products.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<ProductDTO> findAll(Pageable pageable);
+    List<ProductDTO> importProducts(ImportProductRequest importRequest);
 
     /**
      * Get the "id" product.

@@ -2,6 +2,7 @@ package com.klai.stl.service.mapper;
 
 import com.klai.stl.domain.Product;
 import com.klai.stl.service.dto.ProductDTO;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import org.mapstruct.Mapper;
 
 /**
@@ -10,4 +11,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     ProductDTO toDto(Product s);
+
+    Product toEntity(ProductRequest product);
 }

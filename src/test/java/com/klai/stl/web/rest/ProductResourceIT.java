@@ -613,4 +613,30 @@ class ProductResourceIT {
             .perform(get(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
             .andExpect(status().isForbidden());
     }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    public void updateNonExistingCompanyAsAdmin() throws Exception {
+        restProductMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, product.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(productUpdateRequest))
+            )
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    public void updateNonExistingCompanyAsManager() throws Exception {
+        restProductMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, product.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(productUpdateRequest))
+            )
+            .andExpect(status().isNotFound());
+    }
 }
