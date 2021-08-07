@@ -1,8 +1,10 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
+import static java.util.Locale.ROOT;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
@@ -12,7 +14,7 @@ import com.klai.stl.service.ProductService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.ImportProductRequest;
-import com.klai.stl.service.dto.requests.ProductRequest;
+import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.List;
@@ -74,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
             .stream()
             .map(productMapper::toEntity)
             .peek(product -> product.setCompany(company))
+            .peek(product -> product.setReference(randomAlphanumeric(15).toUpperCase(ROOT)))
             .collect(toList());
 
         return saveAndTransform(products);
@@ -84,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO update(ProductRequest productRequest) {
+    public ProductDTO update(NewProductRequest productRequest) {
         log.debug("Request to save Product : {}", productRequest);
         return null;
     }
