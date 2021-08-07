@@ -12,5 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 public final class ImportProductRequest {
 
     private final boolean update;
-    private final List<ProductRequest> products = new ArrayList<>();
+
+    @Builder.Default
+    private final List<NewProductRequest> products = new ArrayList<>();
 }

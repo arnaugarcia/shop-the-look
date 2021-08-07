@@ -2,7 +2,7 @@ package com.klai.stl.service;
 
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.ImportProductRequest;
-import com.klai.stl.service.dto.requests.ProductRequest;
+import com.klai.stl.service.dto.requests.NewProductRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +18,7 @@ public interface ProductService {
      * @param productRequest the entity to save.
      * @return the persisted entity.
      */
-    ProductDTO update(ProductRequest productRequest);
+    ProductDTO update(NewProductRequest productRequest);
 
     /**
      * Save a product.

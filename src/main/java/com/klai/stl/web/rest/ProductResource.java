@@ -4,7 +4,7 @@ import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.ImportProductRequest;
-import com.klai.stl.service.dto.requests.ProductRequest;
+import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.impl.ProductQueryService;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -77,7 +77,7 @@ public class ProductResource {
     @PutMapping("/products/{reference}")
     public ResponseEntity<ProductDTO> updateProduct(
         @PathVariable(value = "reference") final String reference,
-        @Valid @RequestBody ProductRequest productRequest
+        @Valid @RequestBody NewProductRequest productRequest
     ) throws URISyntaxException {
         log.debug("REST request to update Product : {}, {}", reference, productRequest);
 
