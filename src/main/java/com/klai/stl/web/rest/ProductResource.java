@@ -1,15 +1,12 @@
 package com.klai.stl.web.rest;
 
-import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.impl.ProductQueryService;
-import com.klai.stl.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -41,13 +38,10 @@ public class ProductResource {
 
     private final ProductService productService;
 
-    private final ProductRepository productRepository;
-
     private final ProductQueryService productQueryService;
 
-    public ProductResource(ProductService productService, ProductRepository productRepository, ProductQueryService productQueryService) {
+    public ProductResource(ProductService productService, ProductQueryService productQueryService) {
         this.productService = productService;
-        this.productRepository = productRepository;
         this.productQueryService = productQueryService;
     }
 
@@ -84,16 +78,6 @@ public class ProductResource {
         @Valid @RequestBody ProductDTO productDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Product : {}, {}", id, productDTO);
-        if (productDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, productDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!productRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
 
         ProductDTO result = productService.save(productDTO);
         return ResponseEntity
