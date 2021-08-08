@@ -109,7 +109,7 @@ enum SubscriptionCategory {
 entity Product {
 	sku String required,
     name String required,
-    description String required,
+    description TextBlob required,
     link String required,
     reference String required,
     imageLink String required,

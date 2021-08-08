@@ -4,22 +4,38 @@
     {
       "fieldName": "sku",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "name",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "description",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "link",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "reference",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "imageLink",

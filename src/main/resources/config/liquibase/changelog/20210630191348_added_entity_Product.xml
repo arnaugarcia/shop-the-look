@@ -18,8 +18,8 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="description" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="description" type="${clobType}">
+                <constraints nullable="false"/>
             </column>
             <column name="link" type="varchar(255)">
                 <constraints nullable="false" />
@@ -66,7 +66,7 @@
             <column name="id" type="numeric"/>
             <column name="sku" type="string"/>
             <column name="name" type="string"/>
-            <column name="description" type="string"/>
+            <column name="description" type="clob"/>
             <column name="link" type="string"/>
             <column name="image_link" type="string"/>
             <column name="additional_image_link" type="string"/>

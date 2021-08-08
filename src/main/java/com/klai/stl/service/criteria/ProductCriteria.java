@@ -44,9 +44,9 @@ public class ProductCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
-    private StringFilter description;
-
     private StringFilter link;
+
+    private StringFilter reference;
 
     private StringFilter imageLink;
 
@@ -68,8 +68,8 @@ public class ProductCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.sku = other.sku == null ? null : other.sku.copy();
         this.name = other.name == null ? null : other.name.copy();
-        this.description = other.description == null ? null : other.description.copy();
         this.link = other.link == null ? null : other.link.copy();
+        this.reference = other.reference == null ? null : other.reference.copy();
         this.imageLink = other.imageLink == null ? null : other.imageLink.copy();
         this.additionalImageLink = other.additionalImageLink == null ? null : other.additionalImageLink.copy();
         this.availability = other.availability == null ? null : other.availability.copy();
@@ -129,21 +129,6 @@ public class ProductCriteria implements Serializable, Criteria {
         this.name = name;
     }
 
-    public StringFilter getDescription() {
-        return description;
-    }
-
-    public StringFilter description() {
-        if (description == null) {
-            description = new StringFilter();
-        }
-        return description;
-    }
-
-    public void setDescription(StringFilter description) {
-        this.description = description;
-    }
-
     public StringFilter getLink() {
         return link;
     }
@@ -157,6 +142,21 @@ public class ProductCriteria implements Serializable, Criteria {
 
     public void setLink(StringFilter link) {
         this.link = link;
+    }
+
+    public StringFilter getReference() {
+        return reference;
+    }
+
+    public void setReference(StringFilter reference) {
+        this.reference = reference;
+    }
+
+    public StringFilter reference() {
+        if (reference == null) {
+            reference = new StringFilter();
+        }
+        return reference;
     }
 
     public StringFilter getImageLink() {
@@ -277,8 +277,8 @@ public class ProductCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(sku, that.sku) &&
             Objects.equals(name, that.name) &&
-            Objects.equals(description, that.description) &&
             Objects.equals(link, that.link) &&
+            Objects.equals(reference, that.reference) &&
             Objects.equals(imageLink, that.imageLink) &&
             Objects.equals(additionalImageLink, that.additionalImageLink) &&
             Objects.equals(availability, that.availability) &&
@@ -295,8 +295,8 @@ public class ProductCriteria implements Serializable, Criteria {
             id,
             sku,
             name,
-            description,
             link,
+            reference,
             imageLink,
             additionalImageLink,
             availability,
@@ -314,8 +314,8 @@ public class ProductCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (sku != null ? "sku=" + sku + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
-            (description != null ? "description=" + description + ", " : "") +
             (link != null ? "link=" + link + ", " : "") +
+            (reference != null ? "reference=" + reference + ", " : "") +
             (imageLink != null ? "imageLink=" + imageLink + ", " : "") +
             (additionalImageLink != null ? "additionalImageLink=" + additionalImageLink + ", " : "") +
             (availability != null ? "availability=" + availability + ", " : "") +

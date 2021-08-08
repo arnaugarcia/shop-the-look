@@ -30,7 +30,7 @@ public class Product implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
+    @Lob
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -267,6 +267,7 @@ public class Product implements Serializable {
             "id=" + getId() +
             ", sku='" + getSku() + "'" +
             ", name='" + getName() + "'" +
+            ", reference='" + getReference() + "'" +
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", imageLink='" + getImageLink() + "'" +
