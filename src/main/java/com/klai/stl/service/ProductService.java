@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface ProductService {
     @Transactional
-    List<ProductDTO> importProducts(ImportProductRequest importProductRequest, String companyReference);
+    List<ProductDTO> importProducts(ImportProductRequest importProductRequest, String companyReference, boolean update);
 
     /**
      * Update a product.
@@ -29,7 +29,7 @@ public interface ProductService {
      * @return the persisted entities.
      */
     @Transactional
-    List<ProductDTO> importProducts(ImportProductRequest importRequest);
+    List<ProductDTO> importProducts(ImportProductRequest importRequest, boolean update);
 
     /**
      * Get the "id" product.
