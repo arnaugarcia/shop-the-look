@@ -22,7 +22,11 @@ export class ProductService {
   }
 
   import(importProduct: ImportProduct): Observable<EntityResponseType> {
-    return this.http.post<IProduct>(this.resourceUrl, importProduct, { observe: 'response' });
+    const options = createRequestOption({
+      update: importProduct.update,
+      companyReference: importProduct.companyReference,
+    });
+    return this.http.post<IProduct>(this.resourceUrl, importProduct, { observe: 'response', params: options });
   }
 
   update(product: IProduct): Observable<EntityResponseType> {

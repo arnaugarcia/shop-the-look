@@ -99,7 +99,7 @@ export class ProductImportComponent {
 
   importProducts(): void {
     this.loading = true;
-    this.productService.import(new ImportProduct(this.products)).subscribe(
+    this.productService.import(new ImportProduct(this.products, true)).subscribe(
       () => {
         this.loading = false;
         this.modalService.open(ImportModalSuccessComponent, {
