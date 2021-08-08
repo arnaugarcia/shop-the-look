@@ -85,8 +85,7 @@ export class ProductImportComponent {
         this.loading = false;
         this.fileItem = file;
         this.products = results.data.map(
-          (rawProduct: any) =>
-            new RawProduct(rawProduct[1], rawProduct[2], 'Product Description', 'https://arnaugarcia.com', rawProduct[10])
+          (rawProduct: any) => new RawProduct(rawProduct[0], rawProduct[1], rawProduct[4], rawProduct[2], rawProduct[21])
         );
         this.products.shift();
       },
