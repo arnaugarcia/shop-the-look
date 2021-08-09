@@ -13,14 +13,12 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.ImportProductRequest;
 import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -56,84 +54,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> importProducts(ImportProductRequest importProductRequest, String companyReference, boolean update) {
+    public List<ProductDTO> importProducts(List<NewProductRequest> importProducts, String companyReference, boolean update) {
         if (isCurrentUserAdmin() && isNull(companyReference)) {
             throw new BadOwnerException();
         }
         if (isCurrentUserAdmin()) {
             Company company = companyService.findByReference(companyReference);
-            return importProducts(importProductRequest, company, update);
+            return importProducts(importProducts, company, update);
         }
-        return importProducts(importProductRequest, update);
+        return importProducts(importProducts, update);
     }
 
     @Override
-    public List<ProductDTO> importProducts(ImportProductRequest importRequest, boolean update) {
-        return importProducts(importRequest, userService.getCurrentUser().getCompany(), update);
+    public List<ProductDTO> importProducts(List<NewProductRequest> importProducts, boolean update) {
+        return importProducts(importProducts, userService.getCurrentUser().getCompany(), update);
     }
 
-    private List<ProductDTO> importProducts(ImportProductRequest importProductRequest, Company company, boolean update) {
-        List<Product> products = new ArrayList<>();
-        if (update) {
-            final List<Product> companyProducts = productRepository.findByCompanyReference(company.getReference());
-            removeProducts(importProductRequest, companyProducts);
-            updateExistingProducts(importProductRequest, companyProducts);
-        } else {
+    private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company, boolean update) {
+        List<Product> result = new ArrayList<>();
+        if (!update) {
             productRepository.deleteAllByCompanyReference(company.getReference());
-            products =
-                importProductRequest
-                    .getProducts()
+            result =
+                importProducts
                     .stream()
                     .map(productMapper::toEntity)
                     .peek(product -> product.setCompany(company))
                     .peek(product -> product.setReference(randomAlphanumeric(15).toUpperCase(ROOT)))
                     .collect(toList());
-        }
-
-        return saveAndTransform(products);
-    }
-
-    private void updateExistingProducts(ImportProductRequest importProductRequest, List<Product> companyProducts) {
-        final List<Product> productsToUpdate = companyProducts
-            .stream()
-            .filter(product -> contains(importProductRequest.getProducts(), product))
-            .map(
-                product -> {
-                    final NewProductRequest productUpdate = importProductRequest
-                        .getProducts()
-                        .stream()
-                        .filter(newProductRequest -> newProductRequest.getSku().equals(product.getSku()))
-                        .findFirst()
-                        .get();
-                    final Product result = productMapper.toEntity(productUpdate);
-                    result.setId(product.getId());
-                    result.setCompany(product.getCompany());
-                    result.setReference(product.getReference());
-                    return result;
-                }
-            )
-            .collect(toList());
-        productRepository.saveAll(productsToUpdate);
-    }
-
-    private void removeProducts(ImportProductRequest importProductRequest, List<Product> companyProducts) {
-        final List<Product> productsToDelete = companyProducts
-            .stream()
-            .filter(product -> !contains(importProductRequest.getProducts(), product))
-            .collect(toList());
-        productRepository.deleteAll(productsToDelete);
-    }
-
-    private boolean contains(List<NewProductRequest> products, Product product) {
-        return products.stream().map(NewProductRequest::getSku).collect(toList()).contains(product.getSku());
-    }
-
-    private Predicate<Product> existingProducts(List<Product> companyProducts) {
-        return companyProduct -> companyProducts.stream().noneMatch(bySku(companyProduct.getSku()));
-    }
-
-    private Predicate<Product> bySku(String sku) {
-        return product -> product.getSku().equals(sku);
+        } else {}
+        return saveAndTransform(result);
     }
 
     private List<ProductDTO> saveAndTransform(List<Product> products) {

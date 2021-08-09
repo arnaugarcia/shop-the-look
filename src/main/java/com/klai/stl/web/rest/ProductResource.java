@@ -1,9 +1,10 @@
 package com.klai.stl.web.rest;
 
+import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
+
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.ImportProductRequest;
 import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.impl.ProductQueryService;
 import java.net.URI;
@@ -50,18 +51,18 @@ public class ProductResource {
     /**
      * {@code POST  /products} : Create a new product.
      *
-     * @param importRequest the parameters to import and the products.
+     * @param productRequests the parameters to import and the products.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productDTO, or with status {@code 400 (Bad Request)} if the product has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/products")
     public ResponseEntity<List<ProductDTO>> createProduct(
-        @Valid @RequestBody ImportProductRequest importRequest,
+        @Valid @RequestBody List<NewProductRequest> productRequests,
         @RequestParam(required = false) boolean update,
         @RequestParam(required = false) String companyReference
     ) throws URISyntaxException {
-        log.debug("REST request to save products with size {}", importRequest.getProducts().size());
-        List<ProductDTO> result = productService.importProducts(importRequest, companyReference, update);
+        log.debug("REST request to save products with size {}", productRequests.size());
+        List<ProductDTO> result = productService.importProducts(productRequests, companyReference, update);
         return ResponseEntity.created(new URI("/api/products")).body(result);
     }
 
@@ -79,13 +80,13 @@ public class ProductResource {
     public ResponseEntity<ProductDTO> updateProduct(
         @PathVariable(value = "reference") final String reference,
         @Valid @RequestBody NewProductRequest productRequest
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to update Product : {}, {}", reference, productRequest);
 
         ProductDTO result = productService.update(productRequest);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productRequest.getSku().toString()))
+            .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productRequest.getSku()))
             .body(result);
     }
 
