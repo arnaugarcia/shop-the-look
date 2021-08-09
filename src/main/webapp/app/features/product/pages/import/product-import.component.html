@@ -27,18 +27,24 @@
                 <label for="file-upload-multiple">Select CSV/TSV file:</label>
                 <div class="custom-file">
                   <input
-                    type="file"
-                    class="custom-file-input"
-                    ng2FileSelect
-                    [accept]="ACCEPTED_FILES"
-                    [uploader]="uploader"
                     (onFileSelected)="onFileDropped($event)"
+                    [accept]="ACCEPTED_FILES"
+                    ng2FileSelect
                     [disabled]="!products || loading"
+                    [uploader]="uploader"
+                    class="custom-file-input"
                     id="file-upload-multiple"
+                    type="file"
                   />
                   <label class="custom-file-label">Choose file</label>
                 </div>
               </fieldset>
+              <div class="custom-control custom-checkbox">
+                <input [(ngModel)]="updateProducts" checked class="custom-control-input" id="customCheck1" type="checkbox" />
+                <label class="custom-control-label" for="customCheck1"
+                  >Los productos existentes que coincidan en ID o SKU se actualizarán. Los productos que no existan se omitirán.</label
+                >
+              </div>
             </div>
 
             <div class="col-lg-9 overflow-auto">
@@ -70,11 +76,11 @@
                     <td>{{ product.price }}</td>
                     <td nowrap>
                       <button
-                        type="button"
-                        class="btn btn-raised btn-outline-danger btn-sm"
                         (click)="removeProduct(product)"
-                        rippleEffect
                         [disabled]="loading"
+                        class="btn btn-raised btn-outline-danger btn-sm"
+                        rippleEffect
+                        type="button"
                       >
                         <i [data-feather]="'trash'"></i>
                       </button>
@@ -83,14 +89,14 @@
                 </tbody>
               </table>
               <ngb-pagination
-                class="float-right"
-                *ngIf="products.length > 10"
-                [collectionSize]="products.length"
-                [(page)]="pageAdvancedEllipses"
-                [maxSize]="10"
                 (pageChange)="pageChanged($event)"
-                [rotate]="true"
+                *ngIf="products.length > 10"
+                [(page)]="pageAdvancedEllipses"
                 [boundaryLinks]="true"
+                [collectionSize]="products.length"
+                [maxSize]="10"
+                [rotate]="true"
+                class="float-right"
               >
                 <ng-template ngbPaginationFirst>First</ng-template>
                 <ng-template ngbPaginationPrevious>
@@ -104,25 +110,25 @@
               </ngb-pagination>
               <div>
                 <p class="mt-1">Upload process:</p>
-                <ngb-progressbar class="mb-1" type="primary" [value]="progressBar"></ngb-progressbar>
+                <ngb-progressbar [value]="progressBar" class="mb-1" type="primary"></ngb-progressbar>
                 <button
-                  type="button"
-                  class="btn mr-1 btn-primary mb-1 mb-sm-0"
                   (click)="importProducts()"
                   [disabled]="products.length == 0"
+                  class="btn mr-1 btn-primary mb-1 mb-sm-0"
+                  type="button"
                   rippleEffect
                 >
-                  <span data-feather="upload" class="mr-25"></span>
+                  <span class="mr-25" data-feather="upload"></span>
                   Upload all
                 </button>
                 <button
-                  type="button"
-                  class="btn btn-outline-danger mb-1 mb-sm-0"
                   (click)="removeAllFromQueue()"
                   [disabled]="products.length == 0"
+                  class="btn btn-outline-danger mb-1 mb-sm-0"
+                  type="button"
                   rippleEffect
                 >
-                  <span data-feather="trash" class="mr-25"></span> Remove all
+                  <span class="mr-25" data-feather="trash"></span> Remove all
                 </button>
               </div>
             </div>

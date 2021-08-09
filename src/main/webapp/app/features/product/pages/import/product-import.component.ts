@@ -28,6 +28,7 @@ export class ProductImportComponent {
   public ACCEPTED_FILES = ['text/csv, text/tsv'];
   public pageAdvancedEllipses = 7;
   public progressBar = 0;
+  public updateProducts = true;
 
   constructor(private papa: Papa, private productService: ProductService, private modalService: NgbModal) {
     this.contentHeader = {
@@ -99,7 +100,7 @@ export class ProductImportComponent {
 
   importProducts(): void {
     this.loading = true;
-    this.productService.import(new ImportProduct(this.products, true)).subscribe(
+    this.productService.import(new ImportProduct(this.products, this.updateProducts)).subscribe(
       () => {
         this.loading = false;
         this.modalService.open(ImportModalSuccessComponent, {
