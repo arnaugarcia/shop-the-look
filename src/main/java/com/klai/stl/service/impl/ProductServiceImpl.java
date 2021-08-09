@@ -14,6 +14,7 @@ import com.klai.stl.service.ProductService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.wrapper.ProductWrapper;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.ArrayList;
@@ -70,6 +71,13 @@ public class ProductServiceImpl implements ProductService {
         return importProducts(importProducts, userService.getCurrentUser().getCompany(), update);
     }
 
+    private static Product mergeProduct(Product original, Product result) {
+        result.setId(original.getId());
+        result.setReference(original.getReference());
+        result.setSku(original.getSku());
+        return result;
+    }
+
     private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company, boolean update) {
         List<Product> result = new ArrayList<>();
         if (!update) {
@@ -81,7 +89,29 @@ public class ProductServiceImpl implements ProductService {
                     .peek(product -> product.setCompany(company))
                     .peek(product -> product.setReference(randomAlphanumeric(15).toUpperCase(ROOT)))
                     .collect(toList());
-        } else {}
+        } else {
+            List<Product> deleteProducts = new ArrayList<>();
+
+            List<ProductWrapper> companyProducts = productRepository
+                .findByCompanyReference(company.getReference())
+                .stream()
+                .map(ProductWrapper::from)
+                .collect(toList());
+
+            List<ProductWrapper> newProducts = importProducts
+                .stream()
+                .map(productMapper::toEntity)
+                .map(ProductWrapper::from)
+                .collect(toList());
+            for (ProductWrapper product : companyProducts) {
+                if (newProducts.contains(product)) {
+                    result.add(mergeProduct(product.unwrap(), newProducts.get(newProducts.indexOf(product)).unwrap()));
+                } else {
+                    deleteProducts.add(product.unwrap());
+                }
+            }
+            productRepository.deleteAll(deleteProducts);
+        }
         return saveAndTransform(result);
     }
 
