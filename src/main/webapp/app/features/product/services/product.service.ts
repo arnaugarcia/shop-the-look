@@ -26,7 +26,7 @@ export class ProductService {
       update: importProduct.update,
       companyReference: importProduct.companyReference,
     });
-    return this.http.post<IProduct>(this.resourceUrl, importProduct, { observe: 'response', params: options });
+    return this.http.post<IProduct>(this.resourceUrl, importProduct.products, { observe: 'response', params: options });
   }
 
   update(product: IProduct): Observable<EntityResponseType> {
