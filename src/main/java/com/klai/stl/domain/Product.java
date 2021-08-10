@@ -31,7 +31,7 @@ public class Product implements Serializable {
     private String name;
 
     @Lob
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @NotNull
