@@ -26,9 +26,9 @@ export class ProductImportComponent {
   public error = false;
   public loading = false;
   public ACCEPTED_FILES = ['text/csv, text/tsv'];
-  public pageAdvancedEllipses = 7;
+  public pageAdvancedEllipses = 1;
   public progressBar = 0;
-  public updateProducts = true;
+  public updateProducts = false;
 
   constructor(private papa: Papa, private productService: ProductService, private modalService: NgbModal) {
     this.contentHeader = {
@@ -86,7 +86,7 @@ export class ProductImportComponent {
         this.loading = false;
         this.fileItem = file;
         this.products = results.data.map(
-          (rawProduct: any) => new RawProduct(rawProduct[0], rawProduct[1], rawProduct[4], rawProduct[2], rawProduct[21])
+          (rawProduct: any) => new RawProduct(rawProduct[2], rawProduct[3], rawProduct[8], rawProduct[35], rawProduct[23])
         );
         this.products.shift();
       },

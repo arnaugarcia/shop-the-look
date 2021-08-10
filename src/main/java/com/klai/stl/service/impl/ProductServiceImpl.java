@@ -20,6 +20,7 @@ import com.klai.stl.service.mapper.ProductMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -42,16 +43,20 @@ public class ProductServiceImpl implements ProductService {
 
     private final CompanyService companyService;
 
+    private final EntityManager entityManager;
+
     public ProductServiceImpl(
         ProductRepository productRepository,
         ProductMapper productMapper,
         UserService userService,
-        CompanyService companyService
+        CompanyService companyService,
+        EntityManager entityManager
     ) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.userService = userService;
         this.companyService = companyService;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -82,6 +87,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> result = new ArrayList<>();
         if (!update) {
             productRepository.deleteAllByCompanyReference(company.getReference());
+            entityManager.flush();
             result =
                 importProducts
                     .stream()

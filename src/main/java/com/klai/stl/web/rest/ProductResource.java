@@ -1,6 +1,9 @@
 package com.klai.stl.web.rest;
 
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
+import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
 
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
@@ -20,9 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -83,10 +84,7 @@ public class ProductResource {
         log.debug("REST request to update Product : {}, {}", reference, productRequest);
 
         ProductDTO result = productService.update(productRequest);
-        return ResponseEntity
-            .ok()
-            .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productRequest.getSku()))
-            .body(result);
+        return ok().headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productRequest.getSku())).body(result);
     }
 
     /**
@@ -100,8 +98,8 @@ public class ProductResource {
     public ResponseEntity<List<ProductDTO>> getAllProducts(ProductCriteria criteria, Pageable pageable) {
         log.debug("REST request to get Products by criteria: {}", criteria);
         Page<ProductDTO> page = productQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        HttpHeaders headers = generatePaginationHttpHeaders(fromCurrentRequest(), page);
+        return ok().headers(headers).body(page.getContent());
     }
 
     /**

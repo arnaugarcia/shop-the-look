@@ -30,8 +30,10 @@
                 <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
                   <td>{{ product.sku }}</td>
                   <td>{{ product.name }}</td>
-                  <td>{{ product.description | slice: 0:20 }}</td>
-                  <td>{{ product.link }}</td>
+                  <td>{{ product.description | slice: 0:120 }}</td>
+                  <td>
+                    <a [href]="product.link" target="_blank">{{ product.link }}</a>
+                  </td>
                   <td>{{ product.price }}</td>
                   <td *stlHasAnyAuthority="'ROLE_ADMIN'">
                     <div *ngIf="product.company">
