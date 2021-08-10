@@ -4,6 +4,9 @@ import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
+import static com.klai.stl.web.rest.TestUtil.findAll;
+import static com.klai.stl.web.rest.UserResourceIT.createEntity;
+import static java.lang.String.valueOf;
 import static java.util.List.of;
 import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -117,12 +120,12 @@ class ProductResourceIT {
             .category(DEFAULT_CATEGORY);
         // Add required entity
         Company company;
-        if (TestUtil.findAll(em, Company.class).isEmpty()) {
+        if (findAll(em, Company.class).isEmpty()) {
             company = CompanyResourceIT.createEntity(em);
             em.persist(company);
             em.flush();
         } else {
-            company = TestUtil.findAll(em, Company.class).get(0);
+            company = findAll(em, Company.class).get(0);
         }
         product.setCompany(company);
         return product;
@@ -132,13 +135,11 @@ class ProductResourceIT {
     public void initTest() {
         newProductRequest = buildRequest();
         productUpdateRequest = buildUpdateRequest();
-        user = UserResourceIT.createEntity(em, PRODUCT_USER_LOGIN);
+        user = createEntity(em, PRODUCT_USER_LOGIN);
+        em.persist(user);
         company = createBasicCompany(em);
         company.addUser(user);
         em.persist(company);
-        product = createProduct(em);
-        product.setCompany(company);
-        em.persist(product);
     }
 
     private NewProductRequest buildUpdateRequest() {
@@ -167,26 +168,24 @@ class ProductResourceIT {
     public void createSingleProductAsAdmin() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
-        Company company = createBasicCompany(em);
-
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?company=" + company.getReference())
+                post(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(of(newProductRequest)))
             )
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
         assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
 
-        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
+        final Optional<Product> productOptional = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
         assertThat(productOptional).isPresent();
 
         Product result = productOptional.get();
 
         assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(newProductRequest.getPrice());
+        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
         assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
@@ -200,7 +199,7 @@ class ProductResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(newProductRequest))))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -247,9 +246,10 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = PRODUCT_USER_LOGIN)
     public void createMultipleProductsAsUser() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
+        int companyProductsBeforeCreate = productRepository.findByCompanyReference(company.getReference()).size();
 
         List<NewProductRequest> products = of(buildRequest(), buildRequest());
 
@@ -258,19 +258,10 @@ class ProductResourceIT {
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
-        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
+        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 2);
 
-        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
-        assertThat(productOptional).isPresent();
-
-        Product result = productOptional.get();
-
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(newProductRequest.getPrice());
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
-        assertThat(result.getCompany()).isNotNull();
-        assertThat(result.getCompany().getReference()).isNotBlank();
-        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+        int companyProductsAfterCreate = productRepository.findByCompanyReference(company.getReference()).size();
+        assertThat(companyProductsAfterCreate).isEqualTo(companyProductsBeforeCreate + 2);
     }
 
     @Test
@@ -283,26 +274,14 @@ class ProductResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?company=" + company.getReference())
+                post(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(products))
             )
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
-        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
-
-        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
-        assertThat(productOptional).isPresent();
-
-        Product result = productOptional.get();
-
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(newProductRequest.getPrice());
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
-        assertThat(result.getCompany()).isNotNull();
-        assertThat(result.getCompany().getReference()).isNotBlank();
-        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 2);
     }
 
     @Test
@@ -318,19 +297,7 @@ class ProductResourceIT {
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
-        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
-
-        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
-        assertThat(productOptional).isPresent();
-
-        Product result = productOptional.get();
-
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(newProductRequest.getPrice());
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
-        assertThat(result.getCompany()).isNotNull();
-        assertThat(result.getCompany().getReference()).isNotBlank();
-        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 2);
     }
 
     @Test
@@ -343,7 +310,7 @@ class ProductResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?company=" + company.getReference())
+                post(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -373,7 +340,7 @@ class ProductResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?company=" + company.getReference())
+                post(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -438,7 +405,7 @@ class ProductResourceIT {
 
         restProductMockMvc
             .perform(
-                put(ENTITY_API_URL_ID + "?company=" + company.getReference(), product.getReference())
+                put(ENTITY_API_URL_ID + "?companyReference=" + company.getReference(), product.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(productUpdateRequest))
             )
@@ -453,7 +420,7 @@ class ProductResourceIT {
 
         restProductMockMvc
             .perform(
-                put(ENTITY_API_URL_ID + "?company=" + company.getReference(), product.getReference())
+                put(ENTITY_API_URL_ID + "?companyReference=" + company.getReference(), product.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(productUpdateRequest))
             )
