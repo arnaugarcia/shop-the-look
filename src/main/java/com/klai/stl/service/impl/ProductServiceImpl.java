@@ -103,9 +103,12 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::toEntity)
                 .map(ProductWrapper::from)
                 .collect(toList());
+
             for (ProductWrapper product : companyProducts) {
                 if (newProducts.contains(product)) {
-                    result.add(mergeProduct(product.unwrap(), newProducts.get(newProducts.indexOf(product)).unwrap()));
+                    final Product mergedProduct = mergeProduct(product.unwrap(), newProducts.get(newProducts.indexOf(product)).unwrap());
+                    mergedProduct.setCompany(company);
+                    result.add(mergedProduct);
                 } else {
                     deleteProducts.add(product.unwrap());
                 }
