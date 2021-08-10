@@ -9,79 +9,82 @@
             <h4 class="card-title">Your products</h4>
           </div>
           <div class="card-body">
-            <p class="card-text">You can import new products using the <a routerLink="import">importer</a>.</p>
-          </div>
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col"><span stlTranslate="shopTheLookApp.product.sku">Sku</span></th>
-                  <th scope="col"><span stlTranslate="shopTheLookApp.product.name">Name</span></th>
-                  <th scope="col"><span stlTranslate="shopTheLookApp.product.description">Description</span></th>
-                  <th scope="col"><span stlTranslate="shopTheLookApp.product.link">Link</span></th>
-                  <th scope="col"><span stlTranslate="shopTheLookApp.product.price">Price</span></th>
-                  <th *stlHasAnyAuthority="'ROLE_ADMIN'" scope="col">
-                    <span stlTranslate="shopTheLookApp.product.company">Company</span>
-                  </th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
-                  <td>{{ product.sku }}</td>
-                  <td>{{ product.name }}</td>
-                  <td>{{ product.description | slice: 0:120 }}</td>
-                  <td>
-                    <a [href]="product.link" target="_blank">{{ product.link }}</a>
-                  </td>
-                  <td>{{ product.price }}</td>
-                  <td *stlHasAnyAuthority="'ROLE_ADMIN'">
-                    <div *ngIf="product.company">
-                      <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.nif }}</a>
-                    </div>
-                  </td>
-                  <td class="text-right">
-                    <div class="btn-group">
-                      <button
-                        type="submit"
-                        [routerLink]="['/product', product.id, 'edit']"
-                        class="btn btn-primary btn-sm"
-                        data-cy="entityEditButton"
-                      >
-                        <fa-icon icon="pencil-alt"></fa-icon>
-                        <span class="d-none d-md-inline" stlTranslate="entity.action.edit">Edit</span>
-                      </button>
+            <div class="d-flex justify-content-between mb-1">
+              <p class="card-text">You can import new products using the <a routerLink="import">importer</a>.</p>
+              <p>Loaded products: {{ totalItems }}</p>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"><span stlTranslate="shopTheLookApp.product.sku">Sku</span></th>
+                    <th scope="col"><span stlTranslate="shopTheLookApp.product.name">Name</span></th>
+                    <th scope="col"><span stlTranslate="shopTheLookApp.product.description">Description</span></th>
+                    <th scope="col"><span stlTranslate="shopTheLookApp.product.link">Link</span></th>
+                    <th scope="col"><span stlTranslate="shopTheLookApp.product.price">Price</span></th>
+                    <th *stlHasAnyAuthority="'ROLE_ADMIN'" scope="col">
+                      <span stlTranslate="shopTheLookApp.product.company">Company</span>
+                    </th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description | slice: 0:120 }}</td>
+                    <td>
+                      <a [href]="product.link" target="_blank">{{ product.link }}</a>
+                    </td>
+                    <td>{{ product.price }}</td>
+                    <td *stlHasAnyAuthority="'ROLE_ADMIN'">
+                      <div *ngIf="product.company">
+                        <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.nif }}</a>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="btn-group">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          [routerLink]="['/product', product.id, 'edit']"
+                          data-cy="entityEditButton"
+                          type="submit"
+                        >
+                          <fa-icon icon="pencil-alt"></fa-icon>
+                          <span class="d-none d-md-inline" stlTranslate="entity.action.edit">Edit</span>
+                        </button>
 
-                      <button type="submit" (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                        <fa-icon icon="times"></fa-icon>
-                        <span class="d-none d-md-inline" stlTranslate="entity.action.delete">Delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                        <button (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton" type="submit">
+                          <fa-icon icon="times"></fa-icon>
+                          <span class="d-none d-md-inline" stlTranslate="entity.action.delete">Delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-            <ngb-pagination
-              (pageChange)="loadPage($event)"
-              *ngIf="totalItems > itemsPerPage"
-              [(page)]="ngbPaginationPage"
-              [boundaryLinks]="true"
-              [collectionSize]="totalItems"
-              [maxSize]="10"
-              [rotate]="true"
-              class="float-right"
-            >
-              <ng-template ngbPaginationFirst>First</ng-template>
-              <ng-template ngbPaginationPrevious>
-                <span [class]="'font-weight-bolder'" [data-feather]="'chevron-left'"></span>Prev
-              </ng-template>
-              <ng-template ngbPaginationNext>
-                Next
-                <span [class]="'font-weight-bolder'" [data-feather]="'chevron-right'"></span>
-              </ng-template>
-              <ng-template ngbPaginationLast>Last</ng-template>
-            </ngb-pagination>
+              <ngb-pagination
+                (pageChange)="loadPage($event)"
+                *ngIf="totalItems > itemsPerPage"
+                [(page)]="ngbPaginationPage"
+                [boundaryLinks]="true"
+                [collectionSize]="totalItems"
+                [maxSize]="10"
+                [rotate]="true"
+                class="float-right"
+              >
+                <ng-template ngbPaginationFirst>First</ng-template>
+                <ng-template ngbPaginationPrevious>
+                  <span [class]="'font-weight-bolder'" [data-feather]="'chevron-left'"></span>Prev
+                </ng-template>
+                <ng-template ngbPaginationNext>
+                  Next
+                  <span [class]="'font-weight-bolder'" [data-feather]="'chevron-right'"></span>
+                </ng-template>
+                <ng-template ngbPaginationLast>Last</ng-template>
+              </ngb-pagination>
+            </div>
           </div>
         </div>
       </div>
