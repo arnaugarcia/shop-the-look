@@ -146,6 +146,7 @@ class ProductResourceIT {
             .builder()
             .name(UPDATED_NAME + randomAlphabetic(5).toLowerCase(ROOT))
             .price(UPDATED_PRICE)
+            .link(UPDATED_LINK)
             .sku(UPDATED_SKU + randomAlphabetic(5).toLowerCase(ROOT))
             .build();
     }
@@ -155,6 +156,7 @@ class ProductResourceIT {
             .builder()
             .name(DEFAULT_NAME + randomAlphabetic(5).toLowerCase(ROOT))
             .price(DEFAULT_PRICE)
+            .link(DEFAULT_LINK)
             .sku(DEFAULT_SKU + randomAlphabetic(5).toLowerCase(ROOT))
             .build();
     }
