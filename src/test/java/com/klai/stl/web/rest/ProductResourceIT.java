@@ -140,6 +140,7 @@ class ProductResourceIT {
         company = createBasicCompany(em);
         company.addUser(user);
         em.persist(company);
+        em.flush();
     }
 
     private NewProductRequest buildUpdateRequest() {
@@ -194,8 +195,12 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
+    @WithMockUser(authorities = MANAGER, username = "manager-multiple-login")
     public void createSingleProductAsManager() throws Exception {
+        User user = createEntity(em, "manager-multiple-login");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
@@ -220,16 +225,16 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "user-single-login")
     public void createSingleProductAsUser() throws Exception {
+        User user = createEntity(em, "user-single-login");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(
-                post(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
-                    .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(of(newProductRequest)))
-            )
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(newProductRequest))))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -250,8 +255,12 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = PRODUCT_USER_LOGIN)
+    @WithMockUser(username = "user-multiple-login")
     public void createMultipleProductsAsUser() throws Exception {
+        User user = createEntity(em, "user-multiple-login");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
         int companyProductsBeforeCreate = productRepository.findByCompanyReference(company.getReference()).size();
 
@@ -290,7 +299,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
+    @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
     public void createMultipleProductsAsManager() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
@@ -342,12 +351,13 @@ class ProductResourceIT {
     @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
     public void createASingleProductForOtherCompanyAsManager() throws Exception {
         Company company = createBasicCompany(em);
+        em.persist(company);
 
         restProductMockMvc
             .perform(
                 post(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(of(newProductRequest)))
             )
             .andExpect(status().isForbidden());
     }
@@ -360,7 +370,7 @@ class ProductResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, product.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(productUpdateRequest))
+                    .content(convertObjectToJsonBytes(of(productUpdateRequest)))
             )
             .andExpect(status().isCreated());
 

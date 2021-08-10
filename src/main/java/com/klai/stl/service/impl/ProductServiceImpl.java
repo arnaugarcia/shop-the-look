@@ -5,6 +5,7 @@ import static java.util.Locale.ROOT;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
@@ -67,6 +68,9 @@ public class ProductServiceImpl implements ProductService {
         if (isCurrentUserAdmin()) {
             Company company = companyService.findByReference(companyReference);
             return importProducts(importProducts, company, update);
+        }
+        if (isNotEmpty(companyReference)) {
+            companyService.checkLoginBelongsToCompany(userService.getCurrentUser().getLogin(), companyReference);
         }
         return importProducts(importProducts, update);
     }
