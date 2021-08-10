@@ -194,7 +194,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
+    @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
     public void createSingleProductAsManager() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
@@ -205,13 +205,13 @@ class ProductResourceIT {
         int databaseSizeAfterCreate = productRepository.findAll().size();
         assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
 
-        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
+        final Optional<Product> productOptional = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
         assertThat(productOptional).isPresent();
 
         Product result = productOptional.get();
 
         assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(newProductRequest.getPrice());
+        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
         assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
@@ -225,19 +225,23 @@ class ProductResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(
+                post(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(of(newProductRequest)))
+            )
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
         assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
 
-        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
+        final Optional<Product> productOptional = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
         assertThat(productOptional).isPresent();
 
         Product result = productOptional.get();
 
         assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(newProductRequest.getPrice());
+        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
         assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
@@ -307,25 +311,26 @@ class ProductResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         Company company = createBasicCompany(em);
+        em.persist(company);
 
         restProductMockMvc
             .perform(
                 post(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(of(newProductRequest)))
             )
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
         assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
 
-        final Optional<Product> productOptional = productRepository.findByReference(product.getReference());
+        final Optional<Product> productOptional = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
         assertThat(productOptional).isPresent();
 
         Product result = productOptional.get();
 
         assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(newProductRequest.getPrice());
+        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
         assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
