@@ -134,7 +134,7 @@ class ProductResourceIT {
     @BeforeEach
     public void initTest() {
         newProductRequest = buildRequest();
-        productUpdateRequest = buildUpdateRequest();
+        productUpdateRequest = buildUpdateRequest(newProductRequest.getSku());
         user = createEntity(em, PRODUCT_USER_LOGIN);
         em.persist(user);
         company = createBasicCompany(em);
@@ -143,13 +143,13 @@ class ProductResourceIT {
         em.flush();
     }
 
-    private NewProductRequest buildUpdateRequest() {
+    private NewProductRequest buildUpdateRequest(String sku) {
         return NewProductRequest
             .builder()
             .name(UPDATED_NAME + randomAlphabetic(5).toLowerCase(ROOT))
             .price(UPDATED_PRICE)
             .link(UPDATED_LINK)
-            .sku(DEFAULT_SKU)
+            .sku(sku)
             .build();
     }
 
@@ -271,7 +271,11 @@ class ProductResourceIT {
         assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(productUpdateRequest))))
+            .perform(
+                post(ENTITY_API_URL + "?update=true")
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(of(productUpdateRequest)))
+            )
             .andExpect(status().isCreated());
 
         final Optional<Product> productOptional = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
@@ -313,7 +317,7 @@ class ProductResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference={reference}", otherCompany.getReference())
+                post(ENTITY_API_URL + "?companyReference={reference}&update=true", otherCompany.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(of(productUpdateRequest)))
             )
@@ -377,7 +381,11 @@ class ProductResourceIT {
         int databaseSizeBeforeUpdate = productRepository.findByCompanyReference(company.getReference()).size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(buildUpdateRequest()))))
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(of(buildUpdateRequest(products.get(0).getSku()))))
+            )
             .andExpect(status().isCreated());
 
         int databaseSizeAfterUpdate = productRepository.findByCompanyReference(company.getReference()).size();
@@ -402,7 +410,11 @@ class ProductResourceIT {
         int databaseSizeBeforeUpdate = productRepository.findByCompanyReference(company.getReference()).size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(buildUpdateRequest()))))
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(of(buildUpdateRequest(products.get(0).getSku()))))
+            )
             .andExpect(status().isCreated());
 
         int databaseSizeAfterUpdate = productRepository.findByCompanyReference(company.getReference()).size();
