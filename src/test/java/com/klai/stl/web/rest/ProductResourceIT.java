@@ -149,7 +149,7 @@ class ProductResourceIT {
             .name(UPDATED_NAME + randomAlphabetic(5).toLowerCase(ROOT))
             .price(UPDATED_PRICE)
             .link(UPDATED_LINK)
-            .sku(UPDATED_SKU + randomAlphabetic(5).toLowerCase(ROOT))
+            .sku(DEFAULT_SKU)
             .build();
     }
 
@@ -255,6 +255,88 @@ class ProductResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "user-import-login")
+    public void importUpdatingProductAsUser() throws Exception {
+        User user = createEntity(em, "user-import-login");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+        int databaseSizeBeforeCreate = productRepository.findAll().size();
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(newProductRequest))))
+            .andExpect(status().isCreated());
+
+        int databaseSizeAfterCreate = productRepository.findAll().size();
+        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(productUpdateRequest))))
+            .andExpect(status().isCreated());
+
+        final Optional<Product> productOptional = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
+        assertThat(productOptional).isPresent();
+
+        Product result = productOptional.get();
+
+        assertThat(result.getName()).isEqualTo(productUpdateRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productUpdateRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productUpdateRequest.getSku());
+        assertThat(result.getCompany()).isNotNull();
+        assertThat(result.getCompany().getReference()).isNotBlank();
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin-import-login", authorities = ADMIN)
+    public void importUpdatingProductOfOtherCompanyAsAdmin() throws Exception {
+        User user = createEntity(em, "admin-import-login");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+        int databaseSizeBeforeCreate = productRepository.findAll().size();
+
+        Company otherCompany = createBasicCompany(em);
+        em.persist(otherCompany);
+
+        restProductMockMvc
+            .perform(
+                post(ENTITY_API_URL + "?companyReference={reference}", otherCompany.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(of(newProductRequest)))
+            )
+            .andExpect(status().isCreated());
+
+        int databaseSizeAfterCreate = productRepository.findAll().size();
+        assertThat(databaseSizeAfterCreate).isEqualTo(databaseSizeBeforeCreate + 1);
+
+        restProductMockMvc
+            .perform(
+                post(ENTITY_API_URL + "?companyReference={reference}", otherCompany.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(of(productUpdateRequest)))
+            )
+            .andExpect(status().isCreated());
+
+        final Optional<Product> productOptional = productRepository
+            .findByCompanyReference(otherCompany.getReference())
+            .stream()
+            .findFirst();
+        assertThat(productOptional).isPresent();
+
+        Product result = productOptional.get();
+
+        assertThat(result.getName()).isEqualTo(productUpdateRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productUpdateRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productUpdateRequest.getSku());
+        assertThat(result.getCompany()).isNotNull();
+        assertThat(result.getCompany().getReference()).isNotBlank();
+        assertThat(result.getCompany().getReference()).isEqualTo(otherCompany.getReference());
+    }
+
+    @Test
+    @Transactional
     @WithMockUser(username = "user-multiple-login")
     public void createMultipleProductsAsUser() throws Exception {
         User user = createEntity(em, "user-multiple-login");
@@ -275,6 +357,56 @@ class ProductResourceIT {
 
         int companyProductsAfterCreate = productRepository.findByCompanyReference(company.getReference()).size();
         assertThat(companyProductsAfterCreate).isEqualTo(companyProductsBeforeCreate + 2);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager-import-multiple-login", authorities = MANAGER)
+    public void updateMultipleProductsAsManager() throws Exception {
+        User user = createEntity(em, "manager-import-multiple-login");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
+        List<NewProductRequest> products = of(buildRequest(), buildRequest());
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
+            .andExpect(status().isCreated());
+
+        int databaseSizeBeforeUpdate = productRepository.findByCompanyReference(company.getReference()).size();
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(buildUpdateRequest()))))
+            .andExpect(status().isCreated());
+
+        int databaseSizeAfterUpdate = productRepository.findByCompanyReference(company.getReference()).size();
+        assertThat(databaseSizeAfterUpdate).isEqualTo(databaseSizeBeforeUpdate - 1);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin-import-multiple-login", authorities = ADMIN)
+    public void updateMultipleProductsAsAdmin() throws Exception {
+        User user = createEntity(em, "admin-import-multiple-login");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
+        List<NewProductRequest> products = of(buildRequest(), buildRequest());
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
+            .andExpect(status().isCreated());
+
+        int databaseSizeBeforeUpdate = productRepository.findByCompanyReference(company.getReference()).size();
+
+        restProductMockMvc
+            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(of(buildUpdateRequest()))))
+            .andExpect(status().isCreated());
+
+        int databaseSizeAfterUpdate = productRepository.findByCompanyReference(company.getReference()).size();
+        assertThat(databaseSizeAfterUpdate).isEqualTo(databaseSizeBeforeUpdate - 1);
     }
 
     @Test
