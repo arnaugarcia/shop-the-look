@@ -26,7 +26,7 @@ export class ProductImportComponent {
   public error = false;
   public loading = false;
   public ACCEPTED_FILES = ['text/csv, text/tsv'];
-  public pageAdvancedEllipses = 1;
+  public page = 1;
   public progressBar = 0;
   public updateProducts = false;
 

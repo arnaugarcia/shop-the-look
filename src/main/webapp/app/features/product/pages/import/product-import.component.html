@@ -91,7 +91,7 @@
               <ngb-pagination
                 (pageChange)="pageChanged($event)"
                 *ngIf="products.length > 10"
-                [(page)]="pageAdvancedEllipses"
+                [(page)]="page"
                 [boundaryLinks]="true"
                 [collectionSize]="products.length"
                 [maxSize]="10"

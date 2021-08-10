@@ -61,6 +61,27 @@
                 </tr>
               </tbody>
             </table>
+
+            <ngb-pagination
+              (pageChange)="loadPage($event)"
+              *ngIf="totalItems > itemsPerPage"
+              [(page)]="ngbPaginationPage"
+              [boundaryLinks]="true"
+              [collectionSize]="totalItems"
+              [maxSize]="10"
+              [rotate]="true"
+              class="float-right"
+            >
+              <ng-template ngbPaginationFirst>First</ng-template>
+              <ng-template ngbPaginationPrevious>
+                <span [class]="'font-weight-bolder'" [data-feather]="'chevron-left'"></span>Prev
+              </ng-template>
+              <ng-template ngbPaginationNext>
+                Next
+                <span [class]="'font-weight-bolder'" [data-feather]="'chevron-right'"></span>
+              </ng-template>
+              <ng-template ngbPaginationLast>Last</ng-template>
+            </ngb-pagination>
           </div>
         </div>
       </div>

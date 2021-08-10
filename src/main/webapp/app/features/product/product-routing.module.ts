@@ -10,6 +10,9 @@ const productRoute: Routes = [
   {
     path: '',
     component: ProductComponent,
+    data: {
+      defaultSort: 'id,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {
