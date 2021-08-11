@@ -4,10 +4,11 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" tabindex="0" ngbAutofocus>
-  All the products where imported successfully. You can check them in the <a [routerLink]="'/products'">products</a> section or you can
+<div class="modal-body">
+  All the products where imported successfully. You can check them in the <a [routerLink]="'/products'">products</a>
+  section or you can
   <a [routerLink]="'/spaces'">create an space</a> now!
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-success" (click)="activeModal.close('Accept click')" rippleEffect>Accept</button>
+  <button (click)="activeModal.close('Accept click')" class="btn btn-success" ngbAutofocus rippleEffect type="button">Accept</button>
 </div>
