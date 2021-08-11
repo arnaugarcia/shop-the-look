@@ -6,7 +6,6 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { getProductIdentifier, IProduct } from '../models/product.model';
-import { ImportProduct } from '../models/product-import.model';
 
 export type EntityResponseType = HttpResponse<IProduct>;
 export type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -19,14 +18,6 @@ export class ProductService {
 
   create(products: IProduct[]): Observable<EntityResponseType> {
     return this.http.post<IProduct>(this.resourceUrl, products, { observe: 'response' });
-  }
-
-  import(importProduct: ImportProduct): Observable<EntityResponseType> {
-    const options = createRequestOption({
-      update: importProduct.update,
-      companyReference: importProduct.companyReference,
-    });
-    return this.http.post<IProduct>(this.resourceUrl, importProduct.products, { observe: 'response', params: options });
   }
 
   update(product: IProduct): Observable<EntityResponseType> {

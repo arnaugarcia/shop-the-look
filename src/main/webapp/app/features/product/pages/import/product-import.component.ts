@@ -3,11 +3,11 @@ import { ContentHeader } from '../../../../layouts/content-header/content-header
 import { Papa, ParseConfig, ParseResult } from 'ngx-papaparse';
 import { IProduct, RawProduct } from '../../models/product.model';
 import { FileUploader } from 'ng2-file-upload';
-import { ProductService } from '../../services/product.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImportModalSuccessComponent } from '../../components/import-modal-success/import-modal-success.component';
 import { ImportModalErrorComponent } from '../../components/import-modal-error/import-modal-error.component';
 import { ImportProduct } from '../../models/product-import.model';
+import { ProductImportService } from '../../services/product-import.service.service';
 
 @Component({
   selector: 'stl-product-import',
@@ -30,7 +30,7 @@ export class ProductImportComponent {
   public progressBar = 0;
   public updateProducts = false;
 
-  constructor(private papa: Papa, private productService: ProductService, private modalService: NgbModal) {
+  constructor(private papa: Papa, private productImportService: ProductImportService, private modalService: NgbModal) {
     this.contentHeader = {
       headerTitle: 'Product importer',
       actionButton: true,
@@ -100,7 +100,7 @@ export class ProductImportComponent {
 
   importProducts(): void {
     this.loading = true;
-    this.productService.import(new ImportProduct(this.products, this.updateProducts)).subscribe(
+    this.productImportService.import(new ImportProduct(this.products, this.updateProducts)).subscribe(
       () => {
         this.loading = false;
         this.modalService.open(ImportModalSuccessComponent, {
