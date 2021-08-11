@@ -52,18 +52,14 @@ public class ProductResource {
     /**
      * {@code POST  /products} : Create a new product.
      *
-     * @param productRequests the parameters to import and the products.
+     * @param productRequest the parameters to import and the products.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productDTO, or with status {@code 400 (Bad Request)} if the product has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/products")
-    public ResponseEntity<List<ProductDTO>> createProduct(
-        @Valid @RequestBody List<NewProductRequest> productRequests,
-        @RequestParam(required = false) boolean update,
-        @RequestParam(required = false) String companyReference
-    ) throws URISyntaxException {
-        log.debug("REST request to save products with size {}", productRequests.size());
-        List<ProductDTO> result = productService.importProducts(productRequests, companyReference, update);
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody NewProductRequest productRequest) throws URISyntaxException {
+        log.debug("REST request to save product {}", productRequest);
+        ProductDTO result = productService.update(productRequest);
         return ResponseEntity.created(new URI("/api/products")).body(result);
     }
 

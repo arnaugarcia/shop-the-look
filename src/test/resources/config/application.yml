@@ -30,6 +30,8 @@ spring:
   jackson:
     serialization:
       write-durations-as-timestamps: false
+    deserialization:
+      accept-single-value-as-array: true
   jpa:
     database-platform: tech.jhipster.domain.util.FixedH2Dialect
     open-in-view: false

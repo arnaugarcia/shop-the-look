@@ -2,17 +2,12 @@ package com.klai.stl.service;
 
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.NewProductRequest;
-import java.util.List;
 import java.util.Optional;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Product}.
  */
 public interface ProductService {
-    @Transactional
-    List<ProductDTO> importProducts(List<NewProductRequest> productRequests, String companyReference, boolean update);
-
     /**
      * Update a product.
      *
@@ -20,15 +15,6 @@ public interface ProductService {
      * @return the persisted entity.
      */
     ProductDTO update(NewProductRequest productRequest);
-
-    /**
-     * Save a product.
-     *
-     * @param productRequests the request containing all the products and the required parameters.
-     * @return the persisted entities.
-     */
-    @Transactional
-    List<ProductDTO> importProducts(List<NewProductRequest> productRequests, boolean update);
 
     /**
      * Get the "id" product.

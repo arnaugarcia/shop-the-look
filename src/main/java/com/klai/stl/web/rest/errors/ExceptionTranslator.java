@@ -152,6 +152,24 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleBadOwnerException(
+        com.klai.stl.service.exception.CompanyReferenceNotFound ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(
+            BAD_REQUEST,
+            "Company reference not found",
+            "company",
+            "referencenotfound"
+        );
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleEmployeeNotFoundException(
         com.klai.stl.service.exception.EmployeeNotFound ex,
         NativeWebRequest request
