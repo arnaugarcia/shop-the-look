@@ -103,6 +103,7 @@ export class ProductImportComponent {
     this.productImportService.import(new ImportProduct(this.products, this.updateProducts)).subscribe(
       () => {
         this.loading = false;
+        this.progressBar = 100;
         this.modalService.open(ImportModalSuccessComponent, {
           centered: true,
           windowClass: 'modal modal-success',
@@ -111,6 +112,7 @@ export class ProductImportComponent {
       () => {
         this.loading = false;
         this.error = true;
+        this.progressBar = 100;
         this.modalService.open(ImportModalErrorComponent, {
           centered: true,
           windowClass: 'modal modal-danger',
@@ -123,6 +125,7 @@ export class ProductImportComponent {
   removeAllFromQueue(): void {
     this.products = [];
     this.fileItem = undefined;
+    this.progressBar = 0;
   }
 
   removeProduct(product: IProduct): void {
