@@ -1,15 +1,15 @@
 package com.klai.stl.service.impl;
 
-import com.klai.stl.domain.Company_;
-import com.klai.stl.domain.Coordinate_;
-import com.klai.stl.domain.Product;
-import com.klai.stl.domain.Product_;
+import static javax.persistence.criteria.JoinType.INNER;
+
+import com.klai.stl.domain.*;
 import com.klai.stl.repository.ProductRepository;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.List;
-import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Join;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -35,13 +35,17 @@ public class ProductQueryService extends QueryService<Product> {
 
     private final ProductMapper productMapper;
 
-    public ProductQueryService(ProductRepository productRepository, ProductMapper productMapper) {
+    private final UserService userService;
+
+    public ProductQueryService(ProductRepository productRepository, ProductMapper productMapper, UserService userService) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.userService = userService;
     }
 
     /**
      * Return a {@link List} of {@link ProductDTO} which matches the criteria from the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -84,10 +88,10 @@ public class ProductQueryService extends QueryService<Product> {
      */
     protected Specification<Product> createSpecification(ProductCriteria criteria) {
         Specification<Product> specification = Specification.where(null);
+
+        User currentUser = userService.getCurrentUser();
+
         if (criteria != null) {
-            if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), Product_.id));
-            }
             if (criteria.getSku() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getSku(), Product_.sku));
             }
@@ -97,38 +101,20 @@ public class ProductQueryService extends QueryService<Product> {
             if (criteria.getLink() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLink(), Product_.link));
             }
-            if (criteria.getImageLink() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getImageLink(), Product_.imageLink));
-            }
-            if (criteria.getAdditionalImageLink() != null) {
-                specification =
-                    specification.and(buildStringSpecification(criteria.getAdditionalImageLink(), Product_.additionalImageLink));
-            }
-            if (criteria.getAvailability() != null) {
-                specification = specification.and(buildSpecification(criteria.getAvailability(), Product_.availability));
-            }
             if (criteria.getPrice() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPrice(), Product_.price));
             }
-            if (criteria.getCategory() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCategory(), Product_.category));
-            }
-            if (criteria.getCompanyId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getCompanyId(), root -> root.join(Product_.company, JoinType.LEFT).get(Company_.id))
-                    );
-            }
-            if (criteria.getCoordinateId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getCoordinateId(),
-                            root -> root.join(Product_.coordinate, JoinType.LEFT).get(Coordinate_.id)
-                        )
-                    );
+            if (!currentUser.isAdmin()) {
+                specification = specification.and(findByCompanyReference(currentUser.getCompany().getReference()));
             }
         }
         return specification;
+    }
+
+    private Specification<Product> findByCompanyReference(String companyReference) {
+        return (root, query, builder) -> {
+            final Join<Product, Company> companyJoin = root.join(Product_.company, INNER);
+            return builder.equal(companyJoin.get(Company_.reference), companyReference);
+        };
     }
 }

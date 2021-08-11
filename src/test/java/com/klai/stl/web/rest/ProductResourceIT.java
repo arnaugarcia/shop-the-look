@@ -5,7 +5,6 @@ import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static com.klai.stl.web.rest.TestUtil.findAll;
-import static com.klai.stl.web.rest.UserResourceIT.createEntity;
 import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -74,7 +73,6 @@ class ProductResourceIT {
 
     private static final String ENTITY_API_URL = "/api/products";
 
-    private static final String PRODUCT_USER_LOGIN = "product-user";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{reference}";
 
     @Autowired
@@ -126,6 +124,7 @@ class ProductResourceIT {
             company = findAll(em, Company.class).get(0);
         }
         product.setCompany(company);
+        em.persist(product);
         return product;
     }
 
@@ -133,12 +132,7 @@ class ProductResourceIT {
     public void initTest() {
         newProductRequest = buildRequest();
         productUpdateRequest = buildUpdateRequest(newProductRequest.getSku());
-        user = createEntity(em, PRODUCT_USER_LOGIN);
-        em.persist(user);
         company = createBasicCompany(em);
-        company.addUser(user);
-        em.persist(company);
-        em.flush();
     }
 
     private NewProductRequest buildUpdateRequest(String sku) {
@@ -237,10 +231,10 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(authorities = ADMIN)
     public void updateOtherProductCompanyAsAdmin() throws Exception {
-        Company company = createBasicCompany(em);
+        Product product = createProduct(em);
 
         restProductMockMvc
-            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productUpdateRequest)))
+            .perform(put(ENTITY_API_URL_ID).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productUpdateRequest)))
             .andExpect(status().isCreated());
 
         Optional<Product> productOptional = productRepository.findBySku(productUpdateRequest.getSku());
@@ -291,7 +285,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = ADMIN, username = PRODUCT_USER_LOGIN)
+    @WithMockUser(authorities = ADMIN)
     public void deleteOtherCompanyProductAsAdmin() throws Exception {
         Company company1 = createBasicCompany(em);
         Product product1 = createProduct(em);
@@ -304,7 +298,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER, username = PRODUCT_USER_LOGIN)
+    @WithMockUser(authorities = MANAGER)
     public void deleteOtherCompanyProductAsManager() throws Exception {
         Company company1 = createBasicCompany(em);
         Product product1 = createProduct(em);
@@ -317,7 +311,7 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = PRODUCT_USER_LOGIN)
+    @WithMockUser
     public void deleteOtherCompanyProductAsUser() throws Exception {
         Company company1 = createBasicCompany(em);
         Product product1 = createProduct(em);

@@ -1,11 +1,9 @@
 package com.klai.stl.service.criteria;
 
-import com.klai.stl.domain.enumeration.ProductAvailability;
 import java.io.Serializable;
 import java.util.Objects;
 import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
 /**
@@ -19,26 +17,7 @@ import tech.jhipster.service.filter.StringFilter;
  */
 public class ProductCriteria implements Serializable, Criteria {
 
-    /**
-     * Class for filtering ProductAvailability
-     */
-    public static class ProductAvailabilityFilter extends Filter<ProductAvailability> {
-
-        public ProductAvailabilityFilter() {}
-
-        public ProductAvailabilityFilter(ProductAvailabilityFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public ProductAvailabilityFilter copy() {
-            return new ProductAvailabilityFilter(this);
-        }
-    }
-
     private static final long serialVersionUID = 1L;
-
-    private LongFilter id;
 
     private StringFilter sku;
 
@@ -48,55 +27,21 @@ public class ProductCriteria implements Serializable, Criteria {
 
     private StringFilter reference;
 
-    private StringFilter imageLink;
-
-    private StringFilter additionalImageLink;
-
-    private ProductAvailabilityFilter availability;
-
     private StringFilter price;
-
-    private StringFilter category;
-
-    private LongFilter companyId;
-
-    private LongFilter coordinateId;
 
     public ProductCriteria() {}
 
     public ProductCriteria(ProductCriteria other) {
-        this.id = other.id == null ? null : other.id.copy();
         this.sku = other.sku == null ? null : other.sku.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.link = other.link == null ? null : other.link.copy();
         this.reference = other.reference == null ? null : other.reference.copy();
-        this.imageLink = other.imageLink == null ? null : other.imageLink.copy();
-        this.additionalImageLink = other.additionalImageLink == null ? null : other.additionalImageLink.copy();
-        this.availability = other.availability == null ? null : other.availability.copy();
         this.price = other.price == null ? null : other.price.copy();
-        this.category = other.category == null ? null : other.category.copy();
-        this.companyId = other.companyId == null ? null : other.companyId.copy();
-        this.coordinateId = other.coordinateId == null ? null : other.coordinateId.copy();
     }
 
     @Override
     public ProductCriteria copy() {
         return new ProductCriteria(this);
-    }
-
-    public LongFilter getId() {
-        return id;
-    }
-
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
-    public void setId(LongFilter id) {
-        this.id = id;
     }
 
     public StringFilter getSku() {
@@ -159,51 +104,6 @@ public class ProductCriteria implements Serializable, Criteria {
         return reference;
     }
 
-    public StringFilter getImageLink() {
-        return imageLink;
-    }
-
-    public StringFilter imageLink() {
-        if (imageLink == null) {
-            imageLink = new StringFilter();
-        }
-        return imageLink;
-    }
-
-    public void setImageLink(StringFilter imageLink) {
-        this.imageLink = imageLink;
-    }
-
-    public StringFilter getAdditionalImageLink() {
-        return additionalImageLink;
-    }
-
-    public StringFilter additionalImageLink() {
-        if (additionalImageLink == null) {
-            additionalImageLink = new StringFilter();
-        }
-        return additionalImageLink;
-    }
-
-    public void setAdditionalImageLink(StringFilter additionalImageLink) {
-        this.additionalImageLink = additionalImageLink;
-    }
-
-    public ProductAvailabilityFilter getAvailability() {
-        return availability;
-    }
-
-    public ProductAvailabilityFilter availability() {
-        if (availability == null) {
-            availability = new ProductAvailabilityFilter();
-        }
-        return availability;
-    }
-
-    public void setAvailability(ProductAvailabilityFilter availability) {
-        this.availability = availability;
-    }
-
     public StringFilter getPrice() {
         return price;
     }
@@ -219,51 +119,6 @@ public class ProductCriteria implements Serializable, Criteria {
         this.price = price;
     }
 
-    public StringFilter getCategory() {
-        return category;
-    }
-
-    public StringFilter category() {
-        if (category == null) {
-            category = new StringFilter();
-        }
-        return category;
-    }
-
-    public void setCategory(StringFilter category) {
-        this.category = category;
-    }
-
-    public LongFilter getCompanyId() {
-        return companyId;
-    }
-
-    public LongFilter companyId() {
-        if (companyId == null) {
-            companyId = new LongFilter();
-        }
-        return companyId;
-    }
-
-    public void setCompanyId(LongFilter companyId) {
-        this.companyId = companyId;
-    }
-
-    public LongFilter getCoordinateId() {
-        return coordinateId;
-    }
-
-    public LongFilter coordinateId() {
-        if (coordinateId == null) {
-            coordinateId = new LongFilter();
-        }
-        return coordinateId;
-    }
-
-    public void setCoordinateId(LongFilter coordinateId) {
-        this.coordinateId = coordinateId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -274,55 +129,28 @@ public class ProductCriteria implements Serializable, Criteria {
         }
         final ProductCriteria that = (ProductCriteria) o;
         return (
-            Objects.equals(id, that.id) &&
             Objects.equals(sku, that.sku) &&
             Objects.equals(name, that.name) &&
             Objects.equals(link, that.link) &&
             Objects.equals(reference, that.reference) &&
-            Objects.equals(imageLink, that.imageLink) &&
-            Objects.equals(additionalImageLink, that.additionalImageLink) &&
-            Objects.equals(availability, that.availability) &&
-            Objects.equals(price, that.price) &&
-            Objects.equals(category, that.category) &&
-            Objects.equals(companyId, that.companyId) &&
-            Objects.equals(coordinateId, that.coordinateId)
+            Objects.equals(price, that.price)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-            id,
-            sku,
-            name,
-            link,
-            reference,
-            imageLink,
-            additionalImageLink,
-            availability,
-            price,
-            category,
-            companyId,
-            coordinateId
-        );
+        return Objects.hash(sku, name, link, reference, price);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "ProductCriteria{" +
-            (id != null ? "id=" + id + ", " : "") +
             (sku != null ? "sku=" + sku + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (link != null ? "link=" + link + ", " : "") +
             (reference != null ? "reference=" + reference + ", " : "") +
-            (imageLink != null ? "imageLink=" + imageLink + ", " : "") +
-            (additionalImageLink != null ? "additionalImageLink=" + additionalImageLink + ", " : "") +
-            (availability != null ? "availability=" + availability + ", " : "") +
             (price != null ? "price=" + price + ", " : "") +
-            (category != null ? "category=" + category + ", " : "") +
-            (companyId != null ? "companyId=" + companyId + ", " : "") +
-            (coordinateId != null ? "coordinateId=" + coordinateId + ", " : "") +
             "}";
     }
 }
