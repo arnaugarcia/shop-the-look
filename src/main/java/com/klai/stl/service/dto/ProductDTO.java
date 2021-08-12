@@ -40,6 +40,8 @@ public class ProductDTO implements Serializable {
 
     private String category;
 
+    private String companyReference;
+
     public Long getId() {
         return id;
     }
@@ -128,6 +130,14 @@ public class ProductDTO implements Serializable {
         this.category = category;
     }
 
+    public String getCompanyReference() {
+        return companyReference;
+    }
+
+    public void setCompanyReference(String companyReference) {
+        this.companyReference = companyReference;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -164,6 +174,7 @@ public class ProductDTO implements Serializable {
             ", availability='" + getAvailability() + "'" +
             ", price='" + getPrice() + "'" +
             ", category='" + getCategory() + "'" +
+            ", companyReference='" + getCompanyReference() + "'" +
             "}";
     }
 }
