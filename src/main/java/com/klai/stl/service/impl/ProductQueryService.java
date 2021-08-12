@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static javax.persistence.criteria.JoinType.INNER;
 
 import com.klai.stl.domain.*;
@@ -89,8 +90,6 @@ public class ProductQueryService extends QueryService<Product> {
     protected Specification<Product> createSpecification(ProductCriteria criteria) {
         Specification<Product> specification = Specification.where(null);
 
-        User currentUser = userService.getCurrentUser();
-
         if (criteria != null) {
             if (criteria.getSku() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getSku(), Product_.sku));
@@ -98,13 +97,11 @@ public class ProductQueryService extends QueryService<Product> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), Product_.name));
             }
-            if (criteria.getLink() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getLink(), Product_.link));
-            }
             if (criteria.getPrice() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPrice(), Product_.price));
             }
-            if (!currentUser.isAdmin()) {
+            if (!isCurrentUserAdmin()) {
+                User currentUser = userService.getCurrentUser();
                 specification = specification.and(findByCompanyReference(currentUser.getCompany().getReference()));
             }
         }

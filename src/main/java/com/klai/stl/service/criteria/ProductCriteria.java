@@ -23,10 +23,6 @@ public class ProductCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
-    private StringFilter link;
-
-    private StringFilter reference;
-
     private StringFilter price;
 
     public ProductCriteria() {}
@@ -34,8 +30,6 @@ public class ProductCriteria implements Serializable, Criteria {
     public ProductCriteria(ProductCriteria other) {
         this.sku = other.sku == null ? null : other.sku.copy();
         this.name = other.name == null ? null : other.name.copy();
-        this.link = other.link == null ? null : other.link.copy();
-        this.reference = other.reference == null ? null : other.reference.copy();
         this.price = other.price == null ? null : other.price.copy();
     }
 
@@ -74,36 +68,6 @@ public class ProductCriteria implements Serializable, Criteria {
         this.name = name;
     }
 
-    public StringFilter getLink() {
-        return link;
-    }
-
-    public StringFilter link() {
-        if (link == null) {
-            link = new StringFilter();
-        }
-        return link;
-    }
-
-    public void setLink(StringFilter link) {
-        this.link = link;
-    }
-
-    public StringFilter getReference() {
-        return reference;
-    }
-
-    public void setReference(StringFilter reference) {
-        this.reference = reference;
-    }
-
-    public StringFilter reference() {
-        if (reference == null) {
-            reference = new StringFilter();
-        }
-        return reference;
-    }
-
     public StringFilter getPrice() {
         return price;
     }
@@ -128,18 +92,12 @@ public class ProductCriteria implements Serializable, Criteria {
             return false;
         }
         final ProductCriteria that = (ProductCriteria) o;
-        return (
-            Objects.equals(sku, that.sku) &&
-            Objects.equals(name, that.name) &&
-            Objects.equals(link, that.link) &&
-            Objects.equals(reference, that.reference) &&
-            Objects.equals(price, that.price)
-        );
+        return (Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(price, that.price));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sku, name, link, reference, price);
+        return Objects.hash(sku, name, price);
     }
 
     // prettier-ignore
@@ -148,8 +106,6 @@ public class ProductCriteria implements Serializable, Criteria {
         return "ProductCriteria{" +
             (sku != null ? "sku=" + sku + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
-            (link != null ? "link=" + link + ", " : "") +
-            (reference != null ? "reference=" + reference + ", " : "") +
             (price != null ? "price=" + price + ", " : "") +
             "}";
     }
