@@ -8,6 +8,7 @@ import { ImportModalSuccessComponent } from '../../components/import-modal-succe
 import { ImportModalErrorComponent } from '../../components/import-modal-error/import-modal-error.component';
 import { ImportProduct } from '../../models/product-import.model';
 import { ProductImportService } from '../../services/product-import.service.service';
+import { AccountService } from '../../../../core/auth/account.service';
 
 @Component({
   selector: 'stl-product-import',
@@ -30,7 +31,12 @@ export class ProductImportComponent {
   public progressBar = 0;
   public updateProducts = false;
 
-  constructor(private papa: Papa, private productImportService: ProductImportService, private modalService: NgbModal) {
+  constructor(
+    private papa: Papa,
+    private accountService: AccountService,
+    private productImportService: ProductImportService,
+    private modalService: NgbModal
+  ) {
     this.contentHeader = {
       headerTitle: 'Product importer',
       actionButton: true,
