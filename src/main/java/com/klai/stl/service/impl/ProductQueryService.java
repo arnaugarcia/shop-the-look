@@ -2,6 +2,7 @@ package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static javax.persistence.criteria.JoinType.INNER;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.klai.stl.domain.*;
 import com.klai.stl.repository.ProductRepository;
@@ -91,14 +92,8 @@ public class ProductQueryService extends QueryService<Product> {
         Specification<Product> specification = Specification.where(null);
 
         if (criteria != null) {
-            if (criteria.getSku() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getSku(), Product_.sku));
-            }
-            if (criteria.getName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getName(), Product_.name));
-            }
-            if (criteria.getPrice() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getPrice(), Product_.price));
+            if (isNotEmpty(criteria.getKeyword())) {
+                specification = specification.and(findByNameOrDescriptionOrReferenceLike(criteria.getKeyword()));
             }
             if (!isCurrentUserAdmin()) {
                 User currentUser = userService.getCurrentUser();
@@ -106,6 +101,15 @@ public class ProductQueryService extends QueryService<Product> {
             }
         }
         return specification;
+    }
+
+    private Specification<Product> findByNameOrDescriptionOrReferenceLike(final String keyword) {
+        return (root, criteriaQuery, criteriaBuilder) ->
+            criteriaBuilder.or(
+                criteriaBuilder.like(root.get(Product_.reference), keyword),
+                criteriaBuilder.like(root.get(Product_.name), keyword),
+                criteriaBuilder.like(root.get(Product_.description), keyword)
+            );
     }
 
     private Specification<Product> findByCompanyReference(String companyReference) {
