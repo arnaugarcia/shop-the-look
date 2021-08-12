@@ -177,9 +177,14 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
+    @WithMockUser(authorities = MANAGER, username = "manager-products")
     public void findAllProductsAsManager() throws Exception {
+        User user = UserResourceIT.createEntity(em, "manager-products");
+        em.persist(user);
+
         Company company1 = createBasicCompany(em);
+        company1.addUser(user);
+
         Company company2 = createBasicCompany(em);
         Product product1 = createProduct(em);
         Product product2 = createProduct(em);
@@ -188,6 +193,10 @@ class ProductResourceIT {
         company1.addProduct(product1);
         company1.addProduct(product2);
         company2.addProduct(product3);
+
+        em.persist(product1);
+        em.persist(product2);
+        em.persist(product3);
 
         restProductMockMvc
             .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
@@ -197,9 +206,14 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "user-products")
     public void findAllProductsAsUser() throws Exception {
+        User user = UserResourceIT.createEntity(em, "user-products");
+        em.persist(user);
+
         Company company1 = createBasicCompany(em);
+        company1.addUser(user);
+
         Company company2 = createBasicCompany(em);
         Product product1 = createProduct(em);
         Product product2 = createProduct(em);
@@ -208,6 +222,10 @@ class ProductResourceIT {
         company1.addProduct(product1);
         company1.addProduct(product2);
         company2.addProduct(product3);
+
+        em.persist(product1);
+        em.persist(product2);
+        em.persist(product3);
 
         restProductMockMvc
             .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
