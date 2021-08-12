@@ -8,6 +8,7 @@ import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.co
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from '../../../../config/pagination.constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { ProductImportService } from '../../services/product-import.service.service';
 
 @Component({
   selector: 'stl-product',
@@ -21,24 +22,15 @@ export class ProductComponent implements OnInit {
   public contentHeader: ContentHeader;
   public ngbPaginationPage = 1;
   public selectedOption = 10;
-  public selectStatus: any = [
-    { name: 'All', value: '' },
-    { name: 'Downloaded', value: 'Downloaded' },
-    { name: 'Draft', value: 'Draft' },
-    { name: 'Paid', value: 'Paid' },
-    { name: 'Partial Payment', value: 'Partial Payment' },
-    { name: 'Past Due', value: 'Past Due' },
-    { name: 'Sent', value: 'Sent' },
-  ];
-  public selectedStatus = [];
   public searchValue = '';
+  public isLoading = false;
 
-  private isLoading = false;
   private predicate!: string;
   private ascending!: boolean;
 
   constructor(
     private router: Router,
+    private importService: ProductImportService,
     protected activatedRoute: ActivatedRoute,
     protected productService: ProductService,
     private modalService: NgbModal
@@ -68,8 +60,8 @@ export class ProductComponent implements OnInit {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: IProduct): number {
-    return item.id!;
+  trackReference(index: number, item: IProduct): string {
+    return item.reference!;
   }
 
   loadAll(): void {
@@ -95,6 +87,21 @@ export class ProductComponent implements OnInit {
         this.loadAll();
       }
     });
+  }
+
+  refreshProducts(): void {
+    const pageToLoad = 1;
+    this.isLoading = true;
+    this.importService.refresh().subscribe(
+      (res: HttpResponse<IProduct[]>) => {
+        this.isLoading = false;
+        this.onSuccess(res.body, res.headers, pageToLoad, true);
+      },
+      () => {
+        this.isLoading = false;
+        this.onError();
+      }
+    );
   }
 
   loadPage(page?: number, dontNavigate?: boolean): void {

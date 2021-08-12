@@ -8,35 +8,25 @@
             <div class="d-flex align-items-center">
               <label class="d-flex align-items-center"
                 >Show
-                <select [(ngModel)]="selectedOption" class="form-control mx-25">
+                <select [(ngModel)]="selectedOption" [disabled]="isLoading" class="form-control mx-25">
                   <option value="10">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
                 </select>
               </label>
-              <button class="btn btn-primary ml-2" rippleEffect routerLink="/apps/invoice/add">Refresh with Google Feed</button>
+              <button (click)="refreshProducts()" [disabled]="isLoading" class="btn btn-primary ml-2" rippleEffect>
+                Refresh with Google Feed
+              </button>
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-lg-4 col-12 d-flex justify-content-start justify-content-md-end align-items-center offset-lg-2">
-          <div class="row pr-1 pb-1 pb-md-0 align-items-center w-100">
-            <div class="col-10 col-md-6 pr-0">
-              <label class="d-flex align-items-center mb-0 ml-1 ml-md-0">
-                <input [(ngModel)]="searchValue" class="form-control" name="searchValue" placeholder="Search..." type="search" />
-                <!--(keyup)="filterUpdate($event)"-->
-              </label>
-            </div>
-            <div class="col-10 col-md-6 mt-2 ml-1 ml-md-0 mt-md-0">
-              <fieldset class="form-group mb-0">
-                <select [(ngModel)]="selectedOption" class="form-control">
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-              </fieldset>
-            </div>
+        <div class="d-flex justify-content-start justify-content-md-end align-items-center offset-lg-2">
+          <div class="mt-2 ml-1 ml-md-0 mt-md-0">
+            <label class="d-flex align-items-center mb-0 ml-1 ml-md-0">
+              <input [(ngModel)]="searchValue" class="form-control" name="searchValue" placeholder="Search..." type="search" />
+              <!--(keyup)="filterUpdate($event)"-->
+            </label>
           </div>
         </div>
       </div>
@@ -61,7 +51,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
+              <tr *ngFor="let product of products; trackBy: trackReference" data-cy="entityTable">
                 <td>{{ product.sku }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description | slice: 0:120 }}</td>
@@ -70,14 +60,12 @@
                 </td>
                 <td>{{ product.price }}</td>
                 <td *stlHasAnyAuthority="'ROLE_ADMIN'">
-                  <div *ngIf="product.company">
-                    <a [routerLink]="['/company', product.company?.id, 'view']">{{ product.company?.nif }}</a>
-                  </div>
+                  <a [routerLink]="['/company', product.companyReference, 'view']">{{ product.companyReference }}</a>
                 </td>
                 <td class="text-right">
                   <div class="btn-group">
                     <button
-                      [routerLink]="['/product', product.id, 'edit']"
+                      [routerLink]="['/product', product.reference, 'edit']"
                       class="btn btn-primary btn-sm"
                       data-cy="entityEditButton"
                       type="submit"
