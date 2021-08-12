@@ -3,7 +3,7 @@ import { ImportProduct } from '../models/product-import.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../../../core/request/request-util';
 import { IProduct } from '../models/product.model';
-import { EntityResponseType } from './product.service';
+import { EntityArrayResponseType } from './product.service';
 import { HttpClient } from '@angular/common/http';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
 
@@ -11,20 +11,28 @@ import { ApplicationConfigService } from '../../../core/config/application-confi
   providedIn: 'root',
 })
 export class ProductImportService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/products/import');
+  protected importResourceUrl = this.applicationConfigService.getEndpointFor('api/products/import');
+  protected refreshResourceUrl = this.applicationConfigService.getEndpointFor('api/products/refresh');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  import(importProduct: ImportProduct): Observable<EntityResponseType> {
+  import(importProduct: ImportProduct): Observable<EntityArrayResponseType> {
     const options = createRequestOption({
       companyReference: importProduct.companyReference,
     });
     if (importProduct.update) {
-      return this.http.put<IProduct>(this.resourceUrl, importProduct.products, {
+      return this.http.put<IProduct[]>(this.importResourceUrl, importProduct.products, {
         observe: 'response',
         params: options,
       });
     }
-    return this.http.post<IProduct>(this.resourceUrl, importProduct.products, { observe: 'response', params: options });
+    return this.http.post<IProduct[]>(this.importResourceUrl, importProduct.products, {
+      observe: 'response',
+      params: options,
+    });
+  }
+
+  refresh(): Observable<EntityArrayResponseType> {
+    return this.http.put<IProduct[]>(this.refreshResourceUrl, null, { observe: 'response' });
   }
 }

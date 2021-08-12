@@ -1,4 +1,4 @@
-<form *ngIf="product" name="deleteForm" (ngSubmit)="confirmDelete(product.id!)">
+<form (ngSubmit)="confirmDelete(product.reference!)" *ngIf="product" name="deleteForm">
   <div class="modal-header">
     <h4 class="modal-title" data-cy="productDeleteDialogHeading" stlTranslate="entity.delete.title">Confirm delete operation</h4>
 
@@ -8,7 +8,7 @@
   <div class="modal-body">
     <stl-alert-error></stl-alert-error>
 
-    <p id="stl-delete-product-heading" stlTranslate="shopTheLookApp.product.delete.question" [translateValues]="{ id: product.id }">
+    <p [translateValues]="{ id: product.reference }" id="stl-delete-product-heading" stlTranslate="shopTheLookApp.product.delete.question">
       Are you sure you want to delete this Product?
     </p>
   </div>

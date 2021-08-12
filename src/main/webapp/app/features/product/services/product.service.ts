@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { getProductIdentifier, IProduct } from '../models/product.model';
+import { IProduct } from '../models/product.model';
 
 export type EntityResponseType = HttpResponse<IProduct>;
 export type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -21,11 +19,7 @@ export class ProductService {
   }
 
   update(product: IProduct): Observable<EntityResponseType> {
-    return this.http.put<IProduct>(`${this.resourceUrl}/${getProductIdentifier(product) as number}`, product, { observe: 'response' });
-  }
-
-  partialUpdate(product: IProduct): Observable<EntityResponseType> {
-    return this.http.patch<IProduct>(`${this.resourceUrl}/${getProductIdentifier(product) as number}`, product, { observe: 'response' });
+    return this.http.put<IProduct>(`${this.resourceUrl}/${product.reference!}`, product, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {
@@ -37,24 +31,7 @@ export class ProductService {
     return this.http.get<IProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
-  }
-
-  addProductToCollectionIfMissing(productCollection: IProduct[], ...productsToCheck: (IProduct | null | undefined)[]): IProduct[] {
-    const products: IProduct[] = productsToCheck.filter(isPresent);
-    if (products.length > 0) {
-      const productCollectionIdentifiers = productCollection.map(productItem => getProductIdentifier(productItem)!);
-      const productsToAdd = products.filter(productItem => {
-        const productIdentifier = getProductIdentifier(productItem);
-        if (productIdentifier == null || productCollectionIdentifiers.includes(productIdentifier)) {
-          return false;
-        }
-        productCollectionIdentifiers.push(productIdentifier);
-        return true;
-      });
-      return [...productsToAdd, ...productCollection];
-    }
-    return productCollection;
+  delete(reference: string): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${reference}`, { observe: 'response' });
   }
 }

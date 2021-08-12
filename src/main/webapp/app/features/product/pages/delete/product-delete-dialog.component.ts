@@ -15,8 +15,8 @@ export class ProductDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: number): void {
-    this.productService.delete(id).subscribe(() => {
+  confirmDelete(reference: string): void {
+    this.productService.delete(reference).subscribe(() => {
       this.activeModal.close('deleted');
     });
   }
