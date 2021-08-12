@@ -20,6 +20,19 @@ export class ProductComponent implements OnInit {
   public page?: number;
   public contentHeader: ContentHeader;
   public ngbPaginationPage = 1;
+  public selectedOption = 10;
+  public selectStatus: any = [
+    { name: 'All', value: '' },
+    { name: 'Downloaded', value: 'Downloaded' },
+    { name: 'Draft', value: 'Draft' },
+    { name: 'Paid', value: 'Paid' },
+    { name: 'Partial Payment', value: 'Partial Payment' },
+    { name: 'Past Due', value: 'Past Due' },
+    { name: 'Sent', value: 'Sent' },
+  ];
+  public selectedStatus = [];
+  public searchValue = '';
+
   private isLoading = false;
   private predicate!: string;
   private ascending!: boolean;
