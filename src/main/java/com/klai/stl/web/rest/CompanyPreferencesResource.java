@@ -48,7 +48,7 @@ public class CompanyPreferencesResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the preferences in body.
      */
     @GetMapping("/preferences")
-    public ResponseEntity<PreferencesDTO> getBillingAddress(@PathVariable String reference) {
+    public ResponseEntity<PreferencesDTO> getPreferences(@PathVariable String reference) {
         log.debug("REST request to get all BillingAddresses");
         return ok(preferencesService.find(reference));
     }
