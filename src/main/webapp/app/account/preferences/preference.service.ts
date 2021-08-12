@@ -13,7 +13,7 @@ export class PreferenceService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   update(companyReference: string, preferences: IPreferences): Observable<EntityResponseType> {
-    return this.http.put<IPreferences>(`${this.resourceUrl}/${companyReference!}`, preferences, { observe: 'response' });
+    return this.http.put<IPreferences>(`${this.resourceUrl}/${companyReference}`, preferences, { observe: 'response' });
   }
 
   find(companyReference: string): Observable<EntityResponseType> {
