@@ -142,6 +142,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleCompanyNotFoundException(
+        com.klai.stl.service.exception.ProductNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, "Product not found", "product", "productnotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleBadOwnerException(com.klai.stl.service.exception.BadOwnerException ex, NativeWebRequest request) {
         ForbiddenException problem = new ForbiddenException(NOT_FOUND, "You aren't the owner of this", "user", "forbidden");
         return create(
