@@ -106,9 +106,9 @@ public class ProductQueryService extends QueryService<Product> {
     private Specification<Product> findByNameOrDescriptionOrReferenceLike(final String keyword) {
         return (root, criteriaQuery, criteriaBuilder) ->
             criteriaBuilder.or(
-                criteriaBuilder.like(root.get(Product_.reference), keyword),
-                criteriaBuilder.like(root.get(Product_.name), keyword),
-                criteriaBuilder.like(root.get(Product_.description), keyword)
+                criteriaBuilder.like(root.get(Product_.reference), '%' + keyword + '%'),
+                criteriaBuilder.like(root.get(Product_.name), '%' + keyword + '%'),
+                criteriaBuilder.like(root.get(Product_.description), '%' + keyword + '%')
             );
     }
 
