@@ -25,9 +25,9 @@ public interface ProductService {
     Optional<ProductDTO> findOne(Long id);
 
     /**
-     * Delete the "id" product.
+     * Delete the "reference" product.
      *
-     * @param id the id of the entity.
+     * @param reference the reference of the entity.
      */
-    void delete(Long id);
+    void delete(String reference);
 }

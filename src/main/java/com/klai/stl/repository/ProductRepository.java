@@ -20,4 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Optional<Product> findBySku(String sku);
 
     void deleteAllByCompanyReference(String companyReference);
+
+    void deleteByReference(String reference);
 }
