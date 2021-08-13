@@ -1,6 +1,5 @@
 package com.klai.stl.service.dto;
 
-import com.klai.stl.domain.enumeration.ProductAvailability;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
@@ -9,8 +8,6 @@ import javax.validation.constraints.NotNull;
  * A DTO for the {@link com.klai.stl.domain.Product} entity.
  */
 public class ProductDTO implements Serializable {
-
-    private Long id;
 
     @NotNull
     private String sku;
@@ -30,25 +27,10 @@ public class ProductDTO implements Serializable {
     @NotNull
     private String imageLink;
 
-    private String additionalImageLink;
-
-    @NotNull
-    private ProductAvailability availability;
-
     @NotNull
     private String price;
 
-    private String category;
-
     private String companyReference;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getSku() {
         return sku;
@@ -98,36 +80,12 @@ public class ProductDTO implements Serializable {
         this.imageLink = imageLink;
     }
 
-    public String getAdditionalImageLink() {
-        return additionalImageLink;
-    }
-
-    public void setAdditionalImageLink(String additionalImageLink) {
-        this.additionalImageLink = additionalImageLink;
-    }
-
-    public ProductAvailability getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(ProductAvailability availability) {
-        this.availability = availability;
-    }
-
     public String getPrice() {
         return price;
     }
 
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getCompanyReference() {
@@ -148,32 +106,28 @@ public class ProductDTO implements Serializable {
         }
 
         ProductDTO productDTO = (ProductDTO) o;
-        if (this.id == null) {
+        if (this.reference == null) {
             return false;
         }
-        return Objects.equals(this.id, productDTO.id);
+        return Objects.equals(this.reference, productDTO.reference);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hash(this.reference);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "ProductDTO{" +
-            "id=" + getId() +
             ", sku='" + getSku() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", reference='" + getReference() + "'" +
             ", imageLink='" + getImageLink() + "'" +
-            ", additionalImageLink='" + getAdditionalImageLink() + "'" +
-            ", availability='" + getAvailability() + "'" +
             ", price='" + getPrice() + "'" +
-            ", category='" + getCategory() + "'" +
             ", companyReference='" + getCompanyReference() + "'" +
             "}";
     }
