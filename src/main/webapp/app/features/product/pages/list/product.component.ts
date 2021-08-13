@@ -24,7 +24,6 @@ export class ProductComponent implements OnInit, OnDestroy {
   public ngbPaginationPage = 1;
 
   public sizeChanged: Subject<number> = new Subject<number>();
-  public selectedOption = 10;
 
   public isLoading = false;
 
@@ -89,15 +88,21 @@ export class ProductComponent implements OnInit, OnDestroy {
   loadAll(): void {
     this.isLoading = true;
 
-    this.productService.query().subscribe(
-      (res: HttpResponse<IProduct[]>) => {
-        this.isLoading = false;
-        this.products = res.body ?? [];
-      },
-      () => {
-        this.isLoading = false;
-      }
-    );
+    this.productService
+      .query({
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        keyword: this.searchText,
+      })
+      .subscribe(
+        (response: HttpResponse<IProduct[]>) => {
+          this.onSuccess(response.body, response.headers, 1, true);
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
+        }
+      );
   }
 
   delete(product: IProduct): void {
@@ -112,12 +117,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   refreshProducts(): void {
-    const pageToLoad = 1;
     this.isLoading = true;
     this.importService.refresh().subscribe(
       (res: HttpResponse<IProduct[]>) => {
         this.isLoading = false;
-        this.onSuccess(res.body, res.headers, pageToLoad, true);
+        this.onSuccess(res.body, res.headers, 1, true);
       },
       () => {
         this.isLoading = false;
