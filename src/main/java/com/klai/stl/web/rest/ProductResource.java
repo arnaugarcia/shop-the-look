@@ -2,7 +2,6 @@ package com.klai.stl.web.rest;
 
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
-import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
 
 import com.klai.stl.service.ProductService;
@@ -64,26 +63,6 @@ public class ProductResource {
     }
 
     /**
-     * {@code PUT  /products/:id} : Updates an existing product.
-     *
-     * @param reference      the id of the productDTO to save.
-     * @param productRequest the product request to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated productDTO,
-     * or with status {@code 400 (Bad Request)} if the productDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the productDTO couldn't be updated.
-     */
-    @PutMapping("/products/{reference}")
-    public ResponseEntity<ProductDTO> updateProduct(
-        @PathVariable(value = "reference") final String reference,
-        @Valid @RequestBody NewProductRequest productRequest
-    ) {
-        log.debug("REST request to update Product : {}, {}", reference, productRequest);
-
-        ProductDTO result = productService.update(productRequest);
-        return ok().headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productRequest.getSku())).body(result);
-    }
-
-    /**
      * {@code GET  /products} : get all the products.
      *
      * @param pageable the pagination information.
@@ -112,18 +91,18 @@ public class ProductResource {
     }
 
     /**
-     * {@code DELETE  /products/:id} : delete the "id" product.
+     * {@code DELETE  /products/:reference} : delete the "reference" product.
      *
-     * @param id the id of the productDTO to delete.
+     * @param reference the reference of the productDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        log.debug("REST request to delete Product : {}", id);
-        productService.delete(id);
+    @DeleteMapping("/products/{reference}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String reference) {
+        log.debug("REST request to delete Product : {}", reference);
+        productService.delete(reference);
         return ResponseEntity
             .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, reference))
             .build();
     }
 }
