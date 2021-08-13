@@ -48,7 +48,6 @@
               <tr>
                 <th scope="col"><span stlTranslate="shopTheLookApp.product.sku">Sku</span></th>
                 <th scope="col"><span stlTranslate="shopTheLookApp.product.name">Name</span></th>
-                <th scope="col"><span stlTranslate="shopTheLookApp.product.description">Description</span></th>
                 <th scope="col"><span stlTranslate="shopTheLookApp.product.link">Link</span></th>
                 <th scope="col"><span stlTranslate="shopTheLookApp.product.price">Price</span></th>
                 <th *stlHasAnyAuthority="'ROLE_ADMIN'" scope="col">
@@ -59,9 +58,10 @@
             </thead>
             <tbody>
               <tr *ngFor="let product of products; trackBy: trackReference" data-cy="entityTable">
-                <td>{{ product.sku }}</td>
+                <td>
+                  <a [routerLink]="[product.reference, 'view']">{{ product.sku }}</a>
+                </td>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description | slice: 0:120 }}</td>
                 <td>
                   <a [href]="product.link" target="_blank">{{ product.link }}</a>
                 </td>
