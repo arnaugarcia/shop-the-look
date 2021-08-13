@@ -10,9 +10,8 @@ import org.mapstruct.Named;
 /**
  * Mapper for the entity {@link Space} and its DTO {@link SpaceDTO}.
  */
-@Mapper(componentModel = "spring", uses = { CompanyMapper.class })
+@Mapper(componentModel = "spring")
 public interface SpaceMapper extends EntityMapper<SpaceDTO, Space> {
-    @Mapping(target = "company", source = "company")
     SpaceDTO toDto(Space s);
 
     @Named("reference")

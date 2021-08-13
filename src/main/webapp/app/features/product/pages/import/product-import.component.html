@@ -1,0 +1,141 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+    <!-- File Uploader -->
+    <section id="file-upload">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 col-lg-12">
+              <div
+                ng2FileDrop
+                [ngClass]="{ 'file-drop-over': hasBaseDropZoneOver }"
+                (fileOver)="fileOverBase($event)"
+                (onFileDrop)="onFileDropped($event)"
+                [uploader]="uploader"
+                class="py-5 mb-3 text-center font-medium-5 text-uppercase file-drop-zone"
+              >
+                Drop CSV / TSV files to upload products
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+              <h4>Select files</h4>
+              <fieldset class="form-group">
+                <label for="file-upload-multiple">Select CSV/TSV file:</label>
+                <div class="custom-file">
+                  <input
+                    (onFileSelected)="onFileDropped($event)"
+                    [accept]="ACCEPTED_FILES"
+                    ng2FileSelect
+                    [disabled]="!products || loading"
+                    [uploader]="uploader"
+                    class="custom-file-input"
+                    id="file-upload-multiple"
+                    type="file"
+                  />
+                  <label class="custom-file-label">Choose file</label>
+                </div>
+              </fieldset>
+              <div class="custom-control custom-checkbox">
+                <input [(ngModel)]="updateProducts" checked class="custom-control-input" id="customCheck1" type="checkbox" />
+                <label class="custom-control-label" for="customCheck1">
+                  Los productos existentes que coincidan en ID o SKU se actualizarán. Los productos que no existan se omitirán.
+                </label>
+              </div>
+            </div>
+
+            <div class="col-lg-9 overflow-auto">
+              <div class="d-flex justify-content-between mb-1">
+                <h4>Loaded products preview</h4>
+                <p>Loaded products: {{ products.length }}</p>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <span stlTranslate="shopTheLookApp.product.sku">Sku</span>
+                    </th>
+                    <th scope="col">
+                      <span stlTranslate="shopTheLookApp.product.name">Name</span>
+                    </th>
+                    <th scope="col">
+                      <span stlTranslate="shopTheLookApp.product.price">Price</span>
+                    </th>
+                    <th scope="col">
+                      <span>Remove</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of products | paginate: config">
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}</td>
+                    <td nowrap>
+                      <button
+                        (click)="removeProduct(product)"
+                        [disabled]="loading"
+                        class="btn btn-raised btn-outline-danger btn-sm"
+                        rippleEffect
+                        type="button"
+                      >
+                        <i [data-feather]="'trash'"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <ngb-pagination
+                (pageChange)="pageChanged($event)"
+                *ngIf="products.length > 10"
+                [(page)]="page"
+                [boundaryLinks]="true"
+                [collectionSize]="products.length"
+                [maxSize]="10"
+                [rotate]="true"
+                class="float-right"
+              >
+                <ng-template ngbPaginationFirst>First</ng-template>
+                <ng-template ngbPaginationPrevious>
+                  <span [data-feather]="'chevron-left'" [class]="'font-weight-bolder'"></span>Prev
+                </ng-template>
+                <ng-template ngbPaginationNext>
+                  Next
+                  <span [data-feather]="'chevron-right'" [class]="'font-weight-bolder'"></span>
+                </ng-template>
+                <ng-template ngbPaginationLast>Last</ng-template>
+              </ngb-pagination>
+              <div>
+                <p class="mt-1">Upload process:</p>
+                <ngb-progressbar [value]="progressBar" class="mb-1" type="primary"></ngb-progressbar>
+                <button
+                  (click)="importProducts()"
+                  [disabled]="products.length == 0"
+                  class="btn mr-1 btn-primary mb-1 mb-sm-0"
+                  type="button"
+                  rippleEffect
+                >
+                  <span class="mr-25" data-feather="upload"></span>
+                  Upload all
+                </button>
+                <button
+                  (click)="removeAllFromQueue()"
+                  [disabled]="products.length == 0"
+                  class="btn btn-outline-danger mb-1 mb-sm-0"
+                  type="button"
+                  rippleEffect
+                >
+                  <span class="mr-25" data-feather="trash"></span> Remove all
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/ File Uploader -->
+  </div>
+</div>

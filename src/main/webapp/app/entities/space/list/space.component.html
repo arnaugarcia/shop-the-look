@@ -3,7 +3,7 @@
     <span stlTranslate="shopTheLookApp.space.home.title">Spaces</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span stlTranslate="shopTheLookApp.space.home.refreshListLabel">Refresh List</span>
       </button>
@@ -31,15 +31,27 @@
   <div class="table-responsive" id="entities" *ngIf="spaces && spaces.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr>
-          <th scope="col"><span stlTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.space.name">Name</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.space.active">Active</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.space.reference">Reference</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.space.description">Description</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.space.maxPhotos">Max Photos</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.space.visible">Visible</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.space.company">Company</span></th>
+        <tr stlSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" stlSortBy="id"><span stlTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" stlSortBy="name"><span stlTranslate="shopTheLookApp.space.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" stlSortBy="active">
+            <span stlTranslate="shopTheLookApp.space.active">Active</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" stlSortBy="reference">
+            <span stlTranslate="shopTheLookApp.space.reference">Reference</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" stlSortBy="description">
+            <span stlTranslate="shopTheLookApp.space.description">Description</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" stlSortBy="maxPhotos">
+            <span stlTranslate="shopTheLookApp.space.maxPhotos">Max Photos</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" stlSortBy="visible">
+            <span stlTranslate="shopTheLookApp.space.visible">Visible</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" stlSortBy="company.nif">
+            <span stlTranslate="shopTheLookApp.space.company">Company</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -80,5 +92,23 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="spaces && spaces.length > 0">
+    <div class="row justify-content-center">
+      <stl-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></stl-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

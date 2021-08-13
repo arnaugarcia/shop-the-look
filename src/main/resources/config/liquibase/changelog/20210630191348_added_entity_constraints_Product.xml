@@ -19,5 +19,14 @@
                                  constraintName="fk_product__coordinate_id"
                                  referencedColumnNames="id"
                                  referencedTableName="coordinate"/>
+
+        <addUniqueConstraint columnNames="sku, company_id"
+                             tableName="product"
+                             constraintName="ux_product_company"/>
+
+        <addUniqueConstraint columnNames="reference"
+                             tableName="product"
+                             constraintName="ux_product_reference"/>
+
     </changeSet>
 </databaseChangeLog>

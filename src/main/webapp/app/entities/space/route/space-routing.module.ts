@@ -11,6 +11,9 @@ const spaceRoute: Routes = [
   {
     path: '',
     component: SpaceComponent,
+    data: {
+      defaultSort: 'id,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {

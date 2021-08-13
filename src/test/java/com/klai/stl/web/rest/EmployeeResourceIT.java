@@ -83,7 +83,7 @@ class EmployeeResourceIT {
 
     @BeforeEach
     public void initTest() {
-        company = CompanyResourceIT.createBasicEntity(em);
+        company = CompanyResourceIT.createBasicCompany(em);
         employee = UserResourceIT.createEntity(em);
         employeeAdminRequest = createAdminRequest(company.getReference());
         employeeRequest = createRequest();
@@ -129,7 +129,7 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "create-employee", authorities = { MANAGER })
     void createEmployee() throws Exception {
-        final Company company = CompanyResourceIT.createBasicEntity(em);
+        final Company company = CompanyResourceIT.createBasicCompany(em);
         employee.setLogin("create-employee");
         em.persist(company);
         employee.setCompany(company);
@@ -331,13 +331,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "manager-update-employee-company", authorities = { MANAGER })
     public void updateEmployeeFromOtherCompany() throws Exception {
-        Company company1 = CompanyResourceIT.createBasicEntity(em);
+        Company company1 = CompanyResourceIT.createBasicCompany(em);
         final User manager = UserResourceIT.createEntity(em, "manager-update-employee-company");
         company1.addUser(manager);
         em.persist(manager);
         em.persist(company1);
 
-        Company company2 = CompanyResourceIT.createBasicEntity(em);
+        Company company2 = CompanyResourceIT.createBasicCompany(em);
         final User employee = UserResourceIT.createEntity(em);
         company2.addUser(employee);
         em.persist(employee);
@@ -356,13 +356,13 @@ class EmployeeResourceIT {
     @Transactional
     @WithMockUser(username = "admin-update-employee-company", authorities = { ADMIN })
     public void updateEmployeeFromOtherCompanyAsAdmin() throws Exception {
-        Company company1 = CompanyResourceIT.createBasicEntity(em);
+        Company company1 = CompanyResourceIT.createBasicCompany(em);
         final User manager = UserResourceIT.createEntity(em, "admin-update-employee-company");
         company1.addUser(manager);
         em.persist(manager);
         em.persist(company1);
 
-        Company company2 = CompanyResourceIT.createBasicEntity(em);
+        Company company2 = CompanyResourceIT.createBasicCompany(em);
         final User employee = UserResourceIT.createEntity(em);
         company2.addUser(employee);
         em.persist(employee);
@@ -513,7 +513,7 @@ class EmployeeResourceIT {
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity(em);
+        Company company2 = CompanyResourceIT.createBasicCompany(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -534,7 +534,7 @@ class EmployeeResourceIT {
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity(em);
+        Company company2 = CompanyResourceIT.createBasicCompany(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -584,7 +584,7 @@ class EmployeeResourceIT {
         company.addUser(manager);
         em.persist(company);
 
-        Company company2 = CompanyResourceIT.createBasicEntity(em);
+        Company company2 = CompanyResourceIT.createBasicCompany(em);
         User user1 = UserResourceIT.createEntity(em);
         company2.addUser(user1);
 
@@ -626,7 +626,7 @@ class EmployeeResourceIT {
         em.persist(company);
 
         User user = UserResourceIT.createEntity(em);
-        Company company2 = CompanyResourceIT.createBasicEntity(em);
+        Company company2 = CompanyResourceIT.createBasicCompany(em);
         company2.addUser(user);
         em.persist(user);
         em.persist(company2);
@@ -716,7 +716,7 @@ class EmployeeResourceIT {
 
         User otherEmployee = UserResourceIT.createEntity(em);
         em.persist(otherEmployee);
-        Company otherCompany = CompanyResourceIT.createBasicEntity(em);
+        Company otherCompany = CompanyResourceIT.createBasicCompany(em);
         otherCompany.addUser(otherEmployee);
         em.persist(otherCompany);
 

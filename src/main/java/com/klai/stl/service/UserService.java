@@ -1,5 +1,7 @@
 package com.klai.stl.service;
 
+import static com.klai.stl.security.SecurityUtils.getCurrentUserLogin;
+
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.Company;
@@ -8,7 +10,6 @@ import com.klai.stl.repository.AuthorityRepository;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
-import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
@@ -333,8 +334,7 @@ public class UserService {
      * @param imageUrl  image URL of user.
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        SecurityUtils
-            .getCurrentUserLogin()
+        getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(
                 user -> {
@@ -368,8 +368,7 @@ public class UserService {
 
     @Transactional
     public void changePassword(String currentClearTextPassword, String newPassword) {
-        SecurityUtils
-            .getCurrentUserLogin()
+        getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(
                 user -> {
@@ -402,7 +401,11 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        return getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+    }
+
+    public User getCurrentUser() {
+        return getUserWithAuthorities().orElseThrow(UserNotFound::new);
     }
 
     /**

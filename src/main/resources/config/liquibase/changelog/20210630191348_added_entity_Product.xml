@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <!--
         Added the entity Product.
@@ -15,37 +13,34 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="sku" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="description" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="description" type="${clobType}"/>
             <column name="link" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="image_link" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="false"/>
             </column>
+            <column name="image_link" type="varchar(255)"/>
             <column name="additional_image_link" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
-            <column name="availability" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="availability" type="varchar(255)"/>
             <column name="price" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="category" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="company_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="coordinate_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -63,13 +58,13 @@
     -->
     <changeSet id="20210630191348-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/product.csv"
-                  separator=";"
-                  tableName="product">
+                file="config/liquibase/fake-data/product.csv"
+                separator=";"
+                tableName="product">
             <column name="id" type="numeric"/>
             <column name="sku" type="string"/>
             <column name="name" type="string"/>
-            <column name="description" type="string"/>
+            <column name="description" type="clob"/>
             <column name="link" type="string"/>
             <column name="image_link" type="string"/>
             <column name="additional_image_link" type="string"/>

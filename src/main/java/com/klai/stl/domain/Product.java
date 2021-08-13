@@ -30,8 +30,8 @@ public class Product implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
-    @Column(name = "description", nullable = false)
+    @Lob
+    @Column(name = "description")
     private String description;
 
     @NotNull
@@ -39,15 +39,17 @@ public class Product implements Serializable {
     private String link;
 
     @NotNull
-    @Column(name = "image_link", nullable = false)
+    @Column(name = "reference", nullable = false)
+    private String reference;
+
+    @Column(name = "image_link")
     private String imageLink;
 
     @Column(name = "additional_image_link")
     private String additionalImageLink;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "availability", nullable = false)
+    @Column(name = "availability")
     private ProductAvailability availability;
 
     @NotNull
@@ -133,6 +135,19 @@ public class Product implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public Product reference(String reference) {
+        this.reference = reference;
+        return this;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public String getImageLink() {
@@ -252,6 +267,7 @@ public class Product implements Serializable {
             "id=" + getId() +
             ", sku='" + getSku() + "'" +
             ", name='" + getName() + "'" +
+            ", reference='" + getReference() + "'" +
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", imageLink='" + getImageLink() + "'" +

@@ -77,7 +77,7 @@ class AccountResourceIT {
 
     @BeforeEach
     void beforeEach() {
-        company = companyRepository.saveAndFlush(CompanyResourceIT.createBasicEntity(em));
+        company = companyRepository.saveAndFlush(CompanyResourceIT.createBasicCompany(em));
     }
 
     @Test

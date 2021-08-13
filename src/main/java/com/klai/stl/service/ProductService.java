@@ -1,7 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.ProductDTO;
-import java.util.List;
+import com.klai.stl.service.dto.requests.NewProductRequest;
 import java.util.Optional;
 
 /**
@@ -9,27 +9,12 @@ import java.util.Optional;
  */
 public interface ProductService {
     /**
-     * Save a product.
+     * Update a product.
      *
-     * @param productDTO the entity to save.
+     * @param productRequest the entity to save.
      * @return the persisted entity.
      */
-    ProductDTO save(ProductDTO productDTO);
-
-    /**
-     * Partially updates a product.
-     *
-     * @param productDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<ProductDTO> partialUpdate(ProductDTO productDTO);
-
-    /**
-     * Get all the products.
-     *
-     * @return the list of entities.
-     */
-    List<ProductDTO> findAll();
+    ProductDTO update(NewProductRequest productRequest);
 
     /**
      * Get the "id" product.
@@ -40,9 +25,9 @@ public interface ProductService {
     Optional<ProductDTO> findOne(Long id);
 
     /**
-     * Delete the "id" product.
+     * Delete the "reference" product.
      *
-     * @param id the id of the entity.
+     * @param reference the reference of the entity.
      */
-    void delete(Long id);
+    void delete(String reference);
 }
