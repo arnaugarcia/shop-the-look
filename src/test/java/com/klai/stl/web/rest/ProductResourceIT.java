@@ -8,6 +8,7 @@ import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,6 +76,7 @@ class ProductResourceIT {
     private MockMvc restProductMockMvc;
 
     private NewProductRequest newProductRequest;
+    private Product product;
 
     /**
      * Create an entity for this test.
@@ -111,6 +113,7 @@ class ProductResourceIT {
     @BeforeEach
     public void initTest() {
         newProductRequest = buildRequest();
+        product = createProduct(em);
     }
 
     private NewProductRequest buildRequest() {
@@ -140,7 +143,7 @@ class ProductResourceIT {
         restProductMockMvc
             .perform(get(ENTITY_API_URL).contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(3)));
+            .andExpect(jsonPath("$", hasSize(4)));
     }
 
     @Test
@@ -306,27 +309,39 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(authorities = ADMIN)
     public void deleteProductAsAdmin() throws Exception {
-        /*restProductMockMvc
-            .perform(get(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isNoContent());*/
+        restProductMockMvc
+            .perform(delete(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
     }
 
     @Test
     @Transactional
-    @WithMockUser(authorities = MANAGER)
+    @WithMockUser(authorities = MANAGER, username = "delete-product-manager")
     public void deleteProductAsManager() throws Exception {
-        /*restProductMockMvc
-            .perform(get(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isNoContent());*/
+        User currentUser = UserResourceIT.createEntity(em, "delete-product-manager");
+        em.persist(currentUser);
+        Company company1 = createBasicCompany(em);
+        company1.addProduct(product);
+        company1.addUser(currentUser);
+
+        restProductMockMvc
+            .perform(delete(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
     }
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "delete-product-user")
     public void deleteProductAsUser() throws Exception {
-        /*restProductMockMvc
-            .perform(get(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isNoContent());*/
+        User currentUser = UserResourceIT.createEntity(em, "delete-product-user");
+        em.persist(currentUser);
+        Company company1 = createBasicCompany(em);
+        company1.addProduct(product);
+        company1.addUser(currentUser);
+
+        restProductMockMvc
+            .perform(delete(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
     }
 
     @Test
@@ -338,7 +353,7 @@ class ProductResourceIT {
         company1.addProduct(product1);
 
         restProductMockMvc
-            .perform(get(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
             .andExpect(status().isNoContent());
     }
 
@@ -346,25 +361,17 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER)
     public void deleteOtherCompanyProductAsManager() throws Exception {
-        Company company1 = createBasicCompany(em);
-        Product product1 = createProduct(em);
-        company1.addProduct(product1);
-
         restProductMockMvc
-            .perform(get(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isForbidden());
+            .perform(delete(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     @WithMockUser
     public void deleteOtherCompanyProductAsUser() throws Exception {
-        Company company1 = createBasicCompany(em);
-        Product product1 = createProduct(em);
-        company1.addProduct(product1);
-
         restProductMockMvc
-            .perform(get(ENTITY_API_URL_ID, company1.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isForbidden());
+            .perform(delete(ENTITY_API_URL_ID, product.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 }
