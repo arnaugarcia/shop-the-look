@@ -22,12 +22,16 @@ export class ProductComponent implements OnInit, OnDestroy {
   public page?: number;
   public contentHeader: ContentHeader;
   public ngbPaginationPage = 1;
+
+  public sizeChanged: Subject<number> = new Subject<number>();
   public selectedOption = 10;
+
   public isLoading = false;
 
   public searchText = '';
   public searchTextChanged: Subject<string> = new Subject<string>();
   private searchTextChangeSubscription: Subscription = new Subscription();
+  private sizeChangeSubscription: Subscription = new Subscription();
 
   private predicate!: string;
   private ascending!: boolean;
@@ -66,8 +70,12 @@ export class ProductComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((newText: string) => {
         this.searchText = newText;
-        this.loadPage(0);
+        this.loadPage();
       });
+    this.sizeChangeSubscription = this.sizeChanged.subscribe((size: number) => {
+      this.itemsPerPage = size;
+      this.loadPage();
+    });
   }
 
   ngOnDestroy(): void {
