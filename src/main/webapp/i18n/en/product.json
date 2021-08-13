@@ -19,6 +19,7 @@
       },
       "id": "ID",
       "sku": "Sku",
+      "reference": "Reference",
       "name": "Name",
       "description": "Description",
       "link": "Link",
