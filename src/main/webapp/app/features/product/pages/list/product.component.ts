@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IProduct } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
@@ -7,14 +7,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from '../../../../config/pagination.constants';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject, Subscription } from 'rxjs';
 import { ProductImportService } from '../../services/product-import.service.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'stl-product',
   templateUrl: './product.component.html',
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   public products: IProduct[] = [];
   public totalItems = 0;
   public itemsPerPage = ITEMS_PER_PAGE;
@@ -22,8 +23,11 @@ export class ProductComponent implements OnInit {
   public contentHeader: ContentHeader;
   public ngbPaginationPage = 1;
   public selectedOption = 10;
-  public searchValue = '';
   public isLoading = false;
+
+  public searchText = '';
+  public searchTextChanged: Subject<string> = new Subject<string>();
+  private searchTextChangeSubscription: Subscription = new Subscription();
 
   private predicate!: string;
   private ascending!: boolean;
@@ -58,6 +62,16 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleNavigation();
+    this.searchTextChangeSubscription = this.searchTextChanged
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((newText: string) => {
+        this.searchText = newText;
+        this.loadPage(0);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.searchTextChangeSubscription.unsubscribe();
   }
 
   trackReference(index: number, item: IProduct): string {
@@ -113,6 +127,7 @@ export class ProductComponent implements OnInit {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
+        keyword: this.searchText,
       })
       .subscribe(
         (res: HttpResponse<IProduct[]>) => {

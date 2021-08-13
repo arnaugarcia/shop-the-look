@@ -21,7 +21,6 @@ export class ProductImportComponent {
   public uploader: FileUploader = new FileUploader({
     isHTML5: true,
   });
-  public fileItem: File | undefined = undefined;
   public products: IProduct[] = [];
   public config: any;
   public error = false;
@@ -88,9 +87,8 @@ export class ProductImportComponent {
     }
     const options: ParseConfig = {
       worker: true,
-      complete: (results: ParseResult, file?: File) => {
+      complete: (results: ParseResult) => {
         this.loading = false;
-        this.fileItem = file;
         this.products = results.data.map(
           (rawProduct: any) => new RawProduct(rawProduct[2], rawProduct[3], rawProduct[8], rawProduct[35], rawProduct[23])
         );
@@ -130,7 +128,6 @@ export class ProductImportComponent {
 
   removeAllFromQueue(): void {
     this.products = [];
-    this.fileItem = undefined;
     this.progressBar = 0;
   }
 
