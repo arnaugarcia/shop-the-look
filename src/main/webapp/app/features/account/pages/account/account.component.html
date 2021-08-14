@@ -15,8 +15,19 @@
                 [routerLink]="'settings'"
                 class="nav-link d-flex py-75"
               >
-                <span [data-feather]="'user'"></span>
-                <span class="font-weight-bold pl-1">My account</span>
+                <i [data-feather]="'user'" class="font-medium-3 mr-1"></i>
+                <span class="font-weight-bold">My account</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="'active'"
+                [routerLink]="'password'"
+                class="nav-link d-flex py-75"
+              >
+                <span [data-feather]="'lock'"></span>
+                <span class="font-weight-bold pl-1">Change Password</span>
               </a>
             </li>
             <li class="nav-item">
@@ -28,6 +39,61 @@
               >
                 <span [data-feather]="'briefcase'"></span>
                 <span class="font-weight-bold pl-1">Company</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="'active'"
+                [routerLink]="'employees'"
+                class="nav-link d-flex py-75"
+              >
+                <span [data-feather]="'users'"></span>
+                <span class="font-weight-bold pl-1">Employees</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="'active'"
+                [routerLink]="'billing'"
+                class="nav-link d-flex py-75"
+              >
+                <span [data-feather]="'credit-card'"></span>
+                <span class="font-weight-bold pl-1">Billing</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="'active'"
+                [routerLink]="'subscription'"
+                class="nav-link d-flex py-75"
+              >
+                <span [data-feather]="'shield'"></span>
+                <span class="font-weight-bold pl-1">Subscription</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="'active'"
+                [routerLink]="'notifications'"
+                class="nav-link d-flex py-75"
+              >
+                <span [data-feather]="'bell'"></span>
+                <span class="font-weight-bold pl-1">Notifications</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLinkActiveOptions]="{ exact: true }"
+                [routerLinkActive]="'active'"
+                [routerLink]="'api-key'"
+                class="nav-link d-flex py-75"
+              >
+                <span [data-feather]="'key'"></span>
+                <span class="font-weight-bold pl-1">API Key</span>
               </a>
             </li>
           </ul>

@@ -7,11 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
   public contentHeader: any;
-
-  public passwordTextTypeOld = false;
-  public passwordTextTypeNew = false;
-  public passwordTextTypeRetype = false;
-
   ngOnInit(): void {
     this.contentHeader = {
       headerTitle: 'Account Settings',
@@ -36,26 +31,5 @@ export class AccountComponent implements OnInit {
         ],
       },
     };
-  }
-
-  /**
-   * Toggle Password Text Type Old
-   */
-  togglePasswordTextTypeOld(): void {
-    this.passwordTextTypeOld = !this.passwordTextTypeOld;
-  }
-
-  /**
-   * Toggle Password Text Type New
-   */
-  togglePasswordTextTypeNew(): void {
-    this.passwordTextTypeNew = !this.passwordTextTypeNew;
-  }
-
-  /**
-   * Toggle Password Text Type Retype
-   */
-  togglePasswordTextTypeRetype(): void {
-    this.passwordTextTypeRetype = !this.passwordTextTypeRetype;
   }
 }
