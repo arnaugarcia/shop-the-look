@@ -5,4 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
 })
-export class EmployeeListComponent {}
+export class EmployeeListComponent {
+  // Public
+  public selectedOption = 10;
+  public searchValue = '';
+}
