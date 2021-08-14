@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CoreSidebarService } from '../../../../../../../../@core/components/core-sidebar/core-sidebar.service';
 import { NgForm } from '@angular/forms';
+import { CoreSidebarService } from '../../../../../@core/components/core-sidebar/core-sidebar.service';
 
 @Component({
   selector: 'stl-employee-add-sidebar',
