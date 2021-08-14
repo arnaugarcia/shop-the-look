@@ -32,10 +32,6 @@ const LAYOUT_ROUTES = [...errorRoute];
           component: DocsComponent,
         },
         {
-          path: 'account',
-          loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
-        },
-        {
           path: 'auth',
           loadChildren: () => import('./auth/auth-routing.module').then(m => m.AuthRoutingModule),
         },
