@@ -1,0 +1,95 @@
+<div class="slideout-content">
+  <!-- Modal to add new user starts-->
+  <div class="modalsd modal-slide-in sdfade new-user-modal" id="modals-slide-in">
+    <div class="modal-dialog">
+      <form #newUserForm="ngForm" (ngSubmit)="(newUserForm.form.valid)" class="add-new-user modal-content pt-0">
+        <button (click)="toggleSidebar('new-user-sidebar')" aria-label="Close" class="close" data-dismiss="modal" type="button"></button>
+        <div class="modal-header mb-1">
+          <h5 class="modal-title" id="exampleModalLabel">New User</h5>
+        </div>
+        <div class="modal-body flex-grow-1">
+          <div class="form-group">
+            <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
+            <input
+              #FNameRef="ngModel"
+              [(ngModel)]="fullname"
+              [class.error]="newUserForm.submitted && FNameRef.invalid"
+              aria-describedby="basic-icon-default-fullname2"
+              aria-label="John Doe"
+              class="form-control dt-full-name"
+              id="basic-icon-default-fullname"
+              name="user-fullname"
+              placeholder="John Doe"
+              required
+              type="text"
+            />
+            <span *ngIf="newUserForm.submitted && FNameRef.invalid" class="invalid-form">
+              <small *ngIf="FNameRef!.errors!.required" class="form-text text-danger">This field is required!</small>
+            </span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="basic-icon-default-uname">Username</label>
+            <input
+              #FUserNameRef="ngModel"
+              [(ngModel)]="username"
+              [class.error]="newUserForm.submitted && FUserNameRef.invalid"
+              aria-describedby="basic-icon-default-uname2"
+              aria-label="jdoe1"
+              class="form-control dt-uname"
+              id="basic-icon-default-uname"
+              name="user-name"
+              placeholder="Web Developer"
+              required
+              type="text"
+            />
+            <span *ngIf="newUserForm.submitted && FUserNameRef.invalid" class="invalid-form">
+              <small *ngIf="FUserNameRef!.errors!.required" class="form-text text-danger">This field is required!</small>
+            </span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="basic-icon-default-email">Email</label>
+            <input
+              #FEmailRef="ngModel"
+              [(ngModel)]="email"
+              [class.error]="newUserForm.submitted && FEmailRef.invalid"
+              aria-describedby="basic-icon-default-email2"
+              aria-label="john.doe@example.com"
+              class="form-control dt-email"
+              id="basic-icon-default-email"
+              name="user-email"
+              placeholder="john.doe@example.com"
+              required
+              type="text"
+            />
+            <span *ngIf="newUserForm.submitted && FEmailRef.invalid" class="invalid-form">
+              <small *ngIf="FEmailRef!.errors!.required" class="form-text text-danger">This field is required!</small>
+            </span>
+            <small class="form-text text-muted"> You can use letters, numbers & periods </small>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="user-role">User Role</label>
+            <select class="form-control" id="user-role">
+              <option value="subscriber">Subscriber</option>
+              <option value="editor">Editor</option>
+              <option value="maintainer">Maintainer</option>
+              <option value="author">Author</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="user-plan">Select Plan</label>
+            <select class="form-control" id="user-plan">
+              <option value="basic">Basic</option>
+              <option value="enterprise">Enterprise</option>
+              <option value="company">Company</option>
+              <option value="team">Team</option>
+            </select>
+          </div>
+          <button (click)="submit(newUserForm)" class="btn btn-primary mr-1" rippleEffect type="submit">Submit</button>
+          <button (click)="toggleSidebar('new-user-sidebar')" class="btn btn-outline-secondary" rippleEffect type="reset">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal to add new user Ends-->
+</div>
