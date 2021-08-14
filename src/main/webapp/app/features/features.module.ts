@@ -7,11 +7,14 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([
       {
         path: 'products',
-        data: { pageTitle: 'shopTheLookApp.photo.home.product' },
+        // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
         loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
       },
-
-      /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
+      {
+        path: 'account',
+        // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
+        loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
+      },
     ]),
   ],
 })
