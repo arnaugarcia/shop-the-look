@@ -66,6 +66,20 @@
         </li>
       </ul>
     </li>
+    <li [class.open]="!employeesMenuCollapsed" [ngbCollapse]="false" class="nav-item has-sub">
+      <a (click)="employeesMenuCollapsed = !employeesMenuCollapsed" class="d-flex align-items-center">
+        <span [data-feather]="'users'"></span>
+        <span class="menu-title text-truncate">Employees</span>
+      </a>
+      <ul class="menu-content">
+        <li [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+          <a [routerLink]="'/employees'" class="d-flex align-items-center">
+            <span [data-feather]="'users'"></span>
+            <span class="menu-title text-truncate">My employees</span>
+          </a>
+        </li>
+      </ul>
+    </li>
     <li
       class="nav-item has-sub"
       [class.open]="!adminMenuCollapsed"

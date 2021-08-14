@@ -26,6 +26,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   public adminMenuCollapsed = true;
   public productsMenuCollapsed = true;
+  public employeesMenuCollapsed = true;
 
   @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef: PerfectScrollbarDirective | undefined;
 
