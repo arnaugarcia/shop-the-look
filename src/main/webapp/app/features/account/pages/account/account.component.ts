@@ -25,9 +25,9 @@ export class AccountComponent implements OnInit {
             link: '/',
           },
           {
-            name: 'Pages',
+            name: 'Account',
             isLink: true,
-            link: '/',
+            link: 'settings',
           },
           {
             name: 'Account Settings',

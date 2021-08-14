@@ -8,8 +8,12 @@ const accountRoute: Routes = [
   {
     path: '',
     component: AccountComponent,
-    canActivate: [UserRouteAccessService],
     children: [
+      {
+        path: '',
+        redirectTo: 'settings',
+        canActivate: [UserRouteAccessService],
+      },
       {
         path: 'settings',
         component: SettingsComponent,
