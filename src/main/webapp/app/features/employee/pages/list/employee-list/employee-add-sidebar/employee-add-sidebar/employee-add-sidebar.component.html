@@ -67,22 +67,10 @@
             <small class="form-text text-muted"> You can use letters, numbers & periods </small>
           </div>
           <div class="form-group">
-            <label class="form-label" for="user-role">User Role</label>
+            <label class="form-label" for="user-role">Role</label>
             <select class="form-control" id="user-role">
-              <option value="subscriber">Subscriber</option>
-              <option value="editor">Editor</option>
-              <option value="maintainer">Maintainer</option>
-              <option value="author">Author</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div class="form-group mb-2">
-            <label class="form-label" for="user-plan">Select Plan</label>
-            <select class="form-control" id="user-plan">
-              <option value="basic">Basic</option>
-              <option value="enterprise">Enterprise</option>
-              <option value="company">Company</option>
-              <option value="team">Team</option>
+              <option value="maintainer">User</option>
+              <option value="maintainer">Manager</option>
             </select>
           </div>
           <button (click)="submit(newUserForm)" class="btn btn-primary mr-1" rippleEffect type="submit">Submit</button>
