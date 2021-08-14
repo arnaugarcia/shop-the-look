@@ -1,18 +1,21 @@
 import { RouterModule, Routes } from '@angular/router';
 import { UserRouteAccessService } from '../../core/auth/user-route-access.service';
 import { NgModule } from '@angular/core';
+import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 
 const accountRoute: Routes = [
   {
     path: '',
-    redirectTo: 'settings',
+    component: AccountComponent,
     canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'settings',
-    component: SettingsComponent,
-    canActivate: [UserRouteAccessService],
+    children: [
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [UserRouteAccessService],
+      },
+    ],
   },
 ];
 
