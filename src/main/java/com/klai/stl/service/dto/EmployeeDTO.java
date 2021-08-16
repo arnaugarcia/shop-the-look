@@ -1,13 +1,15 @@
 package com.klai.stl.service.dto;
 
+import static com.klai.stl.service.dto.AccountStatus.*;
 import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.User;
 import java.util.Set;
-import lombok.Getter;
+import lombok.Value;
 
-@Getter
+@Value
 public final class EmployeeDTO {
 
     private final String login;
@@ -16,7 +18,7 @@ public final class EmployeeDTO {
 
     private final String lastName;
 
-    private final Boolean activated;
+    private final AccountStatus status;
 
     private final String email;
 
@@ -34,6 +36,13 @@ public final class EmployeeDTO {
         this.imageUrl = user.getImageUrl();
         this.langKey = user.getLangKey();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(toSet());
-        this.activated = user.isActivated();
+        this.status = findStatus(user);
+    }
+
+    public AccountStatus findStatus(User user) {
+        if (isNotEmpty(user.getResetKey())) {
+            return PENDING;
+        }
+        return user.isActivated() ? ACTIVE : DISABLED;
     }
 }
