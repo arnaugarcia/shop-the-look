@@ -88,7 +88,17 @@
               <tr *ngFor="let employee of employees" data-cy="entityTable">
                 <td>{{ employee.firstName }} {{ employee.lastName }}</td>
                 <td>{{ employee.login }}</td>
-                <td>{{ employee.authorities | stlRoleName | translate }}</td>
+                <td>
+                  <i
+                    [ngClass]="{
+                      'icon-user text-primary': isUser(employee.authorities),
+                      'icon-settings text-warning': isManager(employee.authorities),
+                      'icon-slack text-danger': isAdmin(employee.authorities)
+                    }"
+                    class="feather font-medium-3"
+                  ></i>
+                  {{ employee.authorities | stlRoleName | translate }}
+                </td>
                 <td>
                   <a [routerLink]="[employee.login, 'view']">{{ employee.login }}</a>
                 </td>

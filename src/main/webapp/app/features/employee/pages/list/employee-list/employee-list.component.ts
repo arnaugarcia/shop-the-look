@@ -52,6 +52,18 @@ export class EmployeeListComponent implements OnInit {
       );
   }
 
+  public isAdmin(authorities: string[]): boolean {
+    return authorities.includes('ROLE_ADMIN');
+  }
+
+  public isManager(authorities: string[]): boolean {
+    return authorities.includes('ROLE_MANAGER') && !authorities.includes('ROLE_ADMIN');
+  }
+
+  public isUser(authorities: string[]): boolean {
+    return authorities.includes('ROLE_USER') && !authorities.includes('ROLE_MANAGER') && !authorities.includes('ROLE_ADMIN');
+  }
+
   private onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }
