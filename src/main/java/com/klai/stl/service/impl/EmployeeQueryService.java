@@ -49,7 +49,6 @@ public class EmployeeQueryService extends QueryService<User> {
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
-    @Transactional(readOnly = true)
     public Page<EmployeeDTO> findByCriteria(EmployeeCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final User currentUser = findCurrentUser();

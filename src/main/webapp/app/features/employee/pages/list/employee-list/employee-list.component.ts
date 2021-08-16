@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CoreSidebarService } from '../../../../../../@core/components/core-sidebar/core-sidebar.service';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { EmployeeService } from '../../../services/employee.service';
 import { ITEMS_PER_PAGE } from '../../../../../config/pagination.constants';
 import { AccountStatus, IEmployee } from 'app/features/employee/models/employee.model';
 import { CompanyService } from '../../../../../entities/company/service/company.service';
 import { ICompany } from '../../../../../entities/company/company.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EmployeeDeleteDialogComponent } from '../../../components/employee-delete/employee-delete-dialog.component';
 
 @Component({
   selector: 'stl-employee-list',
@@ -27,7 +29,8 @@ export class EmployeeListComponent implements OnInit {
   constructor(
     private coreSidebarService: CoreSidebarService,
     private employeeService: EmployeeService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +78,26 @@ export class EmployeeListComponent implements OnInit {
 
   public isUser(authorities: string[]): boolean {
     return authorities.includes('ROLE_USER') && !authorities.includes('ROLE_MANAGER') && !authorities.includes('ROLE_ADMIN');
+  }
+
+  makeManager(employee: IEmployee): void {
+    this.employeeService.manager(employee).subscribe(
+      () => this.loadPage(),
+      (error: HttpErrorResponse) => {
+        console.error(error);
+      }
+    );
+  }
+
+  removeEmployee(employee: IEmployee): void {
+    const modalRef = this.modalService.open(EmployeeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.employee = employee;
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'deleted') {
+        this.loadPage();
+      }
+    });
   }
 
   private onError(): void {

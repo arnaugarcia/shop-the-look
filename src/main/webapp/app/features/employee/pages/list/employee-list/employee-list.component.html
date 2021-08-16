@@ -145,7 +145,7 @@
                         <span [class]="'mr-50'" [data-feather]="'file-text'" [size]="'16'"></span>
                         Details
                       </a>
-                      <a *ngIf="isUser(employee.authorities)" [routerLink]="[employee.login, 'edit']" ngbDropdownItem>
+                      <a (click)="makeManager(employee)" *ngIf="isUser(employee.authorities)" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'user-plus'" [size]="'16'"></span>
                         Make manager
                       </a>
@@ -153,7 +153,7 @@
                         <span [class]="'mr-50'" [data-feather]="'edit'" [size]="'16'"></span>
                         Edit
                       </a>
-                      <a [routerLink]="[employee.login, 'remove']" ngbDropdownItem>
+                      <a (click)="removeEmployee(employee)" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'trash'" [size]="'16'"></span>
                         Delete
                       </a>
