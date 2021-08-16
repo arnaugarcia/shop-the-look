@@ -76,18 +76,46 @@
                   <span>Name</span>
                 </th>
                 <th scope="col">
-                  <span stlTranslate="userManagement.login">Login</span>
+                  <span>Email</span>
                 </th>
                 <th scope="col">
                   <span>Role</span>
                 </th>
-                <th scope="col"></th>
+                <th scope="col">
+                  <span>Status</span>
+                </th>
+                <th scope="col">
+                  <span>Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let employee of employees" data-cy="entityTable">
-                <td>{{ employee.firstName }} {{ employee.lastName }}</td>
-                <td>{{ employee.login }}</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div *ngIf="employee.imageUrl; else customAvatar">
+                      <img alt="datatable-avatar" class="rounded-circle mr-1" height="32" src="{{ employee.imageUrl }}" width="32" />
+                    </div>
+                    <ng-template #customAvatar>
+                      <div
+                        [ngClass]="{
+                          'bg-light-success': employee.activated,
+                          'bg-light-danger': !employee.activated
+                        }"
+                        class="avatar mr-1 ml-0"
+                      >
+                        <div class="avatar-content">{{ employee.firstName | initials }}{{ employee.lastName | initials }}</div>
+                      </div>
+                    </ng-template>
+                    <div class="cell-line-height">
+                      <a [routerLink]="[employee.login, 'view']" class="font-medium-1 d-block">
+                        <span class="font-weight-bold">{{ employee.firstName }} {{ employee.lastName }}</span>
+                      </a>
+                      <span class="text-muted font-small-2"> @{{ employee.login }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ employee.email }}</td>
                 <td>
                   <i
                     [ngClass]="{
@@ -100,7 +128,41 @@
                   {{ employee.authorities | stlRoleName | translate }}
                 </td>
                 <td>
-                  <a [routerLink]="[employee.login, 'view']">{{ employee.login }}</a>
+                  <div
+                    [ngClass]="{
+                      'badge-light-success': employee.activated,
+                      'badge-light-danger': !employee.activated
+                    }"
+                    class="badge badge-pill"
+                  >
+                    <div *ngIf="employee.activated">Activated</div>
+                    <div *ngIf="!employee.activated">Disabled</div>
+                  </div>
+                </td>
+                <td>
+                  <div container="body" ngbDropdown>
+                    <button class="btn icon-btn btn-sm hide-arrow" ngbDropdownToggle rippleEffect type="button">
+                      <span [class]="'cursor-pointer'" [data-feather]="'more-vertical'"></span>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <a [routerLink]="[employee.login, 'view']" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'file-text'" [size]="'16'"></span>
+                        Details
+                      </a>
+                      <a *ngIf="isUser(employee.authorities)" [routerLink]="[employee.login, 'edit']" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'user-plus'" [size]="'16'"></span>
+                        Make manager
+                      </a>
+                      <a [routerLink]="[employee.login, 'edit']" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'edit'" [size]="'16'"></span>
+                        Edit
+                      </a>
+                      <a [routerLink]="[employee.login, 'remove']" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'trash'" [size]="'16'"></span>
+                        Delete
+                      </a>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -117,7 +179,7 @@
             class="float-right"
           >
             <ng-template ngbPaginationFirst>First</ng-template>
-            <ng-template nationPrevious ngbPagi>
+            <ng-template ngbPaginationPrevious>
               <span [class]="'font-weight-bolder'" [data-feather]="'chevron-left'"></span>Prev
             </ng-template>
             <ng-template ngbPaginationNext>
