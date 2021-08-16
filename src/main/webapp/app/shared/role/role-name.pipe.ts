@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'stlRoleNavbar',
+  name: 'stlRoleName',
 })
-export class RoleNavbarPipe implements PipeTransform {
+export class RoleNamePipe implements PipeTransform {
   private readonly TRANSLATE_KEY = 'global.menu.account.authorities.';
 
   transform(authorities: string[] | undefined): string {

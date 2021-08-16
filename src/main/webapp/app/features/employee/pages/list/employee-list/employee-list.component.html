@@ -72,14 +72,23 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col"><span stlTranslate="shopTheLookApp.user.login">Login</span></th>
-                <th scope="col"><span stlTranslate="shopTheLookApp.user.firstName">Name</span></th>
+                <th scope="col">
+                  <span>Name</span>
+                </th>
+                <th scope="col">
+                  <span stlTranslate="userManagement.login">Login</span>
+                </th>
+                <th scope="col">
+                  <span>Role</span>
+                </th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let employee of employees" data-cy="entityTable">
+                <td>{{ employee.firstName }} {{ employee.lastName }}</td>
                 <td>{{ employee.login }}</td>
+                <td>{{ employee.authorities | stlRoleName | translate }}</td>
                 <td>
                   <a [routerLink]="[employee.login, 'view']">{{ employee.login }}</a>
                 </td>

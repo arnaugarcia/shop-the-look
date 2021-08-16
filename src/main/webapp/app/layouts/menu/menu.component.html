@@ -66,7 +66,12 @@
         </li>
       </ul>
     </li>
-    <li *stlHasAnyAuthority="'ROLE_MANAGER'" [class.open]="!employeesMenuCollapsed" [ngbCollapse]="false" class="nav-item has-sub">
+    <li
+      *stlHasAnyAuthority="['ROLE_MANAGER', 'ROLE_ADMIN']"
+      [class.open]="!employeesMenuCollapsed"
+      [ngbCollapse]="false"
+      class="nav-item has-sub"
+    >
       <a (click)="employeesMenuCollapsed = !employeesMenuCollapsed" class="d-flex align-items-center">
         <span [data-feather]="'users'"></span>
         <span class="menu-title text-truncate">Employees</span>
