@@ -5,10 +5,7 @@ import static java.util.stream.Collectors.toSet;
 import com.klai.stl.domain.Authority;
 import com.klai.stl.domain.User;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Getter;
-import lombok.Value;
-import lombok.extern.jackson.Jacksonized;
 
 @Getter
 public final class EmployeeDTO {
@@ -18,6 +15,8 @@ public final class EmployeeDTO {
     private final String firstName;
 
     private final String lastName;
+
+    private final Boolean activated;
 
     private final String email;
 
@@ -35,5 +34,6 @@ public final class EmployeeDTO {
         this.imageUrl = user.getImageUrl();
         this.langKey = user.getLangKey();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(toSet());
+        this.activated = user.isActivated();
     }
 }
