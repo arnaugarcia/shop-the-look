@@ -4,6 +4,8 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { EmployeeService } from '../../../services/employee.service';
 import { ITEMS_PER_PAGE } from '../../../../../config/pagination.constants';
 import { IEmployee } from 'app/features/employee/models/employee.model';
+import { CompanyService } from '../../../../../entities/company/service/company.service';
+import { ICompany } from '../../../../../entities/company/company.model';
 
 @Component({
   selector: 'stl-employee-list',
@@ -19,11 +21,21 @@ export class EmployeeListComponent implements OnInit {
   public totalItems = 0;
   public ngbPaginationPage = 1;
   public isLoading = false;
+  public companies: ICompany[] = [];
 
-  constructor(private coreSidebarService: CoreSidebarService, private employeeService: EmployeeService) {}
+  constructor(
+    private coreSidebarService: CoreSidebarService,
+    private employeeService: EmployeeService,
+    private companyService: CompanyService
+  ) {}
 
   ngOnInit(): void {
     this.loadPage();
+    this.companyService.query().subscribe((response: HttpResponse<ICompany[]>) => {
+      if (response.body) {
+        this.companies = response.body;
+      }
+    });
   }
 
   toggleSidebar(name: string): void {
