@@ -28,4 +28,12 @@ export class EmployeeService {
   remove(login: string): Observable<EntityResponseType> {
     return this.http.delete<IEmployee>(`${this.resourceUrl}/${login}`, { observe: 'response' });
   }
+
+  update(employee: IEmployee): Observable<EntityResponseType> {
+    return this.http.put<IEmployee>(`${this.resourceUrl}/${employee.login}`, employee, { observe: 'response' });
+  }
+
+  create(employee: IEmployee): Observable<EntityResponseType> {
+    return this.http.post<IEmployee>(`${this.resourceUrl}`, employee, { observe: 'response' });
+  }
 }
