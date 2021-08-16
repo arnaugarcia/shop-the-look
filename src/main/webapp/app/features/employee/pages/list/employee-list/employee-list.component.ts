@@ -3,7 +3,7 @@ import { CoreSidebarService } from '../../../../../../@core/components/core-side
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { EmployeeService } from '../../../services/employee.service';
 import { ITEMS_PER_PAGE } from '../../../../../config/pagination.constants';
-import { IEmployee } from 'app/features/employee/models/employee.model';
+import { AccountStatus, IEmployee } from 'app/features/employee/models/employee.model';
 import { CompanyService } from '../../../../../entities/company/service/company.service';
 import { ICompany } from '../../../../../entities/company/company.model';
 
@@ -22,6 +22,7 @@ export class EmployeeListComponent implements OnInit {
   public ngbPaginationPage = 1;
   public isLoading = false;
   public companies: ICompany[] = [];
+  AccountStatus = AccountStatus;
 
   constructor(
     private coreSidebarService: CoreSidebarService,

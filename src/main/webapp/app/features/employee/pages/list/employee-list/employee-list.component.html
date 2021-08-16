@@ -94,8 +94,9 @@
                     <ng-template #customAvatar>
                       <div
                         [ngClass]="{
-                          'bg-light-success': employee.activated,
-                          'bg-light-danger': !employee.activated
+                          'bg-light-success': employee.status == AccountStatus.ACTIVE,
+                          'bg-light-warning': employee.status == AccountStatus.PENDING,
+                          'bg-light-danger': employee.status == AccountStatus.DISABLED
                         }"
                         class="avatar mr-1 ml-0"
                       >
@@ -125,13 +126,13 @@
                 <td>
                   <div
                     [ngClass]="{
-                      'badge-light-success': employee.activated,
-                      'badge-light-danger': !employee.activated
+                      'badge-light-success': employee.status == AccountStatus.ACTIVE,
+                      'badge-light-danger': employee.status == AccountStatus.DISABLED,
+                      'badge-light-warning': employee.status == AccountStatus.PENDING
                     }"
                     class="badge badge-pill"
                   >
-                    <div *ngIf="employee.activated">Activated</div>
-                    <div *ngIf="!employee.activated">Disabled</div>
+                    {{ employee.status }}
                   </div>
                 </td>
                 <td>

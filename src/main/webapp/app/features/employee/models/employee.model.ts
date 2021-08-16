@@ -8,7 +8,7 @@ export interface IEmployee {
   firstName: string;
   lastName: string;
   login: string;
-  activated: AccountStatus;
+  status: AccountStatus;
   imageUrl: string;
   email: string;
   authorities: string[];
@@ -19,7 +19,7 @@ export class Employee implements IEmployee {
     public firstName: string,
     public lastName: string,
     public imageUrl: string,
-    public activated: AccountStatus,
+    public status: AccountStatus,
     public login: string,
     public email: string,
     public authorities: string[]
