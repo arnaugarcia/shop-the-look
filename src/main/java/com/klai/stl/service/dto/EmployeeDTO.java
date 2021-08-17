@@ -28,6 +28,8 @@ public final class EmployeeDTO {
 
     private final Set<String> authorities;
 
+    private final String companyReference;
+
     public EmployeeDTO(User user) {
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
@@ -37,6 +39,7 @@ public final class EmployeeDTO {
         this.langKey = user.getLangKey();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(toSet());
         this.status = findStatus(user);
+        this.companyReference = user.getCompany().getReference();
     }
 
     public AccountStatus findStatus(User user) {

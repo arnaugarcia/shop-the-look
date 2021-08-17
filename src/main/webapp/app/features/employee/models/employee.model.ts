@@ -12,6 +12,7 @@ export interface IEmployee {
   imageUrl?: string;
   email?: string;
   authorities?: string[];
+  companyReference?: string;
 }
 
 export class Employee implements IEmployee {
@@ -22,7 +23,8 @@ export class Employee implements IEmployee {
     public status: AccountStatus,
     public login: string,
     public email: string,
-    public authorities: string[]
+    public authorities: string[],
+    public companyReference: string
   ) {}
 }
 

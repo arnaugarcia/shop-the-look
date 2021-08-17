@@ -79,6 +79,9 @@
                 <th scope="col">
                   <span>Status</span>
                 </th>
+                <th *stlHasAnyAuthority="'ROLE_ADMIN'" scope="col">
+                  <span>Company</span>
+                </th>
                 <th scope="col">
                   <span>Actions</span>
                 </th>
@@ -134,6 +137,9 @@
                   >
                     {{ employee.status }}
                   </div>
+                </td>
+                <td *stlHasAnyAuthority="'ROLE_ADMIN'">
+                  <a [routerLink]="['/companies', employee.companyReference, 'view']">{{ employee.companyReference }}</a>
                 </td>
                 <td>
                   <div container="body" ngbDropdown>
