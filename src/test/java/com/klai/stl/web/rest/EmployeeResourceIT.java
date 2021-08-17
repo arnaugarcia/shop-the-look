@@ -632,9 +632,33 @@ class EmployeeResourceIT {
         em.persist(company2);
 
         restPhotoMockMvc
-            .perform(get(ENTITY_API_URL + "?login=" + user.getLogin()).contentType(APPLICATION_JSON))
+            .perform(get(ENTITY_API_URL + "?keyword=" + user.getLogin()).contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin", authorities = { ADMIN })
+    public void findingEmployeesByCompany() throws Exception {
+        User manager = UserResourceIT.createEntity(em);
+        em.persist(manager);
+        company.addUser(manager);
+        em.persist(company);
+
+        User user = UserResourceIT.createEntity(em);
+        User user2 = UserResourceIT.createEntity(em);
+        Company company2 = CompanyResourceIT.createBasicCompany(em);
+        company2.addUser(user);
+        company2.addUser(user2);
+        em.persist(user);
+        em.persist(user2);
+        em.persist(company2);
+
+        restPhotoMockMvc
+            .perform(get(ENTITY_API_URL + "?company=" + company2.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test

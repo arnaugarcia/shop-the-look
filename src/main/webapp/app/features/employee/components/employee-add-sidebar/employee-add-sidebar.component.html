@@ -1,0 +1,218 @@
+<div class="slideout-content">
+  <!-- Modal to add new user starts-->
+  <div class="modalsd modal-slide-in sdfade new-user-modal" id="modals-slide-in">
+    <div class="modal-dialog">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="newEmployeeForm"
+        class="add-new-user modal-content pt-0"
+        name="editForm"
+        novalidate
+        role="form"
+      >
+        <stl-alert-error></stl-alert-error>
+        <button (click)="sidebar.close()" aria-label="Close" class="close" data-dismiss="modal" type="button"></button>
+        <div class="modal-header mb-1">
+          <h5 class="modal-title">New User</h5>
+        </div>
+        <div class="modal-body flex-grow-1">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input
+              [class.error]="
+                newEmployeeForm.get('firstName')!.invalid &&
+                (newEmployeeForm.get('firstName')!.dirty || newEmployeeForm.get('firstName')!.touched)
+              "
+              formControlName="firstName"
+              name="firstName"
+              aria-describedby="basic-icon-default-fullname2"
+              aria-label="John Doe"
+              class="form-control dt-full-name"
+              placeholder="John"
+              required
+              type="text"
+            />
+            <div
+              *ngIf="
+                newEmployeeForm.get('firstName')!.invalid &&
+                (newEmployeeForm.get('firstName')!.dirty || newEmployeeForm.get('firstName')!.touched)
+              "
+            >
+              <small
+                *ngIf="newEmployeeForm.get('firstName')?.errors?.maxlength"
+                [translateValues]="{ max: 50 }"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.maxlength"
+              >
+                This field cannot be longer than 50 characters.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last name</label>
+            <input
+              [class.error]="
+                newEmployeeForm.get('lastName')!.invalid &&
+                (newEmployeeForm.get('lastName')!.dirty || newEmployeeForm.get('lastName')!.touched)
+              "
+              aria-describedby="basic-icon-default-fullname2"
+              aria-label="John Doe"
+              class="form-control dt-full-name"
+              formControlName="lastName"
+              name="lastName"
+              placeholder="Doe"
+              required
+              type="text"
+            />
+            <div
+              *ngIf="
+                newEmployeeForm.get('lastName')!.invalid &&
+                (newEmployeeForm.get('lastName')!.dirty || newEmployeeForm.get('lastName')!.touched)
+              "
+            >
+              <small
+                *ngIf="newEmployeeForm.get('lastName')?.errors?.required"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.required"
+              >
+                This field is required.
+              </small>
+
+              <small
+                *ngIf="newEmployeeForm.get('lastName')?.errors?.maxlength"
+                [translateValues]="{ max: 50 }"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.maxlength"
+              >
+                This field cannot be longer than 50 characters.
+              </small>
+
+              <small
+                *ngIf="newEmployeeForm.get('lastName')?.errors?.pattern"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.patternLogin"
+              >
+                This field can only contain letters, digits and e-mail addresses.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" stlTranslate="userManagement.login">Login</label>
+            <input
+              [class.error]="
+                newEmployeeForm.get('login')!.invalid && (newEmployeeForm.get('login')!.dirty || newEmployeeForm.get('login')!.touched)
+              "
+              class="form-control dt-full-name"
+              formControlName="login"
+              name="login"
+              placeholder="jhondoe"
+              required
+              type="text"
+            />
+            <div
+              *ngIf="
+                newEmployeeForm.get('login')!.invalid && (newEmployeeForm.get('login')!.dirty || newEmployeeForm.get('login')!.touched)
+              "
+            >
+              <small
+                *ngIf="newEmployeeForm.get('login')?.errors?.required"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.required"
+              >
+                This field is required.
+              </small>
+
+              <small
+                *ngIf="newEmployeeForm.get('login')?.errors?.maxlength"
+                [translateValues]="{ max: 50 }"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.maxlength"
+              >
+                This field cannot be longer than 50 characters.
+              </small>
+
+              <small
+                *ngIf="newEmployeeForm.get('login')?.errors?.pattern"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.patternLogin"
+              >
+                This field can only contain letters, digits and e-mail addresses.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" stlTranslate="userManagement.email">Email</label>
+            <input
+              [class.error]="
+                newEmployeeForm.get('email')!.invalid && (newEmployeeForm.get('email')!.dirty || newEmployeeForm.get('email')!.touched)
+              "
+              class="form-control dt-full-name"
+              formControlName="email"
+              name="email"
+              placeholder="jhondoe@inc.com"
+              required
+              type="text"
+            />
+            <div
+              *ngIf="
+                newEmployeeForm.get('email')!.invalid && (newEmployeeForm.get('email')!.dirty || newEmployeeForm.get('email')!.touched)
+              "
+            >
+              <small
+                *ngIf="newEmployeeForm.get('email')?.errors?.required"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.required"
+              >
+                This field is required.
+              </small>
+
+              <small
+                *ngIf="newEmployeeForm.get('email')?.errors?.maxlength"
+                [translateValues]="{ max: 100 }"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.maxlength"
+              >
+                This field cannot be longer than 100 characters.
+              </small>
+
+              <small
+                *ngIf="newEmployeeForm.get('email')?.errors?.minlength"
+                [translateValues]="{ min: 5 }"
+                class="form-text text-danger"
+                stlTranslate="entity.validation.minlength"
+              >
+                This field is required to be at least 5 characters.
+              </small>
+
+              <small
+                *ngIf="newEmployeeForm.get('email')?.errors?.email"
+                class="form-text text-danger"
+                stlTranslate="global.messages.validate.email.invalid"
+              >
+                Your email is invalid.
+              </small>
+            </div>
+          </div>
+          <div *stlHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
+            <label class="form-label" stlTranslate="userManagement.company">Company</label>
+            <select
+              [class.error]="
+                newEmployeeForm.get('company')!.invalid &&
+                (newEmployeeForm.get('company')!.dirty || newEmployeeForm.get('company')!.touched)
+              "
+              class="form-control dt-full-name"
+              formControlName="company"
+              name="company"
+              required
+            >
+              <option *ngFor="let company of companies" [value]="company.reference">{{ company.name }}</option>
+            </select>
+          </div>
+          <button class="btn btn-primary mr-1" rippleEffect type="submit">Submit</button>
+          <button (click)="sidebar.close()" class="btn btn-outline-secondary" rippleEffect type="reset">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal to add new user Ends-->
+</div>

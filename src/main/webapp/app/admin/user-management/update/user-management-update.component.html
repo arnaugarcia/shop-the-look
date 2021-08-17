@@ -14,7 +14,6 @@
         <div class="form-group">
           <label class="form-control-label" stlTranslate="userManagement.login">Login</label>
           <input type="text" class="form-control" name="login" formControlName="login" />
-
           <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('login')?.errors?.required" stlTranslate="entity.validation.required">
               This field is required.
@@ -42,7 +41,6 @@
         <div class="form-group">
           <label class="form-control-label" stlTranslate="userManagement.firstName">First Name</label>
           <input type="text" class="form-control" name="firstName" formControlName="firstName" />
-
           <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
             <small
               class="form-text text-danger"

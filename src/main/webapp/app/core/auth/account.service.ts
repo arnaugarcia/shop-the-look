@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionStorageService } from 'ngx-webstorage';
-import { Observable, ReplaySubject, of } from 'rxjs';
-import { shareReplay, tap, catchError } from 'rxjs/operators';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ApplicationConfigService } from '../config/application-config.service';
@@ -42,6 +42,10 @@ export class AccountService {
       authorities = [authorities];
     }
     return this.userIdentity.authorities.some((authority: string) => authorities.includes(authority));
+  }
+
+  isAdmin(): boolean {
+    return this.hasAnyAuthority('ROLE_ADMIN');
   }
 
   identity(force?: boolean): Observable<Account | null> {

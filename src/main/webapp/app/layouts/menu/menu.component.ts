@@ -21,11 +21,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   isCollapsed = false;
   isScrolled = false;
   inProduction?: boolean;
-  openAPIEnabled?: boolean;
   account: Account | null = null;
 
   public adminMenuCollapsed = true;
   public productsMenuCollapsed = true;
+  public employeesMenuCollapsed = true;
 
   @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef: PerfectScrollbarDirective | undefined;
 
@@ -50,7 +50,6 @@ export class MenuComponent implements OnInit, OnDestroy {
 
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
-      this.openAPIEnabled = profileInfo.openAPIEnabled;
     });
     this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
 

@@ -35,30 +35,30 @@
 <div (scroll)="onSidebarScroll()" [perfectScrollbar] class="main-menu-content">
   <ul class="navigation navigation-main">
     <li [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'">
-      <a [routerLink]="'/'" class="d-flex align-items-center" (click)="collapseMenus()">
+      <a (click)="collapseMenus()" [routerLink]="'/'" class="d-flex align-items-center">
         <span [data-feather]="'home'"></span>
         <span class="menu-title text-truncate" stlTranslate="global.menu.home">Home</span>
       </a>
     </li>
-    <li class="nav-item has-sub" [class.open]="!productsMenuCollapsed" [ngbCollapse]="false">
-      <a class="d-flex align-items-center" (click)="productsMenuCollapsed = !productsMenuCollapsed">
+    <li [class.open]="!productsMenuCollapsed" [ngbCollapse]="false" class="nav-item has-sub">
+      <a (click)="productsMenuCollapsed = !productsMenuCollapsed" class="d-flex align-items-center">
         <span [data-feather]="'package'"></span>
         <span class="menu-title text-truncate">Products</span>
       </a>
       <ul class="menu-content">
-        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
           <a [routerLink]="'/products'" class="d-flex align-items-center">
             <span [data-feather]="'package'"></span>
             <span class="menu-title text-truncate">All products</span>
           </a>
         </li>
-        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
           <a [routerLink]="'/products/new'" class="d-flex align-items-center">
             <span [data-feather]="'file-plus'"></span>
             <span class="menu-title text-truncate">Add new</span>
           </a>
         </li>
-        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
           <a [routerLink]="'/products/import'" class="d-flex align-items-center">
             <span [data-feather]="'upload'"></span>
             <span class="menu-title text-truncate">Import</span>
@@ -67,51 +67,68 @@
       </ul>
     </li>
     <li
-      class="nav-item has-sub"
+      *stlHasAnyAuthority="['ROLE_MANAGER', 'ROLE_ADMIN']"
+      [class.open]="!employeesMenuCollapsed"
+      [ngbCollapse]="false"
+      class="nav-item"
+      routerLinkActive="active"
+    >
+      <a [routerLink]="'/employees'" class="d-flex align-items-center">
+        <span [data-feather]="'users'"></span>
+        <span class="menu-title text-truncate">Employees</span>
+      </a>
+    </li>
+    <li
       [class.open]="!adminMenuCollapsed"
       [ngbCollapse]="false"
+      class="nav-item has-sub"
       *stlHasAnyAuthority="'ROLE_ADMIN'"
       routerLinkActive="active"
     >
-      <a class="d-flex align-items-center" (click)="adminMenuCollapsed = !adminMenuCollapsed">
+      <a (click)="adminMenuCollapsed = !adminMenuCollapsed" class="d-flex align-items-center">
         <span [data-feather]="'settings'"></span>
         <span class="menu-title text-truncate" stlTranslate="global.menu.admin.main">Administration</span>
       </a>
       <ul class="menu-content">
         <li routerLinkActive="active">
-          <a routerLink="admin/user-management" routerLinkActive="active" class="d-flex align-items-center">
+          <a class="d-flex align-items-center" routerLink="admin/user-management" routerLinkActive="active">
             <span [data-feather]="'circle'"></span>
             <span class="menu-title text-truncate" stlTranslate="global.menu.admin.userManagement">User Management</span>
           </a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="admin/metrics" routerLinkActive="active" class="d-flex align-items-center">
+          <a class="d-flex align-items-center" routerLink="admin/metrics" routerLinkActive="active">
             <span [data-feather]="'circle'"></span>
             <span class="menu-title text-truncate" stlTranslate="global.menu.admin.metrics">Metrics</span>
           </a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="admin/health" routerLinkActive="active" class="d-flex align-items-center">
+          <a class="d-flex align-items-center" routerLink="admin/health" routerLinkActive="active">
             <span [data-feather]="'circle'"></span>
             <span class="menu-title text-truncate" stlTranslate="global.menu.admin.health">Health</span>
           </a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="admin/configuration" routerLinkActive="active" class="d-flex align-items-center">
+          <a class="d-flex align-items-center" routerLink="admin/configuration" routerLinkActive="active">
             <span [data-feather]="'circle'"></span>
             <span class="menu-title text-truncate" stlTranslate="global.menu.admin.configuration">Configuration</span>
           </a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="admin/logs" routerLinkActive="active" class="d-flex align-items-center">
+          <a class="d-flex align-items-center" routerLink="admin/logs" routerLinkActive="active">
             <span [data-feather]="'circle'"></span>
             <span class="menu-title text-truncate" stlTranslate="global.menu.admin.logs">Logs</span>
           </a>
         </li>
       </ul>
     </li>
-    <li *ngIf="openAPIEnabled" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'" class="nav-item">
-      <a [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active" (click)="collapseMenus()">
+    <li
+      *stlHasAnyAuthority="['ROLE_MANAGER', 'ROLE_ADMIN']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [routerLinkActive]="'active'"
+      class="nav-item"
+    >
+      <a (click)="collapseMenus()" [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active">
         <span [data-feather]="'tool'"></span>
         <span stlTranslate="global.menu.admin.apidocs">API</span>
       </a>

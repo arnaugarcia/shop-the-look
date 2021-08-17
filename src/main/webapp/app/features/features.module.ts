@@ -11,6 +11,11 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
       },
       {
+        path: 'employees',
+        // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
+        loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+      },
+      {
         path: 'account',
         // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
         loadChildren: () => import('./account/account.module').then(m => m.AccountModule),

@@ -31,7 +31,7 @@
       >
         <div class="user-nav d-sm-flex d-none">
           <span class="user-name font-weight-bolder">{{ account?.firstName }} {{ account?.lastName }}</span>
-          <span class="user-status">{{ account?.authorities | stlRoleNavbar | translate }}</span>
+          <span class="user-status">{{ account?.authorities | stlRoleName | translate }}</span>
         </div>
         <span class="avatar">
           <img *ngIf="account?.imageUrl" [src]="account?.imageUrl" alt="avatar" class="round" height="40" width="40" />
