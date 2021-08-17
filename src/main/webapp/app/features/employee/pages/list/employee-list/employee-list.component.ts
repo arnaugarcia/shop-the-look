@@ -20,7 +20,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly NEW_USER_SIDEBAR_KEY = 'new-user-sidebar';
   public selectedOption = 10;
-  public searchText = '';
   public employees: IEmployee[] = [];
   public page?: number;
   public itemsPerPage = ITEMS_PER_PAGE;
@@ -30,7 +29,12 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   public companies: ICompany[] = [];
   public AccountStatus = AccountStatus;
   public sidebar!: CoreSidebarComponent;
+
+  public searchText = '';
   public searchTextChanged: Subject<string> = new Subject<string>();
+  public companySearch = '';
+  public companySelected: Subject<string> = new Subject<string>();
+
   private subscriptions = new Subscription();
 
   constructor(
@@ -50,6 +54,12 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscriptions.add(
       this.searchTextChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe((newText: string) => {
         this.searchText = newText;
+        this.loadPage();
+      })
+    );
+    this.subscriptions.add(
+      this.companySelected.subscribe((companyReference: string) => {
+        this.companySearch = companyReference;
         this.loadPage();
       })
     );
@@ -79,6 +89,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         keyword: this.searchText,
+        company: this.companySearch,
       })
       .subscribe(
         (res: HttpResponse<IEmployee[]>) => {

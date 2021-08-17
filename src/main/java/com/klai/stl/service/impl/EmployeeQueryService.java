@@ -70,7 +70,7 @@ public class EmployeeQueryService extends QueryService<User> {
         if (!currentUser.isAdmin()) {
             specification = specification.and(byCompanyReference(currentUser.getCompany().getReference()));
         } else {
-            if (criteria.getCompany() != null) {
+            if (isNotEmpty(criteria.getCompany())) {
                 specification = specification.and(byCompanyReference(criteria.getCompany()));
             }
         }

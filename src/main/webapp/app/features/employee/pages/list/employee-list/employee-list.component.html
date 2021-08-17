@@ -11,9 +11,13 @@
               <div class="row">
                 <div *stlHasAnyAuthority="'ROLE_ADMIN'" class="col-12 col-md-4">
                   <fieldset class="form-group">
-                    <select class="form-control">
-                      <option value="maintainer">Select company</option>
-                      <option *ngFor="let company of companies">{{ company.name }}</option>
+                    <select
+                      (ngModelChange)="companySelected.next($event)"
+                      [(ngModel)]="companySearch"
+                      class="form-control"
+                      name="companySearch"
+                    >
+                      <option *ngFor="let company of companies" [value]="company.reference">{{ company.name }}</option>
                     </select>
                   </fieldset>
                 </div>
