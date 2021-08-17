@@ -1,5 +1,7 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.domain.User_.firstName;
+import static com.klai.stl.domain.User_.lastName;
 import static javax.persistence.criteria.JoinType.LEFT;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -74,15 +76,24 @@ public class EmployeeQueryService extends QueryService<User> {
         }
 
         if (criteria != null) {
-            if (isNotEmpty(criteria.getName())) {
-                specification = specification.and(nameLike(criteria.getName()));
-            }
-            if (isNotEmpty(criteria.getLogin())) {
-                specification = specification.and(loginLike(criteria.getLogin()));
+            if (isNotEmpty(criteria.getKeyword())) {
+                specification = specification.and(findByNameOrLoginLike(criteria.getKeyword()));
             }
         }
 
         return specification;
+    }
+
+    private Specification<User> findByNameOrLoginLike(final String keyword) {
+        return (root, criteriaQuery, criteriaBuilder) ->
+            criteriaBuilder.or(
+                criteriaBuilder.like(
+                    criteriaBuilder.concat(root.get(firstName), criteriaBuilder.concat(" ", root.get(lastName))),
+                    "%" + keyword + "%"
+                ),
+                criteriaBuilder.like(root.get(User_.login), '%' + keyword + '%'),
+                criteriaBuilder.like(root.get(User_.email), '%' + keyword + '%')
+            );
     }
 
     private Specification<User> byCompanyReference(String companyReference) {
@@ -94,14 +105,5 @@ public class EmployeeQueryService extends QueryService<User> {
 
     private User findCurrentUser() {
         return userService.getUserWithAuthorities().orElseThrow(EmployeeNotFound::new);
-    }
-
-    private Specification<User> nameLike(String name) {
-        return (root, query, builder) ->
-            builder.like(builder.concat(root.get(User_.firstName), builder.concat(" ", root.get(User_.lastName))), "%" + name + "%");
-    }
-
-    private Specification<User> loginLike(String login) {
-        return (root, query, builder) -> builder.like(root.get(User_.login), login);
     }
 }

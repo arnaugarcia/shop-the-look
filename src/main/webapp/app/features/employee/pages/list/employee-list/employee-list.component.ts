@@ -78,7 +78,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        login: this.searchText,
+        keyword: this.searchText,
       })
       .subscribe(
         (res: HttpResponse<IEmployee[]>) => {
