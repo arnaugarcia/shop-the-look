@@ -1,6 +1,7 @@
 package com.klai.stl.service.impl;
 
 import static javax.persistence.criteria.JoinType.LEFT;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Company_;
@@ -73,10 +74,10 @@ public class EmployeeQueryService extends QueryService<User> {
         }
 
         if (criteria != null) {
-            if (criteria.getName() != null) {
+            if (isNotEmpty(criteria.getName())) {
                 specification = specification.and(nameLike(criteria.getName()));
             }
-            if (criteria.getLogin() != null) {
+            if (isNotEmpty(criteria.getLogin())) {
                 specification = specification.and(loginLike(criteria.getLogin()));
             }
         }
