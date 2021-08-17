@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CoreSidebarService } from '../../../../../../@core/components/core-sidebar/core-sidebar.service';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { EmployeeService } from '../../../services/employee.service';
@@ -8,13 +8,15 @@ import { CompanyService } from '../../../../../entities/company/service/company.
 import { ICompany } from '../../../../../entities/company/company.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeDeleteDialogComponent } from '../../../components/employee-delete/employee-delete-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'stl-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
 })
-export class EmployeeListComponent implements OnInit {
+export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
+  readonly NEW_USER_SIDEBAR_KEY = 'new-user-sidebar';
   public selectedOption = 10;
   public searchText = '';
   public employees: IEmployee[] = [];
@@ -25,6 +27,7 @@ export class EmployeeListComponent implements OnInit {
   public isLoading = false;
   public companies: ICompany[] = [];
   AccountStatus = AccountStatus;
+  private sidebarSubscription = new Subscription();
 
   constructor(
     private coreSidebarService: CoreSidebarService,
@@ -42,8 +45,21 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  toggleSidebar(name: string): void {
-    this.coreSidebarService.getSidebarRegistry(name).toggleOpen();
+  ngAfterViewInit(): void {
+    this.coreSidebarService
+      .getSidebarRegistry(this.NEW_USER_SIDEBAR_KEY)
+      .statusChangedEvent.asObservable()
+      .subscribe((status: string) => {
+        console.error(status);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.sidebarSubscription.unsubscribe();
+  }
+
+  toggleSidebar(): void {
+    this.coreSidebarService.getSidebarRegistry(this.NEW_USER_SIDEBAR_KEY).toggleOpen();
   }
 
   loadPage(page?: number): void {

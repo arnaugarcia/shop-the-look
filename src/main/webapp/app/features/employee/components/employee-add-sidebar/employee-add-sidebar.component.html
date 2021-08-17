@@ -11,7 +11,7 @@
         role="form"
       >
         <stl-alert-error></stl-alert-error>
-        <button (click)="toggleSidebar('new-user-sidebar')" aria-label="Close" class="close" data-dismiss="modal" type="button"></button>
+        <button (click)="sidebar.close()" aria-label="Close" class="close" data-dismiss="modal" type="button"></button>
         <div class="modal-header mb-1">
           <h5 class="modal-title">New User</h5>
         </div>
@@ -194,7 +194,7 @@
             </div>
           </div>
           <button class="btn btn-primary mr-1" rippleEffect type="submit">Submit</button>
-          <button (click)="toggleSidebar('new-user-sidebar')" class="btn btn-outline-secondary" rippleEffect type="reset">Cancel</button>
+          <button (click)="sidebar.close()" class="btn btn-outline-secondary" rippleEffect type="reset">Cancel</button>
         </div>
       </form>
     </div>

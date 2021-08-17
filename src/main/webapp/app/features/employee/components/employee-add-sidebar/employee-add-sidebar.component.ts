@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CoreSidebarService } from '../../../../../@core/components/core-sidebar/core-sidebar.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Employee, IEmployee } from '../../models/employee.model';
 import { EmployeeService } from '../../services/employee.service';
+import { CoreSidebarComponent } from '../../../../../@core/components/core-sidebar/core-sidebar.component';
 
 @Component({
   selector: 'stl-employee-add-sidebar',
   templateUrl: './employee-add-sidebar.component.html',
   styleUrls: ['./employee-add-sidebar.component.scss'],
 })
-export class EmployeeAddSidebarComponent {
+export class EmployeeAddSidebarComponent implements AfterViewInit {
+  readonly NEW_USER_SIDEBAR_KEY = 'new-user-sidebar';
   employee: IEmployee = new Employee();
   isSaving = false;
 
@@ -29,15 +31,17 @@ export class EmployeeAddSidebarComponent {
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
   });
 
+  public sidebar!: CoreSidebarComponent;
+
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private employeeService: EmployeeService,
-    private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder
   ) {}
 
-  toggleSidebar(name: string): void {
-    this._coreSidebarService.getSidebarRegistry(name).toggleOpen();
+  ngAfterViewInit(): void {
+    this.sidebar = this._coreSidebarService.getSidebarRegistry(this.NEW_USER_SIDEBAR_KEY);
   }
 
   save(): void {
@@ -57,10 +61,13 @@ export class EmployeeAddSidebarComponent {
   }
 
   private onSaveSuccess(): void {
+    this.router.navigate(['/employees']);
     this.isSaving = false;
+    this.sidebar.event('success');
   }
 
   private onSaveError(): void {
     this.isSaving = false;
+    this.sidebar.event('error');
   }
 }

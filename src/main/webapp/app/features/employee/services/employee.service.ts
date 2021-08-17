@@ -22,7 +22,7 @@ export class EmployeeService {
   }
 
   manager(employee: IEmployee): Observable<EntityResponseType> {
-    return this.http.put<IEmployee>(`${this.resourceUrl}/${employee.login}/manager`, null, { observe: 'response' });
+    return this.http.put<IEmployee>(`${this.resourceUrl}/${employee.login!}/manager`, null, { observe: 'response' });
   }
 
   remove(login: string): Observable<EntityResponseType> {
@@ -30,7 +30,7 @@ export class EmployeeService {
   }
 
   update(employee: IEmployee): Observable<EntityResponseType> {
-    return this.http.put<IEmployee>(`${this.resourceUrl}/${employee.login}`, employee, { observe: 'response' });
+    return this.http.put<IEmployee>(`${this.resourceUrl}/${employee.login!}`, employee, { observe: 'response' });
   }
 
   create(employee: IEmployee): Observable<EntityResponseType> {
