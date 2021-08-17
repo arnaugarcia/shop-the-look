@@ -115,7 +115,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
     return authorities.includes('ROLE_USER') && !authorities.includes('ROLE_MANAGER') && !authorities.includes('ROLE_ADMIN');
   }
 
-  makeManager(employee: IEmployee): void {
+  toggleManager(employee: IEmployee): void {
     this.employeeService.manager(employee).subscribe(
       () => this.loadPage(),
       (error: HttpErrorResponse) => {

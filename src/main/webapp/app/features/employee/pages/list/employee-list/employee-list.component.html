@@ -158,9 +158,13 @@
                       <span [class]="'cursor-pointer'" [data-feather]="'more-vertical'"></span>
                     </button>
                     <div ngbDropdownMenu>
-                      <a (click)="makeManager(employee)" *ngIf="isUser(employee.authorities!)" ngbDropdownItem>
+                      <a (click)="toggleManager(employee)" *ngIf="isUser(employee.authorities!)" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'user-plus'" [size]="'16'"></span>
-                        Make manager
+                        Make company manager
+                      </a>
+                      <a (click)="toggleManager(employee)" *ngIf="isManager(employee.authorities!)" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'user-minus'" [size]="'16'"></span>
+                        Dismiss as manager
                       </a>
                       <a [routerLink]="[employee.login, 'edit']" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'edit'" [size]="'16'"></span>
