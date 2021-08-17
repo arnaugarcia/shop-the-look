@@ -193,6 +193,21 @@
               </small>
             </div>
           </div>
+          <div *stlHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
+            <label class="form-label" stlTranslate="userManagement.company">Company</label>
+            <select
+              [class.error]="
+                newEmployeeForm.get('company')!.invalid &&
+                (newEmployeeForm.get('company')!.dirty || newEmployeeForm.get('company')!.touched)
+              "
+              class="form-control dt-full-name"
+              formControlName="company"
+              name="company"
+              required
+            >
+              <option *ngFor="let company of companies" [value]="company.reference">{{ company.name }}</option>
+            </select>
+          </div>
           <button class="btn btn-primary mr-1" rippleEffect type="submit">Submit</button>
           <button (click)="sidebar.close()" class="btn btn-outline-secondary" rippleEffect type="reset">Cancel</button>
         </div>
