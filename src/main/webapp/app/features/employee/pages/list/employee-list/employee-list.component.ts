@@ -9,6 +9,7 @@ import { ICompany } from '../../../../../entities/company/company.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeDeleteDialogComponent } from '../../../components/employee-delete/employee-delete-dialog.component';
 import { Subscription } from 'rxjs';
+import { CoreSidebarComponent } from '../../../../../../@core/components/core-sidebar/core-sidebar.component';
 
 @Component({
   selector: 'stl-employee-list',
@@ -27,6 +28,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   public isLoading = false;
   public companies: ICompany[] = [];
   AccountStatus = AccountStatus;
+  public sidebar!: CoreSidebarComponent;
   private sidebarSubscription = new Subscription();
 
   constructor(
@@ -46,20 +48,18 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.coreSidebarService
-      .getSidebarRegistry(this.NEW_USER_SIDEBAR_KEY)
-      .statusChangedEvent.asObservable()
-      .subscribe((status: string) => {
-        console.error(status);
-      });
+    this.sidebar = this.coreSidebarService.getSidebarRegistry(this.NEW_USER_SIDEBAR_KEY);
+    this.sidebarSubscription.add(
+      this.sidebar.statusChangedEvent.asObservable().subscribe((status: string) => {
+        if (status === 'success') {
+          this.loadPage();
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
     this.sidebarSubscription.unsubscribe();
-  }
-
-  toggleSidebar(): void {
-    this.coreSidebarService.getSidebarRegistry(this.NEW_USER_SIDEBAR_KEY).toggleOpen();
   }
 
   loadPage(page?: number): void {

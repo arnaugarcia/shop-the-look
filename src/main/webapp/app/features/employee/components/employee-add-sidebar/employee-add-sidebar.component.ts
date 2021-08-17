@@ -61,9 +61,9 @@ export class EmployeeAddSidebarComponent implements AfterViewInit {
   }
 
   private onSaveSuccess(): void {
-    this.router.navigate(['/employees']);
     this.isSaving = false;
     this.sidebar.event('success');
+    this.sidebar.close();
   }
 
   private onSaveError(): void {
