@@ -28,7 +28,14 @@
                 </div>
                 <div class="col-12 col-md-4">
                   <label class="d-flex">
-                    <input [(ngModel)]="searchText" class="form-control ml-25" name="searchValue" placeholder="Search" type="search" />
+                    <input
+                      (ngModelChange)="searchTextChanged.next($event)"
+                      [(ngModel)]="searchText"
+                      class="form-control ml-25"
+                      name="searchValue"
+                      placeholder="Search"
+                      type="text"
+                    />
                   </label>
                 </div>
               </div>

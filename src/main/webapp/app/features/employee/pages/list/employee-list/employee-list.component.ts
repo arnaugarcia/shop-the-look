@@ -8,8 +8,9 @@ import { CompanyService } from '../../../../../entities/company/service/company.
 import { ICompany } from '../../../../../entities/company/company.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeDeleteDialogComponent } from '../../../components/employee-delete/employee-delete-dialog.component';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { CoreSidebarComponent } from '../../../../../../@core/components/core-sidebar/core-sidebar.component';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'stl-employee-list',
@@ -27,9 +28,10 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngbPaginationPage = 1;
   public isLoading = false;
   public companies: ICompany[] = [];
-  AccountStatus = AccountStatus;
+  public AccountStatus = AccountStatus;
   public sidebar!: CoreSidebarComponent;
-  private sidebarSubscription = new Subscription();
+  public searchTextChanged: Subject<string> = new Subject<string>();
+  private subscriptions = new Subscription();
 
   constructor(
     private coreSidebarService: CoreSidebarService,
@@ -45,11 +47,17 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.companies = response.body;
       }
     });
+    this.subscriptions.add(
+      this.searchTextChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe((newText: string) => {
+        this.searchText = newText;
+        this.loadPage();
+      })
+    );
   }
 
   ngAfterViewInit(): void {
     this.sidebar = this.coreSidebarService.getSidebarRegistry(this.NEW_USER_SIDEBAR_KEY);
-    this.sidebarSubscription.add(
+    this.subscriptions.add(
       this.sidebar.statusChangedEvent.asObservable().subscribe((status: string) => {
         if (status === 'success') {
           this.loadPage();
@@ -59,7 +67,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.sidebarSubscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   loadPage(page?: number): void {
@@ -70,7 +78,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        keyword: this.searchText,
+        login: this.searchText,
       })
       .subscribe(
         (res: HttpResponse<IEmployee[]>) => {
