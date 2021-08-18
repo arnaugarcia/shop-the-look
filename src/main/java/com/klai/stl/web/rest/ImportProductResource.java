@@ -1,13 +1,12 @@
 package com.klai.stl.web.rest;
 
-import com.klai.stl.service.FeedService;
+import com.klai.stl.service.FeedProductImportService;
 import com.klai.stl.service.ImportProductsService;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.NewProductRequest;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -26,11 +25,11 @@ public class ImportProductResource {
 
     private final ImportProductsService importProductsService;
 
-    private final FeedService feedService;
+    private final FeedProductImportService feedProductImportService;
 
-    public ImportProductResource(ImportProductsService importProductsService, FeedService feedService) {
+    public ImportProductResource(ImportProductsService importProductsService, FeedProductImportService feedProductImportService) {
         this.importProductsService = importProductsService;
-        this.feedService = feedService;
+        this.feedProductImportService = feedProductImportService;
     }
 
     /**
@@ -76,9 +75,7 @@ public class ImportProductResource {
     @PutMapping("/feed/import")
     public ResponseEntity<List<ProductDTO>> importProductsFeed() throws URISyntaxException, MalformedURLException {
         log.debug("REST request to import products with by google feed");
-        List<ProductDTO> result = feedService.queryProducts(
-            new URL("https://admin.mrwonderfulshop.es/media/feeds/google_shopping/google_shopping-es.xml")
-        );
+        List<ProductDTO> result = feedProductImportService.importFeedProducts();
         return ResponseEntity.created(new URI("/api/products/import")).body(result);
     }
 }

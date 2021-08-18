@@ -1,50 +1,31 @@
 package com.klai.stl.service.dto.feed;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
 
+@Data
 @XmlRootElement(name = "item")
 public class Item {
 
+    @NotNull
     @XmlElement
-    public int id;
+    public String id;
 
+    @NotNull
     @XmlElement
     public String title;
 
-    @XmlElement
-    public String condition;
-
-    @XmlElement
-    public String image_link;
-
+    @NotNull
     @XmlElement
     public String price;
 
-    @XmlElement
-    public String sale_price;
-
-    @XmlElement
-    public String availability;
-
-    @XmlElement
-    public int google_product_category;
-
-    @XmlElement
-    public String product_type;
-
+    @NotNull
     @XmlElement
     public String link;
 
+    @NotNull
     @XmlElement
     public String description;
-
-    @XmlElement
-    public String brand;
-
-    @XmlElement
-    public String mpn;
-
-    @XmlElement
-    public double gtin;
 }
