@@ -6,6 +6,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import com.klai.stl.domain.BillingAddress;
 import com.klai.stl.domain.Company;
 import com.klai.stl.repository.BillingAddressRepository;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.BillingAddressService;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.UserService;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Service Implementation for managing {@link BillingAddress}.
  */
 @Service
-@Transactional
 public class BillingAddressServiceImpl implements BillingAddressService {
 
     private final Logger log = LoggerFactory.getLogger(BillingAddressServiceImpl.class);
@@ -32,6 +32,8 @@ public class BillingAddressServiceImpl implements BillingAddressService {
 
     private final BillingAddressRepository billingAddressRepository;
 
+    private final CompanyRepository companyRepository;
+
     private final BillingAddressMapper billingAddressMapper;
 
     private final UserService userService;
@@ -39,11 +41,13 @@ public class BillingAddressServiceImpl implements BillingAddressService {
     public BillingAddressServiceImpl(
         CompanyService companyService,
         BillingAddressRepository billingAddressRepository,
+        CompanyRepository companyRepository,
         BillingAddressMapper billingAddressMapper,
         UserService userService
     ) {
         this.companyService = companyService;
         this.billingAddressRepository = billingAddressRepository;
+        this.companyRepository = companyRepository;
         this.billingAddressMapper = billingAddressMapper;
         this.userService = userService;
     }
@@ -54,15 +58,26 @@ public class BillingAddressServiceImpl implements BillingAddressService {
         log.debug("Request to save billing address {} for company {}", billingAddressRequest, companyReference);
         Company company = findCurrentUserCompany(companyReference);
 
-        final BillingAddress billingAddress = billingAddressMapper.toEntity(billingAddressRequest);
-        billingAddress.setCompany(company);
+        BillingAddress billingAddress = billingAddressRepository
+            .findByCompanyReference(company.getReference())
+            .map(billingAddressToUpdate -> updateBillingAddressBy(billingAddressRequest, billingAddressToUpdate))
+            .orElse(new BillingAddress(billingAddressRequest));
+        company.setBillingAddress(billingAddress);
 
-        final BillingAddress result = billingAddressRepository.save(billingAddress);
-        return billingAddressMapper.toDto(result);
+        final Company result = companyRepository.save(company);
+        return billingAddressMapper.toDto(result.getBillingAddress());
+    }
+
+    private BillingAddress updateBillingAddressBy(BillingAddressRequest billingAddressRequest, BillingAddress billingAddressToUpdate) {
+        billingAddressToUpdate.setAddress(billingAddressRequest.getAddress());
+        billingAddressToUpdate.setProvince(billingAddressRequest.getProvince());
+        billingAddressToUpdate.setCity(billingAddressRequest.getCity());
+        billingAddressToUpdate.setCountry(billingAddressRequest.getCountry());
+        billingAddressToUpdate.setZipCode(billingAddressRequest.getZipCode());
+        return billingAddressToUpdate;
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Optional<BillingAddressDTO> find(String companyReference) {
         log.debug("Request to get billing for company: {}", companyReference);
         Company company = findCurrentUserCompany(companyReference);

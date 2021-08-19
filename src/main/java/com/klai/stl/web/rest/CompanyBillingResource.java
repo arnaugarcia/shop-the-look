@@ -38,7 +38,6 @@ public class CompanyBillingResource {
      * {@code PUT  /billing} : Updates or creates an existing billingAddress.
      *
      * @param billingAddressRequest the billingAddressRequest to update.
-     * @param reference         the reference of a company
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated billingAddressRequest,
      * or with status {@code 400 (Bad Request)} if the billingAddressRequest is not valid,
      * or with status {@code 500 (Internal Server Error)} if the billingAddressRequest couldn't be updated.
