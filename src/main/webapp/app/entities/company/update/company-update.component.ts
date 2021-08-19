@@ -5,14 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import { ICompany, Company } from '../company.model';
+import { Company, ICompany } from '../company.model';
 import { CompanyService } from '../service/company.service';
 import { IBillingAddress } from 'app/entities/billing-address/billing-address.model';
-import { BillingAddressService } from 'app/entities/billing-address/service/billing-address.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { ISubscriptionPlan } from 'app/entities/subscription-plan/subscription-plan.model';
 import { SubscriptionPlanService } from 'app/entities/subscription-plan/service/subscription-plan.service';
+import { BillingAddressService } from '../../../features/account/service/billing-address.service';
 
 @Component({
   selector: 'stl-company-update',
@@ -139,10 +139,10 @@ export class CompanyUpdateComponent implements OnInit {
       subscriptionPlan: company.subscriptionPlan,
     });
 
-    this.billingAddressesCollection = this.billingAddressService.addBillingAddressToCollectionIfMissing(
+    /* this.billingAddressesCollection = this.billingAddressService.addBillingAddressToCollectionIfMissing(
       this.billingAddressesCollection,
       company.billingAddress
-    );
+    ); */
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, ...(company.users ?? []));
     this.subscriptionPlansSharedCollection = this.subscriptionPlanService.addSubscriptionPlanToCollectionIfMissing(
       this.subscriptionPlansSharedCollection,
@@ -151,7 +151,7 @@ export class CompanyUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
-    this.billingAddressService
+    /* this.billingAddressService
       .query({ filter: 'company-is-null' })
       .pipe(map((res: HttpResponse<IBillingAddress[]>) => res.body ?? []))
       .pipe(
@@ -159,7 +159,7 @@ export class CompanyUpdateComponent implements OnInit {
           this.billingAddressService.addBillingAddressToCollectionIfMissing(billingAddresses, this.editForm.get('billingAddress')!.value)
         )
       )
-      .subscribe((billingAddresses: IBillingAddress[]) => (this.billingAddressesCollection = billingAddresses));
+      .subscribe((billingAddresses: IBillingAddress[]) => (this.billingAddressesCollection = billingAddresses)); */
 
     this.userService
       .query()

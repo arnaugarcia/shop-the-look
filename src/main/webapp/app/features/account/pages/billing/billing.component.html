@@ -1,4 +1,4 @@
-<form>
+<form (ngSubmit)="save()" *ngIf="billingAddress" [formGroup]="billingAddressForm" name="billingAddressForm">
   <div class="row">
     <div class="col-12">
       <h2>Billing address</h2>
@@ -6,7 +6,7 @@
     <div class="col-lg-4 col-md-6">
       <div class="form-group">
         <label for="address-1">Address</label>
-        <input class="form-control" id="address-1" name="address" placeholder="Calle falsa 123" type="text" />
+        <input class="form-control" id="address-1" name="address" placeholder="221B baker street" type="text" />
       </div>
     </div>
     <div class="col-lg-4 col-md-6">
