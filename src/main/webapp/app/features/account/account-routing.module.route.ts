@@ -10,6 +10,7 @@ import { ApiKeyComponent } from './pages/api-key/api-key.component';
 import { BillingComponent } from './pages/billing/billing.component';
 import { SubscriptionComponent } from './pages/subscription/subscription.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
+import { BillingAddressRoutingResolveService } from './route/billing-address-routing-resolve.service';
 
 const accountRoute: Routes = [
   {
@@ -32,6 +33,9 @@ const accountRoute: Routes = [
       {
         path: 'billing',
         component: BillingComponent,
+        resolve: {
+          billingAddress: BillingAddressRoutingResolveService,
+        },
       },
       {
         path: 'subscription',

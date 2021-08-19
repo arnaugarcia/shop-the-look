@@ -19,7 +19,7 @@ export class BillingAddressService {
     });
   }
 
-  query(): Observable<EntityArrayResponseType> {
-    return this.http.get<IBillingAddress[]>(this.resourceUrl, { observe: 'response' });
+  query(): Observable<EntityResponseType> {
+    return this.http.get<IBillingAddress>(this.resourceUrl, { observe: 'response' });
   }
 }
