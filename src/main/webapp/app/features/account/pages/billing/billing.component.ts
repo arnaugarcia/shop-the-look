@@ -15,7 +15,7 @@ export class BillingComponent {
     address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(250)]],
     country: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     city: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-    zipCode: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+    zipCode: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]],
     province: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
   });
 

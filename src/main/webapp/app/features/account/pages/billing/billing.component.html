@@ -84,7 +84,7 @@
           id="zipCode"
           name="zipCode"
           placeholder="08629"
-          type="text"
+          type="number"
         />
         <div
           *ngIf="
@@ -96,12 +96,12 @@
             Your zip code address is required.
           </small>
 
-          <small *ngIf="billingAddressForm.get('zipCode')?.errors?.minlength" class="form-text text-danger">
-            Your zip code is required to be at least 1 character.
+          <small *ngIf="billingAddressForm.get('zipCode')?.errors?.min" class="form-text text-danger">
+            Your zip code is required to be at least 5 digits.
           </small>
 
-          <small *ngIf="billingAddressForm.get('zipCode')?.errors?.maxlength" class="form-text text-danger">
-            Your zip code cannot be longer than 250 characters.
+          <small *ngIf="billingAddressForm.get('zipCode')?.errors?.max" class="form-text text-danger">
+            Your zip code cannot be longer than 15 digits.
           </small>
         </div>
       </div>
@@ -177,7 +177,9 @@
       </div>
     </div>
     <div class="col-12 d-flex flex-sm-row flex-column mt-2">
-      <button class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">Save Changes</button>
+      <button [disabled]="billingAddressForm.invalid" class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">
+        Save Changes
+      </button>
       <button class="btn btn-outline-secondary" rippleEffect type="reset">Reset</button>
     </div>
   </div>
