@@ -12,8 +12,9 @@ export class BillingComponent {
   public billingAddress = new BillingAddress();
 
   billingAddressForm = this.formBuilder.group({
-    country: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-    city: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+    address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(250)]],
+    country: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+    city: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     zipCode: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     province: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
   });
