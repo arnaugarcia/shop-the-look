@@ -67,15 +67,15 @@ public class ImportProductResource {
     }
 
     /**
-     * {@code PUT  /products} : Import products to company from google feed.
+     * {@code PUT  /products/refresh} : Import products to company from Google feed.
      *
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productDTO, or with status {@code 400 (Bad Request)} if the product has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/feed/import")
+    @PutMapping("/refresh")
     public ResponseEntity<List<ProductDTO>> importProductsFeed() throws URISyntaxException, MalformedURLException {
         log.debug("REST request to import products with by google feed");
         List<ProductDTO> result = feedProductImportService.importFeedProducts();
-        return ResponseEntity.created(new URI("/api/products/import")).body(result);
+        return ResponseEntity.created(new URI("/api/products/refresh")).body(result);
     }
 }

@@ -45,13 +45,6 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         this.entityManager = entityManager;
     }
 
-    private static Product updateProduct(Product original, Product result) {
-        result.setId(original.getId());
-        result.setReference(original.getReference());
-        result.setSku(original.getSku());
-        return result;
-    }
-
     @Override
     public List<ProductDTO> importProducts(List<NewProductRequest> products, String companyReference) {
         Company company = findUserCompany(companyReference);
@@ -113,5 +106,12 @@ public class ImportProductsServiceImpl implements ImportProductsService {
 
     private List<ProductDTO> saveAndTransform(List<Product> products) {
         return productRepository.saveAll(products).stream().map(productMapper::toDto).collect(toList());
+    }
+
+    private static Product updateProduct(Product original, Product result) {
+        result.setId(original.getId());
+        result.setReference(original.getReference());
+        result.setSku(original.getSku());
+        return result;
     }
 }
