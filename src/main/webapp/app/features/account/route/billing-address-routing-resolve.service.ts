@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { BillingAddressService } from '../service/billing-address.service';
 import { BillingAddress, IBillingAddress } from '../model/billing-address.model';
@@ -11,15 +11,16 @@ import { BillingAddress, IBillingAddress } from '../model/billing-address.model'
 export class BillingAddressRoutingResolveService implements Resolve<IBillingAddress> {
   constructor(protected service: BillingAddressService, protected router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IBillingAddress> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<IBillingAddress> | Promise<IBillingAddress> | IBillingAddress {
+    const EMPTY = of(new BillingAddress());
     return this.service.query().pipe(
-      mergeMap((billingAddress: HttpResponse<BillingAddress>) => {
-        if (billingAddress.body) {
-          return of(billingAddress.body);
-        } else {
-          return of(new BillingAddress());
+      mergeMap((response: HttpResponse<BillingAddress>) => {
+        if (response.body) {
+          return of(response.body);
         }
-      })
+        return EMPTY;
+      }),
+      catchError(() => EMPTY)
     );
   }
 }

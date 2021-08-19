@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * REST controller for managing {@link com.klai.stl.domain.BillingAddress}.
  */
 @RestController
-@RequestMapping("/api/companies/{reference}")
+@RequestMapping("/api/companies")
 public class CompanyBillingResource {
 
     private final Logger log = LoggerFactory.getLogger(CompanyBillingResource.class);
@@ -47,7 +47,7 @@ public class CompanyBillingResource {
     @PutMapping("/billing")
     public ResponseEntity<BillingAddressDTO> updateBillingAddress(
         @Valid @RequestBody BillingAddressRequest billingAddressRequest,
-        @PathVariable String reference
+        @RequestParam(required = false) String reference
     ) throws URISyntaxException {
         log.debug("REST request to update BillingAddress for company {} with data {}", reference, billingAddressRequest);
 
@@ -65,7 +65,7 @@ public class CompanyBillingResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of billingAddresses in body.
      */
     @GetMapping("/billing")
-    public ResponseEntity<BillingAddressDTO> getBillingAddress(@PathVariable String reference) {
+    public ResponseEntity<BillingAddressDTO> getBillingAddress(@RequestParam(required = false) String reference) {
         log.debug("REST request to get all BillingAddresses");
         return wrapOrNotFound(billingAddressService.find(reference));
     }

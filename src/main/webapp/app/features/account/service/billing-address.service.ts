@@ -9,12 +9,12 @@ export type EntityArrayResponseType = HttpResponse<IBillingAddress[]>;
 
 @Injectable({ providedIn: 'root' })
 export class BillingAddressService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/billing-addresses');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/companies/billing');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   update(billingAddress: IBillingAddress): Observable<EntityResponseType> {
-    return this.http.put<IBillingAddress>(`${this.resourceUrl}/asdff`, billingAddress, {
+    return this.http.put<IBillingAddress>(`${this.resourceUrl}`, billingAddress, {
       observe: 'response',
     });
   }
