@@ -1,4 +1,5 @@
 export interface IBillingAddress {
+  address?: string;
   country?: string;
   zipCode?: string;
   province?: string;
@@ -6,5 +7,5 @@ export interface IBillingAddress {
 }
 
 export class BillingAddress implements IBillingAddress {
-  constructor(public country?: string, public zipCode?: string, public city?: string, public province?: string) {}
+  constructor(public address?: string, public country?: string, public zipCode?: string, public city?: string, public province?: string) {}
 }
