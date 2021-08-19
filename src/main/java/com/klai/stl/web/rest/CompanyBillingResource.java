@@ -47,11 +47,11 @@ public class CompanyBillingResource {
     @PutMapping("/billing")
     public ResponseEntity<BillingAddressDTO> updateBillingAddress(
         @Valid @RequestBody BillingAddressRequest billingAddressRequest,
-        @RequestParam(required = false) String reference
+        @RequestParam(required = false) String companyReference
     ) throws URISyntaxException {
-        log.debug("REST request to update BillingAddress for company {} with data {}", reference, billingAddressRequest);
+        log.debug("REST request to update BillingAddress for company {} with data {}", companyReference, billingAddressRequest);
 
-        BillingAddressDTO result = billingAddressService.save(reference, billingAddressRequest);
+        BillingAddressDTO result = billingAddressService.save(companyReference, billingAddressRequest);
         return ResponseEntity
             .ok()
             .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, billingAddressRequest.toString()))
@@ -61,12 +61,12 @@ public class CompanyBillingResource {
     /**
      * {@code GET  /billing} : get the billing address
      *
-     * @param reference the company reference
+     * @param companyReference the company reference
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of billingAddresses in body.
      */
     @GetMapping("/billing")
-    public ResponseEntity<BillingAddressDTO> getBillingAddress(@RequestParam(required = false) String reference) {
+    public ResponseEntity<BillingAddressDTO> getBillingAddress(@RequestParam(required = false) String companyReference) {
         log.debug("REST request to get all BillingAddresses");
-        return wrapOrNotFound(billingAddressService.find(reference));
+        return wrapOrNotFound(billingAddressService.find(companyReference));
     }
 }
