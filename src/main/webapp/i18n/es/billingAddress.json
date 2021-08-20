@@ -8,9 +8,7 @@
         "createOrEditLabel": "Crear o editar Billing Address",
         "notFound": "Ningún Billing Addresses encontrado"
       },
-      "created": "Un nuevo Billing Address ha sido creado con el identificador {{ param }}",
-      "updated": "Un Billing Address ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Billing Address ha sido eliminado con el identificador {{ param }}",
+      "updated": "Los datos de facturación se han actualizado/creado correctamente",
       "delete": {
         "question": "¿Seguro que quiere eliminar Billing Address {{ id }}?"
       },
