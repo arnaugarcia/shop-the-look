@@ -1,6 +1,7 @@
 package com.klai.stl.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.klai.stl.service.dto.requests.BillingAddressRequest;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -47,6 +48,16 @@ public class BillingAddress implements Serializable {
     )
     @OneToOne(mappedBy = "billingAddress")
     private Company company;
+
+    public BillingAddress() {}
+
+    public BillingAddress(BillingAddressRequest billingAddressRequest) {
+        this.address = billingAddressRequest.getAddress();
+        this.province = billingAddressRequest.getProvince();
+        this.city = billingAddressRequest.getCity();
+        this.country = billingAddressRequest.getCountry();
+        this.zipCode = billingAddressRequest.getZipCode();
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {

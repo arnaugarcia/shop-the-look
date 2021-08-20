@@ -2,6 +2,7 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static com.klai.stl.service.dto.requests.BillingAddressRequest.builder;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -48,7 +49,8 @@ class CompanyBillingResourceIT {
     private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
     private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
 
-    private static final String ENTITY_API_URL = "/api/companies/{reference}/billing";
+    private static final String ENTITY_API_URL = "/api/companies/billing";
+    private static final String ENTITY_API_URL_ADMIN = "/api/companies/billing?companyReference={reference}";
 
     @Autowired
     private BillingAddressRepository billingAddressRepository;
@@ -66,8 +68,7 @@ class CompanyBillingResourceIT {
     private BillingAddress billingAddress;
 
     public static BillingAddressRequest createRequest() {
-        return BillingAddressRequest
-            .builder()
+        return builder()
             .address(DEFAULT_ADDRESS)
             .city(DEFAULT_CITY)
             .province(DEFAULT_PROVINCE)
@@ -77,8 +78,7 @@ class CompanyBillingResourceIT {
     }
 
     public static BillingAddressRequest createUpdateRequest() {
-        return BillingAddressRequest
-            .builder()
+        return builder()
             .address(UPDATED_ADDRESS)
             .city(UPDATED_CITY)
             .province(UPDATED_PROVINCE)
@@ -106,9 +106,10 @@ class CompanyBillingResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "manager-billing", authorities = MANAGER)
+    @WithMockUser(username = "manager-billing-create", authorities = MANAGER)
     void createBillingAddress() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final User manager = UserResourceIT.createEntity(em, "manager-billing-create");
+        em.persist(manager);
         final Company company = CompanyResourceIT.createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
@@ -133,7 +134,7 @@ class CompanyBillingResourceIT {
 
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL, company.getReference())
+                put(ENTITY_API_URL_ADMIN, company.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(billingAddressRequest))
             )
@@ -145,7 +146,7 @@ class CompanyBillingResourceIT {
     @WithMockUser(authorities = ADMIN)
     void queryBillingAddressOfACompanyThatNotExistsAsAdmin() throws Exception {
         restBillingAddressMockMvc
-            .perform(get(ENTITY_API_URL, "BAD_REFERENCE").contentType(MediaType.APPLICATION_JSON))
+            .perform(get(ENTITY_API_URL_ADMIN, "BAD_REFERENCE").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }
 
@@ -153,22 +154,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER)
     void queryBillingAddressOfACompanyThatNotExistsAsManager() throws Exception {
-        restBillingAddressMockMvc
-            .perform(get(ENTITY_API_URL, "BAD_REFERENCE").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser(authorities = MANAGER)
-    void updateBillingAddressOfACompanyThatNotExistsAsManager() throws Exception {
-        restBillingAddressMockMvc
-            .perform(
-                put(ENTITY_API_URL, "BAD_REFERENCE")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(billingAddressRequest))
-            )
-            .andExpect(status().isNotFound());
+        restBillingAddressMockMvc.perform(get(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -177,7 +163,7 @@ class CompanyBillingResourceIT {
     void updateBillingAddressOfACompanyThatNotExistsAsAdmin() throws Exception {
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL, "BAD_REFERENCE")
+                put(ENTITY_API_URL_ADMIN, "BAD_REFERENCE")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(billingAddressRequest))
             )
@@ -186,18 +172,17 @@ class CompanyBillingResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "manager-billing", authorities = MANAGER)
+    @WithMockUser(username = "manager-billing2", authorities = MANAGER)
     void updateBillingAddress() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final User manager = UserResourceIT.createEntity(em, "manager-billing2");
+        em.persist(manager);
         final Company company = CompanyResourceIT.createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
 
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL, company.getReference())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
             .andExpect(status().isOk());
 
@@ -221,7 +206,7 @@ class CompanyBillingResourceIT {
 
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL, company.getReference())
+                put(ENTITY_API_URL_ADMIN, company.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
@@ -238,9 +223,10 @@ class CompanyBillingResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "bad-manager", authorities = MANAGER)
+    @WithMockUser(username = "bad-manager2", authorities = MANAGER)
     void updateBillingAddressOfOtherCompanyAsManager() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "bad-manager");
+        final User manager = UserResourceIT.createEntity(em, "bad-manager2");
+        em.persist(manager);
         final Company company = CompanyResourceIT.createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
@@ -251,13 +237,30 @@ class CompanyBillingResourceIT {
         em.persist(otherCompany);
         em.persist(otherUser);
 
+        final BillingAddressRequest billingAddressRequest = builder()
+            .address("A")
+            .city("C")
+            .country("C")
+            .province("P")
+            .zipCode("Z")
+            .build();
+
         restBillingAddressMockMvc
             .perform(
-                put(ENTITY_API_URL, otherCompany.getReference())
+                put(ENTITY_API_URL_ADMIN, otherCompany.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(updateBillingAddressRequest))
+                    .content(convertObjectToJsonBytes(billingAddressRequest))
             )
-            .andExpect(status().isForbidden());
+            .andExpect(status().isOk());
+
+        final Optional<BillingAddress> badManagerBilling = billingAddressRepository.findByCompanyReference(company.getReference());
+        assertThat(badManagerBilling).isPresent();
+        BillingAddress result = badManagerBilling.get();
+        assertThat(result.getAddress()).isEqualTo("A");
+        assertThat(result.getCity()).isEqualTo("C");
+        assertThat(result.getProvince()).isEqualTo("P");
+        assertThat(result.getZipCode()).isEqualTo("Z");
+        assertThat(result.getCountry()).isEqualTo("C");
     }
 
     @Test
@@ -265,6 +268,7 @@ class CompanyBillingResourceIT {
     @WithMockUser(username = "manager-billing", authorities = MANAGER)
     void findsYourBillingAddressAsManager() throws Exception {
         final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        em.persist(manager);
         final Company company = CompanyResourceIT.createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
@@ -305,9 +309,18 @@ class CompanyBillingResourceIT {
     @WithMockUser(username = "bad-manager", authorities = MANAGER)
     void notFindsBillingOfOtherCompany() throws Exception {
         final User manager = UserResourceIT.createEntity(em, "bad-manager");
+        em.persist(manager);
         final Company company = CompanyResourceIT.createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
+
+        final BillingAddressRequest billingAddressRequest = builder()
+            .address("A")
+            .city("C")
+            .country("C")
+            .province("P")
+            .zipCode("Z")
+            .build();
 
         restBillingAddressMockMvc
             .perform(
@@ -325,20 +338,32 @@ class CompanyBillingResourceIT {
         final Optional<BillingAddress> badManagerBilling = billingAddressRepository.findByCompanyReference(company.getReference());
         assertThat(badManagerBilling).isPresent();
         BillingAddress result = badManagerBilling.get();
-        assertThat(result.getAddress()).isEqualTo(DEFAULT_ADDRESS);
-        assertThat(result.getCity()).isEqualTo(DEFAULT_CITY);
-        assertThat(result.getProvince()).isEqualTo(DEFAULT_PROVINCE);
-        assertThat(result.getCountry()).isEqualTo(DEFAULT_COUNTRY);
+        assertThat(result.getAddress()).isEqualTo("A");
+        assertThat(result.getCity()).isEqualTo("C");
+        assertThat(result.getProvince()).isEqualTo("P");
+        assertThat(result.getZipCode()).isEqualTo("Z");
+        assertThat(result.getCountry()).isEqualTo("C");
 
         billingAddressRepository.save(billingAddress);
 
         restBillingAddressMockMvc
             .perform(
-                get(ENTITY_API_URL, otherCompany.getReference())
+                get(ENTITY_API_URL_ADMIN, otherCompany.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )
-            .andExpect(status().isForbidden());
+            .andExpect(status().isOk());
+
+        final Optional<BillingAddress> badManagerBillingAfterUpdate = billingAddressRepository.findByCompanyReference(
+            company.getReference()
+        );
+        assertThat(badManagerBillingAfterUpdate).isPresent();
+        BillingAddress resultAfterUpdate = badManagerBilling.get();
+        assertThat(resultAfterUpdate.getAddress()).isEqualTo("A");
+        assertThat(resultAfterUpdate.getCity()).isEqualTo("C");
+        assertThat(resultAfterUpdate.getProvince()).isEqualTo("P");
+        assertThat(resultAfterUpdate.getZipCode()).isEqualTo("Z");
+        assertThat(resultAfterUpdate.getCountry()).isEqualTo("C");
     }
 
     @Test
@@ -361,7 +386,7 @@ class CompanyBillingResourceIT {
 
         restBillingAddressMockMvc
             .perform(
-                get(ENTITY_API_URL, company.getReference())
+                get(ENTITY_API_URL_ADMIN, company.getReference())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateBillingAddressRequest))
             )

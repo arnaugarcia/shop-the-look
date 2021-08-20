@@ -79,7 +79,7 @@ public class Company implements Serializable {
     private CompanySize companySize;
 
     @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
-    @OneToOne(cascade = REMOVE)
+    @OneToOne(cascade = { PERSIST, REMOVE })
     @JoinColumn(unique = true)
     private BillingAddress billingAddress;
 

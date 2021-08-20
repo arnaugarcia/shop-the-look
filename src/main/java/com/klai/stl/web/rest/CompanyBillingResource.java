@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * REST controller for managing {@link com.klai.stl.domain.BillingAddress}.
  */
 @RestController
-@RequestMapping("/api/companies/{reference}")
+@RequestMapping("/api/companies")
 public class CompanyBillingResource {
 
     private final Logger log = LoggerFactory.getLogger(CompanyBillingResource.class);
@@ -38,7 +38,6 @@ public class CompanyBillingResource {
      * {@code PUT  /billing} : Updates or creates an existing billingAddress.
      *
      * @param billingAddressRequest the billingAddressRequest to update.
-     * @param reference         the reference of a company
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated billingAddressRequest,
      * or with status {@code 400 (Bad Request)} if the billingAddressRequest is not valid,
      * or with status {@code 500 (Internal Server Error)} if the billingAddressRequest couldn't be updated.
@@ -47,11 +46,11 @@ public class CompanyBillingResource {
     @PutMapping("/billing")
     public ResponseEntity<BillingAddressDTO> updateBillingAddress(
         @Valid @RequestBody BillingAddressRequest billingAddressRequest,
-        @PathVariable String reference
+        @RequestParam(required = false) String companyReference
     ) throws URISyntaxException {
-        log.debug("REST request to update BillingAddress for company {} with data {}", reference, billingAddressRequest);
+        log.debug("REST request to update BillingAddress for company {} with data {}", companyReference, billingAddressRequest);
 
-        BillingAddressDTO result = billingAddressService.save(reference, billingAddressRequest);
+        BillingAddressDTO result = billingAddressService.save(companyReference, billingAddressRequest);
         return ResponseEntity
             .ok()
             .headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, billingAddressRequest.toString()))
@@ -61,12 +60,12 @@ public class CompanyBillingResource {
     /**
      * {@code GET  /billing} : get the billing address
      *
-     * @param reference the company reference
+     * @param companyReference the company reference
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of billingAddresses in body.
      */
     @GetMapping("/billing")
-    public ResponseEntity<BillingAddressDTO> getBillingAddress(@PathVariable String reference) {
+    public ResponseEntity<BillingAddressDTO> getBillingAddress(@RequestParam(required = false) String companyReference) {
         log.debug("REST request to get all BillingAddresses");
-        return wrapOrNotFound(billingAddressService.find(reference));
+        return wrapOrNotFound(billingAddressService.find(companyReference));
     }
 }
