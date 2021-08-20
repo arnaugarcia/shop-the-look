@@ -106,9 +106,9 @@ class CompanyBillingResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "manager-billing", authorities = MANAGER)
+    @WithMockUser(username = "manager-billing-create", authorities = MANAGER)
     void createBillingAddress() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final User manager = UserResourceIT.createEntity(em, "manager-billing-create");
         em.persist(manager);
         final Company company = CompanyResourceIT.createBasicCompany(em);
         company.addUser(manager);
