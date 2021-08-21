@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/products")
-public class ImportProductResource {
+public class ProductImportResource {
 
-    private final Logger log = LoggerFactory.getLogger(ImportProductResource.class);
+    private final Logger log = LoggerFactory.getLogger(ProductImportResource.class);
 
     private final ImportProductsService importProductsService;
 
-    public ImportProductResource(ImportProductsService importProductsService) {
+    public ProductImportResource(ImportProductsService importProductsService) {
         this.importProductsService = importProductsService;
     }
 
@@ -34,30 +34,13 @@ public class ImportProductResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productDTO, or with status {@code 400 (Bad Request)} if the product has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/import")
+    @PutMapping("/import")
     public ResponseEntity<List<ProductDTO>> importProducts(
         @Valid @RequestBody List<NewProductRequest> productRequests,
         @RequestParam(required = false) String companyReference
     ) throws URISyntaxException {
         log.debug("REST request to import products with size {}", productRequests.size());
         List<ProductDTO> result = importProductsService.importProducts(productRequests, companyReference);
-        return ResponseEntity.created(new URI("/api/products/import")).body(result);
-    }
-
-    /**
-     * {@code POST  /products} : Import products to company.
-     *
-     * @param productRequests the parameters to import and the products.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productDTO, or with status {@code 400 (Bad Request)} if the product has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PutMapping("/import")
-    public ResponseEntity<List<ProductDTO>> updateProducts(
-        @Valid @RequestBody List<NewProductRequest> productRequests,
-        @RequestParam(required = false) String companyReference
-    ) throws URISyntaxException {
-        log.debug("REST request to import products with size {}", productRequests.size());
-        List<ProductDTO> result = importProductsService.updateProducts(productRequests, companyReference);
         return ResponseEntity.created(new URI("/api/products/import")).body(result);
     }
 }

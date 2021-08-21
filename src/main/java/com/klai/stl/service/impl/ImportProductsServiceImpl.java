@@ -4,7 +4,7 @@ import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static java.util.Locale.ROOT;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ImportProductsServiceImpl implements ImportProductsService {
@@ -45,23 +46,59 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         this.entityManager = entityManager;
     }
 
-    private static Product updateProduct(Product original, Product result) {
+    @Override
+    @Transactional
+    public List<ProductDTO> importProducts(List<NewProductRequest> products, String companyReference) {
+        Company company = findUserCompany(companyReference);
+        return importProducts(products, company);
+    }
+
+    private static Product updateProductFields(Product original, Product result) {
         result.setId(original.getId());
         result.setReference(original.getReference());
         result.setSku(original.getSku());
         return result;
     }
 
-    @Override
-    public List<ProductDTO> importProducts(List<NewProductRequest> products, String companyReference) {
-        Company company = findUserCompany(companyReference);
-        return importProducts(products, company);
+    private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company) {
+        List<Product> result = new ArrayList<>();
+
+        List<ProductWrapper> currentCompanyProducts = productRepository
+            .findByCompanyReference(company.getReference())
+            .stream()
+            .map(ProductWrapper::from)
+            .collect(toList());
+
+        List<ProductWrapper> newProducts = importProducts.stream().map(productMapper::toEntity).map(ProductWrapper::from).collect(toList());
+
+        for (ProductWrapper newProduct : newProducts) {
+            final Product product;
+            if (currentCompanyProducts.contains(newProduct)) {
+                product = updateProduct(currentCompanyProducts, newProduct);
+            } else {
+                product = newProduct.unwrap();
+                product.setReference(generateNewProductReference());
+            }
+            product.setCompany(company);
+            result.add(product);
+        }
+
+        deleteRemovedProducts(currentCompanyProducts, newProducts);
+        return saveAndTransform(result);
     }
 
-    @Override
-    public List<ProductDTO> updateProducts(List<NewProductRequest> products, String companyReference) {
-        Company company = findUserCompany(companyReference);
-        return updateProducts(products, company);
+    private String generateNewProductReference() {
+        return randomAlphabetic(20).toUpperCase(ROOT);
+    }
+
+    private void deleteRemovedProducts(List<ProductWrapper> currentCompanyProducts, List<ProductWrapper> newProducts) {
+        List<Product> deleteProducts = new ArrayList<>();
+        for (ProductWrapper product : currentCompanyProducts) {
+            if (!newProducts.contains(product)) {
+                deleteProducts.add(product.unwrap());
+            }
+        }
+        productRepository.deleteAll(deleteProducts);
     }
 
     private Company findUserCompany(String companyReference) {
@@ -74,44 +111,14 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         return userService.getCurrentUser().getCompany();
     }
 
-    private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company) {
-        productRepository.deleteAllByCompanyReference(company.getReference());
-        entityManager.flush();
-        final List<Product> products = importProducts
-            .stream()
-            .map(productMapper::toEntity)
-            .peek(product -> product.setCompany(company))
-            .peek(product -> product.setReference(randomAlphanumeric(15).toUpperCase(ROOT)))
-            .collect(toList());
-        return saveAndTransform(products);
-    }
-
-    private List<ProductDTO> updateProducts(List<NewProductRequest> importProducts, Company company) {
-        List<Product> result = new ArrayList<>();
-        List<Product> deleteProducts = new ArrayList<>();
-
-        List<ProductWrapper> currentCompanyProducts = productRepository
-            .findByCompanyReference(company.getReference())
-            .stream()
-            .map(ProductWrapper::from)
-            .collect(toList());
-
-        List<ProductWrapper> newProducts = importProducts.stream().map(productMapper::toEntity).map(ProductWrapper::from).collect(toList());
-
-        for (ProductWrapper product : currentCompanyProducts) {
-            if (newProducts.contains(product)) {
-                final Product updatedProduct = updateProduct(product.unwrap(), newProducts.get(newProducts.indexOf(product)).unwrap());
-                updatedProduct.setCompany(company);
-                result.add(updatedProduct);
-            } else {
-                deleteProducts.add(product.unwrap());
-            }
-        }
-        productRepository.deleteAll(deleteProducts);
-        return saveAndTransform(result);
-    }
-
     private List<ProductDTO> saveAndTransform(List<Product> products) {
         return productRepository.saveAll(products).stream().map(productMapper::toDto).collect(toList());
+    }
+
+    private Product updateProduct(List<ProductWrapper> currentCompanyProducts, ProductWrapper newProduct) {
+        final Product originalProduct = currentCompanyProducts.get(currentCompanyProducts.indexOf(newProduct)).unwrap();
+
+        final Product product = updateProductFields(originalProduct, newProduct.unwrap());
+        return product;
     }
 }

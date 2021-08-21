@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeaders;
 
+import com.klai.stl.service.FeedService;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
@@ -41,10 +42,13 @@ public class ProductResource {
 
     private final ProductService productService;
 
+    private final FeedService feedService;
+
     private final ProductQueryService productQueryService;
 
-    public ProductResource(ProductService productService, ProductQueryService productQueryService) {
+    public ProductResource(ProductService productService, FeedService feedService, ProductQueryService productQueryService) {
         this.productService = productService;
+        this.feedService = feedService;
         this.productQueryService = productQueryService;
     }
 
