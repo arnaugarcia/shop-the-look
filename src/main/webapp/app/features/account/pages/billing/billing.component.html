@@ -1,1 +1,188 @@
-<p>billing works!</p>
+<stl-alert></stl-alert>
+<stl-alert-error></stl-alert-error>
+<form (ngSubmit)="save()" *ngIf="billingAddress" [formGroup]="billingAddressForm" name="billingAddressForm">
+  <div class="row">
+    <div class="col-12">
+      <h2>Billing address</h2>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input
+          [class.error]="
+            billingAddressForm.get('address')!.invalid &&
+            (billingAddressForm.get('address')!.dirty || billingAddressForm.get('address')!.touched)
+          "
+          class="form-control"
+          formControlName="address"
+          id="address"
+          name="address"
+          placeholder="221B baker street"
+          type="text"
+        />
+        <div
+          *ngIf="
+            billingAddressForm.get('address')!.invalid &&
+            (billingAddressForm.get('address')!.dirty || billingAddressForm.get('address')!.touched)
+          "
+        >
+          <small *ngIf="billingAddressForm.get('address')?.errors?.required" class="form-text text-danger">
+            Your first address is required.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('address')?.errors?.minlength" class="form-text text-danger">
+            Your address is required to be at least 1 character.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('address')?.errors?.maxlength" class="form-text text-danger">
+            Your address cannot be longer than 250 characters.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label for="city">City</label>
+        <input
+          [class.error]="
+            billingAddressForm.get('city')!.invalid && (billingAddressForm.get('city')!.dirty || billingAddressForm.get('city')!.touched)
+          "
+          class="form-control"
+          formControlName="city"
+          id="city"
+          name="city"
+          placeholder="Springfield"
+          type="text"
+        />
+        <div
+          *ngIf="
+            billingAddressForm.get('city')!.invalid && (billingAddressForm.get('city')!.dirty || billingAddressForm.get('city')!.touched)
+          "
+        >
+          <small *ngIf="billingAddressForm.get('city')?.errors?.required" class="form-text text-danger">
+            Your city address is required.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('city')?.errors?.minlength" class="form-text text-danger">
+            Your city is required to be at least 1 character.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('city')?.errors?.maxlength" class="form-text text-danger">
+            Your city cannot be longer than 250 characters.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label for="city">Postcode</label>
+        <input
+          [class.error]="
+            billingAddressForm.get('zipCode')!.invalid &&
+            (billingAddressForm.get('zipCode')!.dirty || billingAddressForm.get('zipCode')!.touched)
+          "
+          class="form-control"
+          formControlName="zipCode"
+          id="zipCode"
+          name="zipCode"
+          placeholder="08629"
+          type="text"
+        />
+        <div
+          *ngIf="
+            billingAddressForm.get('zipCode')!.invalid &&
+            (billingAddressForm.get('zipCode')!.dirty || billingAddressForm.get('zipCode')!.touched)
+          "
+        >
+          <small *ngIf="billingAddressForm.get('zipCode')?.errors?.required" class="form-text text-danger">
+            Your zip code address is required.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('zipCode')?.errors?.min" class="form-text text-danger">
+            Your zip code is required to be at least 5 digits.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('zipCode')?.errors?.max" class="form-text text-danger">
+            Your zip code cannot be longer than 15 digits.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label for="city">Country</label>
+        <input
+          [class.error]="
+            billingAddressForm.get('country')!.invalid &&
+            (billingAddressForm.get('country')!.dirty || billingAddressForm.get('country')!.touched)
+          "
+          class="form-control"
+          formControlName="country"
+          id="country"
+          name="country"
+          placeholder="08629"
+          type="text"
+        />
+        <div
+          *ngIf="
+            billingAddressForm.get('country')!.invalid &&
+            (billingAddressForm.get('country')!.dirty || billingAddressForm.get('country')!.touched)
+          "
+        >
+          <small *ngIf="billingAddressForm.get('country')?.errors?.required" class="form-text text-danger">
+            Your country address is required.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('country')?.errors?.minlength" class="form-text text-danger">
+            Your country is required to be at least 1 character.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('country')?.errors?.maxlength" class="form-text text-danger">
+            Your country cannot be longer than 250 characters.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label for="city">Province</label>
+        <input
+          [class.error]="
+            billingAddressForm.get('province')!.invalid &&
+            (billingAddressForm.get('province')!.dirty || billingAddressForm.get('province')!.touched)
+          "
+          class="form-control"
+          formControlName="province"
+          id="province"
+          name="province"
+          placeholder="08629"
+          type="text"
+        />
+        <div
+          *ngIf="
+            billingAddressForm.get('province')!.invalid &&
+            (billingAddressForm.get('province')!.dirty || billingAddressForm.get('province')!.touched)
+          "
+        >
+          <small *ngIf="billingAddressForm.get('province')?.errors?.required" class="form-text text-danger">
+            Your province address is required.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('province')?.errors?.minlength" class="form-text text-danger">
+            Your province is required to be at least 1 character.
+          </small>
+
+          <small *ngIf="billingAddressForm.get('province')?.errors?.maxlength" class="form-text text-danger">
+            Your province cannot be longer than 250 characters.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+      <button [disabled]="billingAddressForm.invalid" class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">
+        Save Changes
+      </button>
+      <button class="btn btn-outline-secondary" rippleEffect type="reset">Reset</button>
+    </div>
+  </div>
+</form>

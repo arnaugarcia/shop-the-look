@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { IBillingAddress, BillingAddress } from '../billing-address.model';
-import { BillingAddressService } from '../service/billing-address.service';
+import { BillingAddress, IBillingAddress } from '../billing-address.model';
+import { BillingAddressService } from '../../../features/account/service/billing-address.service';
 
 @Injectable({ providedIn: 'root' })
 export class BillingAddressRoutingResolveService implements Resolve<IBillingAddress> {
@@ -14,7 +14,7 @@ export class BillingAddressRoutingResolveService implements Resolve<IBillingAddr
   resolve(route: ActivatedRouteSnapshot): Observable<IBillingAddress> | Observable<never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(
+      return this.service.query().pipe(
         mergeMap((billingAddress: HttpResponse<BillingAddress>) => {
           if (billingAddress.body) {
             return of(billingAddress.body);
