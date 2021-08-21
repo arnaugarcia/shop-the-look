@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-class ImportProductResourceIT {
+class ProductImportResourceIT {
 
     private static final String DEFAULT_SKU = "AAAAAAAAAA";
     private static final String UPDATED_SKU = "BBBBBBBBBB";

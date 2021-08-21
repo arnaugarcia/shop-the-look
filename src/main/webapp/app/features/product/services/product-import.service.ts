@@ -12,7 +12,6 @@ import { ApplicationConfigService } from '../../../core/config/application-confi
 })
 export class ProductImportService {
   protected importResourceUrl = this.applicationConfigService.getEndpointFor('api/products/import');
-  protected refreshResourceUrl = this.applicationConfigService.getEndpointFor('api/products/refresh');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -20,19 +19,9 @@ export class ProductImportService {
     const options = createRequestOption({
       companyReference: importProduct.companyReference,
     });
-    if (importProduct.update) {
-      return this.http.put<IProduct[]>(this.importResourceUrl, importProduct.products, {
-        observe: 'response',
-        params: options,
-      });
-    }
-    return this.http.post<IProduct[]>(this.importResourceUrl, importProduct.products, {
+    return this.http.put<IProduct[]>(this.importResourceUrl, importProduct.products, {
       observe: 'response',
       params: options,
     });
-  }
-
-  refresh(): Observable<EntityArrayResponseType> {
-    return this.http.put<IProduct[]>(this.refreshResourceUrl, null, { observe: 'response' });
   }
 }

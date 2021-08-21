@@ -7,8 +7,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImportModalSuccessComponent } from '../../components/import-modal-success/import-modal-success.component';
 import { ImportModalErrorComponent } from '../../components/import-modal-error/import-modal-error.component';
 import { ImportProduct } from '../../models/product-import.model';
-import { ProductImportService } from '../../services/product-import.service.service';
 import { AccountService } from '../../../../core/auth/account.service';
+import { ProductImportService } from '../../services/product-import.service';
+import { ProductFeedImportService } from '../../services/product-feed-import.service';
 
 @Component({
   selector: 'stl-product-import',
@@ -28,12 +29,12 @@ export class ProductImportComponent {
   public ACCEPTED_FILES = ['text/csv, text/tsv'];
   public page = 1;
   public progressBar = 0;
-  public updateProducts = false;
 
   constructor(
     private papa: Papa,
     private accountService: AccountService,
     private productImportService: ProductImportService,
+    private productFeed: ProductFeedImportService,
     private modalService: NgbModal
   ) {
     this.contentHeader = {
@@ -104,7 +105,7 @@ export class ProductImportComponent {
 
   importProducts(): void {
     this.loading = true;
-    this.productImportService.import(new ImportProduct(this.products, this.updateProducts)).subscribe(
+    this.productImportService.import(new ImportProduct(this.products)).subscribe(
       () => {
         this.loading = false;
         this.progressBar = 100;

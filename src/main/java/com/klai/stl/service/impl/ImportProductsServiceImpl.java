@@ -1,10 +1,8 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
-import static java.util.Locale.ROOT;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
@@ -21,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ImportProductsServiceImpl implements ImportProductsService {
@@ -46,40 +45,13 @@ public class ImportProductsServiceImpl implements ImportProductsService {
     }
 
     @Override
+    @Transactional
     public List<ProductDTO> importProducts(List<NewProductRequest> products, String companyReference) {
         Company company = findUserCompany(companyReference);
         return importProducts(products, company);
     }
 
-    @Override
-    public List<ProductDTO> updateProducts(List<NewProductRequest> products, String companyReference) {
-        Company company = findUserCompany(companyReference);
-        return updateProducts(products, company);
-    }
-
-    private Company findUserCompany(String companyReference) {
-        if (isCurrentUserAdmin() && isNull(companyReference)) {
-            throw new CompanyReferenceNotFound();
-        }
-        if (isCurrentUserAdmin()) {
-            return companyService.findByReference(companyReference);
-        }
-        return userService.getCurrentUser().getCompany();
-    }
-
     private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company) {
-        productRepository.deleteAllByCompanyReference(company.getReference());
-        entityManager.flush();
-        final List<Product> products = importProducts
-            .stream()
-            .map(productMapper::toEntity)
-            .peek(product -> product.setCompany(company))
-            .peek(product -> product.setReference(randomAlphanumeric(15).toUpperCase(ROOT)))
-            .collect(toList());
-        return saveAndTransform(products);
-    }
-
-    private List<ProductDTO> updateProducts(List<NewProductRequest> importProducts, Company company) {
         List<Product> result = new ArrayList<>();
         List<Product> deleteProducts = new ArrayList<>();
 
@@ -100,8 +72,19 @@ public class ImportProductsServiceImpl implements ImportProductsService {
                 deleteProducts.add(product.unwrap());
             }
         }
+
         productRepository.deleteAll(deleteProducts);
         return saveAndTransform(result);
+    }
+
+    private Company findUserCompany(String companyReference) {
+        if (isCurrentUserAdmin() && isNull(companyReference)) {
+            throw new CompanyReferenceNotFound();
+        }
+        if (isCurrentUserAdmin()) {
+            return companyService.findByReference(companyReference);
+        }
+        return userService.getCurrentUser().getCompany();
     }
 
     private List<ProductDTO> saveAndTransform(List<Product> products) {

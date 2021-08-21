@@ -8,8 +8,8 @@ import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.co
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from '../../../../config/pagination.constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject, Subscription } from 'rxjs';
-import { ProductImportService } from '../../services/product-import.service.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { ProductFeedImportService } from '../../services/product-feed-import.service';
 
 @Component({
   selector: 'stl-product',
@@ -37,7 +37,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private importService: ProductImportService,
+    private feedService: ProductFeedImportService,
     protected activatedRoute: ActivatedRoute,
     protected productService: ProductService,
     private modalService: NgbModal
@@ -118,7 +118,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   refreshProducts(): void {
     this.isLoading = true;
-    this.importService.refresh().subscribe(
+    this.feedService.refreshFeed().subscribe(
       (res: HttpResponse<IProduct[]>) => {
         this.isLoading = false;
         this.onSuccess(res.body, res.headers, 1, true);

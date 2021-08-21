@@ -61,7 +61,7 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
                 .stream()
                 .map(productMapper::toRequest)
                 .collect(toList());
-            return importProductsService.updateProducts(feedProducts, companyReference);
+            return importProductsService.importProducts(feedProducts, companyReference);
         } catch (MalformedURLException e) {
             throw new FeedException();
         }

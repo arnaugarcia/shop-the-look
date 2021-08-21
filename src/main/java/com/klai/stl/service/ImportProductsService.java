@@ -15,14 +15,4 @@ public interface ImportProductsService {
      */
     @Transactional
     List<ProductDTO> importProducts(List<NewProductRequest> productRequests, String companyReference);
-
-    /**
-     * Updates the products for the company reference if the products (SKU) exists, if not it'll be ignored
-     *
-     * @param products         the products request to be updated
-     * @param companyReference the company reference of witch products are going to be updated
-     * @return a complete list of updated products
-     * @throws com.klai.stl.service.exception.BadOwnerException if the user is an admin and the companyReference field is not
-     */
-    List<ProductDTO> updateProducts(List<NewProductRequest> products, String companyReference);
 }
