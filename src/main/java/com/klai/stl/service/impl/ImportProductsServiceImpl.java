@@ -1,8 +1,10 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
+import static java.util.Locale.ROOT;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
@@ -51,9 +53,15 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         return importProducts(products, company);
     }
 
+    private static Product updateProductFields(Product original, Product result) {
+        result.setId(original.getId());
+        result.setReference(original.getReference());
+        result.setSku(original.getSku());
+        return result;
+    }
+
     private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company) {
         List<Product> result = new ArrayList<>();
-        List<Product> deleteProducts = new ArrayList<>();
 
         List<ProductWrapper> currentCompanyProducts = productRepository
             .findByCompanyReference(company.getReference())
@@ -63,18 +71,34 @@ public class ImportProductsServiceImpl implements ImportProductsService {
 
         List<ProductWrapper> newProducts = importProducts.stream().map(productMapper::toEntity).map(ProductWrapper::from).collect(toList());
 
-        for (ProductWrapper product : currentCompanyProducts) {
-            if (newProducts.contains(product)) {
-                final Product updatedProduct = updateProduct(product.unwrap(), newProducts.get(newProducts.indexOf(product)).unwrap());
-                updatedProduct.setCompany(company);
-                result.add(updatedProduct);
+        for (ProductWrapper newProduct : newProducts) {
+            final Product product;
+            if (currentCompanyProducts.contains(newProduct)) {
+                product = updateProduct(currentCompanyProducts, newProduct);
             } else {
+                product = newProduct.unwrap();
+                product.setReference(generateNewProductReference());
+            }
+            product.setCompany(company);
+            result.add(product);
+        }
+
+        deleteRemovedProducts(currentCompanyProducts, newProducts);
+        return saveAndTransform(result);
+    }
+
+    private String generateNewProductReference() {
+        return randomAlphabetic(20).toUpperCase(ROOT);
+    }
+
+    private void deleteRemovedProducts(List<ProductWrapper> currentCompanyProducts, List<ProductWrapper> newProducts) {
+        List<Product> deleteProducts = new ArrayList<>();
+        for (ProductWrapper product : currentCompanyProducts) {
+            if (!newProducts.contains(product)) {
                 deleteProducts.add(product.unwrap());
             }
         }
-
         productRepository.deleteAll(deleteProducts);
-        return saveAndTransform(result);
     }
 
     private Company findUserCompany(String companyReference) {
@@ -91,10 +115,10 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         return productRepository.saveAll(products).stream().map(productMapper::toDto).collect(toList());
     }
 
-    private static Product updateProduct(Product original, Product result) {
-        result.setId(original.getId());
-        result.setReference(original.getReference());
-        result.setSku(original.getSku());
-        return result;
+    private Product updateProduct(List<ProductWrapper> currentCompanyProducts, ProductWrapper newProduct) {
+        final Product originalProduct = currentCompanyProducts.get(currentCompanyProducts.indexOf(newProduct)).unwrap();
+
+        final Product product = updateProductFields(originalProduct, newProduct.unwrap());
+        return product;
     }
 }
