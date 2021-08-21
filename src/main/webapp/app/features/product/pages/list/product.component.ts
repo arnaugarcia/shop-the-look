@@ -174,8 +174,8 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
-    if (this.predicate !== 'id') {
-      result.push('id');
+    if (this.predicate !== 'sku') {
+      result.push('sku');
     }
     return result;
   }
