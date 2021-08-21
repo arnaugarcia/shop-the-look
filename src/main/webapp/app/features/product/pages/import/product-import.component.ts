@@ -9,7 +9,6 @@ import { ImportModalErrorComponent } from '../../components/import-modal-error/i
 import { ImportProduct } from '../../models/product-import.model';
 import { AccountService } from '../../../../core/auth/account.service';
 import { ProductImportService } from '../../services/product-import.service';
-import { ProductFeedImportService } from '../../services/product-feed-import.service';
 
 @Component({
   selector: 'stl-product-import',
@@ -34,7 +33,6 @@ export class ProductImportComponent {
     private papa: Papa,
     private accountService: AccountService,
     private productImportService: ProductImportService,
-    private productFeed: ProductFeedImportService,
     private modalService: NgbModal
   ) {
     this.contentHeader = {
