@@ -12,7 +12,6 @@ import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -168,7 +167,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
+                put(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -201,7 +200,7 @@ class ProductImportResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -231,7 +230,7 @@ class ProductImportResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -261,7 +260,7 @@ class ProductImportResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -269,7 +268,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?update=true").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productUpdateRequest))
+                put(ENTITY_API_URL + "?update=true").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productUpdateRequest))
             )
             .andExpect(status().isCreated());
 
@@ -301,7 +300,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference={reference}", otherCompany.getReference())
+                put(ENTITY_API_URL + "?companyReference={reference}", otherCompany.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -312,7 +311,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference={reference}&update=true", otherCompany.getReference())
+                put(ENTITY_API_URL + "?companyReference={reference}&update=true", otherCompany.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(productUpdateRequest))
             )
@@ -348,7 +347,7 @@ class ProductImportResourceIT {
         List<NewProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -370,7 +369,7 @@ class ProductImportResourceIT {
         List<NewProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
             .andExpect(status().isCreated());
 
         int databaseSizeBeforeUpdate = productRepository.findByCompanyReference(company.getReference()).size();
@@ -400,7 +399,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference=" + company.getReference())
+                put(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(products))
             )
@@ -430,7 +429,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference=" + company.getReference())
+                put(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(products))
             )
@@ -449,7 +448,7 @@ class ProductImportResourceIT {
         List<NewProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -467,7 +466,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference=" + company.getReference())
+                put(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -502,7 +501,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference=notExisting")
+                put(ENTITY_API_URL + "?companyReference=notExisting")
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -523,7 +522,7 @@ class ProductImportResourceIT {
         em.persist(company);
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
             .andExpect(status().isCreated());
         restProductMockMvc
             .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productUpdateRequest)))
@@ -550,7 +549,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
+                put(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -583,7 +582,7 @@ class ProductImportResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -613,7 +612,7 @@ class ProductImportResourceIT {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(post(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -645,7 +644,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference=notExisting")
+                put(ENTITY_API_URL + "?companyReference=notExisting")
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
@@ -664,7 +663,7 @@ class ProductImportResourceIT {
 
         restProductMockMvc
             .perform(
-                post(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
+                put(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(newProductRequest))
             )
