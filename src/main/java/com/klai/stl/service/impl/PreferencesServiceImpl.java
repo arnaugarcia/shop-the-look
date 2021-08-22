@@ -6,6 +6,7 @@ import com.klai.stl.domain.Preferences;
 import com.klai.stl.repository.PreferencesRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.PreferencesService;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.exception.PreferencesNotFoundException;
@@ -28,16 +29,30 @@ public class PreferencesServiceImpl implements PreferencesService {
 
     private final PreferencesRepository preferencesRepository;
 
+    private final UserService userService;
+
     private final PreferencesMapper preferencesMapper;
 
     public PreferencesServiceImpl(
         CompanyService companyService,
         PreferencesRepository preferencesRepository,
+        UserService userService,
         PreferencesMapper preferencesMapper
     ) {
         this.companyService = companyService;
         this.preferencesRepository = preferencesRepository;
+        this.userService = userService;
         this.preferencesMapper = preferencesMapper;
+    }
+
+    @Override
+    public PreferencesDTO findByCurrentUser() {
+        return find(userService.getCurrentUserCompany().getReference());
+    }
+
+    @Override
+    public PreferencesDTO updateByCurrentUser(PreferencesRequest preferencesRequest) {
+        return update(userService.getCurrentUserCompany().getReference(), preferencesRequest);
     }
 
     /**
