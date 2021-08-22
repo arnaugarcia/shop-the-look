@@ -30,6 +30,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   public isLoading = false;
 
   public preferredImportMethod?: ImportMethod;
+  public remainingImports = 0;
 
   public searchText = '';
   public searchTextChanged: Subject<string> = new Subject<string>();
@@ -81,7 +82,12 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.loadPage();
     });
     this.preferencesService.query().subscribe((response: HttpResponse<IPreferences>) => {
-      this.preferredImportMethod = response.body?.importMethod;
+      const preference = response.body;
+      if (!preference) {
+        return;
+      }
+      this.preferredImportMethod = preference.importMethod;
+      this.remainingImports = preference.remainingImports!;
     });
   }
 
@@ -132,6 +138,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.feedService.refreshFeed().subscribe(
       (res: HttpResponse<IProduct[]>) => {
         this.isLoading = false;
+        this.remainingImports = this.remainingImports--;
         this.onSuccess(res.body, res.headers, 1, true);
       },
       () => {
@@ -142,7 +149,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   canImportWithFeed(): boolean {
-    return !this.isLoading && this.preferredImportMethod !== undefined && this.preferredImportMethod === 'FEED';
+    return (
+      !this.isLoading && this.preferredImportMethod !== undefined && this.preferredImportMethod === 'FEED' && this.remainingImports > 0
+    );
   }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
