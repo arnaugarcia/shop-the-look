@@ -142,6 +142,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleUserNotFoundException(com.klai.stl.service.exception.UserNotFound ex, NativeWebRequest request) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, "User not found", "user", "usernotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleCompanyNotFoundException(
         com.klai.stl.service.exception.ProductNotFound ex,
         NativeWebRequest request
