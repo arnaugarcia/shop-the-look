@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { IPreferences } from '../pages/preferences/preferences.model';
+import { IPreferences, PreferencesRequest } from '../pages/preferences/preferences.model';
 
 export type EntityResponseType = HttpResponse<IPreferences>;
 
@@ -12,7 +12,7 @@ export class PreferencesService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  update(preferenceRequest: IPreferences): Observable<EntityResponseType> {
+  update(preferenceRequest: PreferencesRequest): Observable<EntityResponseType> {
     return this.http.put<IPreferences>(`${this.resourceUrl}`, preferenceRequest, {
       observe: 'response',
     });
