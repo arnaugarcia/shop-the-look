@@ -2,7 +2,6 @@ package com.klai.stl.web.rest;
 
 import com.klai.stl.service.FeedProductImportService;
 import com.klai.stl.service.dto.ProductDTO;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -35,7 +34,7 @@ public class ProductFeedResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/feed")
-    public ResponseEntity<List<ProductDTO>> importProductsByFeed() throws URISyntaxException, MalformedURLException {
+    public ResponseEntity<List<ProductDTO>> importProductsByFeed() throws URISyntaxException {
         log.debug("REST request to import products with by google feed");
         List<ProductDTO> result = feedProductImportService.importFeedProducts();
         return ResponseEntity.created(new URI("/api/products/feed")).body(result);
