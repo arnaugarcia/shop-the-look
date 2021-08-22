@@ -12,7 +12,6 @@ import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.URLParseFeedException;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +67,7 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
     private URI buildFeedURLFrom(PreferencesDTO preferences) {
         try {
             return new URI(preferences.getFeedUrl());
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             throw new URLParseFeedException();
         }
     }
