@@ -1,10 +1,13 @@
 package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
+import com.klai.stl.domain.Company;
+import com.klai.stl.domain.User;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,13 +33,23 @@ class ProductFeedImportResourceIT {
     @Autowired
     private MockMvc restProductMockMvc;
 
+    private Company company;
+
     @BeforeEach
-    public void initTest() {}
+    public void initTest() {
+        company = createBasicCompany(em);
+        em.persist(company);
+    }
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "trigger-feed-error")
     public void triggerFeedWhenNoFeedIsConfigured() throws Exception {
+        User user = UserResourceIT.createEntity(em, "trigger-feed-error");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
         restProductMockMvc.perform(put(API_URL)).andExpect(status().isBadRequest());
     }
 
