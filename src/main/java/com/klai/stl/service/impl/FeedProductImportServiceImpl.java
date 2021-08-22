@@ -1,7 +1,7 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.domain.enumeration.ImportMethod.FEED;
 import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
-import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
 
 import com.klai.stl.service.*;
@@ -9,7 +9,6 @@ import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.exception.BadOwnerException;
-import com.klai.stl.service.exception.FeedException;
 import com.klai.stl.service.exception.URLParseFeedException;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.net.MalformedURLException;
@@ -52,14 +51,21 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
     @Override
     public List<ProductDTO> importFeedProductsForCompany(String companyReference) {
         final PreferencesDTO preferences = preferencesService.find(companyReference);
-        if (isNull(preferences.getFeedUrl())) {
-            throw new FeedException();
+        final URL feedUrl = buildFeedURLFrom(preferences);
+
+        if (preferences.isFeedMethod()) {
+            setImportMethodAsFeedFor(companyReference);
         }
-        final List<NewProductRequest> feedProducts = getProductsFrom(getFeedUrl(preferences));
+
+        final List<NewProductRequest> feedProducts = getProductsFrom(feedUrl);
         return importProductsService.importProducts(feedProducts, companyReference);
     }
 
-    private URL getFeedUrl(PreferencesDTO preferences) {
+    private void setImportMethodAsFeedFor(String companyReference) {
+        preferencesService.setImportMethodFor(companyReference, FEED);
+    }
+
+    private URL buildFeedURLFrom(PreferencesDTO preferences) {
         try {
             return new URL(preferences.getFeedUrl());
         } catch (MalformedURLException e) {
