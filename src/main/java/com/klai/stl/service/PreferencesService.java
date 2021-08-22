@@ -1,5 +1,6 @@
 package com.klai.stl.service;
 
+import com.klai.stl.domain.enumeration.ImportMethod;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.PreferencesRequest;
 
@@ -18,6 +19,15 @@ public interface PreferencesService {
      * @return the updated preferences
      */
     PreferencesDTO updateByCurrentUser(PreferencesRequest preferencesRequest);
+
+    /**
+     * Updates the preference import of the desired company
+     *
+     * @param importMethod     the method to update
+     * @param companyReference the company to set the import method
+     * @return the updated preferences
+     */
+    PreferencesDTO setImportMethodFor(String companyReference, ImportMethod importMethod);
 
     /**
      * Find company preferences by company reference

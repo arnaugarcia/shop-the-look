@@ -3,6 +3,7 @@ package com.klai.stl.service.impl;
 import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
 
 import com.klai.stl.domain.Preferences;
+import com.klai.stl.domain.enumeration.ImportMethod;
 import com.klai.stl.repository.PreferencesRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.PreferencesService;
@@ -55,8 +56,15 @@ public class PreferencesServiceImpl implements PreferencesService {
         return update(userService.getCurrentUserCompany().getReference(), preferencesRequest);
     }
 
+    @Override
+    public PreferencesDTO setImportMethodFor(String companyReference, ImportMethod importMethod) {
+        Preferences preferences = findPreferenceByCompanyReference(companyReference);
+        preferences.importMethod(importMethod);
+        return preferencesMapper.toDto(preferencesRepository.save(preferences));
+    }
+
     /**
-     * Get one preferences by id.
+     * Get preferences by id.
      *
      * @param companyReference the id of the entity.
      * @return the entity.
