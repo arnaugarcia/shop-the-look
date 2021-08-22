@@ -81,14 +81,7 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.itemsPerPage = size;
       this.loadPage();
     });
-    this.preferencesService.query().subscribe((response: HttpResponse<IPreferences>) => {
-      const preference = response.body;
-      if (!preference) {
-        return;
-      }
-      this.preferredImportMethod = preference.importMethod;
-      this.remainingImports = preference.remainingImports!;
-    });
+    this.loadPreferences();
   }
 
   ngOnDestroy(): void {
@@ -138,7 +131,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.feedService.refreshFeed().subscribe(
       (res: HttpResponse<IProduct[]>) => {
         this.isLoading = false;
-        this.remainingImports = this.remainingImports--;
+        this.loadPreferences();
         this.onSuccess(res.body, res.headers, 1, true);
       },
       () => {
@@ -218,5 +211,16 @@ export class ProductComponent implements OnInit, OnDestroy {
     }
     this.products = data ?? [];
     this.ngbPaginationPage = this.page;
+  }
+
+  private loadPreferences(): void {
+    this.preferencesService.query().subscribe((response: HttpResponse<IPreferences>) => {
+      const preference = response.body;
+      if (!preference) {
+        return;
+      }
+      this.preferredImportMethod = preference.importMethod;
+      this.remainingImports = preference.remainingImports!;
+    });
   }
 }
