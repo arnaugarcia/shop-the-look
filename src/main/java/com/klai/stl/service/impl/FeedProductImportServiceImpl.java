@@ -11,8 +11,8 @@ import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.URLParseFeedException;
 import com.klai.stl.service.mapper.ProductMapper;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -51,9 +51,9 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
     @Override
     public List<ProductDTO> importFeedProductsForCompany(String companyReference) {
         final PreferencesDTO preferences = preferencesService.find(companyReference);
-        final URL feedUrl = buildFeedURLFrom(preferences);
+        final URI feedUrl = buildFeedURLFrom(preferences);
 
-        if (preferences.isFeedMethod()) {
+        if (!preferences.isFeedMethod()) {
             setImportMethodAsFeedFor(companyReference);
         }
 
@@ -65,15 +65,15 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
         preferencesService.setImportMethodFor(companyReference, FEED);
     }
 
-    private URL buildFeedURLFrom(PreferencesDTO preferences) {
+    private URI buildFeedURLFrom(PreferencesDTO preferences) {
         try {
-            return new URL(preferences.getFeedUrl());
-        } catch (MalformedURLException e) {
+            return new URI(preferences.getFeedUrl());
+        } catch (URISyntaxException e) {
             throw new URLParseFeedException();
         }
     }
 
-    private List<NewProductRequest> getProductsFrom(URL feedUrl) {
+    private List<NewProductRequest> getProductsFrom(URI feedUrl) {
         return feedService.queryProducts(feedUrl).stream().map(productMapper::toRequest).collect(toList());
     }
 }
