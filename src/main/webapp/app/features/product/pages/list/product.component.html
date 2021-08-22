@@ -20,7 +20,20 @@
                   <option value="100">100</option>
                 </select>
               </label>
-              <button (click)="refreshProducts()" [disabled]="isLoading" class="btn btn-primary ml-2" rippleEffect>
+              <button
+                #popover="ngbPopover"
+                (click)="refreshProducts()"
+                (mouseenter)="popover.open()"
+                (mouseleave)="popover.close()"
+                [animation]="true"
+                [class.disabled]="!canImportWithFeed()"
+                [disablePopover]="canImportWithFeed()"
+                class="btn btn-primary ml-2"
+                ngbPopover="You need to specify the feed url for the company before!"
+                popoverTitle="Attention!"
+                rippleEffect
+                triggers="manual"
+              >
                 Refresh with Google Feed
               </button>
             </div>

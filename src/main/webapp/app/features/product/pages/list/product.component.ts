@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductFeedImportService } from '../../services/product-feed-import.service';
+import { PreferencesService } from '../../../account/service/preferences.service';
+import { ImportMethod, IPreferences } from '../../../account/pages/preferences/preferences.model';
 
 @Component({
   selector: 'stl-product',
@@ -27,6 +29,8 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   public isLoading = false;
 
+  public preferredImportMethod?: ImportMethod;
+
   public searchText = '';
   public searchTextChanged: Subject<string> = new Subject<string>();
   private searchTextChangeSubscription: Subscription = new Subscription();
@@ -38,6 +42,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private feedService: ProductFeedImportService,
+    private preferencesService: PreferencesService,
     protected activatedRoute: ActivatedRoute,
     protected productService: ProductService,
     private modalService: NgbModal
@@ -74,6 +79,9 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.sizeChangeSubscription = this.sizeChanged.subscribe((size: number) => {
       this.itemsPerPage = size;
       this.loadPage();
+    });
+    this.preferencesService.query().subscribe((response: HttpResponse<IPreferences>) => {
+      this.preferredImportMethod = response.body?.importMethod;
     });
   }
 
@@ -117,6 +125,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   refreshProducts(): void {
+    if (!this.canImportWithFeed()) {
+      return;
+    }
     this.isLoading = true;
     this.feedService.refreshFeed().subscribe(
       (res: HttpResponse<IProduct[]>) => {
@@ -128,6 +139,10 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.onError();
       }
     );
+  }
+
+  canImportWithFeed(): boolean {
+    return !this.isLoading && this.preferredImportMethod !== undefined && this.preferredImportMethod === 'FEED';
   }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
