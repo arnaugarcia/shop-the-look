@@ -1,5 +1,7 @@
 package com.klai.stl.service.dto;
 
+import static com.klai.stl.domain.enumeration.ImportMethod.FEED;
+
 import com.klai.stl.domain.enumeration.ImportMethod;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -57,6 +59,10 @@ public class PreferencesDTO implements Serializable {
 
     public void setLastImportTimestamp(ZonedDateTime lastImportTimestamp) {
         this.lastImportTimestamp = lastImportTimestamp;
+    }
+
+    public boolean isFeedMethod() {
+        return this.importMethod == FEED;
     }
 
     // prettier-ignore
