@@ -15,7 +15,7 @@
             <column name="import_method" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            <column name="remaining_imports" type="numeric" defaultValue="0"/>
+            <column name="remaining_imports" type="integer" defaultValue="0"/>
             <column name="last_import_by" type="varchar(255)"/>
             <column name="last_import_timestamp" type="${datetimeType}"/>
             <column name="feed_url" type="varchar(255)">
