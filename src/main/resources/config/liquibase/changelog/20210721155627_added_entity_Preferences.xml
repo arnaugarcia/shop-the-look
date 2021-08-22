@@ -13,10 +13,13 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="import_method" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
+            <column name="remaining_imports" type="numeric" defaultValue="0"/>
+            <column name="last_import_by" type="varchar(255)"/>
+            <column name="last_import_timestamp" type="${datetimeType}"/>
             <column name="feed_url" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -34,11 +37,14 @@
     -->
     <changeSet id="20210721155627-1-data" author="jhipster">
         <loadData
-                  file="config/liquibase/data/preferences.csv"
-                  separator=";"
-                  tableName="preferences">
+            file="config/liquibase/data/preferences.csv"
+            separator=";"
+            tableName="preferences">
             <column name="id" type="numeric"/>
             <column name="import_method" type="string"/>
+            <column name="remaining_imports" type="numeric"/>
+            <column name="last_import_by" type="string"/>
+            <column name="last_import_timestamp" type="${datetimeType}"/>
             <column name="feed_url" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

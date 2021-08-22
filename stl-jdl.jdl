@@ -42,7 +42,10 @@ entity BillingAddress {
 
 entity Preferences {
     importMethod ImportMethod,
-    feedUrl String
+    feedUrl String,
+    remainingImports Integer,
+    lastImportBy String,
+    lastImportTimestamp ZonedDateTime
 }
 
 enum ImportMethod {
