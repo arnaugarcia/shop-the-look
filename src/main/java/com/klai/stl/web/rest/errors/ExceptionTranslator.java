@@ -193,6 +193,21 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleBadOwnerException(com.klai.stl.service.exception.NoRemainingImports ex, NativeWebRequest request) {
+        TooManyRequestsException problem = new TooManyRequestsException(
+            TOO_MANY_REQUESTS,
+            "You've exceed your plan",
+            "feed",
+            "noremainingimports"
+        );
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleURLFeedException(
         com.klai.stl.service.exception.URLParseFeedException ex,
         NativeWebRequest request
