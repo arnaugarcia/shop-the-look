@@ -8,7 +8,7 @@ import com.klai.stl.service.*;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.NewProductRequest;
-import com.klai.stl.service.exception.BadOwnerException;
+import com.klai.stl.service.exception.NoRemainingImports;
 import com.klai.stl.service.exception.URLParseFeedException;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.net.URI;
@@ -39,11 +39,15 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
     }
 
     @Override
-    public List<ProductDTO> importFeedProducts() {
-        if (isCurrentUserAdmin()) {
-            throw new BadOwnerException();
+    public List<ProductDTO> importFeedProducts(String companyReference) {
+        if (!isCurrentUserAdmin()) {
+            companyReference = userService.getCurrentUserCompanyReference();
+            final Integer remainingImports = preferencesService.find(companyReference).getRemainingImports();
+            if (remainingImports == 0) {
+                throw new NoRemainingImports();
+            }
+            preferencesService.decrementImportCounter(companyReference);
         }
-        final String companyReference = userService.getCurrentUser().getCompany().getReference();
         return importFeedProductsForCompany(companyReference);
     }
 

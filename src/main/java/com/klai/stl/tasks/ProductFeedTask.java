@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class ProductFeedTask {
@@ -22,25 +21,32 @@ public class ProductFeedTask {
 
     private final FeedProductImportService feedProductImportService;
 
+    private final Integer DEFAULT_REFRESH_COUNTER = 10;
+
     public ProductFeedTask(CompanyRepository companyRepository, FeedProductImportService feedProductImportService) {
         this.companyRepository = companyRepository;
         this.feedProductImportService = feedProductImportService;
     }
 
-    @Transactional
     @Scheduled(cron = "${application.feed.cron-schedule}")
-    protected void refreshCompanyProducts() {
+    private void refreshCompanyProducts() {
         log.info("Started refreshing products for all companies");
-        companyRepository.findAll().stream().filter(byFeedPreference()).forEach(refreshProducts());
+        companyRepository.findAll().stream().filter(byFeedPreference()).forEach(refreshProductsAndDecrementCounter());
         log.info("Finished refreshing products for all companies");
     }
 
-    private Consumer<Company> refreshProducts() {
+    private Consumer<Company> refreshProductsAndDecrementCounter() {
         return company -> {
             log.info("Refreshing products for company {}", company.getReference());
             final List<ProductDTO> products = feedProductImportService.importFeedProductsForCompany(company.getReference());
+            resetRemainingImportsFor(company);
             log.info("Imported {} products for company {}", products.size(), company.getReference());
         };
+    }
+
+    private void resetRemainingImportsFor(Company company) {
+        company.getPreferences().setRemainingImports(DEFAULT_REFRESH_COUNTER);
+        companyRepository.save(company);
     }
 
     private Predicate<Company> byFeedPreference() {

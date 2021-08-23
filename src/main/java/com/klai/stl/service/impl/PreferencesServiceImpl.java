@@ -1,6 +1,7 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
+import static java.time.ZonedDateTime.now;
 
 import com.klai.stl.domain.Preferences;
 import com.klai.stl.domain.enumeration.ImportMethod;
@@ -60,7 +61,19 @@ public class PreferencesServiceImpl implements PreferencesService {
     public PreferencesDTO setImportMethodFor(String companyReference, ImportMethod importMethod) {
         Preferences preferences = findPreferenceByCompanyReference(companyReference);
         preferences.importMethod(importMethod);
-        return preferencesMapper.toDto(preferencesRepository.save(preferences));
+        return saveAndTransform(preferencesRepository.save(preferences));
+    }
+
+    @Override
+    public PreferencesDTO decrementImportCounter(String companyReference) {
+        Preferences preferences = findPreferenceByCompanyReference(companyReference);
+        final int decrementedCounter = preferences.getRemainingImports() - 1;
+
+        preferences.setLastImportTimestamp(now());
+        preferences.setLastImportBy(userService.getCurrentUser().getLogin());
+        preferences.setRemainingImports(decrementedCounter);
+
+        return saveAndTransform(preferences);
     }
 
     /**
@@ -78,7 +91,7 @@ public class PreferencesServiceImpl implements PreferencesService {
 
         final Preferences result = findPreferenceByCompanyReference(companyReference);
 
-        return preferencesMapper.toDto(result);
+        return saveAndTransform(result);
     }
 
     private Preferences findPreferenceByCompanyReference(String companyReference) {
@@ -95,6 +108,10 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setFeedUrl(preferencesRequest.getFeedUrl());
         preferences.setImportMethod(preferencesRequest.getImportMethod());
 
-        return preferencesMapper.toDto(preferences);
+        return saveAndTransform(preferences);
+    }
+
+    private PreferencesDTO saveAndTransform(Preferences save) {
+        return preferencesMapper.toDto(save);
     }
 }

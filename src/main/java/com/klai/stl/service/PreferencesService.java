@@ -20,14 +20,9 @@ public interface PreferencesService {
      */
     PreferencesDTO updateByCurrentUser(PreferencesRequest preferencesRequest);
 
-    /**
-     * Updates the preference import of the desired company
-     *
-     * @param importMethod     the method to update
-     * @param companyReference the company to set the import method
-     * @return the updated preferences
-     */
     PreferencesDTO setImportMethodFor(String companyReference, ImportMethod importMethod);
+
+    PreferencesDTO decrementImportCounter(String companyReference);
 
     /**
      * Find company preferences by company reference

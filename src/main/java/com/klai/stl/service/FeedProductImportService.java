@@ -9,7 +9,7 @@ public interface FeedProductImportService {
      *
      * @return a list of imported products
      */
-    List<ProductDTO> importFeedProducts();
+    List<ProductDTO> importFeedProducts(String companyReference);
 
     /**
      * Imports products by specified feed
