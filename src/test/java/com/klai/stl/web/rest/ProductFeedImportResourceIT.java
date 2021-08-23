@@ -15,15 +15,15 @@ import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.ImportMethod;
 import com.klai.stl.repository.PreferencesRepository;
 import com.klai.stl.service.FeedService;
-import com.klai.stl.service.PreferencesService;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,11 +41,8 @@ class ProductFeedImportResourceIT {
     @Autowired
     private EntityManager em;
 
-    @Mock
+    @MockBean
     private FeedService feedService;
-
-    @Autowired
-    private PreferencesService preferencesService;
 
     @Autowired
     private PreferencesRepository preferencesRepository;
@@ -58,6 +55,8 @@ class ProductFeedImportResourceIT {
     @BeforeEach
     public void initTest() {
         company = createBasicCompany(em);
+        company.getPreferences().setRemainingImports(10);
+        company.getPreferences().setFeedUrl("https://arnaugarcia.com");
         em.persist(company);
     }
 
@@ -76,19 +75,19 @@ class ProductFeedImportResourceIT {
     @Test
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "import-products")
-    public void importProductsSuccessfully() throws Exception {
+    void importProductsSuccessfully() throws Exception {
+        when(feedService.queryProducts(any(URI.class))).thenReturn(new ArrayList<>());
         // Check for lower remaining imports and correct login
         final Optional<Preferences> byCompanyReference = preferencesRepository.findByCompanyReference(company.getReference());
         assertThat(byCompanyReference).isPresent();
         int sizeBeforeAction = byCompanyReference.get().getRemainingImports();
 
-        when(feedService.queryProducts(any())).thenReturn(new ArrayList<>());
         User user = UserResourceIT.createEntity(em, "import-products");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
 
-        restProductMockMvc.perform(put(API_URL)).andExpect(status().isOk());
+        restProductMockMvc.perform(put(API_URL)).andExpect(status().isCreated());
 
         final Optional<Preferences> optionalPreferences = preferencesRepository.findByCompanyReference(company.getReference());
         assertThat(optionalPreferences).isPresent();
