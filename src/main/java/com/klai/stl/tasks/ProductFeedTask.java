@@ -54,7 +54,7 @@ public class ProductFeedTask {
                 resetRemainingImportsFor(company);
                 log.info("Imported {} products for company {}", products.size(), company.getReference());
             } catch (Exception e) {
-                mailService.sendCreationEmail();
+                mailService.sendCronTaskFailed(company);
             }
         };
     }

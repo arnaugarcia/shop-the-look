@@ -105,9 +105,10 @@ public class MailService {
     public void sendCronTaskFailed(Company company) {
         log.debug("Sending cron task fail email to '{}'", company.getEmail());
         Locale locale = forLanguageTag("en");
-        String subject = messageSource.getMessage("email.cron.failed", null, locale);
+        String subject = messageSource.getMessage("email.cron.title", null, locale);
 
         Context context = new Context(locale);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("mail/cronFailed", context);
         sendEmail(company.getEmail(), subject, content, false, true);
     }
