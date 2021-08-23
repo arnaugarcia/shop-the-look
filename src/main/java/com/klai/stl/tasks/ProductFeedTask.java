@@ -31,11 +31,11 @@ public class ProductFeedTask {
     @Scheduled(cron = "${application.feed.cron-schedule}")
     private void refreshCompanyProducts() {
         log.info("Started refreshing products for all companies");
-        companyRepository.findAll().stream().filter(byFeedPreference()).forEach(refreshProductsAndDecrementCounter());
+        companyRepository.findAll().stream().filter(byFeedPreference()).forEach(refreshProductsAndResetCounter());
         log.info("Finished refreshing products for all companies");
     }
 
-    private Consumer<Company> refreshProductsAndDecrementCounter() {
+    private Consumer<Company> refreshProductsAndResetCounter() {
         return company -> {
             log.info("Refreshing products for company {}", company.getReference());
             final List<ProductDTO> products = feedProductImportService.importFeedProductsForCompany(company.getReference());
