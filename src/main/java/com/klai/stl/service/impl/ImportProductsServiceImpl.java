@@ -117,8 +117,6 @@ public class ImportProductsServiceImpl implements ImportProductsService {
 
     private Product updateProduct(List<ProductWrapper> currentCompanyProducts, ProductWrapper newProduct) {
         final Product originalProduct = currentCompanyProducts.get(currentCompanyProducts.indexOf(newProduct)).unwrap();
-
-        final Product product = updateProductFields(originalProduct, newProduct.unwrap());
-        return product;
+        return updateProductFields(originalProduct, newProduct.unwrap());
     }
 }
