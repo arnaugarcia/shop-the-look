@@ -6,6 +6,7 @@ import static java.time.ZonedDateTime.now;
 import com.klai.stl.domain.Company;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.FeedProductImportService;
+import com.klai.stl.service.MailService;
 import com.klai.stl.service.dto.ProductDTO;
 import java.util.List;
 import java.util.function.Consumer;
@@ -24,11 +25,18 @@ public class ProductFeedTask {
 
     private final FeedProductImportService feedProductImportService;
 
+    private final MailService mailService;
+
     private final Integer DEFAULT_REFRESH_COUNTER = 10;
 
-    public ProductFeedTask(CompanyRepository companyRepository, FeedProductImportService feedProductImportService) {
+    public ProductFeedTask(
+        CompanyRepository companyRepository,
+        FeedProductImportService feedProductImportService,
+        MailService mailService
+    ) {
         this.companyRepository = companyRepository;
         this.feedProductImportService = feedProductImportService;
+        this.mailService = mailService;
     }
 
     @Scheduled(cron = "${application.feed.cron-schedule}")
@@ -41,9 +49,13 @@ public class ProductFeedTask {
     private Consumer<Company> refreshProductsAndResetCounter() {
         return company -> {
             log.info("Refreshing products for company {}", company.getReference());
-            final List<ProductDTO> products = feedProductImportService.importFeedProductsForCompany(company.getReference());
-            resetRemainingImportsFor(company);
-            log.info("Imported {} products for company {}", products.size(), company.getReference());
+            try {
+                final List<ProductDTO> products = feedProductImportService.importFeedProductsForCompany(company.getReference());
+                resetRemainingImportsFor(company);
+                log.info("Imported {} products for company {}", products.size(), company.getReference());
+            } catch (Exception e) {
+                mailService.sendCreationEmail();
+            }
         };
     }
 
