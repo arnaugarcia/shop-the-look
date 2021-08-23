@@ -1,5 +1,7 @@
 package com.klai.stl.domain;
 
+import static com.klai.stl.domain.enumeration.ImportMethod.FEED;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.ImportMethod;
 import java.io.Serializable;
@@ -141,6 +143,10 @@ public class Preferences implements Serializable {
             company.setPreferences(this);
         }
         this.company = company;
+    }
+
+    public boolean isFeedImportMethod() {
+        return this.importMethod == FEED;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
