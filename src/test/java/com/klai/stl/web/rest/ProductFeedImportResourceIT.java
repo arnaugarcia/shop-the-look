@@ -55,8 +55,8 @@ class ProductFeedImportResourceIT {
     @BeforeEach
     public void initTest() {
         company = createBasicCompany(em);
-        company.getPreferences().setRemainingImports(10);
-        company.getPreferences().setFeedUrl("https://arnaugarcia.com");
+        company.getPreferences().setRemainingImports(0);
+        company.getPreferences().setFeedUrl(null);
         em.persist(company);
     }
 
@@ -64,6 +64,7 @@ class ProductFeedImportResourceIT {
     @Transactional
     @WithMockUser(username = "trigger-feed-error")
     public void triggerFeedWhenNoFeedIsConfigured() throws Exception {
+        company.getPreferences().setRemainingImports(1);
         User user = UserResourceIT.createEntity(em, "trigger-feed-error");
         em.persist(user);
         company.addUser(user);
@@ -76,6 +77,10 @@ class ProductFeedImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "import-products")
     void importProductsSuccessfully() throws Exception {
+        company.getPreferences().setRemainingImports(10);
+        company.getPreferences().setFeedUrl("https://arnaugarcia.com");
+        em.persist(company);
+
         when(feedService.queryProducts(any(URI.class))).thenReturn(new ArrayList<>());
         // Check for lower remaining imports and correct login
         final Optional<Preferences> byCompanyReference = preferencesRepository.findByCompanyReference(company.getReference());
@@ -98,15 +103,4 @@ class ProductFeedImportResourceIT {
         assertThat(result.getImportMethod().name()).isEqualTo(ImportMethod.FEED.name());
         assertThat(result.getLastImportBy()).isEqualTo("import-products");
     }
-
-    @Test
-    @Transactional
-    public void importProductsWithCronTask() throws Exception {
-        // Check for a restore of the remaining settings
-
-    }
-
-    @Test
-    @Transactional
-    public void cronTaskFailsAndSendsAnEmailAsync() throws Exception {}
 }
