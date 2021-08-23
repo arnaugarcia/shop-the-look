@@ -71,7 +71,6 @@
                 <th *stlHasAnyAuthority="'ROLE_ADMIN'" scope="col">
                   <span stlTranslate="shopTheLookApp.product.company">Company</span>
                 </th>
-                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -86,24 +85,6 @@
                 <td>{{ product.price }}</td>
                 <td *stlHasAnyAuthority="'ROLE_ADMIN'">
                   <a [routerLink]="['/company', product.companyReference, 'view']">{{ product.companyReference }}</a>
-                </td>
-                <td class="text-right">
-                  <div class="btn-group">
-                    <button
-                      [routerLink]="['/product', product.reference, 'edit']"
-                      class="btn btn-primary btn-sm"
-                      data-cy="entityEditButton"
-                      type="submit"
-                    >
-                      <fa-icon icon="pencil-alt"></fa-icon>
-                      <span class="d-none d-md-inline" stlTranslate="entity.action.edit">Edit</span>
-                    </button>
-
-                    <button (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton" type="submit">
-                      <fa-icon icon="times"></fa-icon>
-                      <span class="d-none d-md-inline" stlTranslate="entity.action.delete">Delete</span>
-                    </button>
-                  </div>
                 </td>
               </tr>
             </tbody>

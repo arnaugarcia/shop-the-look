@@ -3,8 +3,6 @@ import { IProduct } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from '../../../../config/pagination.constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject, Subscription } from 'rxjs';
@@ -45,8 +43,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     private feedService: ProductFeedImportService,
     private preferencesService: PreferencesService,
     protected activatedRoute: ActivatedRoute,
-    protected productService: ProductService,
-    private modalService: NgbModal
+    protected productService: ProductService
   ) {
     this.contentHeader = {
       headerTitle: 'Products',
@@ -110,17 +107,6 @@ export class ProductComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         }
       );
-  }
-
-  delete(product: IProduct): void {
-    const modalRef = this.modalService.open(ProductDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.product = product;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed.subscribe(reason => {
-      if (reason === 'deleted') {
-        this.loadAll();
-      }
-    });
   }
 
   refreshProducts(): void {
