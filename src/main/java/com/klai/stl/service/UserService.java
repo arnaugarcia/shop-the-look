@@ -413,6 +413,12 @@ public class UserService {
         return ofNullable(getUserWithAuthorities().orElseThrow(UserNotFound::new).getCompany()).orElseThrow(CompanyNotFound::new);
     }
 
+    public String getCurrentUserCompanyReference() {
+        return ofNullable(getUserWithAuthorities().orElseThrow(UserNotFound::new).getCompany())
+            .orElseThrow(CompanyNotFound::new)
+            .getReference();
+    }
+
     /**
      * Not activated users should be automatically deleted after 3 days.
      * <p>
