@@ -56,6 +56,9 @@
         </div>
       </div>
       <div class="card-body">
+        <p *ngIf="preferredImportMethod == 'FEED'" [class.text-danger]="remainingImports == 0">
+          <b>Remaining Imports:</b> {{ remainingImports }}
+        </p>
         <div class="d-flex justify-content-between mb-1">
           <p class="card-text">You can import new products by CSV or TSV using the <a routerLink="import">importer assistant</a>.</p>
           <p>Loaded products: {{ totalItems }}</p>
