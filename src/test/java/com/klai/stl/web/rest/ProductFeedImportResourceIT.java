@@ -10,12 +10,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
+import com.klai.stl.domain.Preferences;
 import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.ImportMethod;
+import com.klai.stl.repository.PreferencesRepository;
 import com.klai.stl.service.FeedService;
 import com.klai.stl.service.PreferencesService;
-import com.klai.stl.service.dto.PreferencesDTO;
 import java.util.ArrayList;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,6 +48,9 @@ class ProductFeedImportResourceIT {
     private PreferencesService preferencesService;
 
     @Autowired
+    private PreferencesRepository preferencesRepository;
+
+    @Autowired
     private MockMvc restProductMockMvc;
 
     private Company company;
@@ -73,7 +78,9 @@ class ProductFeedImportResourceIT {
     @WithMockUser(authorities = MANAGER, username = "import-products")
     public void importProductsSuccessfully() throws Exception {
         // Check for lower remaining imports and correct login
-        int sizeBeforeAction = preferencesService.find(company.getReference()).getRemainingImports();
+        final Optional<Preferences> byCompanyReference = preferencesRepository.findByCompanyReference(company.getReference());
+        assertThat(byCompanyReference).isPresent();
+        int sizeBeforeAction = byCompanyReference.get().getRemainingImports();
 
         when(feedService.queryProducts(any())).thenReturn(new ArrayList<>());
         User user = UserResourceIT.createEntity(em, "import-products");
@@ -83,11 +90,14 @@ class ProductFeedImportResourceIT {
 
         restProductMockMvc.perform(put(API_URL)).andExpect(status().isOk());
 
-        final PreferencesDTO preferencesDTO = preferencesService.find(company.getReference());
-        assertThat(preferencesDTO).isNotNull();
-        assertThat(preferencesDTO.getRemainingImports()).isLessThan(sizeBeforeAction);
-        assertThat(preferencesDTO.getImportMethod().name()).isEqualTo(ImportMethod.FEED.name());
-        assertThat(preferencesDTO.getLastImportBy()).isEqualTo("import-products");
+        final Optional<Preferences> optionalPreferences = preferencesRepository.findByCompanyReference(company.getReference());
+        assertThat(optionalPreferences).isPresent();
+        final Preferences result = optionalPreferences.get();
+
+        assertThat(result).isNotNull();
+        assertThat(result.getRemainingImports()).isLessThan(sizeBeforeAction);
+        assertThat(result.getImportMethod().name()).isEqualTo(ImportMethod.FEED.name());
+        assertThat(result.getLastImportBy()).isEqualTo("import-products");
     }
 
     @Test

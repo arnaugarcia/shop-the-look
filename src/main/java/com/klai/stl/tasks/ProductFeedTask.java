@@ -3,6 +3,8 @@ package com.klai.stl.tasks;
 import com.klai.stl.domain.Company;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.FeedProductImportService;
+import com.klai.stl.service.dto.ProductDTO;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.slf4j.Logger;
@@ -36,7 +38,8 @@ public class ProductFeedTask {
     private Consumer<Company> refreshProducts() {
         return company -> {
             log.info("Refreshing products for company {}", company.getReference());
-            feedProductImportService.importFeedProductsForCompany(company.getReference());
+            final List<ProductDTO> products = feedProductImportService.importFeedProductsForCompany(company.getReference());
+            log.info("Imported {} products for company {}", products.size(), company.getReference());
         };
     }
 

@@ -15,4 +15,7 @@ public interface ImportProductsService {
      */
     @Transactional
     List<ProductDTO> importProducts(List<NewProductRequest> productRequests, String companyReference);
+
+    @Transactional
+    List<ProductDTO> importProductsForCurrentUser(List<NewProductRequest> products, String companyReference);
 }

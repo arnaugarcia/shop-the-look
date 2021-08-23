@@ -19,7 +19,6 @@ import com.klai.stl.service.exception.CompanyReferenceNotFound;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,26 +29,30 @@ public class ImportProductsServiceImpl implements ImportProductsService {
     private final UserService userService;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final EntityManager entityManager;
 
     public ImportProductsServiceImpl(
         CompanyService companyService,
         UserService userService,
         ProductRepository productRepository,
-        ProductMapper productMapper,
-        EntityManager entityManager
+        ProductMapper productMapper
     ) {
         this.companyService = companyService;
         this.userService = userService;
         this.productRepository = productRepository;
         this.productMapper = productMapper;
-        this.entityManager = entityManager;
     }
 
     @Override
     @Transactional
     public List<ProductDTO> importProducts(List<NewProductRequest> products, String companyReference) {
-        Company company = findUserCompany(companyReference);
+        Company company = companyService.findByReference(companyReference);
+        return importProducts(products, company);
+    }
+
+    @Override
+    @Transactional
+    public List<ProductDTO> importProductsForCurrentUser(List<NewProductRequest> products, String companyReference) {
+        Company company = findCurrentUserCompany(companyReference);
         return importProducts(products, company);
     }
 
@@ -101,7 +104,7 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         productRepository.deleteAll(deleteProducts);
     }
 
-    private Company findUserCompany(String companyReference) {
+    private Company findCurrentUserCompany(String companyReference) {
         if (isCurrentUserAdmin() && isNull(companyReference)) {
             throw new CompanyReferenceNotFound();
         }

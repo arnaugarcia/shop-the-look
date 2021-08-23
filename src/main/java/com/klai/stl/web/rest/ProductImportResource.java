@@ -40,7 +40,7 @@ public class ProductImportResource {
         @RequestParam(required = false) String companyReference
     ) throws URISyntaxException {
         log.debug("REST request to import products with size {}", productRequests.size());
-        List<ProductDTO> result = importProductsService.importProducts(productRequests, companyReference);
+        List<ProductDTO> result = importProductsService.importProductsForCurrentUser(productRequests, companyReference);
         return ResponseEntity.created(new URI("/api/products/import")).body(result);
     }
 }
