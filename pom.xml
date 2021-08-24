@@ -8,7 +8,7 @@
     <groupId>com.klai.stl</groupId>
     <artifactId>shop-the-look</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>Shop The Look</name>
 
     <repositories>
@@ -1004,6 +1004,7 @@
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-undertow</artifactId>
+                    <scope>provided</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
@@ -1066,17 +1067,6 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
-                            </execution>
-                            <execution>
-                                <id>webapp build test</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <phase>test</phase>
-                                <configuration>
-                                    <arguments>run webapp:test</arguments>
-                                    <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
-                                </configuration>
                             </execution>
                             <execution>
                                 <id>webapp build prod</id>
