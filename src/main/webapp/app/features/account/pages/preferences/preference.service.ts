@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { ApplicationConfigService } from '../../core/config/application-config.service';
 import { Observable } from 'rxjs';
 import { IPreferences } from './preferences.model';
+import { ApplicationConfigService } from '../../../../core/config/application-config.service';
 
 export type EntityResponseType = HttpResponse<IPreferences>;
 
