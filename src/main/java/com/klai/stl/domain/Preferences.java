@@ -1,8 +1,11 @@
 package com.klai.stl.domain;
 
+import static com.klai.stl.domain.enumeration.ImportMethod.FEED;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.ImportMethod;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -27,6 +30,15 @@ public class Preferences implements Serializable {
 
     @Column(name = "feed_url")
     private String feedUrl;
+
+    @Column(name = "remaining_imports")
+    private Integer remainingImports;
+
+    @Column(name = "last_import_by")
+    private String lastImportBy;
+
+    @Column(name = "last_import_timestamp")
+    private ZonedDateTime lastImportTimestamp;
 
     @JsonIgnoreProperties(
         value = { "billingAddress", "preferences", "products", "importedProducts", "spaces", "users", "subscriptionPlan" },
@@ -53,21 +65,17 @@ public class Preferences implements Serializable {
         return this.importMethod;
     }
 
-    public void setImportMethod(ImportMethod importMethod) {
-        this.importMethod = importMethod;
-    }
-
     public Preferences importMethod(ImportMethod importMethod) {
         this.importMethod = importMethod;
         return this;
     }
 
-    public String getFeedUrl() {
-        return this.feedUrl;
+    public void setImportMethod(ImportMethod importMethod) {
+        this.importMethod = importMethod;
     }
 
-    public void setFeedUrl(String feedUrl) {
-        this.feedUrl = feedUrl;
+    public String getFeedUrl() {
+        return this.feedUrl;
     }
 
     public Preferences feedUrl(String feedUrl) {
@@ -75,8 +83,56 @@ public class Preferences implements Serializable {
         return this;
     }
 
+    public void setFeedUrl(String feedUrl) {
+        this.feedUrl = feedUrl;
+    }
+
+    public Integer getRemainingImports() {
+        return this.remainingImports;
+    }
+
+    public void setRemainingImports(Integer remainingImports) {
+        this.remainingImports = remainingImports;
+    }
+
+    public Preferences remainingImports(Integer remainingImports) {
+        this.remainingImports = remainingImports;
+        return this;
+    }
+
+    public String getLastImportBy() {
+        return this.lastImportBy;
+    }
+
+    public void setLastImportBy(String lastImportBy) {
+        this.lastImportBy = lastImportBy;
+    }
+
+    public Preferences lastImportBy(String lastImportBy) {
+        this.lastImportBy = lastImportBy;
+        return this;
+    }
+
+    public ZonedDateTime getLastImportTimestamp() {
+        return this.lastImportTimestamp;
+    }
+
+    public void setLastImportTimestamp(ZonedDateTime lastImportTimestamp) {
+        this.lastImportTimestamp = lastImportTimestamp;
+    }
+
+    public Preferences lastImportTimestamp(ZonedDateTime lastImportTimestamp) {
+        this.lastImportTimestamp = lastImportTimestamp;
+        return this;
+    }
+
     public Company getCompany() {
         return this.company;
+    }
+
+    public Preferences company(Company company) {
+        this.setCompany(company);
+        return this;
     }
 
     public void setCompany(Company company) {
@@ -89,9 +145,8 @@ public class Preferences implements Serializable {
         this.company = company;
     }
 
-    public Preferences company(Company company) {
-        this.setCompany(company);
-        return this;
+    public boolean isFeedImportMethod() {
+        return this.importMethod == FEED;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -120,6 +175,9 @@ public class Preferences implements Serializable {
             "id=" + getId() +
             ", importMethod='" + getImportMethod() + "'" +
             ", feedUrl='" + getFeedUrl() + "'" +
+            ", remainingImports=" + getRemainingImports() +
+            ", lastImportBy='" + getLastImportBy() + "'" +
+            ", lastImportTimestamp='" + getLastImportTimestamp() + "'" +
             "}";
     }
 }

@@ -9,6 +9,18 @@
     {
       "fieldName": "feedUrl",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "remainingImports",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "lastImportBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastImportTimestamp",
+      "fieldType": "ZonedDateTime"
     }
   ],
   "relationships": [

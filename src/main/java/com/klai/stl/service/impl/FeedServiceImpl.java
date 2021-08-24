@@ -8,9 +8,7 @@ import com.klai.stl.service.dto.feed.FeedProduct;
 import com.klai.stl.service.dto.feed.Rss;
 import com.klai.stl.service.exception.FeedException;
 import com.klai.stl.service.mapper.ProductMapper;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,16 +25,11 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public List<FeedProduct> queryProducts(URL feedUrl) {
-        try {
-            final Rss rss = restTemplate.getForObject(feedUrl.toURI(), Rss.class);
-            if (isNull(rss) || isNull(rss.getChannel()) || isNull(rss.getChannel().getItems()) || rss.getChannel().getItems().isEmpty()) {
-                throw new FeedException();
-            }
-            return rss.getChannel().getItems().stream().map(productMapper::toEntity).collect(toList());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+    public List<FeedProduct> queryProducts(URI feedUri) {
+        final Rss rss = restTemplate.getForObject(feedUri, Rss.class);
+        if (isNull(rss) || isNull(rss.getChannel()) || isNull(rss.getChannel().getItems()) || rss.getChannel().getItems().isEmpty()) {
+            throw new FeedException();
         }
-        return new ArrayList<>();
+        return rss.getChannel().getItems().stream().map(productMapper::toEntity).collect(toList());
     }
 }

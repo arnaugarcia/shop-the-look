@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:text="#{email.cron.title}">JHipster activation</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p th:text="#{email.cron.text}">
+      The cron task failed please so your products will not be udpated. Please check your feed url or contact us.
+    </p>
+    <p>
+      <span th:text="#{email.activation.text2}">Regards, </span>
+      <br />
+      <em th:text="#{email.signature}">JHipster.</em>
+    </p>
+  </body>
+</html>

@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ProductComponent } from './pages/list/product.component';
 import { ProductImportComponent } from './pages/import/product-import.component';
-import { ProductCreateComponent } from './pages/create/product-create.component';
 
 const productRoute: Routes = [
   {
@@ -13,11 +12,6 @@ const productRoute: Routes = [
     data: {
       defaultSort: 'id,asc',
     },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    component: ProductCreateComponent,
     canActivate: [UserRouteAccessService],
   },
   {

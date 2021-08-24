@@ -1,7 +1,6 @@
 package com.klai.stl.domain;
 
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.CascadeType.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.CompanyIndustry;
@@ -84,7 +83,7 @@ public class Company implements Serializable {
     private BillingAddress billingAddress;
 
     @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
-    @OneToOne(cascade = { PERSIST, REMOVE })
+    @OneToOne(cascade = ALL)
     @JoinColumn(unique = true)
     private Preferences preferences = new Preferences();
 

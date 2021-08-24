@@ -20,6 +20,9 @@
       "id": "ID",
       "importMethod": "Import Method",
       "feedUrl": "Feed Url",
+      "remainingImports": "Remaining Imports",
+      "lastImportBy": "Last Import By",
+      "lastImportTimestamp": "Last Import Timestamp",
       "company": "Company"
     }
   }

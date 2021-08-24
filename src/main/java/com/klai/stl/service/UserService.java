@@ -1,6 +1,7 @@
 package com.klai.stl.service;
 
 import static com.klai.stl.security.SecurityUtils.getCurrentUserLogin;
+import static java.util.Optional.ofNullable;
 
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.Authority;
@@ -406,6 +407,16 @@ public class UserService {
 
     public User getCurrentUser() {
         return getUserWithAuthorities().orElseThrow(UserNotFound::new);
+    }
+
+    public Company getCurrentUserCompany() {
+        return ofNullable(getUserWithAuthorities().orElseThrow(UserNotFound::new).getCompany()).orElseThrow(CompanyNotFound::new);
+    }
+
+    public String getCurrentUserCompanyReference() {
+        return ofNullable(getUserWithAuthorities().orElseThrow(UserNotFound::new).getCompany())
+            .orElseThrow(CompanyNotFound::new)
+            .getReference();
     }
 
     /**

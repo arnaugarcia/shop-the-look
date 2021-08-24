@@ -1,5 +1,8 @@
 package com.klai.stl.service;
 
+import static java.util.Locale.forLanguageTag;
+
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -83,7 +86,7 @@ public class MailService {
             log.debug("Email doesn't exist for user '{}'", user.getLogin());
             return;
         }
-        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Locale locale = forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
@@ -96,6 +99,18 @@ public class MailService {
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
+    }
+
+    @Async
+    public void sendCronTaskFailed(Company company) {
+        log.debug("Sending cron task fail email to '{}'", company.getEmail());
+        Locale locale = forLanguageTag("en");
+        String subject = messageSource.getMessage("email.cron.title", null, locale);
+
+        Context context = new Context(locale);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process("mail/cronFailed", context);
+        sendEmail(company.getEmail(), subject, content, false, true);
     }
 
     @Async

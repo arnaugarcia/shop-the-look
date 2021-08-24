@@ -1,11 +1,14 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
+import static java.time.ZonedDateTime.now;
 
 import com.klai.stl.domain.Preferences;
+import com.klai.stl.domain.enumeration.ImportMethod;
 import com.klai.stl.repository.PreferencesRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.PreferencesService;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.exception.PreferencesNotFoundException;
@@ -28,20 +31,53 @@ public class PreferencesServiceImpl implements PreferencesService {
 
     private final PreferencesRepository preferencesRepository;
 
+    private final UserService userService;
+
     private final PreferencesMapper preferencesMapper;
 
     public PreferencesServiceImpl(
         CompanyService companyService,
         PreferencesRepository preferencesRepository,
+        UserService userService,
         PreferencesMapper preferencesMapper
     ) {
         this.companyService = companyService;
         this.preferencesRepository = preferencesRepository;
+        this.userService = userService;
         this.preferencesMapper = preferencesMapper;
     }
 
+    @Override
+    public PreferencesDTO findByCurrentUser() {
+        return find(userService.getCurrentUserCompany().getReference());
+    }
+
+    @Override
+    public PreferencesDTO updateByCurrentUser(PreferencesRequest preferencesRequest) {
+        return update(userService.getCurrentUserCompany().getReference(), preferencesRequest);
+    }
+
+    @Override
+    public PreferencesDTO setImportMethodFor(String companyReference, ImportMethod importMethod) {
+        Preferences preferences = findPreferenceByCompanyReference(companyReference);
+        preferences.importMethod(importMethod);
+        return saveAndTransform(preferencesRepository.save(preferences));
+    }
+
+    @Override
+    public PreferencesDTO decrementImportCounter(String companyReference) {
+        Preferences preferences = findPreferenceByCompanyReference(companyReference);
+        final int decrementedCounter = preferences.getRemainingImports() - 1;
+
+        preferences.setLastImportTimestamp(now());
+        preferences.setLastImportBy(userService.getCurrentUser().getLogin());
+        preferences.setRemainingImports(decrementedCounter);
+
+        return saveAndTransform(preferences);
+    }
+
     /**
-     * Get one preferences by id.
+     * Get preferences by id.
      *
      * @param companyReference the id of the entity.
      * @return the entity.
@@ -55,7 +91,7 @@ public class PreferencesServiceImpl implements PreferencesService {
 
         final Preferences result = findPreferenceByCompanyReference(companyReference);
 
-        return preferencesMapper.toDto(result);
+        return saveAndTransform(result);
     }
 
     private Preferences findPreferenceByCompanyReference(String companyReference) {
@@ -72,6 +108,10 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setFeedUrl(preferencesRequest.getFeedUrl());
         preferences.setImportMethod(preferencesRequest.getImportMethod());
 
-        return preferencesMapper.toDto(preferences);
+        return saveAndTransform(preferences);
+    }
+
+    private PreferencesDTO saveAndTransform(Preferences save) {
+        return preferencesMapper.toDto(save);
     }
 }

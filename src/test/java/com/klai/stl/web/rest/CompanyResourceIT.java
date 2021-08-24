@@ -155,6 +155,7 @@ public class CompanyResourceIT {
             .token(randomAlphanumeric(10))
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
+        company.getPreferences().setRemainingImports(0);
         em.persist(company);
         return company;
     }

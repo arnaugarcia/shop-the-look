@@ -3,13 +3,13 @@ import { IProduct } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from '../../../../config/pagination.constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductFeedImportService } from '../../services/product-feed-import.service';
+import { PreferencesService } from '../../../account/service/preferences.service';
+import { ImportMethod, IPreferences } from '../../../account/pages/preferences/preferences.model';
 
 @Component({
   selector: 'stl-product',
@@ -27,6 +27,9 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   public isLoading = false;
 
+  public preferredImportMethod?: ImportMethod;
+  public remainingImports = 0;
+
   public searchText = '';
   public searchTextChanged: Subject<string> = new Subject<string>();
   private searchTextChangeSubscription: Subscription = new Subscription();
@@ -38,9 +41,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private feedService: ProductFeedImportService,
+    private preferencesService: PreferencesService,
     protected activatedRoute: ActivatedRoute,
-    protected productService: ProductService,
-    private modalService: NgbModal
+    protected productService: ProductService
   ) {
     this.contentHeader = {
       headerTitle: 'Products',
@@ -75,6 +78,7 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.itemsPerPage = size;
       this.loadPage();
     });
+    this.loadPreferences();
   }
 
   ngOnDestroy(): void {
@@ -105,28 +109,27 @@ export class ProductComponent implements OnInit, OnDestroy {
       );
   }
 
-  delete(product: IProduct): void {
-    const modalRef = this.modalService.open(ProductDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.product = product;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed.subscribe(reason => {
-      if (reason === 'deleted') {
-        this.loadAll();
-      }
-    });
-  }
-
   refreshProducts(): void {
+    if (!this.canImportWithFeed()) {
+      return;
+    }
     this.isLoading = true;
     this.feedService.refreshFeed().subscribe(
       (res: HttpResponse<IProduct[]>) => {
         this.isLoading = false;
+        this.loadPreferences();
         this.onSuccess(res.body, res.headers, 1, true);
       },
       () => {
         this.isLoading = false;
         this.onError();
       }
+    );
+  }
+
+  canImportWithFeed(): boolean {
+    return (
+      !this.isLoading && this.preferredImportMethod !== undefined && this.preferredImportMethod === 'FEED' && this.remainingImports > 0
     );
   }
 
@@ -194,5 +197,16 @@ export class ProductComponent implements OnInit, OnDestroy {
     }
     this.products = data ?? [];
     this.ngbPaginationPage = this.page;
+  }
+
+  private loadPreferences(): void {
+    this.preferencesService.query().subscribe((response: HttpResponse<IPreferences>) => {
+      const preference = response.body;
+      if (!preference) {
+        return;
+      }
+      this.preferredImportMethod = preference.importMethod;
+      this.remainingImports = preference.remainingImports!;
+    });
   }
 }

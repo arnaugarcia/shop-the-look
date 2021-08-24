@@ -32,6 +32,9 @@ export class PreferencesUpdatePage {
   idInput = element(by.id('field_id'));
   importMethodSelect = element(by.id('field_importMethod'));
   feedUrlInput = element(by.id('field_feedUrl'));
+  remainingImportsInput = element(by.id('field_remainingImports'));
+  lastImportByInput = element(by.id('field_lastImportBy'));
+  lastImportTimestampInput = element(by.id('field_lastImportTimestamp'));
 
   async getPageTitle(): Promise<string> {
     return this.pageTitle.getAttribute('stlTranslate');
@@ -63,6 +66,30 @@ export class PreferencesUpdatePage {
 
   async getFeedUrlInput(): Promise<string> {
     return await this.feedUrlInput.getAttribute('value');
+  }
+
+  async setRemainingImportsInput(remainingImports: string): Promise<void> {
+    await this.remainingImportsInput.sendKeys(remainingImports);
+  }
+
+  async getRemainingImportsInput(): Promise<string> {
+    return await this.remainingImportsInput.getAttribute('value');
+  }
+
+  async setLastImportByInput(lastImportBy: string): Promise<void> {
+    await this.lastImportByInput.sendKeys(lastImportBy);
+  }
+
+  async getLastImportByInput(): Promise<string> {
+    return await this.lastImportByInput.getAttribute('value');
+  }
+
+  async setLastImportTimestampInput(lastImportTimestamp: string): Promise<void> {
+    await this.lastImportTimestampInput.sendKeys(lastImportTimestamp);
+  }
+
+  async getLastImportTimestampInput(): Promise<string> {
+    return await this.lastImportTimestampInput.getAttribute('value');
   }
 
   async save(): Promise<void> {

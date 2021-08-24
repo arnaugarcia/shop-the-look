@@ -142,6 +142,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleUserNotFoundException(com.klai.stl.service.exception.UserNotFound ex, NativeWebRequest request) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, "User not found", "user", "usernotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleCompanyNotFoundException(
         com.klai.stl.service.exception.ProductNotFound ex,
         NativeWebRequest request
@@ -175,6 +185,34 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             "company",
             "referencenotfound"
         );
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleBadOwnerException(com.klai.stl.service.exception.NoRemainingImports ex, NativeWebRequest request) {
+        TooManyRequestsException problem = new TooManyRequestsException(
+            TOO_MANY_REQUESTS,
+            "You've exceed your plan",
+            "feed",
+            "noremainingimports"
+        );
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleURLFeedException(
+        com.klai.stl.service.exception.URLParseFeedException ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(BAD_REQUEST, ex.getMessage(), "feed", "urlnotvalid");
         return create(
             problem,
             request,

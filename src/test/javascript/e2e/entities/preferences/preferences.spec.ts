@@ -1,4 +1,4 @@
-import { browser, ExpectedConditions as ec, promise } from 'protractor';
+import { browser, ExpectedConditions as ec, promise, protractor } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
 import { PreferencesComponentsPage, PreferencesDeleteDialog, PreferencesUpdatePage } from './preferences.page-object';
@@ -45,7 +45,13 @@ describe('Preferences e2e test', () => {
 
     await preferencesComponentsPage.clickOnCreateButton();
 
-    await promise.all([preferencesUpdatePage.importMethodSelectLastOption(), preferencesUpdatePage.setFeedUrlInput('feedUrl')]);
+    await promise.all([
+      preferencesUpdatePage.importMethodSelectLastOption(),
+      preferencesUpdatePage.setFeedUrlInput('feedUrl'),
+      preferencesUpdatePage.setRemainingImportsInput('5'),
+      preferencesUpdatePage.setLastImportByInput('lastImportBy'),
+      preferencesUpdatePage.setLastImportTimestampInput('01/01/2001' + protractor.Key.TAB + '02:30AM'),
+    ]);
 
     await preferencesUpdatePage.save();
     expect(await preferencesUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
