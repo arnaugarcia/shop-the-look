@@ -6,11 +6,6 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { CompanyComponent } from '../../entities/company/list/company.component';
 import { PasswordComponent } from './pages/password/password.component';
-import { ApiKeyComponent } from './pages/api-key/api-key.component';
-import { BillingComponent } from './pages/billing/billing.component';
-import { SubscriptionComponent } from './pages/subscription/subscription.component';
-import { EmployeesComponent } from './pages/employees/employees.component';
-import { BillingAddressRoutingResolveService } from './route/billing-address-routing-resolve.service';
 
 const accountRoute: Routes = [
   {
@@ -31,31 +26,12 @@ const accountRoute: Routes = [
         component: CompanyComponent,
       },
       {
-        path: 'billing',
-        component: BillingComponent,
-        resolve: {
-          billingAddress: BillingAddressRoutingResolveService,
-        },
-      },
-      {
-        path: 'subscription',
-        component: SubscriptionComponent,
-      },
-      {
-        path: 'employees',
-        component: EmployeesComponent,
-      },
-      {
         path: 'password',
         component: PasswordComponent,
       },
       {
         path: 'notifications',
         component: NotificationsComponent,
-      },
-      {
-        path: 'api-key',
-        component: ApiKeyComponent,
       },
     ],
   },
