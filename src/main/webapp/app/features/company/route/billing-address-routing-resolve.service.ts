@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 
@@ -11,9 +11,10 @@ import { BillingAddress, IBillingAddress } from '../model/billing-address.model'
 export class BillingAddressRoutingResolveService implements Resolve<IBillingAddress> {
   constructor(protected service: BillingAddressService, protected router: Router) {}
 
-  resolve(): Observable<IBillingAddress> | Promise<IBillingAddress> | IBillingAddress {
+  resolve(route: ActivatedRouteSnapshot): Observable<IBillingAddress> | Promise<IBillingAddress> | IBillingAddress {
     const EMPTY = of(new BillingAddress());
-    return this.service.query().pipe(
+    const reference = route.parent?.params.reference;
+    return this.service.query(reference).pipe(
       mergeMap((response: HttpResponse<BillingAddress>) => {
         if (response.body) {
           return of(response.body);

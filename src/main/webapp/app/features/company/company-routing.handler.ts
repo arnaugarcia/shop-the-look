@@ -6,6 +6,7 @@ import { OverviewComponent } from './pages/overview/overview.component';
 import { BillingComponent } from './pages/billing/billing.component';
 import { NgModule } from '@angular/core';
 import { CompanyModule } from './company.module';
+import { BillingAddressRoutingResolveService } from './route/billing-address-routing-resolve.service';
 
 @NgModule({
   imports: [CompanyModule],
@@ -21,10 +22,8 @@ import { CompanyModule } from './company.module';
 export class CompanyRoutingHandler {}
 
 export function configBookHandlerRoutes(accountService: AccountService): Routes {
-  console.error('Executed');
   let routes: Routes;
   if (accountService.isAdmin()) {
-    console.error('ADMIN PATH');
     routes = [
       {
         path: '',
@@ -37,7 +36,6 @@ export function configBookHandlerRoutes(accountService: AccountService): Routes 
       },
     ];
   } else {
-    console.error('NOT ADMIN PATH');
     routes = [
       {
         path: '',
@@ -61,5 +59,8 @@ export const COMPANY_CHILDREN_NAVIGATION = [
   {
     path: 'billing',
     component: BillingComponent,
+    resolve: {
+      billingAddress: BillingAddressRoutingResolveService,
+    },
   },
 ];

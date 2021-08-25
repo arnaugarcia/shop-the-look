@@ -36,7 +36,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
-          <th scope="col"><span stlTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.reference">ID</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.name">Name</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.commercialName">Commercial Name</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.nif">Nif</span></th>
@@ -47,10 +47,8 @@
           <th scope="col"><span stlTranslate="shopTheLookApp.company.email">Email</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.type">Type</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.token">Token</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.company.reference">Reference</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.industry">Industry</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.companySize">Company Size</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.company.billingAddress">Billing Address</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.user">User</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.subscriptionPlan">Subscription Plan</span></th>
           <th scope="col"></th>
@@ -59,9 +57,11 @@
       <tbody>
         <tr *ngFor="let company of companies; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/company', company.id, 'view']">{{ company.id }}</a>
+            <a [routerLink]="['/company', company.reference]">{{ company.reference }}</a>
           </td>
-          <td>{{ company.name }}</td>
+          <td>
+            <a [routerLink]="['/company', company.reference]">{{ company.name }}</a>
+          </td>
           <td>{{ company.commercialName }}</td>
           <td>{{ company.nif }}</td>
           <td>{{ company.logo }}</td>
@@ -71,14 +71,8 @@
           <td>{{ company.email }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.CompanyType.' + company.type }}">{{ company.type }}</td>
           <td>{{ company.token }}</td>
-          <td>{{ company.reference }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.CompanyIndustry.' + company.industry }}">{{ company.industry }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.CompanySize.' + company.companySize }}">{{ company.companySize }}</td>
-          <td>
-            <div *ngIf="company.billingAddress">
-              <a [routerLink]="['/billing-address', company.billingAddress?.id, 'view']">{{ company.billingAddress?.id }}</a>
-            </div>
-          </td>
           <td>
             <span *ngFor="let user of company.users; let last = last"> {{ user.login }}{{ last ? '' : ', ' }} </span>
           </td>

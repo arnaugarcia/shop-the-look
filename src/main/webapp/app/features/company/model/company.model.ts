@@ -1,4 +1,3 @@
-import { IBillingAddress } from 'app/entities/billing-address/billing-address.model';
 import { IGoogleFeedProduct } from 'app/entities/google-feed-product/google-feed-product.model';
 import { ISpace } from 'app/entities/space/space.model';
 import { IUser } from 'app/entities/user/user.model';
@@ -7,6 +6,7 @@ import { CompanyType } from 'app/entities/enumerations/company-type.model';
 import { CompanyIndustry } from 'app/entities/enumerations/company-industry.model';
 import { CompanySize } from 'app/entities/enumerations/company-size.model';
 import { IProduct } from '../../product/models/product.model';
+import { IBillingAddress } from './billing-address.model';
 
 export interface ICompany {
   id?: number;
@@ -54,8 +54,4 @@ export class Company implements ICompany {
     public users?: IUser[],
     public subscriptionPlan?: ISubscriptionPlan | null
   ) {}
-}
-
-export function getCompanyIdentifier(company: ICompany): string | undefined {
-  return company.reference;
 }

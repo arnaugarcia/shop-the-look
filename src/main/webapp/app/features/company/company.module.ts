@@ -4,8 +4,8 @@ import { CompanyDeleteDialogComponent } from '../../entities/company/delete/comp
 import { CompanyDetailComponent } from './pages/detail/company-detail.component';
 import { CompanyListComponent } from './pages/list/company-list.component';
 import { OverviewComponent } from './pages/overview/overview.component';
-import { BillingComponent } from './pages/billing/billing.component';
 import { CompanyComponent } from './pages/company/company.component';
+import { BillingComponent } from './pages/billing/billing.component';
 
 @NgModule({
   declarations: [
