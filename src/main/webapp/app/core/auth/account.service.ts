@@ -9,6 +9,7 @@ import { catchError, shareReplay, tap } from 'rxjs/operators';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ApplicationConfigService } from '../config/application-config.service';
 import { Account } from 'app/core/auth/account.model';
+import { Authority } from '../../config/authority.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -45,7 +46,7 @@ export class AccountService {
   }
 
   isAdmin(): boolean {
-    return this.hasAnyAuthority('ROLE_ADMIN');
+    return this.hasAnyAuthority(Authority.ADMIN);
   }
 
   identity(force?: boolean): Observable<Account | null> {
@@ -57,7 +58,7 @@ export class AccountService {
 
           // After retrieve the account info, the language will be changed to
           // the user's preferred language configured in the account setting
-          // unless user have choosed other language in the current session
+          // unless user have choose other language in the current session
           if (!this.sessionStorageService.retrieve('locale') && account) {
             this.translateService.use(account.langKey);
           }
@@ -69,6 +70,7 @@ export class AccountService {
         shareReplay()
       );
     }
+    this.resetHandlerRoutes();
     return this.accountCache$;
   }
 
@@ -78,6 +80,27 @@ export class AccountService {
 
   getAuthenticationState(): Observable<Account | null> {
     return this.authenticationState.asObservable();
+  }
+
+  private resetHandlerRoutes(): void {
+    this.router.config.splice(
+      this.router.config.findIndex(x => x.path === '/company'),
+      1
+    );
+    this.router.config.splice(
+      this.router.config.findIndex(x => x.path === '/companies'),
+      1
+    );
+    this.router.config.push(
+      {
+        path: '/company',
+        loadChildren: () => import('../../features/company/company-routing.handler').then(m => m.CompanyRoutingHandler),
+      },
+      {
+        path: '/companies',
+        loadChildren: () => import('../../features/company/company-routing.handler').then(m => m.CompanyRoutingHandler),
+      }
+    );
   }
 
   private fetch(): Observable<Account> {

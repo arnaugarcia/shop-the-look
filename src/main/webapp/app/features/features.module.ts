@@ -18,12 +18,12 @@ import { RouterModule } from '@angular/router';
       {
         path: 'companies',
         // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
-        loadChildren: () => import('./companies/companies.module').then(m => m.CompaniesModule),
+        loadChildren: () => import('./company/company-routing.handler').then(m => m.CompanyRoutingHandler),
       },
       {
         path: 'company',
         // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
-        loadChildren: () => import('./company/company.module').then(m => m.CompanyModule),
+        loadChildren: () => import('./company/company-routing.handler').then(m => m.CompanyRoutingHandler),
       },
       {
         path: 'account',

@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CompanyDeleteDialogComponent } from '../../../../entities/company/delete/company-delete-dialog.component';
 import { CompanyService } from 'app/features/company/service/company.service';
-import { ICompany } from '../../../company/model/company.model';
+import { ICompany } from '../../model/company.model';
 
 @Component({
   selector: 'stl-company-list',
