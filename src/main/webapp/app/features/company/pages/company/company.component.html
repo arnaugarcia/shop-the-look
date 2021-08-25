@@ -1,2 +1,29 @@
-<p>company works!</p>
-<router-outlet></router-outlet>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- users edit start -->
+    <section class="app-user-edit">
+      <div class="card">
+        <div class="card-body">
+          <ul class="nav nav-pills" ngbNav>
+            <li>
+              <a [routerLink]="'overview'" class="d-flex align-items-center">
+                <i class="mr-sm-50" data-feather="user"></i>
+                <span class="d-none d-sm-block">Account</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="'billing'" class="d-flex align-items-center">
+                <i class="mr-sm-50" data-feather="user"></i>
+                <span class="d-none d-sm-block">Account</span>
+              </a>
+            </li>
+          </ul>
+          <div class="mt-2">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- users edit ends -->
+  </div>
+</div>
