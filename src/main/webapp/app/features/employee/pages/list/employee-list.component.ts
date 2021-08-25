@@ -1,16 +1,16 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { CoreSidebarService } from '../../../../../../@core/components/core-sidebar/core-sidebar.service';
+import { CoreSidebarService } from '../../../../../@core/components/core-sidebar/core-sidebar.service';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { EmployeeService } from '../../../services/employee.service';
-import { ITEMS_PER_PAGE } from '../../../../../config/pagination.constants';
+import { EmployeeService } from '../../services/employee.service';
+import { ITEMS_PER_PAGE } from '../../../../config/pagination.constants';
 import { AccountStatus, IEmployee } from 'app/features/employee/models/employee.model';
-import { CompanyService } from '../../../../../entities/company/service/company.service';
-import { ICompany } from '../../../../../entities/company/company.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EmployeeDeleteDialogComponent } from '../../../components/employee-delete/employee-delete-dialog.component';
+import { EmployeeDeleteDialogComponent } from '../../components/employee-delete/employee-delete-dialog.component';
 import { Subject, Subscription } from 'rxjs';
-import { CoreSidebarComponent } from '../../../../../../@core/components/core-sidebar/core-sidebar.component';
+import { CoreSidebarComponent } from '../../../../../@core/components/core-sidebar/core-sidebar.component';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { ICompany } from '../../../company/model/company.model';
+import { CompanyService } from '../../../company/service/company.service';
 
 @Component({
   selector: 'stl-employee-list',

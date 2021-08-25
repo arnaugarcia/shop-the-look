@@ -1,4 +1,4 @@
-import { ICompany } from 'app/entities/company/company.model';
+import { ICompany } from '../../features/company/model/company.model';
 
 export interface IBillingAddress {
   id?: number;

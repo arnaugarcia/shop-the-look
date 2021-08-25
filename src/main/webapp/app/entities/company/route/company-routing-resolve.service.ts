@@ -3,9 +3,8 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-
-import { Company, ICompany } from '../company.model';
-import { CompanyService } from '../service/company.service';
+import { CompanyService } from 'app/features/company/service/company.service';
+import { Company, ICompany } from '../../../features/company/model/company.model';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyRoutingResolveService implements Resolve<ICompany> {

@@ -1,5 +1,5 @@
-import { ICompany } from 'app/entities/company/company.model';
 import { SubscriptionCategory } from 'app/entities/enumerations/subscription-category.model';
+import { ICompany } from '../../features/company/model/company.model';
 
 export interface ISubscriptionPlan {
   id?: number;

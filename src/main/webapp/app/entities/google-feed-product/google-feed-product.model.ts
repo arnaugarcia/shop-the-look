@@ -1,8 +1,8 @@
 import * as dayjs from 'dayjs';
-import { ICompany } from 'app/entities/company/company.model';
 import { GoogleFeedProductAvailability } from 'app/entities/enumerations/google-feed-product-availability.model';
 import { GoogleFeedProductCondition } from 'app/entities/enumerations/google-feed-product-condition.model';
 import { GoogleFeedAgeGroup } from 'app/entities/enumerations/google-feed-age-group.model';
+import { ICompany } from 'app/features/company/model/company.model';
 
 export interface IGoogleFeedProduct {
   id?: number;

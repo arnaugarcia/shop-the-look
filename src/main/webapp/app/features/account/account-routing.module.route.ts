@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
-import { CompanyComponent } from '../../entities/company/list/company.component';
 import { PasswordComponent } from './pages/password/password.component';
 
 const accountRoute: Routes = [
@@ -20,10 +19,6 @@ const accountRoute: Routes = [
       {
         path: 'settings',
         component: SettingsComponent,
-      },
-      {
-        path: 'company',
-        component: CompanyComponent,
       },
       {
         path: 'password',

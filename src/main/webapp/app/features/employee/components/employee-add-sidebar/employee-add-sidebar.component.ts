@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { EmployeeRequest } from '../../models/employee.model';
 import { EmployeeService } from '../../services/employee.service';
 import { CoreSidebarComponent } from '../../../../../@core/components/core-sidebar/core-sidebar.component';
-import { ICompany } from '../../../../entities/company/company.model';
-import { CompanyService } from '../../../../entities/company/service/company.service';
 import { HttpResponse } from '@angular/common/http';
 import { AccountService } from '../../../../core/auth/account.service';
 import { Subscription } from 'rxjs';
+import { ICompany } from '../../../company/model/company.model';
+import { CompanyService } from '../../../company/service/company.service';
 
 @Component({
   selector: 'stl-employee-add-sidebar',

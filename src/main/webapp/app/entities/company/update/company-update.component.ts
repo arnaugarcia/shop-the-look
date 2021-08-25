@@ -5,14 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import { Company, ICompany } from '../company.model';
-import { CompanyService } from '../service/company.service';
 import { IBillingAddress } from 'app/entities/billing-address/billing-address.model';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { ISubscriptionPlan } from 'app/entities/subscription-plan/subscription-plan.model';
 import { SubscriptionPlanService } from 'app/entities/subscription-plan/service/subscription-plan.service';
 import { BillingAddressService } from '../../../features/account/service/billing-address.service';
+import { CompanyService } from '../../../features/company/service/company.service';
+import { Company, ICompany } from '../../../features/company/model/company.model';
 
 @Component({
   selector: 'stl-company-update',

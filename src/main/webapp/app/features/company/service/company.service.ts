@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { getCompanyIdentifier, ICompany } from '../company.model';
+import { ICompany } from '../model/company.model';
 
 export type EntityResponseType = HttpResponse<ICompany>;
 export type EntityArrayResponseType = HttpResponse<ICompany[]>;
@@ -21,11 +19,7 @@ export class CompanyService {
   }
 
   update(company: ICompany): Observable<EntityResponseType> {
-    return this.http.put<ICompany>(`${this.resourceUrl}/${getCompanyIdentifier(company) as number}`, company, { observe: 'response' });
-  }
-
-  partialUpdate(company: ICompany): Observable<EntityResponseType> {
-    return this.http.patch<ICompany>(`${this.resourceUrl}/${getCompanyIdentifier(company) as number}`, company, { observe: 'response' });
+    return this.http.put<ICompany>(`${this.resourceUrl}/${company.reference!}`, company, { observe: 'response' });
   }
 
   find(reference: string): Observable<EntityResponseType> {
@@ -39,22 +33,5 @@ export class CompanyService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
-  }
-
-  addCompanyToCollectionIfMissing(companyCollection: ICompany[], ...companiesToCheck: (ICompany | null | undefined)[]): ICompany[] {
-    const companies: ICompany[] = companiesToCheck.filter(isPresent);
-    if (companies.length > 0) {
-      const companyCollectionIdentifiers = companyCollection.map(companyItem => getCompanyIdentifier(companyItem)!);
-      const companiesToAdd = companies.filter(companyItem => {
-        const companyIdentifier = getCompanyIdentifier(companyItem);
-        if (companyIdentifier == null || companyCollectionIdentifiers.includes(companyIdentifier)) {
-          return false;
-        }
-        companyCollectionIdentifiers.push(companyIdentifier);
-        return true;
-      });
-      return [...companiesToAdd, ...companyCollection];
-    }
-    return companyCollection;
   }
 }
