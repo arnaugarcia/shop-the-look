@@ -6,10 +6,10 @@ import { ICompany } from '../../model/company.model';
 import { CompanyDeleteDialogComponent } from '../../../../entities/company/delete/company-delete-dialog.component';
 
 @Component({
-  selector: 'stl-company',
-  templateUrl: './company.component.html',
+  selector: 'stl-company-list',
+  templateUrl: './company-list.component.html',
 })
-export class CompanyComponent implements OnInit {
+export class CompanyListComponent implements OnInit {
   companies?: ICompany[];
   isLoading = false;
 
