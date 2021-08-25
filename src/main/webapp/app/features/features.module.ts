@@ -18,7 +18,7 @@ import { RouterModule } from '@angular/router';
       {
         path: 'companies',
         // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
-        loadChildren: () => import('./company/company.module').then(m => m.CompanyModule),
+        loadChildren: () => import('./companies/companies.module').then(m => m.CompaniesModule),
       },
       {
         path: 'company',
