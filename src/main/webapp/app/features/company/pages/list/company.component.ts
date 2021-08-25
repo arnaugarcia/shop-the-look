@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { ICompany } from '../company.model';
-import { CompanyService } from '../service/company.service';
-import { CompanyDeleteDialogComponent } from '../delete/company-delete-dialog.component';
+import { CompanyService } from '../../service/company.service';
+import { ICompany } from '../../model/company.model';
+import { CompanyDeleteDialogComponent } from '../../../../entities/company/delete/company-delete-dialog.component';
 
 @Component({
   selector: 'stl-company',

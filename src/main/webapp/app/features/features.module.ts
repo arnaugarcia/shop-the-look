@@ -16,6 +16,16 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
       },
       {
+        path: 'companies',
+        // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
+        loadChildren: () => import('./company/company.module').then(m => m.CompanyModule),
+      },
+      {
+        path: 'company',
+        // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
+        loadChildren: () => import('./company/company.module').then(m => m.CompanyModule),
+      },
+      {
         path: 'account',
         // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
         loadChildren: () => import('./account/account.module').then(m => m.AccountModule),

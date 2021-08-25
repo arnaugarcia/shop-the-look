@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CompanyComponent } from './pages/list/company.component';
 
 const companyRoute: Routes = [
   {
     path: '',
-    redirectTo: '/',
+    component: CompanyComponent,
   },
 ];
 
