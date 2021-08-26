@@ -19,7 +19,7 @@ export class CompanyService {
   }
 
   update(company: ICompany): Observable<EntityResponseType> {
-    return this.http.put<ICompany>(`${this.resourceUrl}/${company.reference!}`, company, { observe: 'response' });
+    return this.http.put<ICompany>(`${this.resourceUrl}`, company, { observe: 'response' });
   }
 
   find(reference: string): Observable<EntityResponseType> {

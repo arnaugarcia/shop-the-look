@@ -26,7 +26,7 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   private routeSubscription = new Subscription();
 
-  private companyReference?: string;
+  private readonly companyReference?: string;
 
   constructor(
     private formBuilder: FormBuilder,
