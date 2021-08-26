@@ -8,6 +8,8 @@ import { CompanyComponent } from './pages/company/company.component';
 import { BillingComponent } from './pages/billing/billing.component';
 import { SubscriptionComponent } from './pages/subscription/subscription.component';
 import { ApiKeyComponent } from './pages/api-key/api-key.component';
+import { CompanyModalErrorComponent } from './component/company-modal-error/company-modal-error.component';
+import { CompanyModalSuccessComponent } from './component/company-modal-success/company-modal-success.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { ApiKeyComponent } from './pages/api-key/api-key.component';
     CompanyComponent,
     SubscriptionComponent,
     ApiKeyComponent,
+    CompanyModalErrorComponent,
+    CompanyModalSuccessComponent,
   ],
   imports: [SharedModule],
 })

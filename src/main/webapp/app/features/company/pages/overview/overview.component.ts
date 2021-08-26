@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { AccountService } from '../../../../core/auth/account.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CompanyModalSuccessComponent } from '../../component/company-modal-success/company-modal-success.component';
+import { CompanyModalErrorComponent } from '../../component/company-modal-error/company-modal-error.component';
 
 @Component({
   selector: 'stl-overview',
@@ -23,7 +26,6 @@ export class OverviewComponent implements OnInit {
     url: [null, [Validators.required]],
     phone: [null, [Validators.required]],
     email: [null, [Validators.required]],
-    token: [null, [Validators.required]],
     type: [],
     industry: [],
     companySize: [],
@@ -37,7 +39,8 @@ export class OverviewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private companyService: CompanyService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -80,11 +83,17 @@ export class OverviewComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    console.error('success');
+    this.modalService.open(CompanyModalSuccessComponent, {
+      centered: true,
+      windowClass: 'modal modal-success',
+    });
   }
 
   protected onSaveError(): void {
-    // Api for inheritance.
+    this.modalService.open(CompanyModalErrorComponent, {
+      centered: true,
+      windowClass: 'modal modal-danger',
+    });
   }
 
   protected onSaveFinalize(): void {
