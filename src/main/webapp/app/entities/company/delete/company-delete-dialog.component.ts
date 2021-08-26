@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { ICompany } from '../company.model';
-import { CompanyService } from '../service/company.service';
+import { ICompany } from '../../../features/company/model/company.model';
+import { CompanyService } from '../../../features/company/service/company.service';
 
 @Component({
   templateUrl: './company-delete-dialog.component.html',
@@ -16,8 +15,8 @@ export class CompanyDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: number): void {
-    this.companyService.delete(id).subscribe(() => {
+  confirmDelete(reference: string): void {
+    this.companyService.delete(reference).subscribe(() => {
       this.activeModal.close('deleted');
     });
   }

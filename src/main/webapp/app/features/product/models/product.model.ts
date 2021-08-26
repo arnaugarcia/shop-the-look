@@ -1,4 +1,4 @@
-import { ICompany } from 'app/entities/company/company.model';
+import { ICompany } from '../../company/model/company.model';
 
 export interface IProduct {
   sku?: string;

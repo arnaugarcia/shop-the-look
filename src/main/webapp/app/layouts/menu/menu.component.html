@@ -60,24 +60,30 @@
         </li>
       </ul>
     </li>
-    <li
-      *stlHasAnyAuthority="['ROLE_MANAGER', 'ROLE_ADMIN']"
-      [class.open]="!employeesMenuCollapsed"
-      [ngbCollapse]="false"
-      class="nav-item"
-      routerLinkActive="active"
-    >
+    <li *stlHasAnyAuthority="['ROLE_MANAGER', 'ROLE_ADMIN']" [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
       <a [routerLink]="'/employees'" class="d-flex align-items-center">
         <span [data-feather]="'users'"></span>
         <span class="menu-title text-truncate">Employees</span>
       </a>
     </li>
+    <li *stlHasAnyAuthority="'ROLE_MANAGER'" [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/company'" class="d-flex align-items-center">
+        <span [data-feather]="'briefcase'"></span>
+        <span class="menu-title text-truncate">My company</span>
+      </a>
+    </li>
+    <li *stlHasAnyAuthority="'ROLE_ADMIN'" [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/companies'" class="d-flex align-items-center">
+        <span [data-feather]="'briefcase'"></span>
+        <span class="menu-title text-truncate">Companies</span>
+      </a>
+    </li>
     <li
+      *stlHasAnyAuthority="'ROLE_ADMIN'"
       [class.open]="!adminMenuCollapsed"
       [ngbCollapse]="false"
+      [routerLinkActive]="['active', 'open']"
       class="nav-item has-sub"
-      *stlHasAnyAuthority="'ROLE_ADMIN'"
-      routerLinkActive="active"
     >
       <a (click)="adminMenuCollapsed = !adminMenuCollapsed" class="d-flex align-items-center">
         <span [data-feather]="'settings'"></span>

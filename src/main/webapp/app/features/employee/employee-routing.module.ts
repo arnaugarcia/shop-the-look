@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Authority } from '../../config/authority.constants';
 import { UserRouteAccessService } from '../../core/auth/user-route-access.service';
-import { EmployeeListComponent } from './pages/list/employee-list/employee-list.component';
+import { EmployeeListComponent } from './pages/list/employee-list.component';
 
 const employeesRoute: Routes = [
   {

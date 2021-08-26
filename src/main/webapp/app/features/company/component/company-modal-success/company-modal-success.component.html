@@ -1,0 +1,10 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="myModalLabel160">Yay!</h5>
+  <button (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">All the settings were saved successfully!</div>
+<div class="modal-footer">
+  <button (click)="activeModal.close('Accept click')" class="btn btn-success" ngbAutofocus rippleEffect type="button">Accept</button>
+</div>

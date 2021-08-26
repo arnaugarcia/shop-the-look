@@ -3,12 +3,12 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { ISpace, Space } from '../space.model';
 import { SpaceService } from '../service/space.service';
-import { ICompany } from 'app/entities/company/company.model';
-import { CompanyService } from 'app/entities/company/service/company.service';
+import { CompanyService } from '../../../features/company/service/company.service';
+import { ICompany } from '../../../features/company/model/company.model';
 
 @Component({
   selector: 'stl-space-update',
@@ -59,10 +59,6 @@ export class SpaceUpdateComponent implements OnInit {
     }
   }
 
-  trackCompanyById(index: number, item: ICompany): number {
-    return item.id!;
-  }
-
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ISpace>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -94,17 +90,17 @@ export class SpaceUpdateComponent implements OnInit {
       company: space.company,
     });
 
-    this.companiesSharedCollection = this.companyService.addCompanyToCollectionIfMissing(this.companiesSharedCollection, space.company);
+    // this.companiesSharedCollection = this.companyService.addCompanyToCollectionIfMissing(this.companiesSharedCollection, space.company);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.companyService
+    /* this.companyService
       .query()
       .pipe(map((res: HttpResponse<ICompany[]>) => res.body ?? []))
       .pipe(
         map((companies: ICompany[]) => this.companyService.addCompanyToCollectionIfMissing(companies, this.editForm.get('company')!.value))
       )
-      .subscribe((companies: ICompany[]) => (this.companiesSharedCollection = companies));
+      .subscribe((companies: ICompany[]) => (this.companiesSharedCollection = companies)); */
   }
 
   protected createFromForm(): ISpace {

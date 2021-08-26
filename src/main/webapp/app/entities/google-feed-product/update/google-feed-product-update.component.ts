@@ -3,15 +3,15 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
-import { IGoogleFeedProduct, GoogleFeedProduct } from '../google-feed-product.model';
+import { GoogleFeedProduct, IGoogleFeedProduct } from '../google-feed-product.model';
 import { GoogleFeedProductService } from '../service/google-feed-product.service';
-import { ICompany } from 'app/entities/company/company.model';
-import { CompanyService } from 'app/entities/company/service/company.service';
+import { ICompany } from 'app/features/company/model/company.model';
+import { CompanyService } from '../../../features/company/service/company.service';
 
 @Component({
   selector: 'stl-google-feed-product-update',
@@ -76,10 +76,6 @@ export class GoogleFeedProductUpdateComponent implements OnInit {
     }
   }
 
-  trackCompanyById(index: number, item: ICompany): number {
-    return item.id!;
-  }
-
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IGoogleFeedProduct>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -120,20 +116,20 @@ export class GoogleFeedProductUpdateComponent implements OnInit {
       company: googleFeedProduct.company,
     });
 
-    this.companiesSharedCollection = this.companyService.addCompanyToCollectionIfMissing(
+    /* this.companiesSharedCollection = this.companyService.addCompanyToCollectionIfMissing(
       this.companiesSharedCollection,
       googleFeedProduct.company
-    );
+    ); */
   }
 
   protected loadRelationshipsOptions(): void {
-    this.companyService
+    /* this.companyService
       .query()
       .pipe(map((res: HttpResponse<ICompany[]>) => res.body ?? []))
       .pipe(
         map((companies: ICompany[]) => this.companyService.addCompanyToCollectionIfMissing(companies, this.editForm.get('company')!.value))
       )
-      .subscribe((companies: ICompany[]) => (this.companiesSharedCollection = companies));
+      .subscribe((companies: ICompany[]) => (this.companiesSharedCollection = companies)); */
   }
 
   protected createFromForm(): IGoogleFeedProduct {

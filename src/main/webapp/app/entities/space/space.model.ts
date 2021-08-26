@@ -1,5 +1,5 @@
 import { IPhoto } from 'app/entities/photo/photo.model';
-import { ICompany } from 'app/entities/company/company.model';
+import { ICompany } from 'app/features/company/model/company.model';
 
 export interface ISpace {
   id?: number;

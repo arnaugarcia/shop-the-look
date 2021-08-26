@@ -5,14 +5,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import { Company, ICompany } from '../company.model';
-import { CompanyService } from '../service/company.service';
-import { IBillingAddress } from 'app/entities/billing-address/billing-address.model';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { ISubscriptionPlan } from 'app/entities/subscription-plan/subscription-plan.model';
 import { SubscriptionPlanService } from 'app/entities/subscription-plan/service/subscription-plan.service';
-import { BillingAddressService } from '../../../features/account/service/billing-address.service';
+import { CompanyService } from '../../../features/company/service/company.service';
+import { Company, ICompany } from '../../../features/company/model/company.model';
+import { IBillingAddress } from '../../../features/company/model/billing-address.model';
 
 @Component({
   selector: 'stl-company-update',
@@ -47,7 +46,6 @@ export class CompanyUpdateComponent implements OnInit {
 
   constructor(
     protected companyService: CompanyService,
-    protected billingAddressService: BillingAddressService,
     protected userService: UserService,
     protected subscriptionPlanService: SubscriptionPlanService,
     protected activatedRoute: ActivatedRoute,
@@ -77,7 +75,7 @@ export class CompanyUpdateComponent implements OnInit {
   }
 
   trackBillingAddressById(index: number, item: IBillingAddress): number {
-    return item.id!;
+    return 0;
   }
 
   trackUserById(index: number, item: IUser): number {

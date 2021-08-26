@@ -1,0 +1,55 @@
+<div>
+  <h2 id="page-heading" data-cy="CompanyHeading">
+    <span stlTranslate="shopTheLookApp.company.home.title">Companies</span>
+
+    <div class="d-flex justify-content-end">
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-company"
+        [routerLink]="['/company/new']"
+        disabled
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span stlTranslate="shopTheLookApp.company.home.createLabel"> Create a new Company </span>
+      </button>
+    </div>
+  </h2>
+
+  <stl-alert-error></stl-alert-error>
+
+  <stl-alert></stl-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="companies?.length === 0">
+    <span stlTranslate="shopTheLookApp.company.home.notFound">No companies found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="companies && companies.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.reference">Reference</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.name">Name</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.commercialName">Commercial Name</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.nif">Nif</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.phone">Phone</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.email">Email</span></th>
+          <th scope="col"><span stlTranslate="shopTheLookApp.company.token">Token</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let company of companies" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/company', company.reference]">{{ company.reference }}</a>
+          </td>
+          <td>{{ company.name }}</td>
+          <td>{{ company.commercialName }}</td>
+          <td>{{ company.nif }}</td>
+          <td>{{ company.phone }}</td>
+          <td>{{ company.email }}</td>
+          <td>{{ company.token }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

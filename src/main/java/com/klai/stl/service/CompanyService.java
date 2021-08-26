@@ -97,4 +97,11 @@ public interface CompanyService {
      * @return the persisted entity.
      */
     PreferencesDTO updatePreferences(String companyReference, PreferencesRequest preferencesRequest);
+
+    /**
+     * Get the company by current user
+     *
+     * @return the entity
+     */
+    CompanyDTO findByCurrentUser();
 }

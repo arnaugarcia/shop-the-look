@@ -38,12 +38,6 @@
         <dd>
           <span>{{ space.visible }}</span>
         </dd>
-        <dt><span stlTranslate="shopTheLookApp.space.company">Company</span></dt>
-        <dd>
-          <div *ngIf="space.company">
-            <a [routerLink]="['/company', space.company?.id, 'view']">{{ space.company?.nif }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
