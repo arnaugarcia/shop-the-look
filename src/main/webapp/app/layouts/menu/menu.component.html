@@ -78,7 +78,13 @@
         <span class="menu-title text-truncate">Companies</span>
       </a>
     </li>
-    <li [ngbCollapse]="false" class="nav-item has-sub" *stlHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active">
+    <li
+      *stlHasAnyAuthority="'ROLE_ADMIN'"
+      [class.open]="!adminMenuCollapsed"
+      [ngbCollapse]="false"
+      [routerLinkActive]="['active', 'open']"
+      class="nav-item has-sub"
+    >
       <a (click)="adminMenuCollapsed = !adminMenuCollapsed" class="d-flex align-items-center">
         <span [data-feather]="'settings'"></span>
         <span class="menu-title text-truncate" stlTranslate="global.menu.admin.main">Administration</span>
