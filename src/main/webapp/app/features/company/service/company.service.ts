@@ -26,6 +26,10 @@ export class CompanyService {
     return this.http.get<ICompany>(`${this.resourceUrl}/${reference}`, { observe: 'response' });
   }
 
+  findByCurrentUser(): Observable<EntityResponseType> {
+    return this.http.get<ICompany>(`${this.applicationConfigService.getEndpointFor('api/company')}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ICompany[]>(this.resourceUrl, { params: options, observe: 'response' });

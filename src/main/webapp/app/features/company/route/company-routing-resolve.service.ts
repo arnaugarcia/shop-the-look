@@ -12,7 +12,19 @@ export class CompanyRoutingResolveService implements Resolve<ICompany> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<ICompany> | Promise<ICompany> | ICompany {
     const reference = route.parent?.params.reference;
-    return this.service.find(reference).pipe(
+    if (reference) {
+      return this.service.find(reference).pipe(
+        mergeMap((response: HttpResponse<ICompany>) => {
+          if (response.body) {
+            return of(response.body);
+          }
+          this.router.navigate(['/404']);
+          throw Error();
+        })
+      );
+    }
+
+    return this.service.findByCurrentUser().pipe(
       mergeMap((response: HttpResponse<ICompany>) => {
         if (response.body) {
           return of(response.body);

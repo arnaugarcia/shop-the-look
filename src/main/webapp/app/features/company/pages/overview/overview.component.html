@@ -18,9 +18,9 @@
     <div class="media-body mt-50">
       <h4>{{ editForm.get('name')?.value }}</h4>
       <div class="col-12 d-flex mt-1 px-0">
-        <label class="btn btn-primary mr-75 mb-0" for="change-picture">
+        <label class="btn btn-primary mr-75 mb-0 disabled" for="change-picture">
           <span class="d-none d-sm-block">Change</span>
-          <input accept="image/png, image/jpeg, image/jpg" class="form-control" disabled hidden id="change-picture" type="file" />
+          <input accept="image/png, image/jpeg, image/jpg" class="form-control disabled" disabled hidden id="change-picture" type="file" />
           <span class="d-block d-sm-none">
             <i class="mr-0" data-feather="edit"></i>
           </span>
@@ -53,7 +53,26 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="name">Name</label>
-          <input class="form-control" formControlName="name" id="name" name="name" placeholder="Acme Corporation" required type="text" />
+          <input
+            [ngClass]="{
+              'is-invalid':
+                editForm.get('name')!.invalid &&
+                (editForm.get('name')!.dirty || editForm.get('name')!.touched) &&
+                editForm.get('name')!.errors
+            }"
+            class="form-control"
+            formControlName="name"
+            id="name"
+            name="name"
+            placeholder="Acme Corporation"
+            required
+            type="text"
+          />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small *ngIf="editForm.get('name')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
         </div>
       </div>
       <div class="col-md-4">
@@ -77,13 +96,49 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="url">URL</label>
-          <input class="form-control" formControlName="url" id="url" name="url" placeholder="https://acme.inc" required type="text" />
+          <input
+            [ngClass]="{
+              'is-invalid':
+                editForm.get('url')!.invalid && (editForm.get('url')!.dirty || editForm.get('url')!.touched) && editForm.get('url')!.errors
+            }"
+            class="form-control"
+            formControlName="url"
+            id="url"
+            name="url"
+            placeholder="https://acme.inc"
+            required
+            type="text"
+          />
+          <div *ngIf="editForm.get('url')!.invalid && (editForm.get('url')!.dirty || editForm.get('url')!.touched)">
+            <small *ngIf="editForm.get('url')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           <label for="phone">Phone</label>
-          <input class="form-control" formControlName="phone" id="phone" name="phone" placeholder="+34692563938" required type="text" />
+          <input
+            [ngClass]="{
+              'is-invalid':
+                editForm.get('phone')!.invalid &&
+                (editForm.get('phone')!.dirty || editForm.get('phone')!.touched) &&
+                editForm.get('phone')!.errors
+            }"
+            class="form-control"
+            formControlName="phone"
+            id="phone"
+            name="phone"
+            placeholder="+34692563938"
+            required
+            type="text"
+          />
+          <div *ngIf="editForm.get('phone')!.invalid && (editForm.get('phone')!.dirty || editForm.get('phone')!.touched)">
+            <small *ngIf="editForm.get('phone')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
         </div>
       </div>
       <div class="col-md-4">
@@ -131,7 +186,9 @@
         </div>
       </div>
       <div class="col-12 d-flex flex-sm-row flex-column mt-2">
-        <button class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">Save Changes</button>
+        <button [disabled]="editForm.invalid" class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">
+          Save Changes
+        </button>
       </div>
     </div>
   </form>

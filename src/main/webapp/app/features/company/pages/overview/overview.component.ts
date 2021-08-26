@@ -29,7 +29,7 @@ export class OverviewComponent implements OnInit {
     companySize: [],
   });
 
-  private isSaving = false;
+  public isSaving = false;
 
   private companyReference?: string;
 

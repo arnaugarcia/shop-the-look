@@ -48,7 +48,6 @@
           <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.condition">Condition</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.adult">Adult</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.ageGroup">Age Group</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.googleFeedProduct.company">Company</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -76,11 +75,6 @@
           </td>
           <td>{{ googleFeedProduct.adult }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.GoogleFeedAgeGroup.' + googleFeedProduct.ageGroup }}">{{ googleFeedProduct.ageGroup }}</td>
-          <td>
-            <div *ngIf="googleFeedProduct.company">
-              <a [routerLink]="['/company', googleFeedProduct.company?.id, 'view']">{{ googleFeedProduct.company?.nif }}</a>
-            </div>
-          </td>
           <td class="text-right">
             <div class="btn-group">
               <button
