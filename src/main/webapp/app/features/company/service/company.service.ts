@@ -31,7 +31,7 @@ export class CompanyService {
     return this.http.get<ICompany[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  delete(reference: string): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${reference}`, { observe: 'response' });
   }
 }

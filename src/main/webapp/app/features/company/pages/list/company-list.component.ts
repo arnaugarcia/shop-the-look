@@ -33,10 +33,6 @@ export class CompanyListComponent implements OnInit {
     this.loadAll();
   }
 
-  trackId(index: number, item: ICompany): number {
-    return item.id!;
-  }
-
   delete(company: ICompany): void {
     const modalRef = this.modalService.open(CompanyDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.company = company;

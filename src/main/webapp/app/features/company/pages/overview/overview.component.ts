@@ -28,6 +28,7 @@ export class OverviewComponent implements OnInit {
     industry: [],
     companySize: [],
   });
+
   private isSaving = false;
 
   private companyReference?: string;

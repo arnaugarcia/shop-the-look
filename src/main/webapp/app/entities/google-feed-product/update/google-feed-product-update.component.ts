@@ -76,10 +76,6 @@ export class GoogleFeedProductUpdateComponent implements OnInit {
     }
   }
 
-  trackCompanyById(index: number, item: ICompany): number {
-    return item.id!;
-  }
-
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IGoogleFeedProduct>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),

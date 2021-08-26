@@ -83,25 +83,45 @@
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="type">Type</label>
-          <select class="form-control" formControlName="type" id="type" name="type">
-            <option>active</option>
+          <label class="form-control-label" for="field_type" stlTranslate="shopTheLookApp.company.type">Type</label>
+          <select class="form-control" data-cy="type" formControlName="type" id="field_type" name="type">
+            <option [ngValue]="null">{{ 'shopTheLookApp.CompanyType.null' | translate }}</option>
+            <option value="PRIVATE">{{ 'shopTheLookApp.CompanyType.PRIVATE' | translate }}</option>
+            <option value="SELF_EMPLOYEE">{{ 'shopTheLookApp.CompanyType.SELF_EMPLOYEE' | translate }}</option>
           </select>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="industry">Industry</label>
-          <select class="form-control" formControlName="industry" id="industry" name="industry">
-            <option>active</option>
+          <label class="form-control-label" for="field_industry" stlTranslate="shopTheLookApp.company.industry">Industry</label>
+          <select class="form-control" data-cy="industry" formControlName="industry" id="field_industry" name="industry">
+            <option [ngValue]="null">{{ 'shopTheLookApp.CompanyIndustry.null' | translate }}</option>
+            <option value="AUTOMOTIVE">{{ 'shopTheLookApp.CompanyIndustry.AUTOMOTIVE' | translate }}</option>
+            <option value="PHARMACY_COSMETICS">{{ 'shopTheLookApp.CompanyIndustry.PHARMACY_COSMETICS' | translate }}</option>
+            <option value="TECHNOLOGICAL_ELECTRONIC">{{ 'shopTheLookApp.CompanyIndustry.TECHNOLOGICAL_ELECTRONIC' | translate }}</option>
+            <option value="CLOTHES_ACCESSORIES">{{ 'shopTheLookApp.CompanyIndustry.CLOTHES_ACCESSORIES' | translate }}</option>
+            <option value="SPORTS">{{ 'shopTheLookApp.CompanyIndustry.SPORTS' | translate }}</option>
+            <option value="CHILDCARE">{{ 'shopTheLookApp.CompanyIndustry.CHILDCARE' | translate }}</option>
+            <option value="PETS">{{ 'shopTheLookApp.CompanyIndustry.PETS' | translate }}</option>
+            <option value="HOME_GARDEN">{{ 'shopTheLookApp.CompanyIndustry.HOME_GARDEN' | translate }}</option>
+            <option value="FOOD_DRINKS">{{ 'shopTheLookApp.CompanyIndustry.FOOD_DRINKS' | translate }}</option>
+            <option value="TOYS_HOBBIES">{{ 'shopTheLookApp.CompanyIndustry.TOYS_HOBBIES' | translate }}</option>
+            <option value="LEISURE">{{ 'shopTheLookApp.CompanyIndustry.LEISURE' | translate }}</option>
+            <option value="CULTURE">{{ 'shopTheLookApp.CompanyIndustry.CULTURE' | translate }}</option>
+            <option value="OTHER">{{ 'shopTheLookApp.CompanyIndustry.OTHER' | translate }}</option>
           </select>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="companySize">Company size</label>
-          <select class="form-control" formControlName="companySize" id="companySize" name="companySize">
-            <option>active</option>
+          <label class="form-control-label" for="field_companySize" stlTranslate="shopTheLookApp.company.companySize">Company Size</label>
+          <select class="form-control" data-cy="companySize" formControlName="companySize" id="field_companySize" name="companySize">
+            <option [ngValue]="null">{{ 'shopTheLookApp.CompanySize.null' | translate }}</option>
+            <option value="STARTUP">{{ 'shopTheLookApp.CompanySize.STARTUP' | translate }}</option>
+            <option value="SMALL">{{ 'shopTheLookApp.CompanySize.SMALL' | translate }}</option>
+            <option value="MEDIUM">{{ 'shopTheLookApp.CompanySize.MEDIUM' | translate }}</option>
+            <option value="LARGE">{{ 'shopTheLookApp.CompanySize.LARGE' | translate }}</option>
+            <option value="INTERNATIONAL">{{ 'shopTheLookApp.CompanySize.INTERNATIONAL' | translate }}</option>
           </select>
         </div>
       </div>

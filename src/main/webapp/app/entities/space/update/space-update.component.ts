@@ -59,10 +59,6 @@ export class SpaceUpdateComponent implements OnInit {
     }
   }
 
-  trackCompanyById(index: number, item: ICompany): number {
-    return item.id!;
-  }
-
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ISpace>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),

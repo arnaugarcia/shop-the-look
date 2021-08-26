@@ -36,7 +36,6 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
-          <th scope="col"><span stlTranslate="shopTheLookApp.company.reference">ID</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.name">Name</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.commercialName">Commercial Name</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.nif">Nif</span></th>
@@ -49,13 +48,11 @@
           <th scope="col"><span stlTranslate="shopTheLookApp.company.token">Token</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.industry">Industry</span></th>
           <th scope="col"><span stlTranslate="shopTheLookApp.company.companySize">Company Size</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.company.user">User</span></th>
-          <th scope="col"><span stlTranslate="shopTheLookApp.company.subscriptionPlan">Subscription Plan</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let company of companies; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let company of companies" data-cy="entityTable">
           <td>
             <a [routerLink]="['/company', company.reference]">{{ company.reference }}</a>
           </td>
@@ -73,29 +70,11 @@
           <td>{{ company.token }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.CompanyIndustry.' + company.industry }}">{{ company.industry }}</td>
           <td stlTranslate="{{ 'shopTheLookApp.CompanySize.' + company.companySize }}">{{ company.companySize }}</td>
-          <td>
-            <span *ngFor="let user of company.users; let last = last"> {{ user.login }}{{ last ? '' : ', ' }} </span>
-          </td>
-          <td>
-            <div *ngIf="company.subscriptionPlan">
-              <a [routerLink]="['/subscription-plan', company.subscriptionPlan?.id, 'view']">{{ company.subscriptionPlan?.name }}</a>
-            </div>
-          </td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/company', company.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" stlTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/company', company.id, 'edit']"
+                [routerLink]="['/company', company.reference, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
