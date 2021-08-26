@@ -6,6 +6,8 @@ import { CompanyListComponent } from './pages/list/company-list.component';
 import { OverviewComponent } from './pages/overview/overview.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { BillingComponent } from './pages/billing/billing.component';
+import { SubscriptionComponent } from './pages/subscription/subscription.component';
+import { ApiKeyComponent } from './pages/api-key/api-key.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { BillingComponent } from './pages/billing/billing.component';
     OverviewComponent,
     BillingComponent,
     CompanyComponent,
+    SubscriptionComponent,
+    ApiKeyComponent,
   ],
   imports: [SharedModule],
 })

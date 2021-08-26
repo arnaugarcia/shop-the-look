@@ -7,6 +7,8 @@ import { BillingComponent } from './pages/billing/billing.component';
 import { NgModule } from '@angular/core';
 import { CompanyModule } from './company.module';
 import { BillingAddressRoutingResolveService } from './route/billing-address-routing-resolve.service';
+import { SubscriptionComponent } from './pages/subscription/subscription.component';
+import { ApiKeyComponent } from './pages/api-key/api-key.component';
 
 @NgModule({
   imports: [CompanyModule],
@@ -59,6 +61,20 @@ export const COMPANY_CHILDREN_NAVIGATION = [
   {
     path: 'billing',
     component: BillingComponent,
+    resolve: {
+      billingAddress: BillingAddressRoutingResolveService,
+    },
+  },
+  {
+    path: 'subscription',
+    component: SubscriptionComponent,
+    resolve: {
+      billingAddress: BillingAddressRoutingResolveService,
+    },
+  },
+  {
+    path: 'api-key',
+    component: ApiKeyComponent,
     resolve: {
       billingAddress: BillingAddressRoutingResolveService,
     },
