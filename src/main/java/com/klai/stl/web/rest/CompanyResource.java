@@ -114,6 +114,19 @@ public class CompanyResource {
     }
 
     /**
+     * {@code GET  /companies : get the company of the current user
+     *
+     * @param reference the reference of the companyDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the companyDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/company")
+    public ResponseEntity<CompanyDTO> getCompanyByCurrentUser() {
+        log.debug("REST request to get Company for current user");
+        CompanyDTO companyDTO = companyService.findByCurrentUser();
+        return ok(companyDTO);
+    }
+
+    /**
      * {@code DELETE  /companies/:reference} : delete the referenced company.
      *
      * @param reference the reference of the company to delete.

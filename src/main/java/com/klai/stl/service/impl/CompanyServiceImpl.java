@@ -11,6 +11,7 @@ import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.security.SecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.TokenService;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.UserDTO;
@@ -45,10 +46,18 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final TokenService tokenService;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper, TokenService tokenService) {
+    private final UserService userService;
+
+    public CompanyServiceImpl(
+        CompanyRepository companyRepository,
+        CompanyMapper companyMapper,
+        TokenService tokenService,
+        UserService userService
+    ) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
         this.tokenService = tokenService;
+        this.userService = userService;
     }
 
     @Override
@@ -150,6 +159,11 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public PreferencesDTO updatePreferences(String companyReference, PreferencesRequest preferencesRequest) {
         return null;
+    }
+
+    @Override
+    public CompanyDTO findByCurrentUser() {
+        return companyMapper.toDto(findByReference(userService.getCurrentUserCompanyReference()));
     }
 
     @Override

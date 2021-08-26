@@ -550,6 +550,66 @@ public class CompanyResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(authorities = ADMIN, username = "current-admin")
+    void getCurrentUserCompany() throws Exception {
+        // Initialize the database
+        final User user = UserResourceIT.createEntity(em, "current-admin");
+        em.persist(user);
+        company.addUser(user);
+        companyRepository.saveAndFlush(company);
+
+        // Get the company
+        restCompanyMockMvc
+            .perform(get(ENTITY_API_URL_REFERENCE, company.getReference()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.commercialName").value(DEFAULT_COMMERCIAL_NAME))
+            .andExpect(jsonPath("$.nif").value(DEFAULT_NIF))
+            .andExpect(jsonPath("$.logo").value(DEFAULT_LOGO))
+            .andExpect(jsonPath("$.vat").value(DEFAULT_VAT))
+            .andExpect(jsonPath("$.url").value(DEFAULT_URL))
+            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.token").value(DEFAULT_TOKEN))
+            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
+            .andExpect(jsonPath("$.industry").value(DEFAULT_INDUSTRY.toString()))
+            .andExpect(jsonPath("$.companySize").value(DEFAULT_COMPANY_SIZE.toString()));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER, username = "current-manager")
+    void getCurrentUserManagerCompany() throws Exception {
+        // Initialize the database
+        final User user = UserResourceIT.createEntity(em, "current-manager");
+        em.persist(user);
+        company.addUser(user);
+        companyRepository.saveAndFlush(company);
+
+        // Get the company
+        restCompanyMockMvc
+            .perform(get(ENTITY_API_URL_REFERENCE, company.getReference()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.commercialName").value(DEFAULT_COMMERCIAL_NAME))
+            .andExpect(jsonPath("$.nif").value(DEFAULT_NIF))
+            .andExpect(jsonPath("$.logo").value(DEFAULT_LOGO))
+            .andExpect(jsonPath("$.vat").value(DEFAULT_VAT))
+            .andExpect(jsonPath("$.url").value(DEFAULT_URL))
+            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.token").value(DEFAULT_TOKEN))
+            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
+            .andExpect(jsonPath("$.industry").value(DEFAULT_INDUSTRY.toString()))
+            .andExpect(jsonPath("$.companySize").value(DEFAULT_COMPANY_SIZE.toString()));
+    }
+
+    @Test
+    @Transactional
     @WithMockUser(authorities = MANAGER)
     void getNonExistingCompanyAsManager() throws Exception {
         companyRepository.saveAndFlush(company);
