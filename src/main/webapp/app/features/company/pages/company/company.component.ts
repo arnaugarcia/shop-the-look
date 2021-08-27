@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { filter } from 'rxjs/operators';
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss'],
 })
-export class CompanyComponent implements OnInit {
+export class CompanyComponent implements OnInit, OnDestroy {
   public contentHeader: ContentHeader;
   private routeSubscription = new Subscription();
 
@@ -50,5 +50,9 @@ export class CompanyComponent implements OnInit {
         });
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 }
