@@ -5,9 +5,10 @@ import { CoreSidebarModule } from '../../../@core/components';
 import { EmployeeAddSidebarComponent } from './components/employee-add-sidebar/employee-add-sidebar.component';
 import { EmployeeDeleteDialogComponent } from './components/employee-delete/employee-delete-dialog.component';
 import { EmployeeListComponent } from './pages/list/employee-list.component';
+import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
 
 @NgModule({
-  imports: [SharedModule, EmployeeRoutingModule, CoreSidebarModule],
+  imports: [SharedModule, EmployeeRoutingModule, CoreSidebarModule, ContentHeaderModule],
   declarations: [EmployeeListComponent, EmployeeAddSidebarComponent, EmployeeDeleteDialogComponent],
 })
 export class EmployeeModule {}

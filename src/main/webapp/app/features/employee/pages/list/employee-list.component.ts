@@ -11,6 +11,7 @@ import { CoreSidebarComponent } from '../../../../../@core/components/core-sideb
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ICompany } from '../../../company/model/company.model';
 import { CompanyService } from '../../../company/service/company.service';
+import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 
 @Component({
   selector: 'stl-employee-list',
@@ -29,6 +30,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   public companies: ICompany[] = [];
   public AccountStatus = AccountStatus;
   public sidebar!: CoreSidebarComponent;
+  public contentHeader: ContentHeader;
 
   public searchText = '';
   public searchTextChanged: Subject<string> = new Subject<string>();
@@ -42,7 +44,26 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
     private employeeService: EmployeeService,
     private companyService: CompanyService,
     private modalService: NgbModal
-  ) {}
+  ) {
+    this.contentHeader = {
+      headerTitle: 'Employees',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/',
+          },
+          {
+            name: 'Employees',
+            isLink: false,
+          },
+        ],
+      },
+    };
+  }
 
   ngOnInit(): void {
     this.loadPage();
