@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.requests;
+package com.klai.stl.service.dto.requests.employee;
 
 import static com.klai.stl.config.Constants.LOGIN_REGEX;
 

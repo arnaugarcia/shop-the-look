@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.requests;
+package com.klai.stl.service.dto.requests.employee;
 
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;

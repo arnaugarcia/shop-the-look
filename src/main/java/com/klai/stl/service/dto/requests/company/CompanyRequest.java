@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.requests;
+package com.klai.stl.service.dto.requests.company;
 
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;

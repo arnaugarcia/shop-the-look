@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.requests;
+package com.klai.stl.service.dto.requests.company;
 
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
@@ -9,11 +9,13 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 @Value
-public final class NewCompanyRequest extends CompanyRequest implements Serializable {
+public final class UpdateCompanyRequest extends CompanyRequest implements Serializable {
+
+    private final String reference;
 
     @Builder
     @Jacksonized
-    public NewCompanyRequest(
+    public UpdateCompanyRequest(
         String name,
         String commercialName,
         String nif,
@@ -24,8 +26,10 @@ public final class NewCompanyRequest extends CompanyRequest implements Serializa
         String email,
         CompanyType type,
         CompanyIndustry industry,
-        CompanySize companySize
+        CompanySize companySize,
+        String reference
     ) {
         super(name, commercialName, nif, logo, vat, url, phone, email, type, industry, companySize);
+        this.reference = reference;
     }
 }

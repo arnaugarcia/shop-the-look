@@ -6,21 +6,21 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 @Value
-public final class NewProductRequest {
+public class NewProductRequest {
 
     @NotBlank
-    private final String name;
+    String name;
 
     @NotBlank
-    private final String link;
+    String link;
 
-    private final String description;
-
-    @NotBlank
-    private final String sku;
+    String description;
 
     @NotBlank
-    private final float price;
+    String sku;
+
+    @NotBlank
+    float price;
 
     @Builder
     @Jacksonized

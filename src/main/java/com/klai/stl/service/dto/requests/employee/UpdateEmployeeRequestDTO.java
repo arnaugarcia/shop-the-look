@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.requests;
+package com.klai.stl.service.dto.requests.employee;
 
 import java.io.Serializable;
 import lombok.Builder;

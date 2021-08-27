@@ -13,7 +13,7 @@ import com.klai.stl.repository.UserRepository;
 import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
-import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.employee.UpdateEmployeeRequestDTO;
 import com.klai.stl.service.exception.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
