@@ -1,7 +1,7 @@
 <div class="tab-pane">
   <stl-alert></stl-alert>
   <stl-alert-error></stl-alert-error>
-  <form (ngSubmit)="save()" [formGroup]="preferencesForm" name="preferencesForm">
+  <form (ngSubmit)="save()" [formGroup]="preferencesForm" class="mb-2" name="preferencesForm">
     <div class="row">
       <div class="col-12">
         <h2>Preferences</h2>
@@ -30,6 +30,7 @@
       </div>
     </div>
   </form>
+  <hr />
   <div *ngIf="preferences" class="row mt-2">
     <div class="col-12">
       <h2>Last import data</h2>
