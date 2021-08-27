@@ -89,14 +89,6 @@
     },
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "googleFeedProduct",
-      "otherEntityRelationshipName": "company",
-      "relationshipValidateRules": "required",
-      "relationshipName": "importedProduct",
-      "otherEntityField": "sku"
-    },
-    {
-      "relationshipType": "one-to-many",
       "otherEntityName": "space",
       "otherEntityRelationshipName": "company",
       "relationshipName": "space",

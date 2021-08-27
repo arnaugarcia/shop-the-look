@@ -22,11 +22,11 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     @Mapping(source = "id", target = "sku")
     FeedProduct toEntity(Item item);
 
-    @Mapping(source = "price", target = "price", qualifiedByName = "googleFeedProduct")
+    @Mapping(source = "price", target = "price", qualifiedByName = "feedPrice")
     @Mapping(source = "title", target = "name")
     NewProductRequest toRequest(FeedProduct feedProduct);
 
-    @Named("googleFeedProduct")
+    @Named("feedPrice")
     default Float googleFeedProduct(String price) {
         if (price == null) {
             return null;

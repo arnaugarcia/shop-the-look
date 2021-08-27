@@ -94,11 +94,6 @@ public class Company implements Serializable {
 
     @OneToMany(mappedBy = "company", orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
-    private Set<GoogleFeedProduct> importedProducts = new HashSet<>();
-
-    @OneToMany(mappedBy = "company", orphanRemoval = true)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "photos", "company" }, allowSetters = true)
     private Set<Space> spaces = new HashSet<>();
 
@@ -349,37 +344,6 @@ public class Company implements Serializable {
             products.forEach(i -> i.setCompany(this));
         }
         this.products = products;
-    }
-
-    public Set<GoogleFeedProduct> getImportedProducts() {
-        return this.importedProducts;
-    }
-
-    public Company importedProducts(Set<GoogleFeedProduct> googleFeedProducts) {
-        this.setImportedProducts(googleFeedProducts);
-        return this;
-    }
-
-    public Company addImportedProduct(GoogleFeedProduct googleFeedProduct) {
-        this.importedProducts.add(googleFeedProduct);
-        googleFeedProduct.setCompany(this);
-        return this;
-    }
-
-    public Company removeImportedProduct(GoogleFeedProduct googleFeedProduct) {
-        this.importedProducts.remove(googleFeedProduct);
-        googleFeedProduct.setCompany(null);
-        return this;
-    }
-
-    public void setImportedProducts(Set<GoogleFeedProduct> googleFeedProducts) {
-        if (this.importedProducts != null) {
-            this.importedProducts.forEach(i -> i.setCompany(null));
-        }
-        if (googleFeedProducts != null) {
-            googleFeedProducts.forEach(i -> i.setCompany(this));
-        }
-        this.importedProducts = googleFeedProducts;
     }
 
     public Set<Space> getSpaces() {
