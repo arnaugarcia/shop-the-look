@@ -1,1 +1,33 @@
-<p>preferences works!</p>
+<div class="tab-pane">
+  <stl-alert></stl-alert>
+  <stl-alert-error></stl-alert-error>
+  <form (ngSubmit)="save()" [formGroup]="preferencesForm" name="preferencesForm">
+    <div class="row">
+      <div class="col-12">
+        <h2>Preferences</h2>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="form-group">
+          <label for="url">Feed URL</label>
+          <input class="form-control" formControlName="url" id="url" name="url" placeholder="https://feed.acme.inc/feed.php" type="text" />
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="form-group">
+          <label for="importMethod">Import Method</label>
+          <select class="form-control" data-cy="importMethod" formControlName="importMethod" id="importMethod" name="importMethod">
+            <option [ngValue]="null">Select an option</option>
+            <option value="CSV">CSV</option>
+            <option value="TSV">TSV</option>
+            <option value="XML">FEED</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+        <button [disabled]="preferencesForm.invalid" class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -32,7 +32,7 @@ public class CompanyPreferencesResource {
      * @param reference the reference of the company preferences to update
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the preferencesDTO, or with status {@code 404 (Not Found)}.
      */
-    @PutMapping("/companies/{reference}/preferences")
+    @PutMapping("/preferences/{reference}")
     public ResponseEntity<PreferencesDTO> updatePreferences(
         @PathVariable String reference,
         @Valid @RequestBody PreferencesRequest preferencesRequest
@@ -47,7 +47,7 @@ public class CompanyPreferencesResource {
      * @param reference the company reference
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the preferences in body.
      */
-    @GetMapping("/companies/{reference}/preferences")
+    @GetMapping("/preferences/{reference}")
     public ResponseEntity<PreferencesDTO> getPreferences(@PathVariable String reference) {
         log.debug("REST request to get company preferences");
         return ok(preferencesService.find(reference));
