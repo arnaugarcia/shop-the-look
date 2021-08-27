@@ -11,6 +11,7 @@ import { ApiKeyComponent } from './pages/api-key/api-key.component';
 import { CompanyModalErrorComponent } from './component/company-modal-error/company-modal-error.component';
 import { CompanyModalSuccessComponent } from './component/company-modal-success/company-modal-success.component';
 import { PreferencesComponent } from './pages/preferences/preferences.component';
+import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,6 @@ import { PreferencesComponent } from './pages/preferences/preferences.component'
     CompanyModalSuccessComponent,
     PreferencesComponent,
   ],
-  imports: [SharedModule],
+  imports: [SharedModule, ContentHeaderModule],
 })
 export class CompanyModule {}

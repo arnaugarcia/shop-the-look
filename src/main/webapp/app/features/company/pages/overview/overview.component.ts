@@ -10,6 +10,7 @@ import { AccountService } from '../../../../core/auth/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CompanyModalSuccessComponent } from '../../component/company-modal-success/company-modal-success.component';
 import { CompanyModalErrorComponent } from '../../component/company-modal-error/company-modal-error.component';
+import { ContentHeaderModule } from '../../../../layouts/content-header/content-header.module';
 
 @Component({
   selector: 'stl-overview',
@@ -40,7 +41,8 @@ export class OverviewComponent implements OnInit {
     private formBuilder: FormBuilder,
     private companyService: CompanyService,
     private accountService: AccountService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private contentHeader: ContentHeaderModule
   ) {}
 
   ngOnInit(): void {
