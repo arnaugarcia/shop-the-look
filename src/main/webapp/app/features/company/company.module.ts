@@ -10,6 +10,7 @@ import { SubscriptionComponent } from './pages/subscription/subscription.compone
 import { ApiKeyComponent } from './pages/api-key/api-key.component';
 import { CompanyModalErrorComponent } from './component/company-modal-error/company-modal-error.component';
 import { CompanyModalSuccessComponent } from './component/company-modal-success/company-modal-success.component';
+import { PreferencesComponent } from './pages/preferences/preferences.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CompanyModalSuccessComponent } from './component/company-modal-success/
     ApiKeyComponent,
     CompanyModalErrorComponent,
     CompanyModalSuccessComponent,
+    PreferencesComponent,
   ],
   imports: [SharedModule],
 })

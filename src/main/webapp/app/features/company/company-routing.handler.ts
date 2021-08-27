@@ -10,6 +10,7 @@ import { BillingAddressRoutingResolveService } from './route/billing-address-rou
 import { SubscriptionComponent } from './pages/subscription/subscription.component';
 import { ApiKeyComponent } from './pages/api-key/api-key.component';
 import { CompanyRoutingResolveService } from './route/company-routing-resolve.service';
+import { PreferencesComponent } from './pages/preferences/preferences.component';
 
 @NgModule({
   imports: [CompanyModule],
@@ -60,6 +61,13 @@ export const COMPANY_CHILDREN_NAVIGATION = [
     component: OverviewComponent,
     resolve: {
       company: CompanyRoutingResolveService,
+    },
+  },
+  {
+    path: 'preferences',
+    component: PreferencesComponent,
+    resolve: {
+      billingAddress: BillingAddressRoutingResolveService,
     },
   },
   {

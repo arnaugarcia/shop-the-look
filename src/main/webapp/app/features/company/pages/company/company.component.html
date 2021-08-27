@@ -18,6 +18,12 @@
               </a>
             </li>
             <li>
+              <a [routerLinkActive]="'active'" [routerLink]="'preferences'" class="d-flex align-items-center nav-link">
+                <i [data-feather]="'sliders'" class="mr-sm-50"></i>
+                <span class="d-none d-sm-block">Preferences</span>
+              </a>
+            </li>
+            <li>
               <a [routerLinkActive]="'active'" [routerLink]="'subscription'" class="d-flex align-items-center nav-link">
                 <i [data-feather]="'rss'" class="mr-sm-50"></i>
                 <span class="d-none d-sm-block">Subscription</span>
