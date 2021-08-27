@@ -1,13 +1,13 @@
 package com.klai.stl.service.dto.requests.space;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import lombok.Value;
 
 @Value
-public class SpaceRequest {
+public class SpaceRequest implements Serializable {
 
     @NotNull
     String name;
@@ -16,5 +16,5 @@ public class SpaceRequest {
     String description;
 
     @NotNull
-    List<SpacePhotoRequest> photos = new ArrayList<>();
+    List<SpacePhotoRequest> photos;
 }
