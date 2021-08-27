@@ -8,8 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductFeedImportService } from '../../services/product-feed-import.service';
-import { PreferencesService } from '../../../account/service/preferences.service';
-import { ImportMethod, IPreferences } from '../../../account/pages/preferences/preferences.model';
+import { ImportMethod, IPreferences } from '../../../company/model/preferences.model';
+import { PreferencesService } from '../../../company/service/preferences.service';
 
 @Component({
   selector: 'stl-product',

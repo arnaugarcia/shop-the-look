@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./preferences.component.scss'],
 })
 export class PreferencesComponent implements OnInit {
+  public preferences?: IPreferences;
   public preferencesForm;
 
   constructor(private activatedRoute: ActivatedRoute, private preferencesService: PreferencesService, private formBuilder: FormBuilder) {
@@ -22,6 +23,7 @@ export class PreferencesComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ preferences }) => {
       this.updateForm(preferences);
+      this.preferences = preferences;
     });
   }
 

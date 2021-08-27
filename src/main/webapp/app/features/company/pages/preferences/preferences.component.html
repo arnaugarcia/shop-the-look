@@ -30,4 +30,28 @@
       </div>
     </div>
   </form>
+  <div *ngIf="preferences" class="row mt-2">
+    <div class="col-12">
+      <h2>Last import data</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>Remaining imports</span>
+          <span
+            [class.badge-danger]="preferences.remainingImports! <= 0"
+            [class.badge-primary]="preferences.remainingImports! > 0"
+            class="badge badge-pill"
+            >{{ preferences.remainingImports }}</span
+          >
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>Last person to update the products</span>
+          <span class="badge badge-primary badge-pill">{{ preferences.lastImportBy }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>last time that the products were updated</span>
+          <span class="badge badge-primary badge-pill">{{ preferences.lastImportTimestamp }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
