@@ -65,7 +65,7 @@ public class BillingAddressServiceImpl implements BillingAddressService {
         company.setBillingAddress(billingAddress);
 
         companyRepository.save(company);
-        return billingAddressMapper.toDto(billingAddress);
+        return billingAddressMapper.toDto(company.getBillingAddress());
     }
 
     private BillingAddress updateBillingAddressBy(BillingAddressRequest billingAddressRequest, BillingAddress billingAddressToUpdate) {
