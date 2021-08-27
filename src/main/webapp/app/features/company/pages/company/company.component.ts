@@ -40,7 +40,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.routeSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(routeEvent => {
+    this.routeSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       const path = this.router.url.split('/')[2];
       this.contentHeader.breadcrumb!.links = [this.HOME_PATH, this.COMPANY_PATH];
       if (path) {
