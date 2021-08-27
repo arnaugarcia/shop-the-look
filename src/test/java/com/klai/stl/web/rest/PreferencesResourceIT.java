@@ -41,7 +41,8 @@ class PreferencesResourceIT {
 
     private static final String DEFAULT_FEED_URL = "https://arnaugarcia.com";
 
-    private static final String ENTITY_API_URL = "/api/companies/{reference}/preferences";
+    private static final String ENTITY_API_URL = "/api/preferences/{reference}";
+    private static final String ENTITY_API_URL_CURRENT = "/api/preferences/";
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -270,5 +271,130 @@ class PreferencesResourceIT {
     @WithMockUser(authorities = ADMIN)
     void gettingPreferencesOfANotExistingCompanyAsAdmin() throws Exception {
         restPreferencesMockMvc.perform(get(ENTITY_API_URL, "NOT_FOUND")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER, username = "preferences-manager")
+    void updatingPreferenceAsCurrentManager() throws Exception {
+        User user = UserResourceIT.createEntity(em, "preferences-manager");
+        em.persist(user);
+        company.addUser(user);
+
+        em.persist(company);
+
+        restPreferencesMockMvc
+            .perform(put(ENTITY_API_URL_CURRENT).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(preferencesRequest)))
+            .andExpect(status().isOk());
+
+        final Optional<Company> byReference = companyRepository.findByReference(company.getReference());
+        assertThat(byReference).isPresent();
+
+        Company result = byReference.get();
+        assertThat(result.getPreferences().getFeedUrl()).isEqualTo(DEFAULT_FEED_URL);
+        assertThat(result.getPreferences().getImportMethod()).isEqualTo(DEFAULT_IMPORT_METHOD);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN, username = "preferences-admin-user")
+    void updatingPreferenceAsCurrentAdmin() throws Exception {
+        User user = UserResourceIT.createEntity(em, "preferences-admin-user");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL_CURRENT, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isOk());
+
+        final Optional<Company> byReference = companyRepository.findByReference(company.getReference());
+        assertThat(byReference).isPresent();
+
+        Company result = byReference.get();
+        assertThat(result.getPreferences().getFeedUrl()).isEqualTo(DEFAULT_FEED_URL);
+        assertThat(result.getPreferences().getImportMethod()).isEqualTo(DEFAULT_IMPORT_METHOD);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    void updatingMalformedUrlPreferenceAsCurrentUser() throws Exception {
+        em.persist(company);
+
+        final PreferencesRequest preferencesRequest = builder().feedUrl("AAAAAAAAA").importMethod(CSV).build();
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL_CURRENT, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    void updatingEmptyUrlPreferenceAsCurrentUser() throws Exception {
+        em.persist(company);
+
+        final PreferencesRequest preferencesRequest = builder().importMethod(CSV).build();
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL_CURRENT, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    void updatingEmptyImportMethodPreferenceAsCurrentUser() throws Exception {
+        em.persist(company);
+
+        final PreferencesRequest preferencesRequest = builder().feedUrl(DEFAULT_FEED_URL).importMethod(null).build();
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL_CURRENT, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER, username = "good-current-manager")
+    void gettingPreferencesAsCurrentManager() throws Exception {
+        User user = UserResourceIT.createEntity(em, "good-current-manager");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
+        restPreferencesMockMvc
+            .perform(
+                put(ENTITY_API_URL_CURRENT, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(preferencesRequest))
+            )
+            .andExpect(status().isOk());
+
+        final Optional<Company> byReference = companyRepository.findByReference(company.getReference());
+        assertThat(byReference).isPresent();
+
+        Company result = byReference.get();
+        assertThat(result.getPreferences().getFeedUrl()).isEqualTo(DEFAULT_FEED_URL);
+        assertThat(result.getPreferences().getImportMethod()).isEqualTo(DEFAULT_IMPORT_METHOD);
+
+        restPreferencesMockMvc.perform(get(ENTITY_API_URL_CURRENT)).andExpect(status().isOk());
     }
 }
