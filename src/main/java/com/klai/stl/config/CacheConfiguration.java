@@ -65,7 +65,6 @@ public class CacheConfiguration {
             createCache(cm, com.klai.stl.domain.SubscriptionPlan.class.getName());
             createCache(cm, com.klai.stl.domain.SubscriptionPlan.class.getName() + ".companies");
             createCache(cm, com.klai.stl.domain.Product.class.getName());
-            createCache(cm, com.klai.stl.domain.GoogleFeedProduct.class.getName());
             createCache(cm, com.klai.stl.domain.Coordinate.class.getName());
             createCache(cm, com.klai.stl.domain.Coordinate.class.getName() + ".products");
             createCache(cm, com.klai.stl.domain.BillingAddress.class.getName());

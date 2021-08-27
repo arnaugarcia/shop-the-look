@@ -42,7 +42,6 @@
       "Photo",
       "SubscriptionPlan",
       "Product",
-      "GoogleFeedProduct",
       "Coordinate",
       "BillingAddress",
       "Preferences"

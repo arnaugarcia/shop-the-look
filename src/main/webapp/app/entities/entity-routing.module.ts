@@ -30,11 +30,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./subscription-plan/subscription-plan.module').then(m => m.SubscriptionPlanModule),
       },
       {
-        path: 'google-feed-product',
-        data: { pageTitle: 'shopTheLookApp.googleFeedProduct.home.title' },
-        loadChildren: () => import('./google-feed-product/google-feed-product.module').then(m => m.GoogleFeedProductModule),
-      },
-      {
         path: 'coordinate',
         data: { pageTitle: 'shopTheLookApp.coordinate.home.title' },
         loadChildren: () => import('./coordinate/coordinate.module').then(m => m.CoordinateModule),

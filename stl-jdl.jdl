@@ -122,48 +122,14 @@ entity Product {
     category String
 }
 
-entity GoogleFeedProduct {
-	sku String required,
-    name String required,
-    description String required,
-    link String required,
-    imageLink String required,
-    additionalImageLink String,
-    mobileLink String,
-    availability GoogleFeedProductAvailability required,
-    availabilityDate ZonedDateTime,
-    price String required,
-    salePrice String required,
-    brand String,
-    condition GoogleFeedProductCondition,
-    adult Boolean,
-    ageGroup GoogleFeedAgeGroup
-}
-
 entity Coordinate {
 	x Double,
     y Double
 }
 
-enum GoogleFeedAgeGroup {
-	NEWBORN, INFANT, TODDLER, KIDS, ADULT
-}
-
-enum ProductAvailability {
-	IN_STOCK, OUT_OF_STOCK, PREORDER, BACKORDER
-}
-
-enum GoogleFeedProductCondition {
-	NEW, REFURBISHED, USED
-}
-
-enum GoogleFeedProductAvailability {
-	IN_STOCK, OUT_OF_STOCK, PREORDER, BACKORDER
-}
 
 relationship OneToMany {
     Company{product(sku) required} to Product{company(nif) required},
-    Company{importedProduct(sku) required} to GoogleFeedProduct{company(nif) required},
 
     Company{space(reference)} to Space{company(nif) required},
 
@@ -187,11 +153,11 @@ relationship ManyToMany {
 	Company{user(login) required} to User
 }
 
-dto * with mapstruct except GoogleFeedProduct
+dto * with mapstruct
 
-service * with serviceImpl except GoogleFeedProduct, Coordinate, Preferences
+service * with serviceImpl except Coordinate, Preferences
 
-filter Product, GoogleFeedProduct, Space, Photo
+filter Product, Space, Photo
 
 paginate Product, Space with pagination
 
