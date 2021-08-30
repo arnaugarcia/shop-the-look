@@ -17,14 +17,6 @@ public interface PhotoService {
     PhotoDTO save(PhotoDTO photoDTO);
 
     /**
-     * Partially updates a photo.
-     *
-     * @param photoDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<PhotoDTO> partialUpdate(PhotoDTO photoDTO);
-
-    /**
      * Get all the photos.
      *
      * @return the list of entities.

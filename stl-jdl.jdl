@@ -85,6 +85,7 @@ entity Photo {
 	name String,
     description String,
     link String required,
+    reference String required,
   	order Integer required,
     height Integer required,
     width Integer required,

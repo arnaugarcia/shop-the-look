@@ -45,28 +45,6 @@ public class CoordinateService {
     }
 
     /**
-     * Partially update a coordinate.
-     *
-     * @param coordinateDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<CoordinateDTO> partialUpdate(CoordinateDTO coordinateDTO) {
-        log.debug("Request to partially update Coordinate : {}", coordinateDTO);
-
-        return coordinateRepository
-            .findById(coordinateDTO.getId())
-            .map(
-                existingCoordinate -> {
-                    coordinateMapper.partialUpdate(existingCoordinate, coordinateDTO);
-
-                    return existingCoordinate;
-                }
-            )
-            .map(coordinateRepository::save)
-            .map(coordinateMapper::toDto);
-    }
-
-    /**
      * Get all the coordinates.
      *
      * @return the list of entities.

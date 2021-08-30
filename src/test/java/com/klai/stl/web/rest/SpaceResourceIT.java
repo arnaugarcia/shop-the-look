@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
-import com.klai.stl.domain.Photo;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.dto.SpaceDTO;
@@ -88,16 +87,6 @@ class SpaceResourceIT {
             .maxPhotos(DEFAULT_MAX_PHOTOS)
             .visible(DEFAULT_VISIBLE);
         // Add required entity
-        Photo photo;
-        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
-            photo = PhotoResourceIT.createEntity(em);
-            em.persist(photo);
-            em.flush();
-        } else {
-            photo = TestUtil.findAll(em, Photo.class).get(0);
-        }
-        space.getPhotos().add(photo);
-        // Add required entity
         Company company;
         if (TestUtil.findAll(em, Company.class).isEmpty()) {
             company = CompanyResourceIT.createEntity(em);
@@ -124,16 +113,6 @@ class SpaceResourceIT {
             .description(UPDATED_DESCRIPTION)
             .maxPhotos(UPDATED_MAX_PHOTOS)
             .visible(UPDATED_VISIBLE);
-        // Add required entity
-        Photo photo;
-        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
-            photo = PhotoResourceIT.createUpdatedEntity(em);
-            em.persist(photo);
-            em.flush();
-        } else {
-            photo = TestUtil.findAll(em, Photo.class).get(0);
-        }
-        space.getPhotos().add(photo);
         // Add required entity
         Company company;
         if (TestUtil.findAll(em, Company.class).isEmpty()) {
@@ -734,25 +713,6 @@ class SpaceResourceIT {
 
         // Get all the spaceList where visible is null
         defaultSpaceShouldNotBeFound("visible.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllSpacesByPhotoIsEqualToSomething() throws Exception {
-        // Initialize the database
-        spaceRepository.saveAndFlush(space);
-        Photo photo = PhotoResourceIT.createEntity(em);
-        em.persist(photo);
-        em.flush();
-        space.addPhoto(photo);
-        spaceRepository.saveAndFlush(space);
-        Long photoId = photo.getId();
-
-        // Get all the spaceList where photo equals to photoId
-        defaultSpaceShouldBeFound("photoId.equals=" + photoId);
-
-        // Get all the spaceList where photo equals to (photoId + 1)
-        defaultSpaceShouldNotBeFound("photoId.equals=" + (photoId + 1));
     }
 
     @Test

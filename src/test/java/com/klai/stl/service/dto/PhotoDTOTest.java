@@ -11,14 +11,14 @@ class PhotoDTOTest {
     void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(PhotoDTO.class);
         PhotoDTO photoDTO1 = new PhotoDTO();
-        photoDTO1.setId(1L);
+        photoDTO1.setReference("1L");
         PhotoDTO photoDTO2 = new PhotoDTO();
         assertThat(photoDTO1).isNotEqualTo(photoDTO2);
-        photoDTO2.setId(photoDTO1.getId());
+        photoDTO2.setReference(photoDTO1.getReference());
         assertThat(photoDTO1).isEqualTo(photoDTO2);
-        photoDTO2.setId(2L);
+        photoDTO2.setReference("2L");
         assertThat(photoDTO1).isNotEqualTo(photoDTO2);
-        photoDTO1.setId(null);
+        photoDTO1.setReference(null);
         assertThat(photoDTO1).isNotEqualTo(photoDTO2);
     }
 }

@@ -4,7 +4,6 @@ import static com.klai.stl.web.rest.ProductResourceIT.createProduct;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Coordinate;
-import com.klai.stl.domain.Photo;
 import com.klai.stl.domain.Product;
 import javax.persistence.EntityManager;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,16 +38,6 @@ class CoordinateResourceIT {
             product = TestUtil.findAll(em, Product.class).get(0);
         }
         coordinate.getProducts().add(product);
-        // Add required entity
-        Photo photo;
-        if (TestUtil.findAll(em, Photo.class).isEmpty()) {
-            photo = PhotoResourceIT.createEntity(em);
-            em.persist(photo);
-            em.flush();
-        } else {
-            photo = TestUtil.findAll(em, Photo.class).get(0);
-        }
-        coordinate.setPhoto(photo);
         return coordinate;
     }
 }

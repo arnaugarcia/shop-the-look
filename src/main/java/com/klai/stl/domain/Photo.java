@@ -35,6 +35,10 @@ public class Photo implements Serializable {
     private String link;
 
     @NotNull
+    @Column(name = "reference", nullable = false)
+    private String reference;
+
+    @NotNull
     @Column(name = "stl_order", nullable = false)
     private Integer order;
 
@@ -117,6 +121,19 @@ public class Photo implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getReference() {
+        return this.reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Photo reference(String reference) {
+        this.reference = reference;
+        return this;
     }
 
     public Integer getOrder() {
@@ -268,6 +285,7 @@ public class Photo implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
+            ", reference='" + getReference() + "'" +
             ", order=" + getOrder() +
             ", height=" + getHeight() +
             ", width=" + getWidth() +

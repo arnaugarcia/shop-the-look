@@ -41,23 +41,6 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Optional<PhotoDTO> partialUpdate(PhotoDTO photoDTO) {
-        log.debug("Request to partially update Photo : {}", photoDTO);
-
-        return photoRepository
-            .findById(photoDTO.getId())
-            .map(
-                existingPhoto -> {
-                    photoMapper.partialUpdate(existingPhoto, photoDTO);
-
-                    return existingPhoto;
-                }
-            )
-            .map(photoRepository::save)
-            .map(photoMapper::toDto);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<PhotoDTO> findAll() {
         log.debug("Request to get all Photos");
