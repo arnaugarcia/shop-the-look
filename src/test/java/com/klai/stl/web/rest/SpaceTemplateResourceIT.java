@@ -73,13 +73,12 @@ class SpaceTemplateResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static SpaceTemplate createEntity(EntityManager em) {
-        SpaceTemplate spaceTemplate = new SpaceTemplate()
+        return new SpaceTemplate()
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .maxProducts(DEFAULT_MAX_PRODUCTS)
             .maxPhotos(DEFAULT_MAX_PHOTOS)
             .active(DEFAULT_ACTIVE);
-        return spaceTemplate;
     }
 
     /**
@@ -89,13 +88,12 @@ class SpaceTemplateResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static SpaceTemplate createUpdatedEntity(EntityManager em) {
-        SpaceTemplate spaceTemplate = new SpaceTemplate()
+        return new SpaceTemplate()
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .maxProducts(UPDATED_MAX_PRODUCTS)
             .maxPhotos(UPDATED_MAX_PHOTOS)
             .active(UPDATED_ACTIVE);
-        return spaceTemplate;
     }
 
     @BeforeEach
