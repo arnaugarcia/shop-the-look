@@ -36,7 +36,7 @@ public class SpaceResource {
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/my/spaces")
+    @GetMapping("/me/spaces")
     public ResponseEntity<Void> findMySpaces() {
         return ResponseEntity.ok(null);
     }
