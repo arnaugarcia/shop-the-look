@@ -129,4 +129,5 @@ jhipster:
 
 application:
   aws:
-    bucket: shopthelook-pro
+    bucket: shopthelook-pre
+    region: eu-west-1

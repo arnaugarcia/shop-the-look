@@ -108,3 +108,4 @@ jhipster:
 application:
   aws:
     bucket: shopthelook-pre
+    region: eu-west-1
