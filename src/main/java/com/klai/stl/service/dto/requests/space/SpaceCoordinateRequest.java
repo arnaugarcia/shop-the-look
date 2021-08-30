@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Value;
 
 @Value
-public class SpaceElementRequest {
+public class SpaceCoordinateRequest {
 
     @NotNull
     Integer x;
@@ -14,4 +14,7 @@ public class SpaceElementRequest {
 
     @NotNull
     String productReference;
+
+    @NotNull
+    String photoReference;
 }
