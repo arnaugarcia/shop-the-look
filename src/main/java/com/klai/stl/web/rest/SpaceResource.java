@@ -62,17 +62,17 @@ public class SpaceResource {
     }
 
     @PostMapping("/spaces/{reference}/photos")
-    public ResponseEntity<Void> createSpacePhoto(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
+    public ResponseEntity<Void> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
         return ResponseEntity.ok(null);
     }
 
     @DeleteMapping("/spaces/{reference}/photos/{photoReference}")
-    public ResponseEntity<Void> deleteSpacePhoto(@PathVariable String photoReference, @PathVariable String reference) {
+    public ResponseEntity<Void> removePhotoFromSpace(@PathVariable String photoReference, @PathVariable String reference) {
         return ResponseEntity.ok(null);
     }
 
     @PutMapping("/spaces/{spaceReference}/coordinates")
-    public ResponseEntity<Void> createSpacePhotoCoordinate(
+    public ResponseEntity<Void> addCoordinateToPhoto(
         @PathVariable String spaceReference,
         @Valid @RequestBody SpaceCoordinateRequest coordinateRequest
     ) {
