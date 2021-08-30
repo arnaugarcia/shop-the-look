@@ -71,9 +71,9 @@ public class SpaceResource {
         return ResponseEntity.ok(null);
     }
 
-    @PutMapping("/spaces/{spaceReference}/coordinates")
+    @PutMapping("/spaces/{reference}/coordinates")
     public ResponseEntity<Void> addCoordinateToPhoto(
-        @PathVariable String spaceReference,
+        @PathVariable String reference,
         @Valid @RequestBody SpaceCoordinateRequest coordinateRequest
     ) {
         return ResponseEntity.ok(null);
