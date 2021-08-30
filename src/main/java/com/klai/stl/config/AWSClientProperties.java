@@ -6,4 +6,6 @@ import lombok.Data;
 public class AWSClientProperties {
 
     private String bucket;
+
+    private String region;
 }

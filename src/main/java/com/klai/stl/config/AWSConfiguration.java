@@ -1,8 +1,9 @@
 package com.klai.stl.config;
 
-import static com.amazonaws.regions.Regions.DEFAULT_REGION;
+import static com.amazonaws.regions.Regions.fromName;
 import static com.amazonaws.services.s3.AmazonS3ClientBuilder.standard;
 
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.Bucket;
 import java.util.function.Predicate;
@@ -19,11 +20,16 @@ public class AWSConfiguration {
     public AWSConfiguration(ApplicationProperties applicationProperties) {
         this.awsClientProperties = applicationProperties.getAws();
         this.amazonS3Client = createAWSS3Client();
+        checkBucket();
     }
 
     @Bean
-    public Bucket getBucket() {
-        return amazonS3Client
+    public AmazonS3 getAmazonS3Client() {
+        return amazonS3Client;
+    }
+
+    public void checkBucket() {
+        amazonS3Client
             .listBuckets()
             .stream()
             .filter(byBucketName(awsClientProperties.getBucket()))
@@ -42,7 +48,8 @@ public class AWSConfiguration {
     }
 
     private AmazonS3 createAWSS3Client() {
-        return standard().withRegion(DEFAULT_REGION).build();
+        final Regions region = fromName(awsClientProperties.getRegion());
+        return standard().withRegion(region).build();
     }
 
     private static final class BucketException extends RuntimeException {
