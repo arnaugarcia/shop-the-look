@@ -1,20 +1,15 @@
 package com.klai.stl.web.rest;
 
 import com.klai.stl.service.SpaceService;
-import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
+import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.SpaceRequest;
-import java.net.URI;
-import java.net.URISyntaxException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import tech.jhipster.web.util.HeaderUtil;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing {@link com.klai.stl.domain.Space}.
@@ -36,20 +31,51 @@ public class SpaceResource {
         this.spaceService = spaceService;
     }
 
-    /**
-     * {@code POST  /spaces} : Create a new space.
-     *
-     * @param spaceRequest the request of the space to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new spaceDTO, or with status {@code 400 (Bad Request)} if the space has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @GetMapping("/spaces")
+    public ResponseEntity<Void> findSpaces() {
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/my/spaces")
+    public ResponseEntity<Void> findMySpaces() {
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/spaces/{reference}")
+    public ResponseEntity<Void> findSpace(@PathVariable String reference) {
+        return ResponseEntity.ok(null);
+    }
+
     @PostMapping("/spaces")
-    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody SpaceRequest spaceRequest) throws URISyntaxException {
-        log.debug("REST request to save an Space");
-        SpaceDTO result = spaceService.save(null);
-        return ResponseEntity
-            .created(new URI("/api/spaces/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+    public ResponseEntity<Void> createSpace(@Valid @RequestBody SpaceRequest spaceRequest) {
+        return ResponseEntity.ok(null);
+    }
+
+    @PutMapping("/spaces/{reference}")
+    public ResponseEntity<Void> updateSpace(@PathVariable String reference, @Valid @RequestBody SpaceRequest spaceRequest) {
+        return ResponseEntity.ok(null);
+    }
+
+    @DeleteMapping("/spaces/{reference}")
+    public ResponseEntity<Void> deleteSpace(@PathVariable String reference) {
+        return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/spaces/{reference}/photos")
+    public ResponseEntity<Void> createSpacePhoto(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
+        return ResponseEntity.ok(null);
+    }
+
+    @DeleteMapping("/spaces/{reference}/photos/{photoReference}")
+    public ResponseEntity<Void> deleteSpacePhoto(@PathVariable String photoReference, @PathVariable String reference) {
+        return ResponseEntity.ok(null);
+    }
+
+    @PutMapping("/spaces/{spaceReference}/coordinates")
+    public ResponseEntity<Void> createSpacePhotoCoordinate(
+        @PathVariable String spaceReference,
+        @Valid @RequestBody SpaceCoordinateRequest coordinateRequest
+    ) {
+        return ResponseEntity.ok(null);
     }
 }
