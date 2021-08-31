@@ -1,1 +1,61 @@
-<p>studio works!</p>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+    <section class="horizontal-wizard">
+      <div class="bs-stepper horizontal-wizard-example">
+        <div class="bs-stepper-header">
+          <div class="step active" data-target="#account-details">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">1</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Create a Space</span>
+                <span class="bs-stepper-subtitle">Create your space from a template</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" data-target="#personal-info">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">2</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Personalization</span>
+                <span class="bs-stepper-subtitle">Customize your space</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" data-target="#address">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">3</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Publish</span>
+                <span class="bs-stepper-subtitle">Review and publish yor space</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" data-target="#social-links">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">3</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Enjoy!</span>
+                <span class="bs-stepper-subtitle">Add it to your site</span>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div class="bs-stepper-content">
+          <form>
+            <div id="account-details" class="content"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
