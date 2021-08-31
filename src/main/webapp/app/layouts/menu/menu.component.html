@@ -78,6 +78,12 @@
         <span class="menu-title text-truncate">Companies</span>
       </a>
     </li>
+    <li [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/spaces'" class="d-flex align-items-center">
+        <span [data-feather]="'grid'"></span>
+        <span class="menu-title text-truncate">Spaces</span>
+      </a>
+    </li>
     <li
       *stlHasAnyAuthority="'ROLE_ADMIN'"
       [class.open]="!adminMenuCollapsed"
