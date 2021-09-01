@@ -16,5 +16,6 @@ export class TemplateComponent {
 
   selectOption(option: StudioTemplates): void {
     this.selectedOption = option;
+    this.studioService.setTemplate(option);
   }
 }

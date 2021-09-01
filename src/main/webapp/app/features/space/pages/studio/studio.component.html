@@ -28,7 +28,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [routerLinkActive]="'active'">
+          <div class="step" [class.active]="studioService.currentStep == 'customize'">
             <button class="step-trigger" [routerLink]="'customize'">
               <span class="bs-stepper-box">3</span>
               <span class="bs-stepper-label">
