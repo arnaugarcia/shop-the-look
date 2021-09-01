@@ -63,6 +63,7 @@ public class SpaceServiceImpl implements SpaceService {
         final Space space = spaceMapper.toEntity(spaceRequest);
         space.setReference(randomAlphabetic(20).toUpperCase(ROOT));
         space.setCompany(company);
+        space.setActive(false);
         return saveAndTransform(space);
     }
 

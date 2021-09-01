@@ -77,6 +77,7 @@ class SpaceResourceIT {
     @WithMockUser(username = "space-create-user")
     public void createSpaceAsUser() throws Exception {
         final User user = UserResourceIT.createEntity(em, "space-create-user");
+        em.persist(user);
         company.addUser(user);
         em.persist(company);
 
@@ -87,7 +88,7 @@ class SpaceResourceIT {
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
-        assertThat(databaseSizeBeforeCreate).isGreaterThan(databaseSizeAfterCreate);
+        assertThat(databaseSizeAfterCreate).isGreaterThan(databaseSizeBeforeCreate);
 
         final Optional<Space> spaceOptional = spaceRepository.findByCompanyReference(company.getReference()).stream().findFirst();
         assertThat(spaceOptional).isPresent();
@@ -104,6 +105,7 @@ class SpaceResourceIT {
     @WithMockUser(authorities = MANAGER, username = "space-create-manager")
     public void createSpaceAsManager() throws Exception {
         final User user = UserResourceIT.createEntity(em, "space-create-manager");
+        em.persist(user);
         company.addUser(user);
         em.persist(company);
 
@@ -114,7 +116,7 @@ class SpaceResourceIT {
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
-        assertThat(databaseSizeBeforeCreate).isGreaterThan(databaseSizeAfterCreate);
+        assertThat(databaseSizeAfterCreate).isGreaterThan(databaseSizeBeforeCreate);
 
         final Optional<Space> spaceOptional = spaceRepository.findByCompanyReference(company.getReference()).stream().findFirst();
         assertThat(spaceOptional).isPresent();
@@ -128,7 +130,7 @@ class SpaceResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = ADMIN)
+    @WithMockUser(authorities = ADMIN, username = "admin")
     public void createSpaceForOtherCompanyAsAdmin() throws Exception {
         int databaseSizeBeforeCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
 
@@ -139,7 +141,7 @@ class SpaceResourceIT {
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
-        assertThat(databaseSizeBeforeCreate).isGreaterThan(databaseSizeAfterCreate);
+        assertThat(databaseSizeAfterCreate).isGreaterThan(databaseSizeBeforeCreate);
 
         final Optional<Space> spaceOptional = spaceRepository.findByCompanyReference(company.getReference()).stream().findFirst();
         assertThat(spaceOptional).isPresent();
@@ -155,10 +157,6 @@ class SpaceResourceIT {
     @Transactional
     @WithMockUser
     public void createSpaceForOtherCompanyAsManager() throws Exception {
-        final User user = UserResourceIT.createEntity(em, "space-create-admin");
-        company.addUser(user);
-        em.persist(company);
-
         restSpaceMockMvc
             .perform(
                 post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest))
@@ -170,14 +168,19 @@ class SpaceResourceIT {
     @Transactional
     @WithMockUser
     public void createSpaceForOtherCompanyAsUser() throws Exception {
-        final User user = UserResourceIT.createEntity(em, "space-create-admin");
-        company.addUser(user);
-        em.persist(company);
-
         restSpaceMockMvc
             .perform(
                 post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest))
             )
             .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    public void createSpaceForOtherCompanyThatNotExistsAsAdmin() throws Exception {
+        restSpaceMockMvc
+            .perform(post(API_URL_ADMIN, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest)))
+            .andExpect(status().isNotFound());
     }
 }
