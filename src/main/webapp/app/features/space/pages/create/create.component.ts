@@ -9,12 +9,10 @@ import { SpaceRequest } from '../../../../entities/space/space.model';
   styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent {
-  public spaceForm = this.formBuilder.group([
-    {
-      title: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.maxLength(250)]],
-    },
-  ]);
+  public spaceForm = this.formBuilder.group({
+    title: ['', [Validators.required, Validators.maxLength(50)]],
+    description: ['', [Validators.maxLength(250)]],
+  });
 
   constructor(private formBuilder: FormBuilder, private spaceService: SpaceService) {}
 
