@@ -16,8 +16,8 @@ export class SpaceDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: number): void {
-    this.spaceService.delete(id).subscribe(() => {
+  confirmDelete(reference: string): void {
+    this.spaceService.delete(reference).subscribe(() => {
       this.activeModal.close('deleted');
     });
   }

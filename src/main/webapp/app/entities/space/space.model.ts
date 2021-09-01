@@ -2,10 +2,9 @@ import { IPhoto } from 'app/entities/photo/photo.model';
 import { ICompany } from 'app/features/company/model/company.model';
 
 export interface ISpace {
-  id?: number;
   name?: string;
-  active?: boolean | null;
   reference?: string;
+  active?: boolean | null;
   description?: string | null;
   maxPhotos?: number | null;
   visible?: boolean | null;
@@ -15,10 +14,9 @@ export interface ISpace {
 
 export class Space implements ISpace {
   constructor(
-    public id?: number,
     public name?: string,
-    public active?: boolean | null,
     public reference?: string,
+    public active?: boolean | null,
     public description?: string | null,
     public maxPhotos?: number | null,
     public visible?: boolean | null,
@@ -30,10 +28,6 @@ export class Space implements ISpace {
   }
 }
 
-export class SpaceRequest implements ISpace {
+export class SpaceRequest {
   constructor(public name?: string, public description?: string | null) {}
-}
-
-export function getSpaceIdentifier(space: ISpace): number | undefined {
-  return space.id;
 }

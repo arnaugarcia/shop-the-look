@@ -20,7 +20,6 @@ export class SpaceUpdateComponent implements OnInit {
   companiesSharedCollection: ICompany[] = [];
 
   editForm = this.fb.group({
-    id: [],
     name: [null, [Validators.required]],
     active: [],
     reference: [null, [Validators.required]],
@@ -52,11 +51,7 @@ export class SpaceUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const space = this.createFromForm();
-    if (space.id !== undefined) {
-      this.subscribeToSaveResponse(this.spaceService.update(space));
-    } else {
-      this.subscribeToSaveResponse(this.spaceService.create(space));
-    }
+    this.subscribeToSaveResponse(this.spaceService.update(space));
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ISpace>>): void {
@@ -80,7 +75,6 @@ export class SpaceUpdateComponent implements OnInit {
 
   protected updateForm(space: ISpace): void {
     this.editForm.patchValue({
-      id: space.id,
       name: space.name,
       active: space.active,
       reference: space.reference,
@@ -106,10 +100,9 @@ export class SpaceUpdateComponent implements OnInit {
   protected createFromForm(): ISpace {
     return {
       ...new Space(),
-      id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
-      active: this.editForm.get(['active'])!.value,
       reference: this.editForm.get(['reference'])!.value,
+      active: this.editForm.get(['active'])!.value,
       description: this.editForm.get(['description'])!.value,
       maxPhotos: this.editForm.get(['maxPhotos'])!.value,
       visible: this.editForm.get(['visible'])!.value,

@@ -10,10 +10,6 @@
       <stl-alert></stl-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span stlTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ space.id }}</span>
-        </dd>
         <dt><span stlTranslate="shopTheLookApp.space.name">Name</span></dt>
         <dd>
           <span>{{ space.name }}</span>
@@ -44,7 +40,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span stlTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/space', space.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/space', space.reference, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span stlTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

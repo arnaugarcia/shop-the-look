@@ -66,10 +66,6 @@ export class PhotoUpdateComponent implements OnInit {
     }
   }
 
-  trackSpaceById(index: number, item: ISpace): number {
-    return item.id!;
-  }
-
   trackSpaceTemplateById(index: number, item: ISpaceTemplate): number {
     return item.id!;
   }
@@ -108,7 +104,6 @@ export class PhotoUpdateComponent implements OnInit {
       spaceTemplate: photo.spaceTemplate,
     });
 
-    this.spacesSharedCollection = this.spaceService.addSpaceToCollectionIfMissing(this.spacesSharedCollection, photo.space);
     this.spaceTemplatesSharedCollection = this.spaceTemplateService.addSpaceTemplateToCollectionIfMissing(
       this.spaceTemplatesSharedCollection,
       photo.spaceTemplate
@@ -116,12 +111,6 @@ export class PhotoUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
-    this.spaceService
-      .query()
-      .pipe(map((res: HttpResponse<ISpace[]>) => res.body ?? []))
-      .pipe(map((spaces: ISpace[]) => this.spaceService.addSpaceToCollectionIfMissing(spaces, this.editForm.get('space')!.value)))
-      .subscribe((spaces: ISpace[]) => (this.spacesSharedCollection = spaces));
-
     this.spaceTemplateService
       .query()
       .pipe(map((res: HttpResponse<ISpaceTemplate[]>) => res.body ?? []))

@@ -98,8 +98,8 @@
           <select class="form-control" id="field_space" data-cy="space" name="space" formControlName="space">
             <option [ngValue]="null"></option>
             <option
-              [ngValue]="spaceOption.id === editForm.get('space')!.value?.id ? editForm.get('space')!.value : spaceOption"
-              *ngFor="let spaceOption of spacesSharedCollection; trackBy: trackSpaceById"
+              [ngValue]="spaceOption.reference === editForm.get('space')!.value?.id ? editForm.get('space')!.value : spaceOption"
+              *ngFor="let spaceOption of spacesSharedCollection"
             >
               {{ spaceOption.reference }}
             </option>

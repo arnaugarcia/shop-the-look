@@ -57,10 +57,6 @@ export class SpaceComponent implements OnInit {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: ISpace): number {
-    return item.id!;
-  }
-
   delete(space: ISpace): void {
     const modalRef = this.modalService.open(SpaceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.space = space;

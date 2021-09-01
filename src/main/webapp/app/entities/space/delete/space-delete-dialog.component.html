@@ -1,4 +1,4 @@
-<form *ngIf="space" name="deleteForm" (ngSubmit)="confirmDelete(space.id!)">
+<form *ngIf="space" name="deleteForm" (ngSubmit)="confirmDelete(space.reference!)">
   <div class="modal-header">
     <h4 class="modal-title" data-cy="spaceDeleteDialogHeading" stlTranslate="entity.delete.title">Confirm delete operation</h4>
 
@@ -8,7 +8,7 @@
   <div class="modal-body">
     <stl-alert-error></stl-alert-error>
 
-    <p id="stl-delete-space-heading" stlTranslate="shopTheLookApp.space.delete.question" [translateValues]="{ id: space.id }">
+    <p id="stl-delete-space-heading" stlTranslate="shopTheLookApp.space.delete.question" [translateValues]="{ id: space.reference }">
       Are you sure you want to delete this Space?
     </p>
   </div>
