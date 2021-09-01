@@ -2,7 +2,7 @@ package com.klai.stl.service.mapper;
 
 import com.klai.stl.domain.Space;
 import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.requests.space.SpaceRequest;
+import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import org.mapstruct.Mapper;
 
 /**
@@ -12,5 +12,5 @@ import org.mapstruct.Mapper;
 public interface SpaceMapper extends EntityMapper<SpaceDTO, Space> {
     SpaceDTO toDto(Space s);
 
-    Space toEntity(SpaceRequest spaceRequest);
+    Space toEntity(NewSpaceRequest newSpaceRequest);
 }

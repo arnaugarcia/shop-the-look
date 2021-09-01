@@ -1,15 +1,18 @@
 package com.klai.stl.web.rest;
 
+import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
+import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.klai.stl.config.AWSClientProperties;
 import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
-import com.klai.stl.service.dto.requests.space.SpaceRequest;
+import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.validation.Valid;
@@ -62,29 +65,31 @@ public class SpaceResource {
     }
 
     @PostMapping("/spaces")
-    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody SpaceRequest spaceRequest, @RequestParam String companyReference)
+    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody NewSpaceRequest newSpaceRequest, @RequestParam String companyReference)
         throws URISyntaxException {
         log.debug("REST request to save an Space");
-        SpaceDTO result = spaceService.createForCompany(spaceRequest, companyReference);
-        return ResponseEntity
-            .created(new URI("/api/spaces/" + result.getReference()))
+        SpaceDTO result = spaceService.createForCompany(newSpaceRequest, companyReference);
+        return created(new URI("/api/spaces/" + result.getReference()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
     }
 
     @PostMapping("/me/spaces")
-    public ResponseEntity<SpaceDTO> createSpaceForCurrentUser(@Valid @RequestBody SpaceRequest spaceRequest) throws URISyntaxException {
+    public ResponseEntity<SpaceDTO> createSpaceForCurrentUser(@Valid @RequestBody NewSpaceRequest newSpaceRequest)
+        throws URISyntaxException {
         log.debug("REST request to save an Space");
-        SpaceDTO result = spaceService.createForCurrentUser(spaceRequest);
-        return ResponseEntity
-            .created(new URI("/api/spaces/" + result.getReference()))
+        SpaceDTO result = spaceService.createForCurrentUser(newSpaceRequest);
+        return created(new URI("/api/spaces/" + result.getReference()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
     }
 
     @PutMapping("/spaces/{reference}")
-    public ResponseEntity<Void> updateSpace(@PathVariable String reference, @Valid @RequestBody SpaceRequest spaceRequest) {
-        return ok(null);
+    public ResponseEntity<SpaceDTO> updateSpace(@PathVariable String reference, @Valid @RequestBody UpdateSpaceRequest updateSpaceRequest) {
+        log.debug("REST request to update Space : {}, {}", reference, updateSpaceRequest);
+
+        SpaceDTO result = spaceService.updateSpace(updateSpaceRequest, reference);
+        return ok().headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getReference())).body(result);
     }
 
     @DeleteMapping("/spaces/{reference}")

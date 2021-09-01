@@ -10,7 +10,10 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.requests.space.SpaceRequest;
+import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
+import com.klai.stl.service.exception.BadOwnerException;
+import com.klai.stl.service.exception.SpaceNotFound;
 import com.klai.stl.service.mapper.SpaceMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -50,17 +53,17 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public SpaceDTO createForCurrentUser(SpaceRequest spaceRequest) {
-        return createForCompany(spaceRequest, userService.getCurrentUserCompany());
+    public SpaceDTO createForCurrentUser(NewSpaceRequest newSpaceRequest) {
+        return createForCompany(newSpaceRequest, userService.getCurrentUserCompany());
     }
 
     @Override
-    public SpaceDTO createForCompany(SpaceRequest spaceRequest, String companyReference) {
-        return createForCompany(spaceRequest, companyService.findByReference(companyReference));
+    public SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, String companyReference) {
+        return createForCompany(newSpaceRequest, companyService.findByReference(companyReference));
     }
 
-    public SpaceDTO createForCompany(SpaceRequest spaceRequest, Company company) {
-        final Space space = spaceMapper.toEntity(spaceRequest);
+    public SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, Company company) {
+        final Space space = spaceMapper.toEntity(newSpaceRequest);
         space.setReference(randomAlphabetic(20).toUpperCase(ROOT));
         space.setCompany(company);
         space.setActive(false);
@@ -89,5 +92,33 @@ public class SpaceServiceImpl implements SpaceService {
     public void delete(Long id) {
         log.debug("Request to delete Space : {}", id);
         spaceRepository.deleteById(id);
+    }
+
+    @Override
+    public SpaceDTO updateSpace(UpdateSpaceRequest updateSpaceRequest, String reference) {
+        final Space space = findByReference(reference);
+        checkIfCurrentUserBelongsToSpace(reference);
+        Space result = updateSpace(space, updateSpaceRequest);
+        return saveAndTransform(result);
+    }
+
+    private Space updateSpace(Space space, UpdateSpaceRequest updateSpaceRequest) {
+        space.setDescription(updateSpaceRequest.getDescription());
+        space.setName(updateSpaceRequest.getName());
+        space.setTemplate(updateSpaceRequest.getTemplate());
+        return space;
+    }
+
+    private Space findByReference(String reference) {
+        return spaceRepository.findByReference(reference).orElseThrow(SpaceNotFound::new);
+    }
+
+    private void checkIfCurrentUserBelongsToSpace(String spaceReference) {
+        spaceRepository
+            .findByCompanyReference(userService.getCurrentUserCompanyReference())
+            .stream()
+            .filter(space -> space.getReference().equals(spaceReference))
+            .findFirst()
+            .orElseThrow(BadOwnerException::new);
     }
 }

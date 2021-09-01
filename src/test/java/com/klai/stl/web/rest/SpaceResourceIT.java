@@ -2,7 +2,7 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static com.klai.stl.service.dto.requests.space.SpaceRequest.builder;
+import static com.klai.stl.service.dto.requests.space.NewSpaceRequest.builder;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,7 +15,7 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Space;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.SpaceRepository;
-import com.klai.stl.service.dto.requests.space.SpaceRequest;
+import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,15 +60,15 @@ class SpaceResourceIT {
 
     private Company company;
 
-    private SpaceRequest spaceRequest;
+    private NewSpaceRequest newSpaceRequest;
 
     @BeforeEach
     public void initTest() {
-        this.spaceRequest = buildRequest();
+        this.newSpaceRequest = buildRequest();
         this.company = createBasicCompany(em);
     }
 
-    private SpaceRequest buildRequest() {
+    private NewSpaceRequest buildRequest() {
         return builder().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION).build();
     }
 
@@ -84,7 +84,7 @@ class SpaceResourceIT {
         int databaseSizeBeforeCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
 
         restSpaceMockMvc
-            .perform(post(ME_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest)))
+            .perform(post(ME_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
@@ -112,7 +112,7 @@ class SpaceResourceIT {
         int databaseSizeBeforeCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
 
         restSpaceMockMvc
-            .perform(post(ME_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest)))
+            .perform(post(ME_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
@@ -136,7 +136,7 @@ class SpaceResourceIT {
 
         restSpaceMockMvc
             .perform(
-                post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest))
+                post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest))
             )
             .andExpect(status().isCreated());
 
@@ -159,7 +159,7 @@ class SpaceResourceIT {
     public void createSpaceForOtherCompanyAsManager() throws Exception {
         restSpaceMockMvc
             .perform(
-                post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest))
+                post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest))
             )
             .andExpect(status().isForbidden());
     }
@@ -170,7 +170,7 @@ class SpaceResourceIT {
     public void createSpaceForOtherCompanyAsUser() throws Exception {
         restSpaceMockMvc
             .perform(
-                post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest))
+                post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest))
             )
             .andExpect(status().isForbidden());
     }
@@ -180,7 +180,7 @@ class SpaceResourceIT {
     @WithMockUser(authorities = ADMIN)
     public void createSpaceForOtherCompanyThatNotExistsAsAdmin() throws Exception {
         restSpaceMockMvc
-            .perform(post(API_URL_ADMIN, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spaceRequest)))
+            .perform(post(API_URL_ADMIN, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest)))
             .andExpect(status().isNotFound());
     }
 }

@@ -1,7 +1,8 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.requests.space.SpaceRequest;
+import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,18 +14,18 @@ public interface SpaceService {
     /**
      * Save a space.
      *
-     * @param spaceRequest the request of a space to save.
+     * @param newSpaceRequest the request of a space to save.
      * @return the persisted entity.
      */
-    SpaceDTO createForCurrentUser(SpaceRequest spaceRequest);
+    SpaceDTO createForCurrentUser(NewSpaceRequest newSpaceRequest);
 
     /**
      * Create a space for the desired company
-     * @param spaceRequest the request of a space to save.
+     * @param newSpaceRequest the request of a space to save.
      * @param companyReference the reference of the company to create the space
      * @return the persisted entity
      */
-    SpaceDTO createForCompany(SpaceRequest spaceRequest, String companyReference);
+    SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, String companyReference);
 
     /**
      * Get all the spaces.
@@ -48,4 +49,12 @@ public interface SpaceService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Updates space for the desired company
+     * @param newSpaceRequest the request updating the space
+     * @param reference the reference to the space to update
+     * @return the updated space entity
+     */
+    SpaceDTO updateSpace(UpdateSpaceRequest newSpaceRequest, String reference);
 }
