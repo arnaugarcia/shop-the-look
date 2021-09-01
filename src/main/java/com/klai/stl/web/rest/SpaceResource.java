@@ -1,15 +1,15 @@
 package com.klai.stl.web.rest;
 
-import static java.nio.file.Paths.get;
+import static org.springframework.http.ResponseEntity.ok;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.klai.stl.config.AWSClientProperties;
 import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.service.SpaceService;
+import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.SpaceRequest;
-import java.io.File;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,45 +45,47 @@ public class SpaceResource {
 
     @GetMapping("/spaces")
     public ResponseEntity<Void> findSpaces() {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 
     @GetMapping("/me/spaces")
     public ResponseEntity<Void> findMySpaces() {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 
     @GetMapping("/spaces/{reference}")
     public ResponseEntity<Void> findSpace(@PathVariable String reference) {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 
     @PostMapping("/spaces")
-    public ResponseEntity<Void> createSpace(@Valid @RequestBody SpaceRequest spaceRequest) {
-        final String filePath = "/Users/arnau/Downloads/logo copy.png";
-        File file = new File(filePath);
-        amazonS3.putObject(awsClientProperties.getBucket(), get(filePath).getFileName().toString(), file);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody SpaceRequest spaceRequest, @RequestParam String companyReference) {
+        return ok(spaceService.createForCompany(spaceRequest, companyReference));
+    }
+
+    @PostMapping("/me/spaces")
+    public ResponseEntity<SpaceDTO> createSpaceForCurrentUser(@Valid @RequestBody SpaceRequest spaceRequest) {
+        return ok(spaceService.createForCurrentUser(spaceRequest));
     }
 
     @PutMapping("/spaces/{reference}")
     public ResponseEntity<Void> updateSpace(@PathVariable String reference, @Valid @RequestBody SpaceRequest spaceRequest) {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 
     @DeleteMapping("/spaces/{reference}")
     public ResponseEntity<Void> deleteSpace(@PathVariable String reference) {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 
     @PostMapping("/spaces/{reference}/photos")
     public ResponseEntity<Void> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 
     @DeleteMapping("/spaces/{reference}/photos/{photoReference}")
     public ResponseEntity<Void> removePhotoFromSpace(@PathVariable String photoReference, @PathVariable String reference) {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 
     @PutMapping("/spaces/{reference}/coordinates")
@@ -91,6 +93,6 @@ public class SpaceResource {
         @PathVariable String reference,
         @Valid @RequestBody SpaceCoordinateRequest coordinateRequest
     ) {
-        return ResponseEntity.ok(null);
+        return ok(null);
     }
 }

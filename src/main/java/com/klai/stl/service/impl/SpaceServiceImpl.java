@@ -4,6 +4,7 @@ import com.klai.stl.domain.Space;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.requests.space.SpaceRequest;
 import com.klai.stl.service.mapper.SpaceMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -32,28 +33,13 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public SpaceDTO save(SpaceDTO spaceDTO) {
-        log.debug("Request to save Space : {}", spaceDTO);
-        Space space = spaceMapper.toEntity(spaceDTO);
-        space = spaceRepository.save(space);
-        return spaceMapper.toDto(space);
+    public SpaceDTO createForCurrentUser(SpaceRequest spaceRequest) {
+        return null;
     }
 
     @Override
-    public Optional<SpaceDTO> partialUpdate(SpaceDTO spaceDTO) {
-        log.debug("Request to partially update Space : {}", spaceDTO);
-
-        return spaceRepository
-            .findById(spaceDTO.getId())
-            .map(
-                existingSpace -> {
-                    spaceMapper.partialUpdate(existingSpace, spaceDTO);
-
-                    return existingSpace;
-                }
-            )
-            .map(spaceRepository::save)
-            .map(spaceMapper::toDto);
+    public SpaceDTO createForCompany(SpaceRequest spaceRequest, String companyReference) {
+        return null;
     }
 
     @Override
