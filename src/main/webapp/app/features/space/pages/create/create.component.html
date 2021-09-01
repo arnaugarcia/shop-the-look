@@ -13,7 +13,7 @@
   </div>
 </section>
 <section>
-  <form name="spaceForm" (ngSubmit)="onSubmit()" [formGroup]="spaceForm">
+  <form name="spaceForm" (ngSubmit)="onSubmit()" [formGroup]="spaceForm" novalidate role="form">
     <div class="row">
       <div class="form-group col-md-6">
         <label for="title" class="form-label">Title</label>
@@ -40,7 +40,6 @@
           id="description"
           formControlName="description"
           name="description"
-          required
           class="form-control"
           placeholder="This space is amazing!"
         />
@@ -50,7 +49,6 @@
       <button disabled rippleeffect class="btn btn-outline-secondary btn-prev waves-effect">
         <span class="align-middle d-sm-inline-block d-none">Previous</span>
       </button>
-      {{ spaceForm | json }}
       <button
         type="submit"
         [disabled]="spaceForm.invalid"
