@@ -31,23 +31,23 @@ const spaceRoute: Routes = [
         component: CreateComponent,
       },
       {
-        path: '{reference}/edit',
+        path: ':reference/edit',
         component: EditComponent,
       },
       {
-        path: '{reference}/template',
+        path: ':reference/template',
         component: TemplateComponent,
       },
       {
-        path: '{reference}/customize',
+        path: ':reference/customize',
         component: CustomizeComponent,
       },
       {
-        path: '{reference}/publish',
+        path: ':reference/publish',
         component: PublishComponent,
       },
       {
-        path: 'enjoy',
+        path: ':reference/enjoy',
         component: EnjoyComponent,
       },
     ],

@@ -21,7 +21,7 @@ export class CreateComponent {
   onSubmit(): void {
     this.spaceService.create(this.createFromForm()).subscribe((response: HttpResponse<ISpace>) => {
       if (response.body) {
-        this.router.navigate([response.body.reference, '/template']);
+        this.router.navigate(['/spaces/studio', response.body.reference, 'template']);
       }
     });
   }
