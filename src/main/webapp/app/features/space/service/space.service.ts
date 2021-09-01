@@ -28,10 +28,6 @@ export class SpaceService {
     return this.http.put<ISpace>(`${this.resourceUrl}/${space.reference!}`, space, { observe: 'response' });
   }
 
-  partialUpdate(space: ISpace): Observable<EntityResponseType> {
-    return this.http.patch<ISpace>(`${this.resourceUrl}/${space.reference!}`, space, { observe: 'response' });
-  }
-
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<ISpace>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
