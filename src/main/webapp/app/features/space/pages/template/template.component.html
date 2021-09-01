@@ -15,7 +15,7 @@
 <section id="knowledge-base-content">
   <div class="row kb-search-content-info match-height">
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="card active">
+      <div class="card" [class.active]="selectedOption === 'option1'" (click)="selectOption('option1')">
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space1.svg" class="card-img-top" alt="knowledge-base-image" />
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="card">
+      <div class="card" [class.active]="selectedOption === 'option2'" (click)="selectOption('option2')">
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space2.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="card">
+      <div class="card" [class.active]="selectedOption === 'option3'" (click)="selectOption('option3')">
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space3.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
@@ -56,12 +56,12 @@
   </div>
   <form>
     <div class="d-flex justify-content-between">
-      <button rippleeffect class="btn btn-outline-secondary btn-prev waves-effect" [routerLink]="'../create'">
+      <button rippleeffect class="btn btn-outline-secondary btn-prev waves-effect" [routerLink]="'../../create'">
         <span class="align-middle d-sm-inline-block d-none">Previous</span>
       </button>
-      <button type="submit" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light">
+      <a type="submit" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light" [routerLink]="'../customize'">
         <span class="align-middle d-sm-inline-block d-none">Next</span>
-      </button>
+      </a>
     </div>
   </form>
 </section>

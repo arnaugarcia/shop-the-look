@@ -4,6 +4,10 @@
   height: 300px;
 }
 
+#knowledge-base-content .card {
+  border: white solid 5px;
+}
+
 #knowledge-base-content .card.active {
   border: $purple solid 5px;
 }
