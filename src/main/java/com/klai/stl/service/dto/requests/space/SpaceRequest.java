@@ -6,8 +6,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 
-@Builder
 @Value
+@Builder
 public class SpaceRequest implements Serializable {
 
     @NotNull
