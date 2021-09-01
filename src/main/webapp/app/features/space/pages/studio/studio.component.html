@@ -4,7 +4,7 @@
     <section class="horizontal-wizard">
       <div class="bs-stepper horizontal-wizard-example">
         <div class="bs-stepper-header">
-          <div class="step" [routerLinkActive]="'active'">
+          <div class="step" [class.active]="studioService.currentStep == 'create'">
             <button class="step-trigger" [routerLink]="'create'">
               <span class="bs-stepper-box">1</span>
               <span class="bs-stepper-label">
@@ -16,7 +16,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [routerLinkActive]="'active'">
+          <div class="step" [class.active]="studioService.currentStep == 'template'">
             <button class="step-trigger" [routerLink]="'template'">
               <span class="bs-stepper-box">2</span>
               <span class="bs-stepper-label">

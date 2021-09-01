@@ -10,6 +10,7 @@ import { CustomizeComponent } from './pages/customize/customize.component';
 import { TemplateComponent } from './pages/template/template.component';
 import { ListComponent } from './pages/list/list.component';
 import { EditComponent } from './pages/edit/edit.component';
+import { SpaceReferenceGuard } from './route/space-reference.guard';
 
 const spaceRoute: Routes = [
   {
@@ -23,32 +24,34 @@ const spaceRoute: Routes = [
     canActivate: [UserRouteAccessService],
     children: [
       {
-        path: '',
-        redirectTo: 'create',
-      },
-      {
         path: 'create',
         component: CreateComponent,
       },
       {
-        path: ':reference/edit',
-        component: EditComponent,
-      },
-      {
-        path: ':reference/template',
-        component: TemplateComponent,
-      },
-      {
-        path: ':reference/customize',
-        component: CustomizeComponent,
-      },
-      {
-        path: ':reference/publish',
-        component: PublishComponent,
-      },
-      {
-        path: ':reference/enjoy',
-        component: EnjoyComponent,
+        path: ':reference',
+        canActivate: [SpaceReferenceGuard],
+        children: [
+          {
+            path: 'edit',
+            component: EditComponent,
+          },
+          {
+            path: 'template',
+            component: TemplateComponent,
+          },
+          {
+            path: 'customize',
+            component: CustomizeComponent,
+          },
+          {
+            path: 'publish',
+            component: PublishComponent,
+          },
+          {
+            path: 'enjoy',
+            component: EnjoyComponent,
+          },
+        ],
       },
     ],
   },

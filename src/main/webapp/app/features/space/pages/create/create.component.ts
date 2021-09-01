@@ -4,6 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SpaceService } from '../../service/space.service';
 import { ISpace, SpaceRequest } from '../../model/space.model';
+import { StudioService } from '../../service/studio.service';
 
 @Component({
   selector: 'stl-create',
@@ -16,7 +17,14 @@ export class CreateComponent {
     description: ['', [Validators.maxLength(250)]],
   });
 
-  constructor(private formBuilder: FormBuilder, private spaceService: SpaceService, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private spaceService: SpaceService,
+    private router: Router,
+    private studioService: StudioService
+  ) {
+    studioService.navigate('create');
+  }
 
   onSubmit(): void {
     this.spaceService.create(this.createFromForm()).subscribe((response: HttpResponse<ISpace>) => {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
+import { StudioService } from '../../service/studio.service';
 
 @Component({
   selector: 'stl-studio',
@@ -9,7 +10,7 @@ import { ContentHeader } from '../../../../layouts/content-header/content-header
 export class StudioComponent {
   public contentHeader: ContentHeader;
 
-  constructor() {
+  constructor(public studioService: StudioService) {
     this.contentHeader = {
       headerTitle: 'Spaces',
       actionButton: true,
