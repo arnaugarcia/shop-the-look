@@ -68,7 +68,7 @@ public class SpaceResource {
         SpaceDTO result = spaceService.createForCompany(spaceRequest, companyReference);
         return ResponseEntity
             .created(new URI("/api/spaces/" + result.getReference()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
     }
 
@@ -78,7 +78,7 @@ public class SpaceResource {
         SpaceDTO result = spaceService.createForCurrentUser(spaceRequest);
         return ResponseEntity
             .created(new URI("/api/spaces/" + result.getReference()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
     }
 

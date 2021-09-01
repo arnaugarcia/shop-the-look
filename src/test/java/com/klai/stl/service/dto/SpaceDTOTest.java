@@ -11,14 +11,14 @@ class SpaceDTOTest {
     void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(SpaceDTO.class);
         SpaceDTO spaceDTO1 = new SpaceDTO();
-        spaceDTO1.setId(1L);
+        spaceDTO1.setReference("1L");
         SpaceDTO spaceDTO2 = new SpaceDTO();
         assertThat(spaceDTO1).isNotEqualTo(spaceDTO2);
-        spaceDTO2.setId(spaceDTO1.getId());
+        spaceDTO2.setReference(spaceDTO1.getReference());
         assertThat(spaceDTO1).isEqualTo(spaceDTO2);
-        spaceDTO2.setId(2L);
+        spaceDTO2.setReference("2L");
         assertThat(spaceDTO1).isNotEqualTo(spaceDTO2);
-        spaceDTO1.setId(null);
+        spaceDTO1.setReference(null);
         assertThat(spaceDTO1).isNotEqualTo(spaceDTO2);
     }
 }

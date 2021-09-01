@@ -11,11 +11,17 @@ export type EntityArrayResponseType = HttpResponse<ISpace[]>;
 @Injectable({ providedIn: 'root' })
 export class SpaceService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/spaces');
+  protected resourceMeUrl = this.applicationConfigService.getEndpointFor('api/me/spaces');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(request: SpaceRequest): Observable<EntityResponseType> {
-    return this.http.post<ISpace>(this.resourceUrl, request, { observe: 'response' });
+    return this.http.post<ISpace>(this.resourceMeUrl, request, { observe: 'response' });
+  }
+
+  createForCompany(request: SpaceRequest, companyReference: string): Observable<EntityResponseType> {
+    const options = createRequestOption({ companyReference: companyReference });
+    return this.http.post<ISpace>(this.resourceUrl, request, { observe: 'response', params: options });
   }
 
   update(space: ISpace): Observable<EntityResponseType> {

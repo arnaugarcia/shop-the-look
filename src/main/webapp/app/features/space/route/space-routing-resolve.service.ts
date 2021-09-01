@@ -4,8 +4,8 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { ISpace, Space } from '../space.model';
 import { SpaceService } from '../service/space.service';
+import { ISpace, Space } from '../model/space.model';
 
 @Injectable({ providedIn: 'root' })
 export class SpaceRoutingResolveService implements Resolve<ISpace> {

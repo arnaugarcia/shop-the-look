@@ -1,5 +1,7 @@
 package com.klai.stl.service.dto;
 
+import static java.util.Objects.hash;
+
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
@@ -9,29 +11,13 @@ import javax.validation.constraints.NotNull;
  */
 public class SpaceDTO implements Serializable {
 
-    private Long id;
-
     @NotNull
     private String name;
-
-    private Boolean active;
 
     @NotNull
     private String reference;
 
     private String description;
-
-    private Integer maxPhotos;
-
-    private Boolean visible;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -39,14 +25,6 @@ public class SpaceDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     public String getReference() {
@@ -65,22 +43,6 @@ public class SpaceDTO implements Serializable {
         this.description = description;
     }
 
-    public Integer getMaxPhotos() {
-        return maxPhotos;
-    }
-
-    public void setMaxPhotos(Integer maxPhotos) {
-        this.maxPhotos = maxPhotos;
-    }
-
-    public Boolean getVisible() {
-        return visible;
-    }
-
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,28 +53,24 @@ public class SpaceDTO implements Serializable {
         }
 
         SpaceDTO spaceDTO = (SpaceDTO) o;
-        if (this.id == null) {
+        if (this.reference == null) {
             return false;
         }
-        return Objects.equals(this.id, spaceDTO.id);
+        return Objects.equals(this.reference, spaceDTO.reference);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return hash(this.reference);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "SpaceDTO{" +
-            "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", active='" + getActive() + "'" +
             ", reference='" + getReference() + "'" +
             ", description='" + getDescription() + "'" +
-            ", maxPhotos=" + getMaxPhotos() +
-            ", visible='" + getVisible() + "'" +
             "}";
     }
 }
