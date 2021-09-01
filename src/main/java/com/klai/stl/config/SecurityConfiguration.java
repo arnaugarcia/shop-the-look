@@ -94,6 +94,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/admin/**").hasAuthority(ADMIN)
+            .antMatchers("/api/spaces").hasAuthority(ADMIN)
             .antMatchers("/api/companies/**/billing").hasAnyAuthority(ADMIN, MANAGER)
             .antMatchers("/api/preferences/**").hasAnyAuthority(ADMIN, MANAGER)
             .antMatchers("/api/employees/**").hasAnyAuthority(ADMIN, MANAGER)
