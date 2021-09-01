@@ -3,49 +3,34 @@
     <div class="col-12">
       <div class="card knowledge-base-bg text-center" style="background-image: url('/content/images/banner/banner.png')">
         <div class="card-body">
-          <h2 class="text-primary">Select one of our templates</h2>
-          <p class="card-text">
-            <span>If you want a customized space for you, <a href="mailto:shopthelook@weareklai.com">contact us</a></span>
+          <h2 class="text-primary">Add a title and description</h2>
+          <p class="card-text mb-2">
+            <span>Add a name and description for the space. Be meaningful as you can!</span>
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
-<section id="knowledge-base-content">
-  <div class="row kb-search-content-info match-height">
-    <div class="col-md-4 col-sm-6 col-12">
-      <div class="card">
-        <a>
-          <img src="/content/images/illustration/sales.svg" class="card-img-top" alt="knowledge-base-image" />
-          <div class="card-body text-center">
-            <h4>One Photo</h4>
-            <p class="text-body mt-1 mb-0">Lorem ipsum</p>
-          </div>
-        </a>
+<section>
+  <form>
+    <div class="row" (ngSubmit)="onSubmit()" [formGroup]="spaceForm">
+      <div class="form-group col-md-6">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" id="title" name="title" required class="form-control" placeholder="My awesome space" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" id="description" name="description" required class="form-control" placeholder="This space is amazing!" />
       </div>
     </div>
-    <div class="col-md-4 col-sm-6 col-12">
-      <div class="card">
-        <a>
-          <img src="/content/images/illustration/marketing.svg" class="card-img-top" alt="knowledge-base-image" />
-          <div class="card-body text-center">
-            <h4>One Photo</h4>
-            <p class="text-body mt-1 mb-0">Lorem ipsum</p>
-          </div>
-        </a>
-      </div>
+    <div class="d-flex justify-content-between">
+      <button disabled rippleeffect class="btn btn-outline-secondary btn-prev waves-effect">
+        <span class="align-middle d-sm-inline-block d-none">Previous</span>
+      </button>
+      <button type="submit" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light">
+        <span class="align-middle d-sm-inline-block d-none">Next</span>
+      </button>
     </div>
-    <div class="col-md-4 col-sm-6 col-12">
-      <div class="card">
-        <a>
-          <img src="/content/images/illustration/api.svg" class="card-img-top" alt="knowledge-base-image" />
-          <div class="card-body text-center">
-            <h4>One Photo</h4>
-            <p class="text-body mt-1 mb-0">Lorem ipsum</p>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
+  </form>
 </section>

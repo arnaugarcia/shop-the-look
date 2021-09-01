@@ -30,6 +30,10 @@ export class Space implements ISpace {
   }
 }
 
+export class SpaceRequest implements ISpace {
+  constructor(public name?: string, public description?: string | null) {}
+}
+
 export function getSpaceIdentifier(space: ISpace): number | undefined {
   return space.id;
 }

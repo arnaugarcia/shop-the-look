@@ -7,10 +7,18 @@ import { CreateComponent } from './pages/create/create.component';
 import { PublishComponent } from './pages/publish/publish.component';
 import { EnjoyComponent } from './pages/enjoy/enjoy.component';
 import { CustomizeComponent } from './pages/customize/customize.component';
+import { TemplateComponent } from './pages/template/template.component';
+import { ListComponent } from './pages/list/list.component';
+import { EditComponent } from './pages/edit/edit.component';
 
 const spaceRoute: Routes = [
   {
     path: '',
+    component: ListComponent,
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'studio',
     component: StudioComponent,
     canActivate: [UserRouteAccessService],
     children: [
@@ -23,11 +31,19 @@ const spaceRoute: Routes = [
         component: CreateComponent,
       },
       {
-        path: 'customize',
+        path: '{reference}/edit',
+        component: EditComponent,
+      },
+      {
+        path: '{reference}/template',
+        component: TemplateComponent,
+      },
+      {
+        path: '{reference}/customize',
         component: CustomizeComponent,
       },
       {
-        path: 'publish',
+        path: '{reference}/publish',
         component: PublishComponent,
       },
       {
