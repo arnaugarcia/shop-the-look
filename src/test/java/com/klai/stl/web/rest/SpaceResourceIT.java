@@ -2,6 +2,7 @@ package com.klai.stl.web.rest;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.repository.SpaceRepository;
+import com.klai.stl.service.dto.requests.space.SpaceRequest;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ class SpaceResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final String ENTITY_API_URL_ADMIN = "/api/spaces";
     private static final String ENTITY_API_URL = "/api/spaces";
 
     @Autowired
@@ -41,11 +43,39 @@ class SpaceResourceIT {
     @Autowired
     private MockMvc restSpaceMockMvc;
 
+    private SpaceRequest spaceRequest;
+
     @BeforeEach
-    public void initTest() {}
+    public void initTest() {
+        this.spaceRequest = buildRequest();
+    }
+
+    private SpaceRequest buildRequest() {
+        return SpaceRequest.builder().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION).build();
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void createTest() {}
+    public void createSpaceAsUser() {}
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void createSpaceAsManager() {}
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void createSpaceAsAdmin() {}
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void createSpaceForOtherCompanyAsAdmin() {}
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void createSpaceForOtherCompanyAsManager() {}
 }
