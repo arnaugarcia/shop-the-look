@@ -1,7 +1,7 @@
 import { ICoordinate } from 'app/entities/coordinate/coordinate.model';
-import { ISpace } from 'app/entities/space/space.model';
 import { ISpaceTemplate } from 'app/entities/space-template/space-template.model';
 import { PhotoOrientation } from 'app/entities/enumerations/photo-orientation.model';
+import { ISpace } from '../../features/space/model/space.model';
 
 export interface IPhoto {
   id?: number;

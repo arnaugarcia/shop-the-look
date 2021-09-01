@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ISpace, SpaceRequest } from '../space.model';
+import { ISpace, SpaceRequest } from '../model/space.model';
 
 export type EntityResponseType = HttpResponse<ISpace>;
 export type EntityArrayResponseType = HttpResponse<ISpace[]>;

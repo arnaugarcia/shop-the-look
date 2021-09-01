@@ -10,19 +10,9 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./company/company.module').then(m => m.CompanyModule),
       },
       {
-        path: 'space',
-        data: { pageTitle: 'shopTheLookApp.space.home.title' },
-        loadChildren: () => import('./space/space.module').then(m => m.SpaceModule),
-      },
-      {
         path: 'space-template',
         data: { pageTitle: 'shopTheLookApp.spaceTemplate.home.title' },
         loadChildren: () => import('./space-template/space-template.module').then(m => m.SpaceTemplateModule),
-      },
-      {
-        path: 'photo',
-        data: { pageTitle: 'shopTheLookApp.photo.home.title' },
-        loadChildren: () => import('./photo/photo.module').then(m => m.PhotoModule),
       },
       {
         path: 'subscription-plan',

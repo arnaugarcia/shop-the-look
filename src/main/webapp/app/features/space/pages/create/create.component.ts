@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SpaceService } from '../../../../entities/space/service/space.service';
-import { ISpace, SpaceRequest } from '../../../../entities/space/space.model';
 import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { SpaceService } from '../../service/space.service';
+import { ISpace, SpaceRequest } from '../../model/space.model';
 
 @Component({
   selector: 'stl-create',
