@@ -10,12 +10,15 @@ import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.SpaceRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.jhipster.web.util.HeaderUtil;
 
 /**
  * REST controller for managing {@link com.klai.stl.domain.Space}.
@@ -59,13 +62,24 @@ public class SpaceResource {
     }
 
     @PostMapping("/spaces")
-    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody SpaceRequest spaceRequest, @RequestParam String companyReference) {
-        return ok(spaceService.createForCompany(spaceRequest, companyReference));
+    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody SpaceRequest spaceRequest, @RequestParam String companyReference)
+        throws URISyntaxException {
+        log.debug("REST request to save an Space");
+        SpaceDTO result = spaceService.createForCompany(spaceRequest, companyReference);
+        return ResponseEntity
+            .created(new URI("/api/spaces/" + result.getReference()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     @PostMapping("/me/spaces")
-    public ResponseEntity<SpaceDTO> createSpaceForCurrentUser(@Valid @RequestBody SpaceRequest spaceRequest) {
-        return ok(spaceService.createForCurrentUser(spaceRequest));
+    public ResponseEntity<SpaceDTO> createSpaceForCurrentUser(@Valid @RequestBody SpaceRequest spaceRequest) throws URISyntaxException {
+        log.debug("REST request to save an Space");
+        SpaceDTO result = spaceService.createForCurrentUser(spaceRequest);
+        return ResponseEntity
+            .created(new URI("/api/spaces/" + result.getReference()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     @PutMapping("/spaces/{reference}")
