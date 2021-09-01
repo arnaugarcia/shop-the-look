@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="card knowledge-base-bg text-center" style="background-image: url('/content/images/banner/banner.png')">
         <div class="card-body">
-          <h2 class="text-primary">Add a title and description</h2>
+          <h2 class="text-primary">Add a name and description</h2>
           <p class="card-text mb-2">
             <span>Add a name and description for the space. Be meaningful as you can!</span>
           </p>
@@ -16,19 +16,19 @@
   <form name="spaceForm" (ngSubmit)="onSubmit()" [formGroup]="spaceForm" novalidate role="form">
     <div class="row">
       <div class="form-group col-md-6">
-        <label for="title" class="form-label">Title</label>
+        <label for="name" class="form-label">Name</label>
         <input
-          [ngClass]="{ 'is-invalid': spaceForm.get('title')!.dirty && spaceForm.get('title')!.touched && spaceForm.get('title')!.invalid }"
+          [ngClass]="{ 'is-invalid': spaceForm.get('name')!.dirty && spaceForm.get('name')!.touched && spaceForm.get('name')!.invalid }"
           type="text"
-          id="title"
-          name="title"
-          formControlName="title"
+          id="name"
+          name="name"
+          formControlName="name"
           class="form-control"
           placeholder="My awesome space"
           required
         />
-        <div *ngIf="spaceForm.get('title')!.invalid && (spaceForm.get('title')!.dirty || spaceForm.get('title')!.touched)">
-          <small class="form-text text-danger" *ngIf="spaceForm.get('title')?.errors?.required" stlTranslate="entity.validation.required">
+        <div *ngIf="spaceForm.get('name')!.invalid && (spaceForm.get('name')!.dirty || spaceForm.get('name')!.touched)">
+          <small class="form-text text-danger" *ngIf="spaceForm.get('name')?.errors?.required" stlTranslate="entity.validation.required">
             This field is required.
           </small>
         </div>

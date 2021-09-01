@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class CreateComponent {
   public spaceForm = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.maxLength(50)]],
+    name: ['', [Validators.required, Validators.maxLength(50)]],
     description: ['', [Validators.maxLength(250)]],
   });
 
