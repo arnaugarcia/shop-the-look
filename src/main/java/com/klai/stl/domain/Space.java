@@ -1,6 +1,7 @@
 package com.klai.stl.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.klai.stl.domain.enumeration.SpaceTemplateOption;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,9 @@ public class Space implements Serializable {
     @NotNull
     @Column(name = "reference", nullable = false, unique = true)
     private String reference;
+
+    @Column(name = "template", nullable = false, unique = true)
+    private SpaceTemplateOption template;
 
     @Column(name = "description")
     private String description;
@@ -107,6 +111,19 @@ public class Space implements Serializable {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public SpaceTemplateOption getTemplate() {
+        return this.template;
+    }
+
+    public Space template(SpaceTemplateOption template) {
+        this.template = template;
+        return this;
+    }
+
+    public void setTemplate(SpaceTemplateOption template) {
+        this.template = template;
     }
 
     public String getDescription() {
@@ -219,6 +236,7 @@ public class Space implements Serializable {
             ", name='" + getName() + "'" +
             ", active='" + getActive() + "'" +
             ", reference='" + getReference() + "'" +
+            ", template='" + getTemplate() + "'" +
             ", description='" + getDescription() + "'" +
             ", maxPhotos=" + getMaxPhotos() +
             ", visible='" + getVisible() + "'" +
