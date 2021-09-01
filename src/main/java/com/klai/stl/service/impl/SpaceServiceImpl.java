@@ -1,8 +1,14 @@
 package com.klai.stl.service.impl;
 
+import static java.util.Locale.ROOT;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.SpaceRepository;
+import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.SpaceService;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.SpaceRequest;
 import com.klai.stl.service.mapper.SpaceMapper;
@@ -27,19 +33,41 @@ public class SpaceServiceImpl implements SpaceService {
 
     private final SpaceMapper spaceMapper;
 
-    public SpaceServiceImpl(SpaceRepository spaceRepository, SpaceMapper spaceMapper) {
+    private final UserService userService;
+
+    private final CompanyService companyService;
+
+    public SpaceServiceImpl(
+        SpaceRepository spaceRepository,
+        SpaceMapper spaceMapper,
+        UserService userService,
+        CompanyService companyService
+    ) {
         this.spaceRepository = spaceRepository;
         this.spaceMapper = spaceMapper;
+        this.userService = userService;
+        this.companyService = companyService;
     }
 
     @Override
     public SpaceDTO createForCurrentUser(SpaceRequest spaceRequest) {
-        return null;
+        return createForCompany(spaceRequest, userService.getCurrentUserCompany());
     }
 
     @Override
     public SpaceDTO createForCompany(SpaceRequest spaceRequest, String companyReference) {
-        return null;
+        return createForCompany(spaceRequest, companyService.findByReference(companyReference));
+    }
+
+    public SpaceDTO createForCompany(SpaceRequest spaceRequest, Company company) {
+        final Space space = spaceMapper.toEntity(spaceRequest);
+        space.setReference(randomAlphabetic(20).toUpperCase(ROOT));
+        space.setCompany(company);
+        return saveAndTransform(space);
+    }
+
+    private SpaceDTO saveAndTransform(Space space) {
+        return spaceMapper.toDto(spaceRepository.save(space));
     }
 
     @Override
