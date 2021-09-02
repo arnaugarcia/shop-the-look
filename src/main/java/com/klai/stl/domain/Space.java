@@ -1,5 +1,7 @@
 package com.klai.stl.domain;
 
+import static javax.persistence.EnumType.STRING;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.SpaceTemplateOption;
 import java.io.Serializable;
@@ -35,6 +37,7 @@ public class Space implements Serializable {
     @Column(name = "reference", nullable = false, unique = true)
     private String reference;
 
+    @Enumerated(STRING)
     @Column(name = "template", nullable = false, unique = true)
     private SpaceTemplateOption template;
 
