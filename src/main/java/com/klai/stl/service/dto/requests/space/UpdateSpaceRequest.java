@@ -6,21 +6,19 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class UpdateSpaceRequest extends SpaceRequest implements Serializable {
 
     @NotNull
-    String reference;
-
-    @NotNull
     SpaceTemplateOption template;
 
+    @Jacksonized
     @Builder
-    public UpdateSpaceRequest(String name, String description, SpaceTemplateOption template, String reference) {
+    public UpdateSpaceRequest(String name, String description, SpaceTemplateOption template) {
         super(name, description);
-        this.reference = reference;
         this.template = template;
     }
 }
