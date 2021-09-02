@@ -12,9 +12,9 @@ export class SpaceRoutingResolveService implements Resolve<ISpace> {
   constructor(protected service: SpaceService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ISpace> | Observable<never> {
-    const id = route.params['id'];
-    if (id) {
-      return this.service.find(id).pipe(
+    const reference = route.params['reference'];
+    if (reference) {
+      return this.service.find(reference).pipe(
         mergeMap((space: HttpResponse<Space>) => {
           if (space.body) {
             return of(space.body);
@@ -25,6 +25,7 @@ export class SpaceRoutingResolveService implements Resolve<ISpace> {
         })
       );
     }
-    return of(new Space());
+    this.router.navigate(['404']);
+    return EMPTY;
   }
 }

@@ -28,8 +28,8 @@ export class SpaceService {
     return this.http.put<ISpace>(`${this.resourceUrl}/${space.reference!}`, space, { observe: 'response' });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<ISpace>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  find(reference: string): Observable<EntityResponseType> {
+    return this.http.get<ISpace>(`${this.resourceUrl}/${reference}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

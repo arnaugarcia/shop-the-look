@@ -11,6 +11,7 @@ import { TemplateComponent } from './pages/template/template.component';
 import { ListComponent } from './pages/list/list.component';
 import { EditComponent } from './pages/edit/edit.component';
 import { SpaceReferenceGuard } from './route/space-reference.guard';
+import { SpaceRoutingResolveService } from './route/space-routing-resolve.service';
 
 const spaceRoute: Routes = [
   {
@@ -24,12 +25,20 @@ const spaceRoute: Routes = [
     canActivate: [UserRouteAccessService],
     children: [
       {
+        path: '',
+        redirectTo: 'create',
+      },
+      {
         path: 'create',
         component: CreateComponent,
       },
       {
         path: ':reference',
         canActivate: [SpaceReferenceGuard],
+        runGuardsAndResolvers: 'always',
+        resolve: {
+          space: SpaceRoutingResolveService,
+        },
         children: [
           {
             path: 'edit',
