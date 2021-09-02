@@ -1,5 +1,6 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.domain.enumeration.SpaceTemplateOption.ONE_PHOTO;
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.service.dto.requests.space.NewSpaceRequest.builder;
@@ -10,13 +11,16 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Space;
 import com.klai.stl.domain.User;
+import com.klai.stl.domain.enumeration.SpaceTemplateOption;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +50,8 @@ class SpaceResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private SpaceTemplateOption UPDATED_TEMPLATE = ONE_PHOTO;
+
     private static final String API_URL_ADMIN = "/api/spaces?companyReference={reference}";
     private static final String API_URL = "/api/spaces";
     private static final String API_URL_REFERENCE = "/api/spaces/{reference}";
@@ -62,26 +68,43 @@ class SpaceResourceIT {
 
     private Company company;
 
+    private Space space;
+
     private NewSpaceRequest newSpaceRequest;
+    private UpdateSpaceRequest updateSpaceRequest;
 
     @BeforeEach
     public void initTest() {
-        this.newSpaceRequest = buildRequest();
-        this.company = createBasicCompany(em);
+        newSpaceRequest = buildRequest();
+        updateSpaceRequest = buildUpdateRequest();
+        company = createBasicCompany(em);
+        space = createBasicSpace(em);
+    }
+
+    private Space createBasicSpace(EntityManager em) {
+        Space space = new Space()
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION)
+            .active(DEFAULT_ACTIVE)
+            .company(company)
+            .reference(DEFAULT_REFERENCE + randomAlphanumeric(5).toUpperCase());
+        em.persist(space);
+        return space;
     }
 
     private NewSpaceRequest buildRequest() {
         return builder().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION).build();
     }
 
+    private UpdateSpaceRequest buildUpdateRequest() {
+        return UpdateSpaceRequest.builder().name(UPDATED_NAME).description(UPDATED_DESCRIPTION).template(UPDATED_TEMPLATE).build();
+    }
+
     @Test
     @Transactional
     @WithMockUser(username = "space-create-user")
     public void createSpaceAsUser() throws Exception {
-        final User user = UserResourceIT.createEntity(em, "space-create-user");
-        em.persist(user);
-        company.addUser(user);
-        em.persist(company);
+        createAndAppendUserToCompanyByLogin("space-create-user");
 
         int databaseSizeBeforeCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
 
@@ -106,10 +129,7 @@ class SpaceResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "space-create-manager")
     public void createSpaceAsManager() throws Exception {
-        final User user = UserResourceIT.createEntity(em, "space-create-manager");
-        em.persist(user);
-        company.addUser(user);
-        em.persist(company);
+        createAndAppendUserToCompanyByLogin("space-create-manager");
 
         int databaseSizeBeforeCreate = spaceRepository.findByCompanyReference(company.getReference()).size();
 
@@ -188,12 +208,89 @@ class SpaceResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(authorities = ADMIN)
-    public void updateSpaceThatNotExistsAsAdmin() throws Exception {
+    @WithMockUser(authorities = MANAGER)
+    public void updateSpaceThatNotExists() throws Exception {
         restSpaceMockMvc
             .perform(
-                put(API_URL_REFERENCE, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest))
+                put(API_URL_REFERENCE, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(updateSpaceRequest))
             )
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER, username = "update-space-manager")
+    public void updateSpaceAsManager() throws Exception {
+        createAndAppendUserToCompanyByLogin("update-space-manager");
+        restSpaceMockMvc
+            .perform(
+                put(API_URL_REFERENCE, space.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
+            )
+            .andExpect(status().isOk());
+
+        Space result = spaceRepository.findByReference(space.getReference()).orElseThrow();
+        assertThat(result.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(result.getReference()).isEqualTo(space.getReference());
+        assertThat(result.getTemplate().name()).isEqualTo(UPDATED_TEMPLATE.name());
+        assertThat(result.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(result.getCompany().getReference()).isNotNull();
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "update-space-user")
+    public void updateSpaceAsUser() throws Exception {
+        createAndAppendUserToCompanyByLogin("update-space-user");
+        restSpaceMockMvc
+            .perform(
+                put(API_URL_REFERENCE, space.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
+            )
+            .andExpect(status().isOk());
+
+        Space result = spaceRepository.findByReference(space.getReference()).orElseThrow();
+        assertThat(result.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(result.getTemplate().name()).isEqualTo(UPDATED_TEMPLATE.name());
+        assertThat(result.getReference()).isEqualTo(space.getReference());
+        assertThat(result.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(result.getCompany().getReference()).isNotNull();
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void updateOtherSpaceAsUser() throws Exception {
+        restSpaceMockMvc
+            .perform(
+                put(API_URL_REFERENCE, space.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
+            )
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER)
+    public void updateOtherSpaceAsManager() throws Exception {
+        restSpaceMockMvc
+            .perform(
+                put(API_URL_REFERENCE, space.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
+            )
+            .andExpect(status().isForbidden());
+    }
+
+    private void createAndAppendUserToCompanyByLogin(String s) {
+        User user = UserResourceIT.createEntity(em, s);
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
     }
 }
