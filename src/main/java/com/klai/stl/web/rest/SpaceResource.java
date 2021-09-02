@@ -16,6 +16,7 @@ import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.validation.Valid;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,17 +52,17 @@ public class SpaceResource {
 
     @GetMapping("/spaces")
     public ResponseEntity<Void> findSpaces() {
-        return ok(null);
+        throw new NotYetImplementedException();
     }
 
     @GetMapping("/me/spaces")
     public ResponseEntity<Void> findMySpaces() {
-        return ok(null);
+        throw new NotYetImplementedException();
     }
 
     @GetMapping("/spaces/{reference}")
     public ResponseEntity<Void> findSpace(@PathVariable String reference) {
-        return ok(null);
+        throw new NotYetImplementedException();
     }
 
     @PostMapping("/spaces")
@@ -94,17 +95,17 @@ public class SpaceResource {
 
     @DeleteMapping("/spaces/{reference}")
     public ResponseEntity<Void> deleteSpace(@PathVariable String reference) {
-        return ok(null);
+        throw new NotYetImplementedException();
     }
 
     @PostMapping("/spaces/{reference}/photos")
     public ResponseEntity<Void> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
-        return ok(null);
+        throw new NotYetImplementedException();
     }
 
     @DeleteMapping("/spaces/{reference}/photos/{photoReference}")
     public ResponseEntity<Void> removePhotoFromSpace(@PathVariable String photoReference, @PathVariable String reference) {
-        return ok(null);
+        throw new NotYetImplementedException();
     }
 
     @PutMapping("/spaces/{reference}/coordinates")
@@ -112,6 +113,6 @@ public class SpaceResource {
         @PathVariable String reference,
         @Valid @RequestBody SpaceCoordinateRequest coordinateRequest
     ) {
-        return ok(null);
+        throw new NotYetImplementedException();
     }
 }
