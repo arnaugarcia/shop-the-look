@@ -287,8 +287,8 @@ class SpaceResourceIT {
             .andExpect(status().isForbidden());
     }
 
-    private void createAndAppendUserToCompanyByLogin(String s) {
-        User user = UserResourceIT.createEntity(em, s);
+    private void createAndAppendUserToCompanyByLogin(String login) {
+        User user = UserResourceIT.createEntity(em, login);
         em.persist(user);
         company.addUser(user);
         em.persist(company);
