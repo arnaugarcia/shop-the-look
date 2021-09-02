@@ -11,8 +11,8 @@ import lombok.Getter;
 public abstract class SpaceRequest implements Serializable {
 
     @NotNull
-    String name;
+    private final String name;
 
     @Lob
-    String description;
+    private final String description;
 }

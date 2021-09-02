@@ -8,6 +8,7 @@ import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
@@ -47,6 +48,7 @@ class SpaceResourceIT {
 
     private static final String API_URL_ADMIN = "/api/spaces?companyReference={reference}";
     private static final String API_URL = "/api/spaces";
+    private static final String API_URL_REFERENCE = "/api/spaces/{reference}";
     private static final String ME_API_URL = "/api/me/spaces";
 
     @Autowired
@@ -181,6 +183,17 @@ class SpaceResourceIT {
     public void createSpaceForOtherCompanyThatNotExistsAsAdmin() throws Exception {
         restSpaceMockMvc
             .perform(post(API_URL_ADMIN, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    public void updateSpaceThatNotExistsAsAdmin() throws Exception {
+        restSpaceMockMvc
+            .perform(
+                put(API_URL_REFERENCE, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest))
+            )
             .andExpect(status().isNotFound());
     }
 }
