@@ -36,12 +36,12 @@ public interface SpaceService {
     Page<SpaceDTO> findAll(Pageable pageable);
 
     /**
-     * Get the "id" space.
+     * Get the "reference" space.
      *
-     * @param id the id of the entity.
+     * @param reference the reference of the entity.
      * @return the entity.
      */
-    Optional<SpaceDTO> findOne(Long id);
+    Optional<SpaceDTO> findOne(String reference);
 
     /**
      * Delete the "id" space.

@@ -83,9 +83,9 @@ public class SpaceServiceImpl implements SpaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<SpaceDTO> findOne(Long id) {
-        log.debug("Request to get Space : {}", id);
-        return spaceRepository.findById(id).map(spaceMapper::toDto);
+    public Optional<SpaceDTO> findOne(String reference) {
+        log.debug("Request to get Space : {}", reference);
+        return spaceRepository.findByReference(reference).map(spaceMapper::toDto);
     }
 
     @Override

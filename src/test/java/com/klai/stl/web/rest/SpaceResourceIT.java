@@ -1,6 +1,7 @@
 package com.klai.stl.web.rest;
 
 import static com.klai.stl.domain.enumeration.SpaceTemplateOption.ONE_PHOTO;
+import static com.klai.stl.domain.enumeration.SpaceTemplateOption.THREE_PHOTOS_HORIZONTAL;
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.service.dto.requests.space.NewSpaceRequest.builder;
@@ -8,9 +9,8 @@ import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.IntegrationTest;
@@ -27,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,8 @@ class SpaceResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private SpaceTemplateOption UPDATED_TEMPLATE = ONE_PHOTO;
+    private static final SpaceTemplateOption DEFAULT_TEMPLATE = THREE_PHOTOS_HORIZONTAL;
+    private static final SpaceTemplateOption UPDATED_TEMPLATE = ONE_PHOTO;
 
     private static final String API_URL_ADMIN = "/api/spaces?companyReference={reference}";
     private static final String API_URL = "/api/spaces";
@@ -86,6 +88,7 @@ class SpaceResourceIT {
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .active(DEFAULT_ACTIVE)
+            .template(DEFAULT_TEMPLATE)
             .company(company)
             .reference(DEFAULT_REFERENCE + randomAlphanumeric(5).toUpperCase());
         em.persist(space);
@@ -285,6 +288,52 @@ class SpaceResourceIT {
                     .content(convertObjectToJsonBytes(updateSpaceRequest))
             )
             .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = MANAGER, username = "space-find-manager")
+    public void findSpaceByReferenceAsManager() throws Exception {
+        createAndAppendUserToCompanyByLogin("space-find-manager");
+        restSpaceMockMvc
+            .perform(get(API_URL_REFERENCE, space.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.description").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.reference").value(space.getReference()))
+            .andExpect(jsonPath("$.template").value(DEFAULT_TEMPLATE.name()));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "space-find-user")
+    public void findSpaceByReferenceAsUser() throws Exception {
+        createAndAppendUserToCompanyByLogin("space-find-user");
+        restSpaceMockMvc
+            .perform(get(API_URL_REFERENCE, space.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.description").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.reference").value(space.getReference()))
+            .andExpect(jsonPath("$.template").value(DEFAULT_TEMPLATE.name()));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void findSpaceByReferenceThatNotExists() throws Exception {
+        restSpaceMockMvc.perform(get(API_URL_REFERENCE, "BAD_REFERENCE").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void findSpaceByReferenceThatNotBelongsToUser() throws Exception {
+        restSpaceMockMvc
+            .perform(get(API_URL_REFERENCE, space.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
