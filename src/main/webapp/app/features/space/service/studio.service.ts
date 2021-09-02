@@ -2,7 +2,11 @@ import { EventEmitter, Injectable } from '@angular/core';
 
 type CurrentStep = 'template' | 'create' | 'customize' | 'enjoy' | 'publish';
 
-export type StudioTemplates = 'option1' | 'option2' | 'option3';
+export enum StudioTemplates {
+  ONE_PHOTO = 'ONE_PHOTO',
+  THREE_PHOTOS_VERTICAL = 'THREE_PHOTOS_VERTICAL',
+  THREE_PHOTOS_HORIZONTAL = 'THREE_PHOTOS_HORIZONTAL',
+}
 
 interface IStudioData {
   template: StudioTemplates;
@@ -19,7 +23,7 @@ export class StudioService {
   constructor() {
     this.navigation = new EventEmitter<string>();
     this.data = {
-      template: 'option1',
+      template: StudioTemplates.ONE_PHOTO,
     };
   }
 

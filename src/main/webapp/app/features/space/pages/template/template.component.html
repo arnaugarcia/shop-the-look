@@ -15,7 +15,7 @@
 <section id="knowledge-base-content">
   <div class="row kb-search-content-info match-height">
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="card" [class.active]="selectedOption === 'option1'" (click)="selectOption('option1')">
+      <div class="card" [class.active]="selectedOption === StudioTemplates.ONE_PHOTO" (click)="selectOption(StudioTemplates.ONE_PHOTO)">
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space1.svg" class="card-img-top" alt="knowledge-base-image" />
@@ -28,7 +28,11 @@
       </div>
     </div>
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="card" [class.active]="selectedOption === 'option2'" (click)="selectOption('option2')">
+      <div
+        class="card"
+        [class.active]="selectedOption === StudioTemplates.THREE_PHOTOS_VERTICAL"
+        (click)="selectOption(StudioTemplates.THREE_PHOTOS_VERTICAL)"
+      >
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space2.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
@@ -41,7 +45,11 @@
       </div>
     </div>
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="card" [class.active]="selectedOption === 'option3'" (click)="selectOption('option3')">
+      <div
+        class="card"
+        [class.active]="selectedOption === StudioTemplates.THREE_PHOTOS_HORIZONTAL"
+        (click)="selectOption(StudioTemplates.THREE_PHOTOS_HORIZONTAL)"
+      >
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space3.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
