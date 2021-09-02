@@ -3,7 +3,6 @@ package com.klai.stl.service;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -41,7 +40,7 @@ public interface SpaceService {
      * @param reference the reference of the entity.
      * @return the entity.
      */
-    Optional<SpaceDTO> findOne(String reference);
+    SpaceDTO findOne(String reference);
 
     /**
      * Delete the "id" space.

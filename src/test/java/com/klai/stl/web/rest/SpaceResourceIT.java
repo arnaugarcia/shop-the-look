@@ -322,8 +322,9 @@ class SpaceResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "space-not-found")
     public void findSpaceByReferenceThatNotExists() throws Exception {
+        createAndAppendUserToCompanyByLogin("space-not-found");
         restSpaceMockMvc.perform(get(API_URL_REFERENCE, "BAD_REFERENCE").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 
@@ -333,7 +334,7 @@ class SpaceResourceIT {
     public void findSpaceByReferenceThatNotBelongsToUser() throws Exception {
         restSpaceMockMvc
             .perform(get(API_URL_REFERENCE, space.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isForbidden());
     }
 
     private void createAndAppendUserToCompanyByLogin(String login) {

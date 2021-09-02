@@ -15,7 +15,6 @@ import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.SpaceNotFound;
 import com.klai.stl.service.mapper.SpaceMapper;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -83,9 +82,11 @@ public class SpaceServiceImpl implements SpaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<SpaceDTO> findOne(String reference) {
+    public SpaceDTO findOne(String reference) {
         log.debug("Request to get Space : {}", reference);
-        return spaceRepository.findByReference(reference).map(spaceMapper::toDto);
+        final Space result = spaceRepository.findByReference(reference).orElseThrow(SpaceNotFound::new);
+        checkIfCurrentUserBelongsToSpace(reference);
+        return spaceMapper.toDto(result);
     }
 
     @Override

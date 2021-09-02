@@ -4,7 +4,6 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
-import static tech.jhipster.web.util.ResponseUtil.wrapOrNotFound;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.klai.stl.config.AWSClientProperties;
@@ -17,7 +16,6 @@ import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Optional;
 import javax.validation.Valid;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
@@ -65,8 +63,7 @@ public class SpaceResource {
     @GetMapping("/spaces/{reference}")
     public ResponseEntity<SpaceDTO> findSpace(@PathVariable String reference) {
         log.debug("REST request to get Space : {}", reference);
-        Optional<SpaceDTO> spaceDTO = spaceService.findOne(reference);
-        return wrapOrNotFound(spaceDTO);
+        return ok(spaceService.findOne(reference));
     }
 
     @PostMapping("/spaces")
