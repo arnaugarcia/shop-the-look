@@ -26,8 +26,6 @@ export class SpacePhotoComponent {
   public loading = false;
   public error = false;
 
-  public photoUrl?: string = 'https://images.unsplash.com/photo-1630688231126-dd36840fce51';
-
   public uploader: FileUploader = new FileUploader({
     isHTML5: true,
   });
