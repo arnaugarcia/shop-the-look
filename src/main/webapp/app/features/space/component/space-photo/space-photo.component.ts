@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { PhotoRequest } from '../../model/photo.model';
+import { IPhoto, PhotoRequest } from '../../model/photo.model';
 import { SpacePhotoService } from '../../service/space-photo.service';
 
 @Component({
@@ -19,11 +19,14 @@ export class SpacePhotoComponent {
   @Input()
   public width: string;
 
+  @Input()
+  public photo?: IPhoto;
+
   public hasBaseDropZoneOver = false;
   public loading = false;
   public error = false;
 
-  public photoUrl?: string;
+  public photoUrl?: string = 'https://images.unsplash.com/photo-1630688231126-dd36840fce51';
 
   public uploader: FileUploader = new FileUploader({
     isHTML5: true,
@@ -55,6 +58,13 @@ export class SpacePhotoComponent {
       this.uploadFile(droopedFile);
     };
     this.fileReader.readAsDataURL(this.uploader.queue[0]._file);
+  }
+
+  public deletePhoto(photoReference: string): void {
+    this.photoService.removePhoto(this.spaceReference!, photoReference).subscribe(
+      (response: HttpResponse<any>) => this.onUploadSuccess(response),
+      (error: HttpErrorResponse) => this.onUploadError(error)
+    );
   }
 
   private uploadFile(droopedFile: any): void {

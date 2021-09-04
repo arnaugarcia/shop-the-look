@@ -18,7 +18,7 @@ export class SpacePhotoService {
     return this.http.post<IPhoto>(`${this.resourceUrl}/${spaceReference}/photos`, photoRequest, { observe: 'response' });
   }
 
-  removePhoto(spaceReference: string, photoReference: string): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${spaceReference}/photos/${photoReference}`, { observe: 'response' });
+  removePhoto(spaceReference: string, photoReference: string): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.resourceUrl}/${spaceReference}/photos/${photoReference}`, { observe: 'response' });
   }
 }
