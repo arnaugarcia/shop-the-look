@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="studioService.template">
+<ng-container *ngIf="space" [ngSwitch]="studioService.template">
   <section *ngSwitchCase="StudioTemplate.THREE_PHOTOS_HORIZONTAL || StudioTemplate.THREE_PHOTOS_VERTICAL">
     <stl-space-photo></stl-space-photo>
     <stl-space-photo></stl-space-photo>
@@ -15,10 +15,10 @@
       <div class="col-4">
         <div class="card h-full">
           <div class="card-header d-flex justify-content-between align-items-end">
-            <h2>{{ studioService.title }}</h2>
+            <h2>{{ space.name }}</h2>
           </div>
           <div class="card-body">
-            <p [innerHTML]="studioService.description"></p>
+            <p [innerHTML]="space.description"></p>
           </div>
         </div>
       </div>

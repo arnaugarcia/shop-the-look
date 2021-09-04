@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { StudioService, StudioTemplate } from '../../service/studio.service';
+import { ActivatedRoute } from '@angular/router';
+import { ISpace } from '../../model/space.model';
 
 @Component({
   selector: 'stl-customize',
@@ -8,8 +10,12 @@ import { StudioService, StudioTemplate } from '../../service/studio.service';
 })
 export class CustomizeComponent {
   public StudioTemplate = StudioTemplate;
+  public space?: ISpace;
 
-  constructor(public studioService: StudioService) {
+  constructor(public studioService: StudioService, private activatedRoute: ActivatedRoute) {
     this.studioService.navigate('customize');
+    this.activatedRoute.data.subscribe(({ space }) => {
+      this.space = space;
+    });
   }
 }
