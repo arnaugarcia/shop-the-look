@@ -9,6 +9,8 @@ export enum StudioTemplate {
 }
 
 interface IStudioData {
+  title: string;
+  description: string;
   template: StudioTemplate;
 }
 
@@ -18,11 +20,13 @@ interface IStudioData {
 export class StudioService {
   currentStep: CurrentStep = 'create';
   navigation: EventEmitter<string>;
-  data: IStudioData;
+  private _data: IStudioData;
 
   constructor() {
     this.navigation = new EventEmitter<string>();
-    this.data = {
+    this._data = {
+      title: '',
+      description: '',
       template: StudioTemplate.ONE_PHOTO,
     };
   }
@@ -32,7 +36,27 @@ export class StudioService {
     this.navigation.emit(step);
   }
 
-  setTemplate(template: StudioTemplate): void {
-    this.data.template = template;
+  set template(template: StudioTemplate) {
+    this._data.template = template;
+  }
+
+  get template(): StudioTemplate {
+    return this._data.template;
+  }
+
+  get title(): string {
+    return this._data.title;
+  }
+
+  set title(title: string) {
+    this._data.title = title;
+  }
+
+  get description(): string {
+    return this._data.description;
+  }
+
+  set description(description: string) {
+    this._data.description = description;
   }
 }

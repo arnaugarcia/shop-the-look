@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { StudioService, StudioTemplate } from '../../service/studio.service';
 
 @Component({
@@ -6,16 +6,10 @@ import { StudioService, StudioTemplate } from '../../service/studio.service';
   templateUrl: './customize.component.html',
   styleUrls: ['./customize.component.scss'],
 })
-export class CustomizeComponent implements OnInit {
-  public template: StudioTemplate;
+export class CustomizeComponent {
   public StudioTemplate = StudioTemplate;
 
-  constructor(private studioService: StudioService) {
+  constructor(public studioService: StudioService) {
     this.studioService.navigate('customize');
-    this.template = this.studioService.data.template;
-  }
-
-  ngOnInit(): void {
-    this.template = this.studioService.data.template;
   }
 }

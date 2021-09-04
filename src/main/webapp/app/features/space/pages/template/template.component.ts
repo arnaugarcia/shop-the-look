@@ -16,7 +16,7 @@ export class TemplateComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private studioService: StudioService, private spaceService: SpaceService) {
     this.studioService.navigate('template');
-    this.selectedOption = studioService.data.template;
+    this.selectedOption = studioService.template;
   }
 
   ngOnInit(): void {
@@ -28,7 +28,7 @@ export class TemplateComponent implements OnInit {
 
   selectOption(option: StudioTemplate): void {
     this.selectedOption = option;
-    this.studioService.setTemplate(option);
+    this.studioService.template = option;
     if (this.space) {
       this.space.template = option.valueOf();
       this.spaceService.update(this.space).subscribe();
