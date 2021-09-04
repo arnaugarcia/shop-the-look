@@ -10,6 +10,8 @@ import { EnjoyComponent } from './pages/enjoy/enjoy.component';
 import { TemplateComponent } from './pages/template/template.component';
 import { ListComponent } from './pages/list/list.component';
 import { EditComponent } from './pages/edit/edit.component';
+import { SpacePhotoComponent } from './component/space-photo/space-photo.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { EditComponent } from './pages/edit/edit.component';
     TemplateComponent,
     ListComponent,
     EditComponent,
+    SpacePhotoComponent,
   ],
-  imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule],
+  imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule],
 })
 export class SpaceModule {}
