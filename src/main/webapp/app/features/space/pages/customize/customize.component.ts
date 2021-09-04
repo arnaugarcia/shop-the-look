@@ -17,6 +17,5 @@ export class CustomizeComponent implements OnInit {
 
   ngOnInit(): void {
     this.template = this.studioService.data.template;
-    console.error(this.template);
   }
 }
