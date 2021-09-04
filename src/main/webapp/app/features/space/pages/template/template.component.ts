@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StudioService, StudioTemplates } from '../../service/studio.service';
+import { StudioService, StudioTemplate } from '../../service/studio.service';
 import { SpaceService } from '../../service/space.service';
 import { ActivatedRoute } from '@angular/router';
 import { ISpace } from '../../model/space.model';
@@ -10,8 +10,8 @@ import { ISpace } from '../../model/space.model';
   styleUrls: ['./template.component.scss'],
 })
 export class TemplateComponent implements OnInit {
-  public selectedOption: StudioTemplates;
-  public readonly StudioTemplates = StudioTemplates;
+  public selectedOption: StudioTemplate;
+  public readonly StudioTemplates = StudioTemplate;
   private space?: ISpace;
 
   constructor(private activatedRoute: ActivatedRoute, private studioService: StudioService, private spaceService: SpaceService) {
@@ -26,7 +26,7 @@ export class TemplateComponent implements OnInit {
     });
   }
 
-  selectOption(option: StudioTemplates): void {
+  selectOption(option: StudioTemplate): void {
     this.selectedOption = option;
     this.studioService.setTemplate(option);
     if (this.space) {
@@ -36,6 +36,6 @@ export class TemplateComponent implements OnInit {
   }
 
   private updateForm(space: ISpace): void {
-    this.selectedOption = (<any>StudioTemplates)[space.template!];
+    this.selectedOption = (<any>StudioTemplate)[space.template!];
   }
 }

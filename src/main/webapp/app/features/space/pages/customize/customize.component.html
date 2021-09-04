@@ -1,3 +1,29 @@
+<ng-container [ngSwitch]="template">
+  <section *ngSwitchCase="StudioTemplate.THREE_PHOTOS_HORIZONTAL || StudioTemplate.THREE_PHOTOS_VERTICAL">
+    <stl-space-photo></stl-space-photo>
+    <stl-space-photo></stl-space-photo>
+    <stl-space-photo></stl-space-photo>
+  </section>
+  <section *ngSwitchCase="StudioTemplate.ONE_PHOTO">
+    <div class="row">
+      <div class="col-12 mb-1">
+        <h2>{{ template }} template</h2>
+      </div>
+      <div class="col-6">
+        <stl-space-photo></stl-space-photo>
+      </div>
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-end">
+            <h4>Title</h4>
+          </div>
+          <div class="card-body">Body</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>
+
 <div class="d-flex justify-content-between">
   <button rippleeffect class="btn btn-outline-secondary btn-prev waves-effect" [routerLink]="'../template'">
     <span class="align-middle d-sm-inline-block d-none">Previous</span>
