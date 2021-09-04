@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ISpace, PhotoRequest, SpaceRequest } from '../model/space.model';
+import { ISpace, SpaceRequest } from '../model/space.model';
 
 export type EntityResponseType = HttpResponse<ISpace>;
 export type EntityArrayResponseType = HttpResponse<ISpace[]>;
@@ -22,15 +22,6 @@ export class SpaceService {
   createForCompany(request: SpaceRequest, companyReference: string): Observable<EntityResponseType> {
     const options = createRequestOption({ companyReference: companyReference });
     return this.http.post<ISpace>(this.resourceUrl, request, { observe: 'response', params: options });
-  }
-
-  addPhoto(spaceReference: string, photoRequest: PhotoRequest): Observable<never> {
-    console.error(photoRequest);
-    return EMPTY;
-  }
-
-  removePhoto(photoReference: string): Observable<never> {
-    return EMPTY;
   }
 
   update(space: ISpace): Observable<EntityResponseType> {

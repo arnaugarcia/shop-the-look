@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
-import { SpaceService } from '../../service/space.service';
-import { PhotoRequest } from '../../model/space.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { PhotoRequest } from '../../model/photo.model';
+import { SpacePhotoService } from '../../service/space-photo.service';
 
 @Component({
   selector: 'stl-space-photo',
@@ -31,7 +31,7 @@ export class SpacePhotoComponent {
 
   private fileReader = new FileReader();
 
-  constructor(private spaceService: SpaceService) {
+  constructor(private photoService: SpacePhotoService) {
     this.height = 'auto';
     this.width = 'auto';
   }
@@ -58,7 +58,7 @@ export class SpacePhotoComponent {
   }
 
   private uploadFile(droopedFile: any): void {
-    this.spaceService.addPhoto(this.spaceReference!, new PhotoRequest(this.fileReader.result, droopedFile.type)).subscribe(
+    this.photoService.addPhoto(this.spaceReference!, new PhotoRequest(this.fileReader.result, droopedFile.type)).subscribe(
       (response: HttpResponse<any>) => this.onUploadSuccess(response),
       (error: HttpErrorResponse) => this.onUploadError(error)
     );
