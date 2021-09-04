@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { SpaceService } from '../../service/space.service';
+import { PhotoRequest } from '../../model/space.model';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'stl-space-photo',
@@ -8,6 +10,9 @@ import { SpaceService } from '../../service/space.service';
   styleUrls: ['./space-photo.component.scss'],
 })
 export class SpacePhotoComponent {
+  @Input()
+  public spaceReference?: string;
+
   @Input()
   public height: string;
 
@@ -18,12 +23,13 @@ export class SpacePhotoComponent {
   public loading = false;
   public error = false;
 
-  public photoUrl =
-    'https://images.unsplash.com/photo-1630688231126-dd36840fce51?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=701&q=80';
+  public photoUrl?: string;
 
   public uploader: FileUploader = new FileUploader({
     isHTML5: true,
   });
+
+  private fileReader = new FileReader();
 
   constructor(private spaceService: SpaceService) {
     this.height = 'auto';
@@ -38,9 +44,31 @@ export class SpacePhotoComponent {
     this.loading = true;
     this.error = false;
     const droopedFile = $event[0];
-    if (droopedFile.type !== 'image/png') {
+    if (!droopedFile.type.includes('image/')) {
       this.error = true;
       return;
     }
+    if (!this.spaceReference) {
+      throw new Error('No reference was specified for this space');
+    }
+    this.fileReader.onloadend = () => {
+      this.uploadFile(droopedFile);
+    };
+    this.fileReader.readAsDataURL(this.uploader.queue[0]._file);
+  }
+
+  private uploadFile(droopedFile: any): void {
+    this.spaceService.addPhoto(this.spaceReference!, new PhotoRequest(this.fileReader.result, droopedFile.type)).subscribe(
+      (response: HttpResponse<any>) => this.onUploadSuccess(response),
+      (error: HttpErrorResponse) => this.onUploadError(error)
+    );
+  }
+
+  private onUploadSuccess(response: HttpResponse<any>): void {
+    console.error(response);
+  }
+
+  private onUploadError(error: HttpErrorResponse): void {
+    console.error(error);
   }
 }

@@ -25,11 +25,12 @@
 }
 
 .file-drop-over {
-  border: dotted 3px $danger;
+  border: dotted 3px $success;
 }
 
-.file-drop-over-another {
-  border: dotted 3px $success;
+.file-drop-zone.error {
+  border: dotted 3px $danger;
+  background-color: rgba($danger, 0.05) !important;
 }
 
 .fileover {
@@ -40,6 +41,13 @@
 .loaded-image {
   background-size: 100% 100%;
   background-repeat: no-repeat;
+}
+
+.uploading-image {
+  border: dashed 2px $secondary;
+  background-color: rgba($secondary, 0.05) !important;
+  min-height: 200px;
+  color: $secondary;
 }
 
 /* Shake animation */

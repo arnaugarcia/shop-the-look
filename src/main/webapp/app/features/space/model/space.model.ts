@@ -1,3 +1,7 @@
+export class PhotoRequest {
+  constructor(public data: any, public format: string) {}
+}
+
 export interface ISpace {
   name?: string;
   reference?: string;
