@@ -1,7 +1,8 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
+import com.klai.stl.service.dto.requests.s3.UploadResponse;
 
 public interface UploadService {
-    void uploadImage(UploadImageRequest newImageRequest);
+    UploadResponse uploadImage(UploadImageRequest newImageRequest);
 }

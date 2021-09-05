@@ -9,8 +9,10 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import com.klai.stl.domain.Photo;
 import com.klai.stl.repository.PhotoRepository;
 import com.klai.stl.service.PhotoService;
+import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.photo.PhotoRequest;
+import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
 import com.klai.stl.service.exception.PhotoCleanException;
 import com.klai.stl.service.exception.PhotoWriteException;
 import com.klai.stl.service.mapper.PhotoMapper;
@@ -34,9 +36,12 @@ public class PhotoServiceImpl implements PhotoService {
 
     private final PhotoMapper photoMapper;
 
-    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoMapper photoMapper) {
+    private final UploadService uploadService;
+
+    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoMapper photoMapper, UploadService uploadService) {
         this.photoRepository = photoRepository;
         this.photoMapper = photoMapper;
+        this.uploadService = uploadService;
     }
 
     @Override
@@ -59,7 +64,8 @@ public class PhotoServiceImpl implements PhotoService {
                 throw new PhotoCleanException();
             }
         }
-        Photo result = new Photo().name("photo-");
+        uploadService.uploadImage(UploadImageRequest.builder().build());
+        Photo result = new Photo().name("photo-").reference(photoReference);
         return photoMapper.toDto(result);
     }
 
