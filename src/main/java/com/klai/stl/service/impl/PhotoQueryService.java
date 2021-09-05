@@ -1,10 +1,9 @@
 package com.klai.stl.service.impl;
 
-import com.klai.stl.domain.*; // for static metamodels
-import com.klai.stl.domain.Photo;
+import com.klai.stl.domain.*;
 import com.klai.stl.repository.PhotoRepository;
 import com.klai.stl.service.criteria.PhotoCriteria;
-import com.klai.stl.service.dto.PhotoDTO;
+import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.mapper.PhotoMapper;
 import java.util.List;
 import javax.persistence.criteria.JoinType;

@@ -2,6 +2,7 @@ package com.klai.stl.service;
 
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,4 +57,12 @@ public interface SpaceService {
      * @return the updated space entity
      */
     SpaceDTO updateSpace(UpdateSpaceRequest newSpaceRequest, String reference);
+
+    /**
+     * Uploads the and attaches the photo to the desired space
+     * @param photoRequest the photo to upload
+     * @param spaceReference the reference of the space to add the photo
+     * @return the updated space entity
+     */
+    SpaceDTO addPhoto(SpacePhotoRequest photoRequest, String spaceReference);
 }

@@ -11,6 +11,7 @@ import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.SpaceNotFound;
@@ -101,6 +102,11 @@ public class SpaceServiceImpl implements SpaceService {
         checkIfCurrentUserBelongsToSpace(reference);
         Space result = updateSpace(space, updateSpaceRequest);
         return saveAndTransform(result);
+    }
+
+    @Override
+    public SpaceDTO addPhoto(SpacePhotoRequest photoRequest, String spaceReference) {
+        return null;
     }
 
     private Space updateSpace(Space space, UpdateSpaceRequest updateSpaceRequest) {

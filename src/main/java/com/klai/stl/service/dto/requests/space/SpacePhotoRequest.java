@@ -11,4 +11,7 @@ public class SpacePhotoRequest {
 
     @NotNull
     Byte[] data;
+
+    @NotNull
+    String format;
 }

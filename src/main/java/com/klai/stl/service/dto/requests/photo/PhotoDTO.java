@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto;
+package com.klai.stl.service.dto.requests.photo;
 
 import com.klai.stl.domain.enumeration.PhotoOrientation;
 import java.io.Serializable;

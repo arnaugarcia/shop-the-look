@@ -100,8 +100,9 @@ public class SpaceResource {
     }
 
     @PostMapping("/spaces/{reference}/photos")
-    public ResponseEntity<Void> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
-        throw new NotYetImplementedException();
+    public ResponseEntity<SpaceDTO> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
+        final SpaceDTO result = spaceService.addPhoto(spacePhotoRequest, reference);
+        return ok().body(result);
     }
 
     @DeleteMapping("/spaces/{reference}/photos/{photoReference}")
