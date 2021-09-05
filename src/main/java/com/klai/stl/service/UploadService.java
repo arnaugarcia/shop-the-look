@@ -1,7 +1,7 @@
 package com.klai.stl.service;
 
-import java.io.File;
+import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
 
 public interface UploadService {
-    void uploadImage(File file);
+    void uploadImage(UploadImageRequest newImageRequest);
 }
