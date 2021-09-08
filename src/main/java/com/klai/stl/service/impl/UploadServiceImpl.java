@@ -27,6 +27,6 @@ public class UploadServiceImpl implements UploadService {
             uploadImageRequest.getName(),
             uploadImageRequest.getFile()
         );
-        return new UploadResponse(putObjectResult.getMetadata().getContentType());
+        return new UploadResponse("https://shopthelook-pre.s3.eu-west-1.amazonaws.com/" + uploadImageRequest.getName());
     }
 }
