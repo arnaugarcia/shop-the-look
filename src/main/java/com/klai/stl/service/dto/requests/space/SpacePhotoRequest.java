@@ -7,10 +7,10 @@ import lombok.Value;
 public class SpacePhotoRequest {
 
     @NotNull
-    Integer order;
+    int order;
 
     @NotNull
-    Byte[] data;
+    byte[] data;
 
     @NotNull
     String format;

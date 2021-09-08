@@ -5,9 +5,6 @@ import static org.springframework.http.ResponseEntity.ok;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.klai.stl.config.AWSClientProperties;
-import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
@@ -40,14 +37,8 @@ public class SpaceResource {
 
     private final SpaceService spaceService;
 
-    private final AmazonS3 amazonS3;
-
-    private final AWSClientProperties awsClientProperties;
-
-    public SpaceResource(SpaceService spaceService, AmazonS3 amazonS3, ApplicationProperties applicationProperties) {
+    public SpaceResource(SpaceService spaceService) {
         this.spaceService = spaceService;
-        this.amazonS3 = amazonS3;
-        this.awsClientProperties = applicationProperties.getAws();
     }
 
     @GetMapping("/spaces")
