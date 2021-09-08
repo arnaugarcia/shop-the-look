@@ -25,10 +25,10 @@ public class PhotoDTO implements Serializable {
     private Integer order;
 
     @NotNull
-    private Integer height;
+    private Double height;
 
     @NotNull
-    private Integer width;
+    private Double width;
 
     private PhotoOrientation orientation;
 }

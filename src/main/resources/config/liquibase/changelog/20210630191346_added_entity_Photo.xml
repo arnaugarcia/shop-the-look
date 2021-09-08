@@ -27,10 +27,10 @@
             <column name="stl_order" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="height" type="integer">
+            <column name="height" type="double">
                 <constraints nullable="false"/>
             </column>
-            <column name="width" type="integer">
+            <column name="width" type="double">
                 <constraints nullable="false"/>
             </column>
             <column name="orientation" type="varchar(255)">
