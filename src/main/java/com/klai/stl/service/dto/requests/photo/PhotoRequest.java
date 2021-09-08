@@ -10,9 +10,18 @@ public class PhotoRequest {
 
     byte[] data;
 
-    String format;
+    PhotoFormat format;
 
     public static PhotoRequest from(SpacePhotoRequest spacePhotoRequest) {
-        return new PhotoRequest(spacePhotoRequest.getOrder(), spacePhotoRequest.getData(), spacePhotoRequest.getFormat());
+        return new PhotoRequest(
+            spacePhotoRequest.getOrder(),
+            spacePhotoRequest.getData(),
+            PhotoFormat.from(spacePhotoRequest.getPhotoContentType())
+        );
+    }
+
+    @Override
+    public String toString() {
+        return "PhotoRequest{" + "order=" + order + ", format=" + format + '}';
     }
 }

@@ -1,5 +1,5 @@
 export class PhotoRequest {
-  constructor(public data: any, public format: string) {}
+  constructor(public data: string, public photoContentType: string) {}
 }
 
 export interface IPhoto {

@@ -2,7 +2,6 @@ package com.klai.stl.service.impl;
 
 import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
-import static java.util.Base64.getDecoder;
 import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
@@ -58,28 +57,33 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public Photo create(PhotoRequest photoRequest) {
         log.debug("Request to save Photo : {}", photoRequest);
-        byte[] decodedImg = getDecoder().decode(photoRequest.getData());
         String photoReference = randomAlphanumeric(20).toUpperCase(ROOT);
-        Path destinationFile = get("/", photoReference + ".jpg");
+        Path destinationFile = get("photo-" + photoReference + ".jpg");
         final Path path;
         try {
-            path = write(destinationFile, decodedImg);
+            path = write(destinationFile, photoRequest.getData());
             if (!exists(path) || !isReadable(path)) {
                 throw new PhotoWriteException();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        final UploadResponse uploadResponse = uploadService.uploadImage(UploadImageRequest.builder().build());
-        removeLocalFile(destinationFile);
 
-        final Dimension imageDimension = getImageDimension(destinationFile.toFile());
+        final UploadImageRequest imageRequest = UploadImageRequest
+            .builder()
+            .file(destinationFile.toFile())
+            .name("photo-" + photoReference)
+            .format("image/jpg")
+            .build();
+
+        final UploadResponse uploadResponse = uploadService.uploadImage(imageRequest);
+        removeLocalFile(destinationFile);
 
         Photo photo = new Photo()
             .name("photo-" + photoReference)
             .order(photoRequest.getOrder())
-            .height(imageDimension.getHeight())
-            .width(imageDimension.getWidth())
+            .height(800D)
+            .width(600D)
             .link(uploadResponse.getUrl())
             .reference(photoReference);
 

@@ -3,6 +3,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
 import { SpacePhotoService } from '../../service/space-photo.service';
+import { DataUtils } from '../../../../core/util/data-util.service';
 
 @Component({
   selector: 'stl-space-photo',
@@ -32,7 +33,7 @@ export class SpacePhotoComponent {
 
   private fileReader = new FileReader();
 
-  constructor(private photoService: SpacePhotoService) {
+  constructor(private photoService: SpacePhotoService, protected dataUtils: DataUtils) {
     this.height = 'auto';
     this.width = 'auto';
   }
@@ -66,10 +67,15 @@ export class SpacePhotoComponent {
   }
 
   private uploadFile(droopedFile: any): void {
-    this.photoService.addPhoto(this.spaceReference!, new PhotoRequest(this.fileReader.result, droopedFile.type)).subscribe(
-      (response: HttpResponse<any>) => this.onUploadSuccess(response),
-      (error: HttpErrorResponse) => this.onUploadError(error)
-    );
+    if (!this.fileReader.result) {
+      throw Error('The reader has not loaded any file');
+    }
+    this.photoService
+      .addPhoto(this.spaceReference!, new PhotoRequest(this.fileReader.result.toString().split(',')[1], droopedFile.type))
+      .subscribe(
+        (response: HttpResponse<any>) => this.onUploadSuccess(response),
+        (error: HttpErrorResponse) => this.onUploadError(error)
+      );
   }
 
   private onUploadSuccess(response: HttpResponse<any>): void {
