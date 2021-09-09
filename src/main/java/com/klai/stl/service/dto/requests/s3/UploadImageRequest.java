@@ -10,12 +10,15 @@ import lombok.extern.jackson.Jacksonized;
 @EqualsAndHashCode(callSuper = true)
 public class UploadImageRequest extends UploadRequest {
 
+    String path;
+
     String format;
 
     @Builder
     @Jacksonized
-    public UploadImageRequest(String name, File file, String format) {
-        super(name, file);
+    public UploadImageRequest(File file, String path, String format) {
+        super(file);
+        this.path = path;
         this.format = format;
     }
 }

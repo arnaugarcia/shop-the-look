@@ -10,6 +10,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public abstract class UploadRequest {
 
-    private String name;
     private File file;
 }

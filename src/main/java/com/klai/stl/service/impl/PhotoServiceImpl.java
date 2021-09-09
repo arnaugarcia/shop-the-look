@@ -13,7 +13,6 @@ import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.photo.PhotoRequest;
 import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
-import com.klai.stl.service.dto.requests.s3.UploadResponse;
 import com.klai.stl.service.exception.PhotoCleanException;
 import com.klai.stl.service.exception.PhotoExtensionException;
 import com.klai.stl.service.exception.PhotoReadException;
@@ -22,6 +21,7 @@ import com.klai.stl.service.mapper.PhotoMapper;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
@@ -55,10 +55,17 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Photo create(PhotoRequest photoRequest) {
+    public PhotoDTO createForSpace(PhotoRequest photoRequest, Space space) {
+        final Photo photo = createAndUpload(photoRequest, space);
+        photo.setSpace(space);
+        return photoMapper.toDto(photoRepository.save(photo));
+    }
+
+    private Photo createAndUpload(PhotoRequest photoRequest, Space space) {
         log.debug("Request to save Photo : {}", photoRequest);
         String photoReference = randomAlphanumeric(20).toUpperCase(ROOT);
-        Path destinationFile = get("photo-" + photoReference + ".jpg");
+        final String photoName = "photo-" + photoReference + ".jpg";
+        Path destinationFile = get(photoName);
         final Path path;
         try {
             path = write(destinationFile, photoRequest.getData());
@@ -71,12 +78,12 @@ public class PhotoServiceImpl implements PhotoService {
 
         final UploadImageRequest imageRequest = UploadImageRequest
             .builder()
+            .path("space-" + space.getReference() + "/" + photoName)
             .file(destinationFile.toFile())
-            .name("photo-" + photoReference)
             .format("image/jpg")
             .build();
 
-        final UploadResponse uploadResponse = uploadService.uploadImage(imageRequest);
+        final URL resourceUrl = uploadService.uploadImage(imageRequest);
         removeLocalFile(destinationFile);
 
         Photo photo = new Photo()
@@ -84,17 +91,10 @@ public class PhotoServiceImpl implements PhotoService {
             .order(photoRequest.getOrder())
             .height(800D)
             .width(600D)
-            .link(uploadResponse.getUrl())
+            .link(resourceUrl.toString())
             .reference(photoReference);
 
         return photoRepository.save(photo);
-    }
-
-    @Override
-    public PhotoDTO createForSpace(PhotoRequest photoRequest, Space space) {
-        final Photo photo = create(photoRequest);
-        photo.setSpace(space);
-        return photoMapper.toDto(photoRepository.save(photo));
     }
 
     private void removeLocalFile(Path destinationFile) {

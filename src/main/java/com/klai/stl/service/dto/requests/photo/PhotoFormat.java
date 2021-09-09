@@ -15,7 +15,7 @@ public enum PhotoFormat {
         this.format = contentType;
     }
 
-    static PhotoFormat from(String format) {
+    public static PhotoFormat from(String format) {
         switch (format) {
             case "image/png":
                 return PNG;
