@@ -1,6 +1,8 @@
 package com.klai.stl.service.dto;
 
 import com.klai.stl.domain.enumeration.SpaceTemplateOption;
+import com.klai.stl.service.dto.requests.photo.PhotoDTO;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.Value;
 
@@ -19,4 +21,6 @@ public class SpaceDTO {
     String description;
 
     SpaceTemplateOption template;
+
+    List<PhotoDTO> photos;
 }

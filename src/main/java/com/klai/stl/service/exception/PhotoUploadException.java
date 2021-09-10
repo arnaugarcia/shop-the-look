@@ -1,8 +1,8 @@
 package com.klai.stl.service.exception;
 
-public class PhotoExtensionException extends PhotoException {
+public class PhotoUploadException extends PhotoException {
 
-    public PhotoExtensionException() {
+    public PhotoUploadException() {
         super("No extension for was found for image");
     }
 }

@@ -13,10 +13,7 @@ import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.photo.PhotoRequest;
 import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
-import com.klai.stl.service.exception.PhotoCleanException;
-import com.klai.stl.service.exception.PhotoExtensionException;
-import com.klai.stl.service.exception.PhotoReadException;
-import com.klai.stl.service.exception.PhotoWriteException;
+import com.klai.stl.service.exception.*;
 import com.klai.stl.service.mapper.PhotoMapper;
 import java.awt.*;
 import java.io.File;
@@ -63,38 +60,39 @@ public class PhotoServiceImpl implements PhotoService {
 
     private Photo createAndUpload(PhotoRequest photoRequest, Space space) {
         log.debug("Request to save Photo : {}", photoRequest);
-        String photoReference = randomAlphanumeric(20).toUpperCase(ROOT);
-        final String photoName = "photo-" + photoReference + ".jpg";
-        Path destinationFile = get(photoName);
-        final Path path;
+        final String photoReference = randomAlphanumeric(20).toUpperCase(ROOT);
+        final String photoFileName = "photo-" + photoReference + photoRequest.getFormat().getExtension();
+
         try {
-            path = write(destinationFile, photoRequest.getData());
+            final Path destinationFile = get(photoFileName);
+            final Path path = write(destinationFile, photoRequest.getData());
             if (!exists(path) || !isReadable(path)) {
                 throw new PhotoWriteException();
             }
+
+            final UploadImageRequest imageRequest = UploadImageRequest
+                .builder()
+                .path("space-" + space.getReference() + "/" + photoFileName)
+                .file(destinationFile.toFile())
+                .build();
+
+            final URL resourceUrl = uploadService.uploadImage(imageRequest);
+
+            final Dimension imageDimension = getImageDimension(destinationFile.toFile());
+
+            removeLocalFile(path);
+
+            Photo photo = new Photo()
+                .order(photoRequest.getOrder())
+                .height(imageDimension.getHeight())
+                .width(imageDimension.getWidth())
+                .link(resourceUrl.toString())
+                .reference(photoReference);
+
+            return photoRepository.save(photo);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new PhotoUploadException();
         }
-
-        final UploadImageRequest imageRequest = UploadImageRequest
-            .builder()
-            .path("space-" + space.getReference() + "/" + photoName)
-            .file(destinationFile.toFile())
-            .format("image/jpg")
-            .build();
-
-        final URL resourceUrl = uploadService.uploadImage(imageRequest);
-        removeLocalFile(destinationFile);
-
-        Photo photo = new Photo()
-            .name("photo-" + photoReference)
-            .order(photoRequest.getOrder())
-            .height(800D)
-            .width(600D)
-            .link(resourceUrl.toString())
-            .reference(photoReference);
-
-        return photoRepository.save(photo);
     }
 
     private void removeLocalFile(Path destinationFile) {

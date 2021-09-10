@@ -12,13 +12,10 @@ public class UploadImageRequest extends UploadRequest {
 
     String path;
 
-    String format;
-
     @Builder
     @Jacksonized
-    public UploadImageRequest(File file, String path, String format) {
+    public UploadImageRequest(File file, String path) {
         super(file);
         this.path = path;
-        this.format = format;
     }
 }

@@ -29,4 +29,8 @@ public enum PhotoFormat {
                 throw new IllegalStateException();
         }
     }
+
+    public String getExtension() {
+        return "." + format.split("/")[1];
+    }
 }

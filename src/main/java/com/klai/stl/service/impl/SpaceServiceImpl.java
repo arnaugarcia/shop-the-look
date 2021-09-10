@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.service.dto.requests.photo.PhotoRequest.from;
 import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
@@ -11,8 +12,6 @@ import com.klai.stl.service.PhotoService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.requests.photo.PhotoFormat;
-import com.klai.stl.service.dto.requests.photo.PhotoRequest;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
@@ -114,13 +113,7 @@ public class SpaceServiceImpl implements SpaceService {
     @Override
     public SpaceDTO addPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
         final Space space = findByReference(spaceReference);
-        final PhotoRequest photoRequest = PhotoRequest
-            .builder()
-            .data(spacePhotoRequest.getData())
-            .format(PhotoFormat.from(spacePhotoRequest.getPhotoContentType()))
-            .order(spacePhotoRequest.getOrder())
-            .build();
-        photoService.createForSpace(photoRequest, space);
+        photoService.createForSpace(from(spacePhotoRequest), space);
         return spaceMapper.toDto(findByReference(spaceReference));
     }
 
