@@ -80,10 +80,10 @@ class SpaceResourceIT {
         newSpaceRequest = buildRequest();
         updateSpaceRequest = buildUpdateRequest();
         company = createBasicCompany(em);
-        space = createBasicSpace(em);
+        space = createSpace(em, company);
     }
 
-    private Space createBasicSpace(EntityManager em) {
+    public static Space createSpace(EntityManager em, Company company) {
         Space space = new Space()
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
