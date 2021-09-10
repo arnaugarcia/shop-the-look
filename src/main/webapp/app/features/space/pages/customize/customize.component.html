@@ -9,8 +9,8 @@
       <div class="col-12 mb-1">
         <h2>{{ studioService.template }} template</h2>
       </div>
-      <div class="col-8">
-        <stl-space-photo [spaceReference]="space.reference" height="800px"></stl-space-photo>
+      <div class="col-8 photo-holder">
+        <stl-space-photo [photo]="space.photos[0]" [spaceReference]="space.reference" height="800px"></stl-space-photo>
       </div>
       <div class="col-4">
         <div class="card h-full">

@@ -36,8 +36,7 @@ export class CreateComponent {
 
   private createFromForm(): SpaceRequest {
     return {
-      ...new SpaceRequest(),
-      name: this.spaceForm.get(['name'])!.value,
+      ...new SpaceRequest(this.spaceForm.get(['name'])!.value),
       description: this.spaceForm.get(['description'])!.value,
     };
   }

@@ -25,7 +25,7 @@ export class SpaceService {
   }
 
   update(space: ISpace): Observable<EntityResponseType> {
-    return this.http.put<ISpace>(`${this.resourceUrl}/${space.reference!}`, space, { observe: 'response' });
+    return this.http.put<ISpace>(`${this.resourceUrl}/${space.reference}`, space, { observe: 'response' });
   }
 
   find(reference: string): Observable<EntityResponseType> {

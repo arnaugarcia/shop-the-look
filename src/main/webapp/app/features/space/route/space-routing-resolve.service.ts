@@ -5,7 +5,7 @@ import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { SpaceService } from '../service/space.service';
-import { ISpace, Space } from '../model/space.model';
+import { ISpace } from '../model/space.model';
 
 @Injectable({ providedIn: 'root' })
 export class SpaceRoutingResolveService implements Resolve<ISpace> {
@@ -15,7 +15,7 @@ export class SpaceRoutingResolveService implements Resolve<ISpace> {
     const reference = route.params['reference'];
     if (reference) {
       return this.service.find(reference).pipe(
-        mergeMap((space: HttpResponse<Space>) => {
+        mergeMap((space: HttpResponse<ISpace>) => {
           if (space.body) {
             return of(space.body);
           } else {

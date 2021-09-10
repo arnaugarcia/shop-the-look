@@ -3,7 +3,7 @@ export class PhotoRequest {
 }
 
 export interface IPhoto {
-  url?: string;
+  link?: string;
   reference: string;
   format?: string;
 }

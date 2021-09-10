@@ -36,6 +36,6 @@ export class TemplateComponent implements OnInit {
   }
 
   private updateForm(space: ISpace): void {
-    this.selectedOption = (<any>StudioTemplate)[space.template!];
+    this.selectedOption = (<any>StudioTemplate)[space.template];
   }
 }
