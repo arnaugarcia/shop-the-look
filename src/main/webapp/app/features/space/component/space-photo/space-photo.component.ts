@@ -33,7 +33,7 @@ export class SpacePhotoComponent {
 
   private fileReader = new FileReader();
 
-  constructor(private photoService: SpacePhotoService, protected dataUtils: DataUtils) {
+  constructor(private spacePhotoService: SpacePhotoService, protected dataUtils: DataUtils) {
     this.height = 'auto';
     this.width = 'auto';
   }
@@ -51,7 +51,7 @@ export class SpacePhotoComponent {
       return;
     }
     if (!this.spaceReference) {
-      throw new Error('No reference was specified for this space');
+      throw new Error('No space reference was specified for this photo');
     }
     this.fileReader.onloadend = () => {
       this.uploadFile(droopedFile);
@@ -60,7 +60,7 @@ export class SpacePhotoComponent {
   }
 
   public deletePhoto(photoReference: string): void {
-    this.photoService.removePhoto(this.spaceReference!, photoReference).subscribe(
+    this.spacePhotoService.removePhoto(this.spaceReference!, photoReference).subscribe(
       (response: HttpResponse<any>) => this.onUploadSuccess(response),
       (error: HttpErrorResponse) => this.onUploadError(error)
     );
@@ -70,16 +70,17 @@ export class SpacePhotoComponent {
     if (!this.fileReader.result) {
       throw Error('The reader has not loaded any file');
     }
-    this.photoService
+    this.spacePhotoService
       .addPhoto(this.spaceReference!, new PhotoRequest(this.fileReader.result.toString().split(',')[1], droopedFile.type))
       .subscribe(
-        (response: HttpResponse<any>) => this.onUploadSuccess(response),
+        (response: HttpResponse<IPhoto>) => this.onUploadSuccess(response),
         (error: HttpErrorResponse) => this.onUploadError(error)
       );
   }
 
-  private onUploadSuccess(response: HttpResponse<any>): void {
-    console.error(response);
+  private onUploadSuccess(response: HttpResponse<IPhoto>): void {
+    this.loading = false;
+    this.photo = response.body!;
   }
 
   private onUploadError(error: HttpErrorResponse): void {

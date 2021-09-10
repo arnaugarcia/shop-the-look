@@ -20,7 +20,7 @@
 </div>
 
 <ng-container *ngIf="photo && !loading">
-  <a (click)="deletePhoto(photo!.reference)">
+  <a (click)="deletePhoto(photo.reference)">
     <span class="notify-badge">
       <i [data-feather]="'trash'"></i>
     </span>
