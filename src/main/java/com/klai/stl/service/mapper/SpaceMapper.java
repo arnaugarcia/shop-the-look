@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 /**
  * Mapper for the entity {@link Space} and its DTO {@link SpaceDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = PhotoMapper.class)
 public interface SpaceMapper extends EntityMapper<SpaceDTO, Space> {
     SpaceDTO toDto(Space s);
 
