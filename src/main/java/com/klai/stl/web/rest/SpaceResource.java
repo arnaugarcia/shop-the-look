@@ -7,6 +7,7 @@ import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
@@ -91,8 +92,8 @@ public class SpaceResource {
     }
 
     @PostMapping("/spaces/{reference}/photos")
-    public ResponseEntity<SpaceDTO> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
-        final SpaceDTO result = spaceService.addPhoto(spacePhotoRequest, reference);
+    public ResponseEntity<PhotoDTO> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
+        final PhotoDTO result = spaceService.addPhoto(spacePhotoRequest, reference);
         return ok().body(result);
     }
 

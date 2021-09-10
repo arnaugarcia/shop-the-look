@@ -12,11 +12,13 @@ import com.klai.stl.service.PhotoService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.SpaceNotFound;
+import com.klai.stl.service.mapper.PhotoMapper;
 import com.klai.stl.service.mapper.SpaceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,8 @@ public class SpaceServiceImpl implements SpaceService {
         SpaceMapper spaceMapper,
         UserService userService,
         CompanyService companyService,
-        PhotoService photoService
+        PhotoService photoService,
+        PhotoMapper photoMapper
     ) {
         this.spaceRepository = spaceRepository;
         this.spaceMapper = spaceMapper;
@@ -111,10 +114,9 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public SpaceDTO addPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
+    public PhotoDTO addPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
         final Space space = findByReference(spaceReference);
-        photoService.createForSpace(from(spacePhotoRequest), space);
-        return spaceMapper.toDto(findByReference(spaceReference));
+        return photoService.createForSpace(from(spacePhotoRequest), space);
     }
 
     private Space updateSpace(Space space, UpdateSpaceRequest updateSpaceRequest) {

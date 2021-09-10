@@ -1,6 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
@@ -64,5 +65,5 @@ public interface SpaceService {
      * @param spaceReference the reference of the space to add the photo
      * @return the updated space entity
      */
-    SpaceDTO addPhoto(SpacePhotoRequest photoRequest, String spaceReference);
+    PhotoDTO addPhoto(SpacePhotoRequest photoRequest, String spaceReference);
 }
