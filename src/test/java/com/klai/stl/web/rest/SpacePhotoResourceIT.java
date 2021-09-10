@@ -75,6 +75,7 @@ class SpacePhotoResourceIT {
         company = createBasicCompany(em);
         space = createSpace(em, company);
         spacePhotoRequest = createRequest();
+        // TODO: https://www.softwaretestinghelp.com/mock-private-static-void-methods-mockito/
         Method method = PhotoService.class.getDeclaredMethod("getImageDimension", Dimension.class);
         method.setAccessible(true);
         method.invoke(photoService, new Dimension(800, 600));
