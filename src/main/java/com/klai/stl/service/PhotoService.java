@@ -1,7 +1,6 @@
 package com.klai.stl.service;
 
-import com.klai.stl.domain.Space;
-import com.klai.stl.service.dto.requests.photo.PhotoDTO;
+import com.klai.stl.domain.Photo;
 import com.klai.stl.service.dto.requests.photo.PhotoRequest;
 
 /**
@@ -14,7 +13,7 @@ public interface PhotoService {
      * @param photoRequest the entity to save.
      * @return the persisted entity.
      */
-    PhotoDTO createForSpace(PhotoRequest photoRequest, Space space);
+    Photo create(PhotoRequest photoRequest);
 
     /**
      * Delete the "reference" photo.

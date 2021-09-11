@@ -35,7 +35,7 @@ public class SpacePhotoResource {
     @PostMapping("/spaces/{spaceReference}/photos")
     public ResponseEntity<PhotoDTO> addPhotoToSpace(@PathVariable String spaceReference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
         log.debug("REST request to add a photo {} to space {}", spacePhotoRequest, spaceReference);
-        final PhotoDTO result = spacePhotoService.addPhoto(spacePhotoRequest, spaceReference);
+        final PhotoDTO result = spacePhotoService.createPhoto(spacePhotoRequest, spaceReference);
         return ok().body(result);
     }
 
