@@ -16,6 +16,10 @@ public class UploadImageRequest extends UploadRequest {
     }
 
     public String getLocalFilePath() {
-        return fileName + "." + fileExtension;
+        return fileName + fileExtension;
+    }
+
+    public String getUploadPath() {
+        return getDestinationFolder() + getLocalFilePath();
     }
 }

@@ -40,17 +40,20 @@ public class UploadServiceImpl implements UploadService {
             if (!exists(path) || !isReadable(path)) {
                 throw new PhotoWriteException();
             }
-            amazonS3.putObject(
-                awsClientProperties.getBucket(),
-                uploadImageRequest.getDestinationFolder(),
-                uploadImageRequest.getLocalFilePath()
-            );
+            amazonS3.putObject(awsClientProperties.getBucket(), uploadImageRequest.getUploadPath(), path.toFile());
         } catch (IOException e) {
             throw new PhotoUploadException();
         } finally {
             removeLocalFile(destinationFile);
         }
-        return amazonS3.getUrl(awsClientProperties.getBucket(), uploadImageRequest.getLocalFilePath());
+        if (!existsObject(uploadImageRequest.getUploadPath())) {
+            throw new PhotoUploadException();
+        }
+        return amazonS3.getUrl(awsClientProperties.getBucket(), uploadImageRequest.getUploadPath());
+    }
+
+    private boolean existsObject(String path) {
+        return amazonS3.doesObjectExist(awsClientProperties.getBucket(), path);
     }
 
     private void removeLocalFile(Path destinationFile) {

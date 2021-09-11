@@ -84,7 +84,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     }
 
     private String buildDestinationFolderFor(Space space) {
-        return "/space-" + space.getReference() + "/";
+        return "space-" + space.getReference() + "/";
     }
 
     private String generatePhotoReference() {
