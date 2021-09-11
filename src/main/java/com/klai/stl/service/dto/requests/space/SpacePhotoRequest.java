@@ -18,4 +18,11 @@ public class SpacePhotoRequest {
 
     @NotNull
     String photoContentType;
+
+    @Override
+    public String toString() {
+        return (
+            "SpacePhotoRequest{" + "order=" + order + ", imageSize=" + data.length + ", photoContentType='" + photoContentType + '\'' + '}'
+        );
+    }
 }

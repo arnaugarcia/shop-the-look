@@ -1,6 +1,5 @@
 package com.klai.stl.service.impl;
 
-import static com.klai.stl.service.dto.requests.photo.PhotoRequest.from;
 import static java.util.Locale.ROOT;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
@@ -8,17 +7,13 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.CompanyService;
-import com.klai.stl.service.PhotoService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
-import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.SpaceNotFound;
-import com.klai.stl.service.mapper.PhotoMapper;
 import com.klai.stl.service.mapper.SpaceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,21 +39,16 @@ public class SpaceServiceImpl implements SpaceService {
 
     private final CompanyService companyService;
 
-    private final PhotoService photoService;
-
     public SpaceServiceImpl(
         SpaceRepository spaceRepository,
         SpaceMapper spaceMapper,
         UserService userService,
-        CompanyService companyService,
-        PhotoService photoService,
-        PhotoMapper photoMapper
+        CompanyService companyService
     ) {
         this.spaceRepository = spaceRepository;
         this.spaceMapper = spaceMapper;
         this.userService = userService;
         this.companyService = companyService;
-        this.photoService = photoService;
     }
 
     @Override
@@ -113,12 +103,6 @@ public class SpaceServiceImpl implements SpaceService {
         return saveAndTransform(result);
     }
 
-    @Override
-    public PhotoDTO addPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
-        final Space space = findByReference(spaceReference);
-        return photoService.createForSpace(from(spacePhotoRequest), space);
-    }
-
     private Space updateSpace(Space space, UpdateSpaceRequest updateSpaceRequest) {
         space.setDescription(updateSpaceRequest.getDescription());
         space.setName(updateSpaceRequest.getName());
@@ -126,7 +110,8 @@ public class SpaceServiceImpl implements SpaceService {
         return space;
     }
 
-    private Space findByReference(String reference) {
+    @Override
+    public Space findByReference(String reference) {
         return spaceRepository.findByReference(reference).orElseThrow(SpaceNotFound::new);
     }
 

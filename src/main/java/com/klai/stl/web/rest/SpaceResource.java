@@ -7,10 +7,8 @@ import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
-import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -88,17 +86,6 @@ public class SpaceResource {
 
     @DeleteMapping("/spaces/{reference}")
     public ResponseEntity<Void> deleteSpace(@PathVariable String reference) {
-        throw new NotYetImplementedException();
-    }
-
-    @PostMapping("/spaces/{reference}/photos")
-    public ResponseEntity<PhotoDTO> addPhotoToSpace(@PathVariable String reference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
-        final PhotoDTO result = spaceService.addPhoto(spacePhotoRequest, reference);
-        return ok().body(result);
-    }
-
-    @DeleteMapping("/spaces/{reference}/photos/{photoReference}")
-    public ResponseEntity<Void> removePhotoFromSpace(@PathVariable String photoReference, @PathVariable String reference) {
         throw new NotYetImplementedException();
     }
 
