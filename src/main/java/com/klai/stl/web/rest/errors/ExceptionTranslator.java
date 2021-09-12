@@ -206,6 +206,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handlePhotoReadExceptionException(
+        com.klai.stl.service.exception.PhotoReadException ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(BAD_REQUEST, ex.getMessage(), "photo", "photoinvalid");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleBadOwnerException(com.klai.stl.service.exception.NoRemainingImports ex, NativeWebRequest request) {
         TooManyRequestsException problem = new TooManyRequestsException(
             TOO_MANY_REQUESTS,

@@ -2,6 +2,7 @@ package com.klai.stl.service.impl;
 
 import static com.klai.stl.service.dto.requests.photo.PhotoFormat.from;
 import static java.util.Locale.ROOT;
+import static java.util.Objects.isNull;
 import static javax.imageio.ImageIO.read;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
@@ -55,7 +56,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     @Override
     public PhotoDTO addPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
         log.debug("Adding photo {} to space {}", spacePhotoRequest, spaceReference);
-        final Space space = spaceService.findByReference(spaceReference);
+        final Space space = spaceService.findForCurrentUser(spaceReference);
 
         final String photoReference = generatePhotoReference();
         final String photoFileName = "photo-" + photoReference;
@@ -68,8 +69,8 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
             .fileExtension(from(spacePhotoRequest.getPhotoContentType()).getExtension())
             .build();
 
-        final URL url = uploadService.uploadImage(uploadImageRequest);
         final Dimension imageDimension = getImageDimension(spacePhotoRequest.getData());
+        final URL url = uploadService.uploadImage(uploadImageRequest);
 
         final Photo photo = new Photo()
             .name(photoFileName)
@@ -98,6 +99,9 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     private Dimension getImageDimension(byte[] imageData) {
         try {
             BufferedImage img = read(new ByteArrayInputStream(imageData));
+            if (isNull(img)) {
+                throw new PhotoReadException();
+            }
             return new Dimension(img.getWidth(), img.getHeight());
         } catch (IOException e) {
             throw new PhotoReadException();

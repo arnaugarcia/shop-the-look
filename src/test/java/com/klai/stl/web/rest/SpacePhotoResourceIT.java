@@ -95,7 +95,7 @@ class SpacePhotoResourceIT {
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(spacePhotoRequest))
             )
-            .andExpect(status().isOk());
+            .andExpect(status().isCreated());
 
         Long databaseSizeAfterPhoto = photoRepository.count();
 
@@ -118,12 +118,35 @@ class SpacePhotoResourceIT {
     @Test
     @Transactional
     @WithMockUser
-    public void addPhotoToSpaceThatNotExists() throws Exception {}
+    public void addPhotoToSpaceThatNotExists() throws Exception {
+        restSpaceMockMvc
+            .perform(
+                post(API_URL_REFERENCE, "BAD-REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(spacePhotoRequest))
+            )
+            .andExpect(status().isNotFound());
+    }
 
     @Test
     @Transactional
-    @WithMockUser
-    public void addInvalidPhoto() throws Exception {}
+    @WithMockUser(username = "bad-photo-user")
+    public void addInvalidPhoto() throws Exception {
+        createAndAppendUserToCompanyByLogin("bad-photo-user");
+        DEFAULT_DATA = new byte[100];
+        DEFAULT_DATA[0] = -1;
+        final SpacePhotoRequest spacePhotoRequest = SpacePhotoRequest
+            .builder()
+            .data(DEFAULT_DATA)
+            .photoContentType(DEFAULT_CONTENT_TYPE)
+            .build();
+
+        restSpaceMockMvc
+            .perform(
+                post(API_URL_REFERENCE, space.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(spacePhotoRequest))
+            )
+            .andExpect(status().isBadRequest());
+    }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
         User user = UserResourceIT.createEntity(em, login);

@@ -122,11 +122,8 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     private void checkIfCurrentUserBelongsToSpace(String spaceReference) {
-        spaceRepository
-            .findByCompanyReference(userService.getCurrentUserCompanyReference())
-            .stream()
-            .filter(space -> space.getReference().equals(spaceReference))
-            .findFirst()
-            .orElseThrow(BadOwnerException::new);
+        if (!findByReference(spaceReference).getCompany().getReference().equalsIgnoreCase(userService.getCurrentUserCompanyReference())) {
+            throw new BadOwnerException();
+        }
     }
 }
