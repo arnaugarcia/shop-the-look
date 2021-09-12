@@ -3,6 +3,7 @@ package com.klai.stl.web.rest;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -13,13 +14,10 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Space;
 import com.klai.stl.domain.User;
+import com.klai.stl.repository.PhotoRepository;
 import com.klai.stl.repository.SpaceRepository;
-import com.klai.stl.service.PhotoService;
 import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
-import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +41,7 @@ class SpacePhotoResourceIT {
 
     private static final Integer DEFAULT_ORDER = 1;
 
-    private static final byte[] DEFAULT_DATA = new byte[100];
+    private static byte[] DEFAULT_DATA;
 
     private static final String DEFAULT_IMAGE_URL = "https://arnaugarcia.com/giveyouup.mp3";
 
@@ -61,8 +59,8 @@ class SpacePhotoResourceIT {
     @MockBean
     private UploadService uploadService;
 
-    @MockBean
-    private PhotoService photoService;
+    @Autowired
+    private PhotoRepository photoRepository;
 
     private Company company;
 
@@ -71,14 +69,11 @@ class SpacePhotoResourceIT {
     private SpacePhotoRequest spacePhotoRequest;
 
     @BeforeEach
-    public void initTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void initTest() throws Exception {
+        DEFAULT_DATA = SpacePhotoResourceIT.class.getClassLoader().getResourceAsStream("public/belair.jpeg").readAllBytes();
         company = createBasicCompany(em);
         space = createSpace(em, company);
         spacePhotoRequest = createRequest();
-        // TODO: https://www.softwaretestinghelp.com/mock-private-static-void-methods-mockito/
-        Method method = PhotoService.class.getDeclaredMethod("getImageDimension", Dimension.class);
-        method.setAccessible(true);
-        method.invoke(photoService, new Dimension(800, 600));
     }
 
     private SpacePhotoRequest createRequest() {
@@ -91,6 +86,8 @@ class SpacePhotoResourceIT {
     public void addPhotoToSpace() throws Exception {
         when(uploadService.uploadImage(any())).thenReturn(new URL(DEFAULT_IMAGE_URL));
 
+        Long databaseSizeBeforePhoto = photoRepository.count();
+
         createAndAppendUserToCompanyByLogin("add-photo-user");
         restSpaceMockMvc
             .perform(
@@ -99,12 +96,24 @@ class SpacePhotoResourceIT {
                     .content(convertObjectToJsonBytes(spacePhotoRequest))
             )
             .andExpect(status().isOk());
+
+        Long databaseSizeAfterPhoto = photoRepository.count();
+
+        assertThat(databaseSizeAfterPhoto).isGreaterThan(databaseSizeBeforePhoto);
     }
 
     @Test
     @Transactional
     @WithMockUser
-    public void addPhotoToSpaceThatNotBelongsToCurrentUser() throws Exception {}
+    public void addPhotoToSpaceThatNotBelongsToCurrentUser() throws Exception {
+        restSpaceMockMvc
+            .perform(
+                post(API_URL_REFERENCE, space.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(spacePhotoRequest))
+            )
+            .andExpect(status().isForbidden());
+    }
 
     @Test
     @Transactional
