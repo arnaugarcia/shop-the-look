@@ -42,6 +42,8 @@ class SpacePhotoResourceIT {
 
     private static final String DEFAULT_CONTENT_TYPE = "image/jpg";
 
+    private static final String DEFAULT_REFERENCE = "DEFAULT_REFERENCE";
+
     private static final Integer DEFAULT_ORDER = 1;
 
     private static final Double DEFAULT_HEIGHT = 360D;
@@ -52,7 +54,7 @@ class SpacePhotoResourceIT {
     private static final String DEFAULT_IMAGE_URL = "https://arnaugarcia.com/giveyouup.mp3";
 
     private static final String API_URL_REFERENCE = "/api/spaces/{reference}/photos";
-    private static final String API_URL_DELETE = "/api/spaces/{reference}/photos";
+    private static final String API_URL_DELETE = "/api/spaces/{reference}/photos/{reference}";
 
     @Autowired
     private SpaceRepository spaceRepository;
@@ -83,13 +85,15 @@ class SpacePhotoResourceIT {
         company = createBasicCompany(em);
         space = createSpace(em, company);
         photo = createPhoto(em, space);
+        space.addPhoto(photo);
+        em.persist(space);
         spacePhotoRequest = createRequest();
     }
 
     private Photo createPhoto(EntityManager em, Space space) {
         final Photo result = new Photo()
             .space(space)
-            .reference("DEFAULT_REFERENCE")
+            .reference(DEFAULT_REFERENCE)
             .link(DEFAULT_IMAGE_URL)
             .order(DEFAULT_ORDER)
             .height(DEFAULT_HEIGHT)
@@ -180,7 +184,6 @@ class SpacePhotoResourceIT {
     @WithMockUser(username = "delete-photo-user")
     public void deletePhoto() throws Exception {
         createAndAppendUserToCompanyByLogin("delete-photo-user");
-
         restSpaceMockMvc
             .perform(delete(API_URL_DELETE, space.getReference(), photo.getReference()).contentType(APPLICATION_JSON))
             .andExpect(status().isNoContent());
