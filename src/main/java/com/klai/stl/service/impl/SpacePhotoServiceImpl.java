@@ -53,7 +53,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     }
 
     @Override
-    public PhotoDTO createPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
+    public PhotoDTO addPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
         log.debug("Adding photo {} to space {}", spacePhotoRequest, spaceReference);
         final Space space = spaceService.findByReference(spaceReference);
 

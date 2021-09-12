@@ -52,6 +52,14 @@ public interface SpaceService {
     Space findByReference(String reference);
 
     /**
+     * Get the "reference" space for the current user. If not belongs to the current user it throws an Exception.
+     *
+     * @param reference the reference of the entity.
+     * @return the entity.
+     */
+    Space findForCurrentUser(String reference);
+
+    /**
      * Delete the "id" space.
      *
      * @param id the id of the entity.

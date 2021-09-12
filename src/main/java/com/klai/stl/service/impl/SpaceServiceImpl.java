@@ -115,6 +115,12 @@ public class SpaceServiceImpl implements SpaceService {
         return spaceRepository.findByReference(reference).orElseThrow(SpaceNotFound::new);
     }
 
+    @Override
+    public Space findForCurrentUser(String reference) {
+        checkIfCurrentUserBelongsToSpace(reference);
+        return findByReference(reference);
+    }
+
     private void checkIfCurrentUserBelongsToSpace(String spaceReference) {
         spaceRepository
             .findByCompanyReference(userService.getCurrentUserCompanyReference())

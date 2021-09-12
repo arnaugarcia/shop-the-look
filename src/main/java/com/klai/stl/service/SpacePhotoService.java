@@ -13,5 +13,5 @@ public interface SpacePhotoService {
      * @param spaceReference the reference of the space to add the photo
      * @return the updated space entity
      */
-    PhotoDTO createPhoto(SpacePhotoRequest photoRequest, String spaceReference);
+    PhotoDTO addPhoto(SpacePhotoRequest photoRequest, String spaceReference);
 }

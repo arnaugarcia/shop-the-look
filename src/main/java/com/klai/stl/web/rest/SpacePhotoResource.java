@@ -1,10 +1,13 @@
 package com.klai.stl.web.rest;
 
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.created;
+import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
 import com.klai.stl.service.SpacePhotoService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +36,13 @@ public class SpacePhotoResource {
     }
 
     @PostMapping("/spaces/{spaceReference}/photos")
-    public ResponseEntity<PhotoDTO> addPhotoToSpace(@PathVariable String spaceReference, @RequestBody SpacePhotoRequest spacePhotoRequest) {
+    public ResponseEntity<PhotoDTO> addPhotoToSpace(@PathVariable String spaceReference, @RequestBody SpacePhotoRequest spacePhotoRequest)
+        throws URISyntaxException {
         log.debug("REST request to add a photo {} to space {}", spacePhotoRequest, spaceReference);
-        final PhotoDTO result = spacePhotoService.createPhoto(spacePhotoRequest, spaceReference);
-        return ok().body(result);
+        final PhotoDTO result = spacePhotoService.addPhoto(spacePhotoRequest, spaceReference);
+        return created(new URI("/api/spaces/" + spaceReference + "/photos"))
+            .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
+            .body(result);
     }
 
     @DeleteMapping("/spaces/{spaceReference}/photos/{photoReference}")
