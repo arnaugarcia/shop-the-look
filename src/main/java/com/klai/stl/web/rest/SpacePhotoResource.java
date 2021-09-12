@@ -1,6 +1,7 @@
 package com.klai.stl.web.rest;
 
 import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.noContent;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
 import com.klai.stl.service.SpacePhotoService;
@@ -8,7 +9,6 @@ import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +48,7 @@ public class SpacePhotoResource {
     @DeleteMapping("/spaces/{spaceReference}/photos/{photoReference}")
     public ResponseEntity<Void> removePhotoFromSpace(@PathVariable String spaceReference, @PathVariable String photoReference) {
         log.debug("REST request to remove photo {} from space {}", photoReference, spaceReference);
-        throw new NotYetImplementedException();
+        spacePhotoService.removePhoto(spaceReference);
+        return noContent().build();
     }
 }

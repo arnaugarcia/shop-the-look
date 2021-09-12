@@ -14,4 +14,10 @@ public interface SpacePhotoService {
      * @return the updated space entity
      */
     PhotoDTO addPhoto(SpacePhotoRequest photoRequest, String spaceReference);
+
+    /**
+     *
+     * @param spaceReference
+     */
+    void removePhoto(String spaceReference);
 }

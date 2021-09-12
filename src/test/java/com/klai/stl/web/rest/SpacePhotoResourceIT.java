@@ -8,11 +8,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
+import com.klai.stl.domain.Photo;
 import com.klai.stl.domain.Space;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.PhotoRepository;
@@ -50,6 +52,7 @@ class SpacePhotoResourceIT {
     private static final String DEFAULT_IMAGE_URL = "https://arnaugarcia.com/giveyouup.mp3";
 
     private static final String API_URL_REFERENCE = "/api/spaces/{reference}/photos";
+    private static final String API_URL_DELETE = "/api/spaces/{reference}/photos";
 
     @Autowired
     private SpaceRepository spaceRepository;
@@ -70,6 +73,8 @@ class SpacePhotoResourceIT {
 
     private Space space;
 
+    private Photo photo;
+
     private SpacePhotoRequest spacePhotoRequest;
 
     @BeforeEach
@@ -77,7 +82,20 @@ class SpacePhotoResourceIT {
         DEFAULT_DATA = SpacePhotoResourceIT.class.getClassLoader().getResourceAsStream("public/belair.jpeg").readAllBytes();
         company = createBasicCompany(em);
         space = createSpace(em, company);
+        photo = createPhoto(em, space);
         spacePhotoRequest = createRequest();
+    }
+
+    private Photo createPhoto(EntityManager em, Space space) {
+        final Photo result = new Photo()
+            .space(space)
+            .reference("DEFAULT_REFERENCE")
+            .link(DEFAULT_IMAGE_URL)
+            .order(DEFAULT_ORDER)
+            .height(DEFAULT_HEIGHT)
+            .width(DEFAULT_WIDTH);
+        em.persist(result);
+        return result;
     }
 
     private SpacePhotoRequest createRequest() {
@@ -155,6 +173,40 @@ class SpacePhotoResourceIT {
                     .content(convertObjectToJsonBytes(spacePhotoRequest))
             )
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "delete-photo-user")
+    public void deletePhoto() throws Exception {
+        createAndAppendUserToCompanyByLogin("delete-photo-user");
+
+        restSpaceMockMvc
+            .perform(delete(API_URL_DELETE, space.getReference(), photo.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "delete-photo-user")
+    public void deletePhotoThatNotExists() throws Exception {
+        createAndAppendUserToCompanyByLogin("delete-photo-user");
+
+        restSpaceMockMvc
+            .perform(delete(API_URL_DELETE, space.getReference(), "BAD_REFERENCE").contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "bad-delete-photo-user")
+    public void deleteSpacePhotoThatNotBelongsToCurrentUser() throws Exception {
+        User currentUser = UserResourceIT.createEntity(em, "bad-delete-photo-user");
+        em.persist(currentUser);
+
+        restSpaceMockMvc
+            .perform(delete(API_URL_DELETE, space.getReference(), photo.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
     }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
