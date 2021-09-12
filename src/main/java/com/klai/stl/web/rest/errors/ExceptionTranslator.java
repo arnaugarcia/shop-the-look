@@ -260,6 +260,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handlePhotoNotFoundException(com.klai.stl.service.exception.PhotoNotFound ex, NativeWebRequest request) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, ex.getMessage(), "photo", "photonotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleCompanyNotAssociatedException(
         com.klai.stl.service.exception.CompanyNotAssociated ex,
         NativeWebRequest request
