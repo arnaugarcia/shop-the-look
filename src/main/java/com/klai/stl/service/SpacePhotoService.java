@@ -16,8 +16,9 @@ public interface SpacePhotoService {
     PhotoDTO addPhoto(SpacePhotoRequest photoRequest, String spaceReference);
 
     /**
-     *
-     * @param spaceReference
+     * Deletes photo for desired space by reference
+     * @param spaceReference the space reference to delete the photo
+     * @param photoReference the reference of the photo to delete
      */
-    void removePhoto(String spaceReference);
+    void removePhoto(String spaceReference, String photoReference);
 }

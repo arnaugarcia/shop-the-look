@@ -15,6 +15,8 @@ import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
+import com.klai.stl.service.exception.BadOwnerException;
+import com.klai.stl.service.exception.PhotoNotFound;
 import com.klai.stl.service.exception.PhotoReadException;
 import com.klai.stl.service.mapper.PhotoMapper;
 import java.awt.*;
@@ -22,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -82,6 +85,26 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
             .space(space);
 
         return saveAndTransform(photo);
+    }
+
+    @Override
+    public void removePhoto(String spaceReference, String photoReference) {
+        final Space space = spaceService.findByReference(spaceReference);
+        Photo photo = findByReference(photoReference);
+        checkThatPhotoBelongsToSpace(space, photo);
+        photoRepository.deleteByReference(photoReference);
+    }
+
+    private void checkThatPhotoBelongsToSpace(Space space, Photo photo) {
+        space.getPhotos().stream().filter(byReferenceEquals(photo.getReference())).findFirst().orElseThrow(BadOwnerException::new);
+    }
+
+    private Predicate<Photo> byReferenceEquals(String photoReference) {
+        return photo -> photo.getReference().equals(photoReference);
+    }
+
+    private Photo findByReference(String photoReference) {
+        return photoRepository.findByReference(photoReference).orElseThrow(PhotoNotFound::new);
     }
 
     private String buildDestinationFolderFor(Space space) {

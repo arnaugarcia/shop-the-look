@@ -48,7 +48,7 @@ public class SpacePhotoResource {
     @DeleteMapping("/spaces/{spaceReference}/photos/{photoReference}")
     public ResponseEntity<Void> removePhotoFromSpace(@PathVariable String spaceReference, @PathVariable String photoReference) {
         log.debug("REST request to remove photo {} from space {}", photoReference, spaceReference);
-        spacePhotoService.removePhoto(spaceReference);
+        spacePhotoService.removePhoto(spaceReference, photoReference);
         return noContent().build();
     }
 }
