@@ -7,8 +7,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
@@ -40,6 +41,9 @@ class SpacePhotoResourceIT {
     private static final String DEFAULT_CONTENT_TYPE = "image/jpg";
 
     private static final Integer DEFAULT_ORDER = 1;
+
+    private static final Double DEFAULT_HEIGHT = 360D;
+    private static final Double DEFAULT_WIDTH = 480D;
 
     private static byte[] DEFAULT_DATA;
 
@@ -95,7 +99,14 @@ class SpacePhotoResourceIT {
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(spacePhotoRequest))
             )
-            .andExpect(status().isCreated());
+            .andExpect(status().isCreated())
+            .andExpect(content().contentType(APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.height").value(DEFAULT_HEIGHT))
+            .andExpect(jsonPath("$.width").value(DEFAULT_WIDTH))
+            .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
+            .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
+            .andExpect(jsonPath("$.reference").isNotEmpty())
+            .andExpect(jsonPath("$.name").isNotEmpty());
 
         Long databaseSizeAfterPhoto = photoRepository.count();
 
