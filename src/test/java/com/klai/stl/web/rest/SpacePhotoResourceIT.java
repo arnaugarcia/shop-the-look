@@ -104,8 +104,7 @@ class SpacePhotoResourceIT {
             .andExpect(jsonPath("$.height").value(DEFAULT_HEIGHT))
             .andExpect(jsonPath("$.width").value(DEFAULT_WIDTH))
             .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
-            .andExpect(jsonPath("$.reference").isNotEmpty())
-            .andExpect(jsonPath("$.name").isNotEmpty());
+            .andExpect(jsonPath("$.reference").isNotEmpty());
 
         Long databaseSizeAfterPhoto = photoRepository.count();
 

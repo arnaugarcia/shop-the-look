@@ -1,6 +1,5 @@
 package com.klai.stl.service.dto.requests.photo;
 
-import com.klai.stl.domain.enumeration.PhotoOrientation;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,10 +9,6 @@ import lombok.Data;
  */
 @Data
 public class PhotoDTO implements Serializable {
-
-    private String name;
-
-    private String description;
 
     @NotNull
     private String link;
@@ -29,6 +24,4 @@ public class PhotoDTO implements Serializable {
 
     @NotNull
     private Double width;
-
-    private PhotoOrientation orientation;
 }
