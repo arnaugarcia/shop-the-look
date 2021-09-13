@@ -59,6 +59,10 @@ export class SpacePhotoComponent {
     this.fileReader.readAsDataURL(this.uploader.queue[0]._file);
   }
 
+  addCoordinate($event: any): void {
+    console.error($event.layerX, $event.layerY);
+  }
+
   public deletePhoto(photoReference: string): void {
     this.spacePhotoService.removePhoto(this.spaceReference!, photoReference).subscribe(
       (response: HttpResponse<any>) => this.onUploadSuccess(response),

@@ -25,5 +25,11 @@
       <i [data-feather]="'trash'"></i>
     </span>
   </a>
-  <div class="loaded-image" [style.backgroundImage]="'url(' + photo.link + ')'" [style.height]="height" [style.width]="width"></div>
+  <div
+    class="loaded-image"
+    (click)="addCoordinate($event)"
+    [style.backgroundImage]="'url(' + photo.link + ')'"
+    [style.height]="height"
+    [style.width]="width"
+  ></div>
 </ng-container>
