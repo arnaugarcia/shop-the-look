@@ -4,6 +4,8 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
 import { SpacePhotoService } from '../../service/space-photo.service';
 import { DataUtils } from '../../../../core/util/data-util.service';
+import { ProductSearchComponent } from '../product-search/product-search.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'stl-space-photo',
@@ -33,7 +35,7 @@ export class SpacePhotoComponent {
 
   private fileReader = new FileReader();
 
-  constructor(private spacePhotoService: SpacePhotoService, protected dataUtils: DataUtils) {
+  constructor(private spacePhotoService: SpacePhotoService, protected dataUtils: DataUtils, private modalService: NgbModal) {
     this.height = 'auto';
     this.width = 'auto';
   }
@@ -61,6 +63,11 @@ export class SpacePhotoComponent {
 
   addCoordinate($event: any): void {
     console.error($event.layerX, $event.layerY);
+    this.modalService
+      .open(ProductSearchComponent, {
+        centered: true,
+      })
+      .result.then((result: any) => console.error(result));
   }
 
   public deletePhoto(photoReference: string): void {

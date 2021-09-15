@@ -12,6 +12,7 @@ import { ListComponent } from './pages/list/list.component';
 import { EditComponent } from './pages/edit/edit.component';
 import { SpacePhotoComponent } from './component/space-photo/space-photo.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ProductSearchComponent } from './component/product-search/product-search.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     ListComponent,
     EditComponent,
     SpacePhotoComponent,
+    ProductSearchComponent,
   ],
   imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule],
 })
