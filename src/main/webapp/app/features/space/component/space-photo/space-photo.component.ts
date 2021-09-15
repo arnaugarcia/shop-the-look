@@ -63,12 +63,11 @@ export class SpacePhotoComponent {
 
   addCoordinate($event: any): void {
     console.error($event.layerX, $event.layerY);
-    this.modalService
-      .open(ProductSearchComponent, {
-        centered: true,
-      })
-      .result.then((result: any) => console.error(result))
-      .catch((result: any) => console.error('rejected', result));
+    const ngbModalRef = this.modalService.open(ProductSearchComponent, {
+      centered: true,
+      size: 'lg',
+    });
+    ngbModalRef.result.then((result: any) => console.error(result)).catch((result: any) => console.error('rejected', result));
   }
 
   public deletePhoto(photoReference: string): void {
