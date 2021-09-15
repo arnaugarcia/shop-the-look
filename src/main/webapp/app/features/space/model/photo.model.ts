@@ -3,7 +3,8 @@ export class PhotoRequest {
 }
 
 export interface IPhoto {
-  link?: string;
+  link: string;
   reference: string;
-  format?: string;
+  height: number;
+  width: number;
 }
