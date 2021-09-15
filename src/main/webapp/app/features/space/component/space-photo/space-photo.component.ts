@@ -67,7 +67,8 @@ export class SpacePhotoComponent {
       .open(ProductSearchComponent, {
         centered: true,
       })
-      .result.then((result: any) => console.error(result));
+      .result.then((result: any) => console.error(result))
+      .catch((result: any) => console.error('rejected', result));
   }
 
   public deletePhoto(photoReference: string): void {
