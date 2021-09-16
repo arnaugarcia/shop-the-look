@@ -16,7 +16,7 @@ export class ProductSearchComponent {
 
   constructor(public activeModal: NgbActiveModal, private productService: ProductService) {}
   public selectProduct(product: IProduct): void {
-    this.activeModal.close({ productReference: product.reference });
+    this.activeModal.close(product.reference);
   }
 
   public searchUpdate($event: any): void {

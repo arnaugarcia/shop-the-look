@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
@@ -6,11 +6,13 @@ import { SpacePhotoService } from '../../service/space-photo.service';
 import { DataUtils } from '../../../../core/util/data-util.service';
 import { ProductSearchComponent } from '../product-search/product-search.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 
 @Component({
   selector: 'stl-space-photo',
   templateUrl: './space-photo.component.html',
   styleUrls: ['./space-photo.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SpacePhotoComponent {
   @Input()
@@ -33,9 +35,18 @@ export class SpacePhotoComponent {
     isHTML5: true,
   });
 
+  @ViewChild('photoCoordinates', { static: false, read: ElementRef })
+  private photoCoordinates!: ElementRef;
+
   private fileReader = new FileReader();
 
-  constructor(private spacePhotoService: SpacePhotoService, protected dataUtils: DataUtils, private modalService: NgbModal) {
+  constructor(
+    private spacePhotoService: SpacePhotoService,
+    private spaceCoordinateService: SpaceCoordinateService,
+    protected dataUtils: DataUtils,
+    private modalService: NgbModal,
+    private renderer: Renderer2
+  ) {
     this.height = 'auto';
     this.width = 'auto';
   }
@@ -62,12 +73,27 @@ export class SpacePhotoComponent {
   }
 
   addCoordinate($event: any): void {
-    console.error($event.layerX, $event.layerY);
     const ngbModalRef = this.modalService.open(ProductSearchComponent, {
       centered: true,
       size: 'lg',
     });
-    ngbModalRef.result.then((result: any) => console.error(result)).catch((result: any) => console.error('rejected', result));
+    ngbModalRef.result
+      .then((productReference: string) => {
+        const coordinateContainer = this.renderer.createElement('div');
+        this.renderer.setStyle(coordinateContainer, 'position', 'absolute');
+        this.renderer.setStyle(coordinateContainer, 'z-index', '500');
+        this.renderer.setStyle(coordinateContainer, 'left', `${String($event.layerX)}px`);
+        this.renderer.setStyle(coordinateContainer, 'top', `${String($event.layerY)}px`);
+        coordinateContainer.innerHTML = '<div class="circle"></div>';
+        this.renderer.appendChild(this.photoCoordinates.nativeElement, coordinateContainer);
+        this.spaceCoordinateService.addCoordinate({
+          productReference: productReference,
+          photoReference: this.photo!.reference,
+          x: $event.layerX,
+          y: $event.layerY,
+        });
+      })
+      .catch((result: any) => console.error('rejected', result));
   }
 
   public deletePhoto(photoReference: string): void {
