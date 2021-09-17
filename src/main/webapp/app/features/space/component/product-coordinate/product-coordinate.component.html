@@ -1,1 +1,53 @@
-<div class="circle" [ngStyle]="{ left: coordinate.x + 'px', top: coordinate.y + 'px' }"></div>
+<a class="dot" [ngStyle]="{ left: coordinate.x + 'px', top: coordinate.y + 'px' }"></a>
+<div
+  aria-hidden="false"
+  role="tooltip"
+  id="pub__shoppable-image-art,80213074"
+  class="pub__shoppable-image__tag pub__shoppable-image__tag--right"
+  [ngStyle]="{ left: coordinate.x + 30 + 'px', top: coordinate.y - 40 + 'px', position: 'absolute' }"
+>
+  <div class="pub__shoppable-image__tag-inner">
+    <div>
+      <div class="range-revamp-shoppable-price-package" data-product-name="MICKE">
+        <a
+          href="https://www.ikea.com/es/es/p/micke-escritorio-blanco-80213074/"
+          class="range-revamp-shoppable-price-package__content"
+          tabindex="-1"
+        >
+          <div class="range-revamp-shoppable-price-package__content--wrapper">
+            <div class="range-revamp-shoppable-price-package__content--left">
+              <div class="range-revamp-header-section">
+                <div class="range-revamp-header-section__title--small notranslate">{{ coordinate.product.name }}</div>
+                <!--<div class='range-revamp-header-section__description'>
+                  <span class='range-revamp-header-section__description-text'>{{coordinate.product.reference}}</span>
+                </div>-->
+              </div>
+            </div>
+            <div class="range-revamp-shoppable-price-package__content--right">
+              <svg focusable="false" viewBox="0 0 24 24" class="range-revamp-svg-icon" aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="m16.415 12.0011-8.0012 8.0007-1.4141-1.4143 6.587-6.5866-6.586-6.5868L8.415 4l8 8.0011z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <div class="range-revamp-shoppable-price-package__footer">
+            <span class="range-revamp-price range-revamp-price--small">
+              <span class="range-revamp-price__integer">{{ coordinate.product.price }}</span>
+              <span
+                class="
+                  range-revamp-price__currency-symbol
+                  range-revamp-price__currency-symbol--trailing
+                  range-revamp-price__currency-symbol--superscript
+                "
+                >€</span
+              >
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
