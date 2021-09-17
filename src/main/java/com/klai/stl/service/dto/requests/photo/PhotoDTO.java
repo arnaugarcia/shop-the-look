@@ -1,6 +1,9 @@
 package com.klai.stl.service.dto.requests.photo;
 
+import com.klai.stl.service.dto.CoordinateDTO;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -24,4 +27,6 @@ public class PhotoDTO implements Serializable {
 
     @NotNull
     private Double width;
+
+    private List<CoordinateDTO> coordinates = new ArrayList<>();
 }
