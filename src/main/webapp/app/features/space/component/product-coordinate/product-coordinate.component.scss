@@ -1,6 +1,7 @@
 @import '~@core/scss/base/bootstrap-extended/include'; // Components includes
 
 .circle {
+  z-index: 100;
   width: 25px;
   height: 25px;
   right: -25px;

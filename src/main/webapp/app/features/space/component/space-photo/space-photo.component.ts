@@ -81,7 +81,7 @@ export class SpacePhotoComponent {
       .then((product: IProduct) => {
         this.photo?.coordinates?.push({ x: $event.layerX, y: $event.layerY, product: product });
       })
-      .catch((result: any) => console.error('rejected', result));
+      .catch((result: any) => void result);
   }
 
   public deletePhoto(photoReference: string): void {
