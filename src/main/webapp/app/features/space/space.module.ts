@@ -13,6 +13,7 @@ import { EditComponent } from './pages/edit/edit.component';
 import { SpacePhotoComponent } from './component/space-photo/space-photo.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ProductSearchComponent } from './component/product-search/product-search.component';
+import { ProductCoordinateComponent } from './component/product-coordinate/product-coordinate.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ProductSearchComponent } from './component/product-search/product-searc
     EditComponent,
     SpacePhotoComponent,
     ProductSearchComponent,
+    ProductCoordinateComponent,
   ],
   imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule],
 })

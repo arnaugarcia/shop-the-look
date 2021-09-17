@@ -84,7 +84,7 @@ export class SpacePhotoComponent {
         this.renderer.setStyle(coordinateContainer, 'z-index', '500');
         this.renderer.setStyle(coordinateContainer, 'left', `${String($event.layerX)}px`);
         this.renderer.setStyle(coordinateContainer, 'top', `${String($event.layerY)}px`);
-        coordinateContainer.innerHTML = '<div class="circle"></div>';
+        coordinateContainer.innerHTML = '';
         this.renderer.appendChild(this.photoCoordinates.nativeElement, coordinateContainer);
         this.spaceCoordinateService.addCoordinate({
           productReference: productReference,
