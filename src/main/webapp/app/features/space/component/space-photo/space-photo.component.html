@@ -26,11 +26,12 @@
     </span>
   </a>
   <div
-    #photoCoordinates
     class="loaded-image"
     (click)="addCoordinate($event)"
     [style.backgroundImage]="'url(' + photo.link + ')'"
     [style.height]="height"
     [style.width]="width"
-  ></div>
+  >
+    <stl-product-coordinate *ngFor="let coordinate of photo.coordinates"></stl-product-coordinate>
+  </div>
 </ng-container>

@@ -9,5 +9,5 @@ export interface IPhoto {
   reference: string;
   height: number;
   width: number;
-  coordinates: ICoordinate;
+  coordinates?: ICoordinate[];
 }

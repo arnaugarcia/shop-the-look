@@ -107,12 +107,3 @@
     transform: translate(1px, -2px) rotate(-1deg);
   }
 }
-
-.circle {
-  width: 25px;
-  height: 25px;
-  right: -25px;
-  background-color: $primary;
-  border-radius: 50%;
-  position: absolute;
-}

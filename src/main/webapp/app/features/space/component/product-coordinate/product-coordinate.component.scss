@@ -1,0 +1,10 @@
+@import '~@core/scss/base/bootstrap-extended/include'; // Components includes
+
+.circle {
+  width: 25px;
+  height: 25px;
+  right: -25px;
+  background-color: $primary;
+  border-radius: 50%;
+  position: absolute;
+}

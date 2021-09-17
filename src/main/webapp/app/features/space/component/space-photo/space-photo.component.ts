@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
@@ -7,12 +7,12 @@ import { DataUtils } from '../../../../core/util/data-util.service';
 import { ProductSearchComponent } from '../product-search/product-search.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
+import { IProduct } from '../../../product/models/product.model';
 
 @Component({
   selector: 'stl-space-photo',
   templateUrl: './space-photo.component.html',
   styleUrls: ['./space-photo.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class SpacePhotoComponent {
   @Input()
@@ -44,8 +44,7 @@ export class SpacePhotoComponent {
     private spacePhotoService: SpacePhotoService,
     private spaceCoordinateService: SpaceCoordinateService,
     protected dataUtils: DataUtils,
-    private modalService: NgbModal,
-    private renderer: Renderer2
+    private modalService: NgbModal
   ) {
     this.height = 'auto';
     this.width = 'auto';
@@ -77,21 +76,10 @@ export class SpacePhotoComponent {
       centered: true,
       size: 'lg',
     });
+
     ngbModalRef.result
-      .then((productReference: string) => {
-        const coordinateContainer = this.renderer.createElement('div');
-        this.renderer.setStyle(coordinateContainer, 'position', 'absolute');
-        this.renderer.setStyle(coordinateContainer, 'z-index', '500');
-        this.renderer.setStyle(coordinateContainer, 'left', `${String($event.layerX)}px`);
-        this.renderer.setStyle(coordinateContainer, 'top', `${String($event.layerY)}px`);
-        coordinateContainer.innerHTML = '';
-        this.renderer.appendChild(this.photoCoordinates.nativeElement, coordinateContainer);
-        this.spaceCoordinateService.addCoordinate({
-          productReference: productReference,
-          photoReference: this.photo!.reference,
-          x: $event.layerX,
-          y: $event.layerY,
-        });
+      .then((product: IProduct) => {
+        this.photo?.coordinates?.push({ x: $event.layerX, y: $event.layerY, product: product });
       })
       .catch((result: any) => console.error('rejected', result));
   }
