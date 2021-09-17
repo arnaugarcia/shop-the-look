@@ -19,11 +19,6 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'shopTheLookApp.subscriptionPlan.home.title' },
         loadChildren: () => import('./subscription-plan/subscription-plan.module').then(m => m.SubscriptionPlanModule),
       },
-      {
-        path: 'coordinate',
-        data: { pageTitle: 'shopTheLookApp.coordinate.home.title' },
-        loadChildren: () => import('./coordinate/coordinate.module').then(m => m.CoordinateModule),
-      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],
