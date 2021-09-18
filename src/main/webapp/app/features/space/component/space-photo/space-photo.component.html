@@ -31,7 +31,10 @@
     [style.backgroundImage]="'url(' + photo.link + ')'"
     [style.height]="height"
     [style.width]="width"
-  >
-    <stl-product-coordinate *ngFor="let coordinate of photo.coordinates" [coordinate]="coordinate"></stl-product-coordinate>
-  </div>
+  ></div>
+  <stl-product-coordinate
+    *ngFor="let coordinate of photo.coordinates"
+    [coordinate]="coordinate"
+    (click)="removeCoordinate(coordinate)"
+  ></stl-product-coordinate>
 </ng-container>

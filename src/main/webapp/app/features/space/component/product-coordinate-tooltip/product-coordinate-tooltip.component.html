@@ -1,6 +1,6 @@
 <div role="tooltip" [ngStyle]="{ left: coordinate.x + 30 + 'px', top: coordinate.y - 40 + 'px', position: 'absolute' }">
-  <div class="tooltip__content-inner">
-    <a class="tooltip__content">
+  <div class="tooltip__content-inner" [class.tooltip__content--invisible]="!visible">
+    <a class="tooltip__content" [href]="coordinate.product.link" target="_blank">
       <div class="tooltip__content--wrapper">
         <div class="tooltip__content--left">
           <div class="tooltip__header">

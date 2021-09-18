@@ -9,4 +9,7 @@ import { ICoordinate } from '../../model/coordinate.model';
 export class ProductCoordinateTooltipComponent {
   @Input()
   public coordinate!: ICoordinate;
+
+  @Input()
+  public visible = false;
 }

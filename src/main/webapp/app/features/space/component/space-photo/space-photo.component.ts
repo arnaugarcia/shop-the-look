@@ -8,6 +8,7 @@ import { ProductSearchComponent } from '../product-search/product-search.compone
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
+import { ICoordinate } from '../../model/coordinate.model';
 
 @Component({
   selector: 'stl-space-photo',
@@ -89,6 +90,10 @@ export class SpacePhotoComponent {
       (response: HttpResponse<any>) => this.onUploadSuccess(response),
       (error: HttpErrorResponse) => this.onUploadError(error)
     );
+  }
+
+  public removeCoordinate(coordinate: ICoordinate): void {
+    this.photo?.coordinates?.slice(this.photo.coordinates.indexOf(coordinate), 1);
   }
 
   private uploadFile(droopedFile: any): void {
