@@ -1,7 +1,4 @@
-<a
-  class="dot"
-  [ngStyle]="{ left: coordinate.x + 'px', top: coordinate.y + 'px' }"
-  (mouseover)="visibleTooltip = true"
-  (mouseleave)="visibleTooltip = false"
-></a>
-<stl-product-coordinate-tooltip [coordinate]="coordinate" [visible]="visibleTooltip"></stl-product-coordinate-tooltip>
+<div (mouseover)="visibleTooltip = true" (mouseleave)="visibleTooltip = false">
+  <a class="dot" [ngStyle]="{ left: coordinate.x + 'px', top: coordinate.y + 'px' }"></a>
+  <stl-product-coordinate-tooltip [coordinate]="coordinate" [visible]="visibleTooltip"></stl-product-coordinate-tooltip>
+</div>
