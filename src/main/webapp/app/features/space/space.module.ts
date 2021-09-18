@@ -14,6 +14,7 @@ import { SpacePhotoComponent } from './component/space-photo/space-photo.compone
 import { FileUploadModule } from 'ng2-file-upload';
 import { ProductSearchComponent } from './component/product-search/product-search.component';
 import { ProductCoordinateComponent } from './component/product-coordinate/product-coordinate.component';
+import { ProductCoordinateTooltipComponent } from './component/product-coordinate-tooltip/product-coordinate-tooltip.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProductCoordinateComponent } from './component/product-coordinate/produ
     SpacePhotoComponent,
     ProductSearchComponent,
     ProductCoordinateComponent,
+    ProductCoordinateTooltipComponent,
   ],
   imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule],
 })
