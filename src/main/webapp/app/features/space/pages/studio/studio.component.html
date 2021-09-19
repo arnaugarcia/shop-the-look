@@ -1,10 +1,10 @@
-<div class="content-wrapper container-xxl p-0">
+<div class="content-wrapper container-xxl p-0" *ngIf="currentStep$ | async as currentStep">
   <div class="content-body">
     <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
     <section class="horizontal-wizard">
       <div class="bs-stepper horizontal-wizard-example">
         <div class="bs-stepper-header">
-          <div class="step" [class.active]="(currentStep$ | async) == 'create'">
+          <div class="step" [class.active]="currentStep == 'create'">
             <button class="step-trigger" [routerLink]="'create'">
               <span class="bs-stepper-box">1</span>
               <span class="bs-stepper-label">
@@ -16,7 +16,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [class.active]="(currentStep$ | async) == 'template'">
+          <div class="step" [class.active]="currentStep == 'template'">
             <button class="step-trigger" [routerLink]="'template'">
               <span class="bs-stepper-box">2</span>
               <span class="bs-stepper-label">
@@ -28,7 +28,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [class.active]="(currentStep$ | async) == 'customize'">
+          <div class="step" [class.active]="currentStep == 'customize'">
             <button class="step-trigger" [routerLink]="'customize'">
               <span class="bs-stepper-box">3</span>
               <span class="bs-stepper-label">
@@ -40,7 +40,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [class.active]="(currentStep$ | async) == 'publish'">
+          <div class="step" [class.active]="currentStep == 'publish'">
             <button class="step-trigger" [routerLink]="'publish'">
               <span class="bs-stepper-box">4</span>
               <span class="bs-stepper-label">
@@ -52,7 +52,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [class.active]="(currentStep$ | async) == 'enjoy'">
+          <div class="step" [class.active]="currentStep == 'enjoy'">
             <button class="step-trigger" [routerLink]="'enjoy'">
               <span class="bs-stepper-box">5</span>
               <span class="bs-stepper-label">
