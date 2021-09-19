@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
-import { StudioService } from '../../service/studio.service';
+import { StudioStore } from '../../store/studio.store';
+import { Observable } from 'rxjs';
+import { CurrentStep } from '../../store/models/state.model';
 
 @Component({
   selector: 'stl-studio',
@@ -9,8 +11,9 @@ import { StudioService } from '../../service/studio.service';
 })
 export class StudioComponent {
   public contentHeader: ContentHeader;
+  public currentStep$: Observable<CurrentStep> = this.studioStore.currentStep$;
 
-  constructor(public studioService: StudioService) {
+  constructor(private studioStore: StudioStore) {
     this.contentHeader = {
       headerTitle: 'Spaces',
       actionButton: true,

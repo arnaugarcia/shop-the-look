@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StudioService } from '../../service/studio.service';
+import { StudioStore } from '../../store/studio.store';
 
 @Component({
   selector: 'stl-publish',
@@ -7,7 +7,7 @@ import { StudioService } from '../../service/studio.service';
   styleUrls: ['./publish.component.scss'],
 })
 export class PublishComponent {
-  constructor(private studioService: StudioService) {
-    this.studioService.navigate('publish');
+  constructor(private studioStore: StudioStore) {
+    this.studioStore.navigate('publish');
   }
 }

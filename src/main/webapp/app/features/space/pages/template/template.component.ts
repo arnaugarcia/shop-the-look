@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { StudioService, StudioTemplate } from '../../service/studio.service';
 import { SpaceService } from '../../service/space.service';
 import { ActivatedRoute } from '@angular/router';
 import { ISpace } from '../../model/space.model';
+import { StudioStore } from '../../store/studio.store';
+import { StudioTemplate } from '../../store/models/state.model';
 
 @Component({
   selector: 'stl-template',
@@ -10,13 +11,12 @@ import { ISpace } from '../../model/space.model';
   styleUrls: ['./template.component.scss'],
 })
 export class TemplateComponent implements OnInit {
-  public selectedOption: StudioTemplate;
+  public selectedTemplate?: StudioTemplate;
   public readonly StudioTemplates = StudioTemplate;
   private space?: ISpace;
 
-  constructor(private activatedRoute: ActivatedRoute, private studioService: StudioService, private spaceService: SpaceService) {
-    this.studioService.navigate('template');
-    this.selectedOption = studioService.template;
+  constructor(private activatedRoute: ActivatedRoute, private studioStore: StudioStore, private spaceService: SpaceService) {
+    this.studioStore.navigate('template');
   }
 
   ngOnInit(): void {
@@ -24,11 +24,14 @@ export class TemplateComponent implements OnInit {
       this.updateForm(space);
       this.space = space;
     });
+    this.studioStore.template$.subscribe((selectedTemplate: StudioTemplate) => {
+      this.selectedTemplate = selectedTemplate;
+    });
   }
 
   selectOption(option: StudioTemplate): void {
-    this.selectedOption = option;
-    this.studioService.template = option;
+    this.selectedTemplate = option;
+    this.studioStore.template(option);
     if (this.space) {
       this.space.template = option.valueOf();
       this.spaceService.update(this.space).subscribe();
@@ -36,6 +39,6 @@ export class TemplateComponent implements OnInit {
   }
 
   private updateForm(space: ISpace): void {
-    this.selectedOption = (<any>StudioTemplate)[space.template];
+    this.selectedTemplate = (<any>StudioTemplate)[space.template];
   }
 }

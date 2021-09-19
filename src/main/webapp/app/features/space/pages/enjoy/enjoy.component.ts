@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StudioService } from '../../service/studio.service';
+import { StudioStore } from '../../store/studio.store';
 
 @Component({
   selector: 'stl-enjoy',
@@ -7,7 +7,7 @@ import { StudioService } from '../../service/studio.service';
   styleUrls: ['./enjoy.component.scss'],
 })
 export class EnjoyComponent {
-  constructor(private studioService: StudioService) {
-    this.studioService.navigate('enjoy');
+  constructor(private studioStore: StudioStore) {
+    this.studioStore.navigate('publish');
   }
 }

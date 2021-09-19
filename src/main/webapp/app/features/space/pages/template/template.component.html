@@ -15,7 +15,7 @@
 <section id="knowledge-base-content">
   <div class="row kb-search-content-info match-height">
     <div class="col-md-4 col-sm-6 col-12">
-      <div class="card" [class.active]="selectedOption === StudioTemplates.ONE_PHOTO" (click)="selectOption(StudioTemplates.ONE_PHOTO)">
+      <div class="card" [class.active]="selectedTemplate === StudioTemplates.ONE_PHOTO" (click)="selectOption(StudioTemplates.ONE_PHOTO)">
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space1.svg" class="card-img-top" alt="knowledge-base-image" />
@@ -30,7 +30,7 @@
     <div class="col-md-4 col-sm-6 col-12">
       <div
         class="card"
-        [class.active]="selectedOption === StudioTemplates.THREE_PHOTOS_VERTICAL"
+        [class.active]="selectedTemplate === StudioTemplates.THREE_PHOTOS_VERTICAL"
         (click)="selectOption(StudioTemplates.THREE_PHOTOS_VERTICAL)"
       >
         <a>
@@ -47,7 +47,7 @@
     <div class="col-md-4 col-sm-6 col-12">
       <div
         class="card"
-        [class.active]="selectedOption === StudioTemplates.THREE_PHOTOS_HORIZONTAL"
+        [class.active]="selectedTemplate === StudioTemplates.THREE_PHOTOS_HORIZONTAL"
         (click)="selectOption(StudioTemplates.THREE_PHOTOS_HORIZONTAL)"
       >
         <a>

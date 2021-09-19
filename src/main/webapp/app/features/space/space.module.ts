@@ -15,6 +15,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { ProductSearchComponent } from './component/product-search/product-search.component';
 import { ProductCoordinateComponent } from './component/product-coordinate/product-coordinate.component';
 import { ProductCoordinateTooltipComponent } from './component/product-coordinate-tooltip/product-coordinate-tooltip.component';
+import { StudioStore } from './store/studio.store';
 
 @NgModule({
   declarations: [
@@ -32,5 +33,6 @@ import { ProductCoordinateTooltipComponent } from './component/product-coordinat
     ProductCoordinateTooltipComponent,
   ],
   imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule],
+  providers: [StudioStore],
 })
 export class SpaceModule {}

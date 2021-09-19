@@ -1,4 +1,4 @@
-<ng-container *ngIf="space" [ngSwitch]="studioService.template">
+<ng-container *ngIf="space" [ngSwitch]="studioStore.template$ | async">
   <section *ngSwitchCase="StudioTemplate.THREE_PHOTOS_HORIZONTAL || StudioTemplate.THREE_PHOTOS_VERTICAL">
     <stl-space-photo></stl-space-photo>
     <stl-space-photo></stl-space-photo>
@@ -7,7 +7,7 @@
   <section *ngSwitchCase="StudioTemplate.ONE_PHOTO">
     <div class="row">
       <div class="col-12 mb-1">
-        <h2>{{ studioService.template }} template</h2>
+        <h2>{{ studioStore.template$ | async }} template</h2>
       </div>
       <div class="col-8 photo-holder">
         <stl-space-photo [photo]="space.photos[0]" [spaceReference]="space.reference" height="800px"></stl-space-photo>
