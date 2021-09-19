@@ -40,7 +40,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [routerLinkActive]="'active'" data-target="#address">
+          <div class="step" [class.active]="(currentStep$ | async) == 'publish'">
             <button class="step-trigger" [routerLink]="'publish'">
               <span class="bs-stepper-box">4</span>
               <span class="bs-stepper-label">
@@ -52,7 +52,7 @@
           <div class="line">
             <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
           </div>
-          <div class="step" [routerLinkActive]="'active'" data-target="#social-links">
+          <div class="step" [class.active]="(currentStep$ | async) == 'enjoy'">
             <button class="step-trigger" [routerLink]="'enjoy'">
               <span class="bs-stepper-box">5</span>
               <span class="bs-stepper-label">
