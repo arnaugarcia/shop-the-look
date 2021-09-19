@@ -33,7 +33,7 @@
     [style.width]="width"
   ></div>
   <stl-product-coordinate
-    *ngFor="let coordinate of photo.coordinates"
+    *ngFor="let coordinate of coordinates"
     [coordinate]="coordinate"
     (click)="removeCoordinate(coordinate)"
   ></stl-product-coordinate>

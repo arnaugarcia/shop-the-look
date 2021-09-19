@@ -1,9 +1,8 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
 import { SpacePhotoService } from '../../service/space-photo.service';
-import { DataUtils } from '../../../../core/util/data-util.service';
 import { ProductSearchComponent } from '../product-search/product-search.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
@@ -15,7 +14,7 @@ import { ICoordinate } from '../../model/coordinate.model';
   templateUrl: './space-photo.component.html',
   styleUrls: ['./space-photo.component.scss'],
 })
-export class SpacePhotoComponent {
+export class SpacePhotoComponent implements AfterViewInit {
   @Input()
   public spaceReference?: string;
 
@@ -27,6 +26,8 @@ export class SpacePhotoComponent {
 
   @Input()
   public photo?: IPhoto;
+
+  public coordinates: ICoordinate[] = [];
 
   public hasBaseDropZoneOver = false;
   public loading = false;
@@ -44,11 +45,14 @@ export class SpacePhotoComponent {
   constructor(
     private spacePhotoService: SpacePhotoService,
     private spaceCoordinateService: SpaceCoordinateService,
-    protected dataUtils: DataUtils,
     private modalService: NgbModal
   ) {
     this.height = 'auto';
     this.width = 'auto';
+  }
+
+  ngAfterViewInit(): void {
+    this.coordinates = this.photo!.coordinates!;
   }
 
   fileOverBase(e: any): void {
@@ -80,7 +84,7 @@ export class SpacePhotoComponent {
 
     ngbModalRef.result
       .then((product: IProduct) => {
-        this.photo?.coordinates?.push({ x: $event.layerX, y: $event.layerY, product: product });
+        this.coordinates.push({ x: $event.layerX, y: $event.layerY, product: product, reference: '' });
       })
       .catch((result: any) => void result);
   }
@@ -93,7 +97,11 @@ export class SpacePhotoComponent {
   }
 
   public removeCoordinate(coordinate: ICoordinate): void {
-    this.photo?.coordinates?.slice(this.photo.coordinates.indexOf(coordinate), 1);
+    this.spaceCoordinateService.removeCoordinate(this.spaceReference!, this.photo!.reference, coordinate.reference);
+    const index = this.coordinates.indexOf(coordinate);
+    if (index > -1) {
+      this.coordinates.splice(index, 1);
+    }
   }
 
   private uploadFile(droopedFile: any): void {

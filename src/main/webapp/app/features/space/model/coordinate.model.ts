@@ -4,4 +4,5 @@ export interface ICoordinate {
   x: number;
   y: number;
   product: IProduct;
+  reference: string;
 }

@@ -11,4 +11,8 @@ export class SpaceCoordinateService {
   addCoordinate(param: { productReference: string; x: any; photoReference: string; y: any }): void {
     console.error(param);
   }
+
+  removeCoordinate(spaceReference: string, photoReference: string, coordinateReference: string): void {
+    console.error(spaceReference, photoReference, coordinateReference);
+  }
 }
