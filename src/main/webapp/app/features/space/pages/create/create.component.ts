@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SpaceService } from '../../service/space.service';
 import { ISpace, SpaceRequest } from '../../model/space.model';
-import { StudioService } from '../../service/studio.service';
+import { StudioStore } from '../../store/studio.store';
 
 @Component({
   selector: 'stl-create',
@@ -21,9 +21,9 @@ export class CreateComponent {
     private formBuilder: FormBuilder,
     private spaceService: SpaceService,
     private router: Router,
-    private studioService: StudioService
+    private studioStore: StudioStore
   ) {
-    studioService.navigate('create');
+    studioStore.navigate('create');
   }
 
   onSubmit(): void {

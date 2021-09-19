@@ -1,73 +1,71 @@
-<ng-template let-step [ngTemplateOutletContext]="{ $implicit: currentStep$ | async }">
-  <div class="content-wrapper container-xxl p-0">
-    <div class="content-body">
-      <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
-      <section class="horizontal-wizard">
-        <div class="bs-stepper horizontal-wizard-example">
-          <div class="bs-stepper-header">
-            <div class="step" [class.active]="step == 'create'">
-              <button class="step-trigger" [routerLink]="'create'">
-                <span class="bs-stepper-box">1</span>
-                <span class="bs-stepper-label">
-                  <span class="bs-stepper-title">Create a Space</span>
-                  <span class="bs-stepper-subtitle">Add the name and the description for it</span>
-                </span>
-              </button>
-            </div>
-            <div class="line">
-              <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
-            </div>
-            <div class="step" [class.active]="step == 'template'">
-              <button class="step-trigger" [routerLink]="'template'">
-                <span class="bs-stepper-box">2</span>
-                <span class="bs-stepper-label">
-                  <span class="bs-stepper-title">Select a template</span>
-                  <span class="bs-stepper-subtitle">Select a beautiful template</span>
-                </span>
-              </button>
-            </div>
-            <div class="line">
-              <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
-            </div>
-            <div class="step" [class.active]="step == 'customize'">
-              <button class="step-trigger" [routerLink]="'customize'">
-                <span class="bs-stepper-box">3</span>
-                <span class="bs-stepper-label">
-                  <span class="bs-stepper-title">Personalization</span>
-                  <span class="bs-stepper-subtitle">Customize your space</span>
-                </span>
-              </button>
-            </div>
-            <div class="line">
-              <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
-            </div>
-            <div class="step" [routerLinkActive]="'active'" data-target="#address">
-              <button class="step-trigger" [routerLink]="'publish'">
-                <span class="bs-stepper-box">4</span>
-                <span class="bs-stepper-label">
-                  <span class="bs-stepper-title">Publish</span>
-                  <span class="bs-stepper-subtitle">Review and publish yor space</span>
-                </span>
-              </button>
-            </div>
-            <div class="line">
-              <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
-            </div>
-            <div class="step" [routerLinkActive]="'active'" data-target="#social-links">
-              <button class="step-trigger" [routerLink]="'enjoy'">
-                <span class="bs-stepper-box">5</span>
-                <span class="bs-stepper-label">
-                  <span class="bs-stepper-title">Enjoy!</span>
-                  <span class="bs-stepper-subtitle">Add it to your site</span>
-                </span>
-              </button>
-            </div>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+    <section class="horizontal-wizard">
+      <div class="bs-stepper horizontal-wizard-example">
+        <div class="bs-stepper-header">
+          <div class="step" [class.active]="(currentStep$ | async) == 'create'">
+            <button class="step-trigger" [routerLink]="'create'">
+              <span class="bs-stepper-box">1</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Create a Space</span>
+                <span class="bs-stepper-subtitle">Add the name and the description for it</span>
+              </span>
+            </button>
           </div>
-          <div class="bs-stepper-content">
-            <router-outlet></router-outlet>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" [class.active]="(currentStep$ | async) == 'template'">
+            <button class="step-trigger" [routerLink]="'template'">
+              <span class="bs-stepper-box">2</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Select a template</span>
+                <span class="bs-stepper-subtitle">Select a beautiful template</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" [class.active]="(currentStep$ | async) == 'customize'">
+            <button class="step-trigger" [routerLink]="'customize'">
+              <span class="bs-stepper-box">3</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Personalization</span>
+                <span class="bs-stepper-subtitle">Customize your space</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" [routerLinkActive]="'active'" data-target="#address">
+            <button class="step-trigger" [routerLink]="'publish'">
+              <span class="bs-stepper-box">4</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Publish</span>
+                <span class="bs-stepper-subtitle">Review and publish yor space</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" [routerLinkActive]="'active'" data-target="#social-links">
+            <button class="step-trigger" [routerLink]="'enjoy'">
+              <span class="bs-stepper-box">5</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Enjoy!</span>
+                <span class="bs-stepper-subtitle">Add it to your site</span>
+              </span>
+            </button>
           </div>
         </div>
-      </section>
-    </div>
+        <div class="bs-stepper-content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </section>
   </div>
-</ng-template>
+</div>
