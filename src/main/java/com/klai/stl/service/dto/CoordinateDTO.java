@@ -1,15 +1,16 @@
 package com.klai.stl.service.dto;
 
 import java.io.Serializable;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.Coordinate} entity.
  */
-@Data
+@Value
 public class CoordinateDTO implements Serializable {
 
-    private Double x;
-    private Double y;
-    private String productReference;
+    Double x;
+    Double y;
+    String productReference;
+    String reference;
 }

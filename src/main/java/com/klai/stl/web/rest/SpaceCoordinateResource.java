@@ -1,12 +1,15 @@
 package com.klai.stl.web.rest;
 
+import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.ok;
+import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 import static tech.jhipster.web.util.HeaderUtil.createEntityDeletionAlert;
 
 import com.klai.stl.service.SpaceCoordinateService;
 import com.klai.stl.service.dto.CoordinateDTO;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +41,12 @@ public class SpaceCoordinateResource {
     public ResponseEntity<CoordinateDTO> addCoordinateToPhoto(
         @PathVariable String spaceReference,
         @Valid @RequestBody SpaceCoordinateRequest coordinateRequest
-    ) {
+    ) throws URISyntaxException {
         log.debug("REST request to add a coordinate {} to space {}", coordinateRequest, spaceReference);
-        return ok(spaceCoordinateService.addCoordinate(spaceReference, coordinateRequest));
+        CoordinateDTO result = spaceCoordinateService.addCoordinate(spaceReference, coordinateRequest);
+        return created(new URI("/api/spaces/" + result.getReference() + "/coordinates/" + result.getReference()))
+            .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
+            .body(result);
     }
 
     @DeleteMapping("/spaces/{spaceReference}/coordinates/{coordinateReference}")
