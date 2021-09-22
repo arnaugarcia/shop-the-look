@@ -89,8 +89,8 @@ export class SpacePhotoComponent implements AfterViewInit {
       )
       .then((request: CoordinateCreateRequest) => {
         this.spaceCoordinateService.addCoordinate(this.spaceReference!, request).subscribe((response: HttpResponse<ICoordinate>) => {
-          const body = response.body!;
-          this.coordinates.push({ x: body.x, y: body.y, product: body.product, reference: body.reference });
+          const coordinate = response.body!;
+          this.coordinates.push({ x: coordinate.x, y: coordinate.y, product: coordinate.product, reference: coordinate.reference });
         });
       })
       .catch((result: any) => void result);
