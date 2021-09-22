@@ -7,7 +7,7 @@ import { ProductSearchComponent } from '../product-search/product-search.compone
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
-import { CoordinateRemoveRequest, ICoordinate } from '../../model/coordinate.model';
+import { CoordinateCreateRequest, ICoordinate } from '../../model/coordinate.model';
 
 @Component({
   selector: 'stl-space-photo',
@@ -83,8 +83,15 @@ export class SpacePhotoComponent implements AfterViewInit {
     });
 
     ngbModalRef.result
-      .then((product: IProduct) => {
-        this.coordinates.push({ x: $event.layerX, y: $event.layerY, product: product });
+      .then(
+        (product: IProduct) =>
+          new CoordinateCreateRequest(product.reference!, this.photo!.reference, Number($event.layerX), Number($event.layerY))
+      )
+      .then((request: CoordinateCreateRequest) => {
+        this.spaceCoordinateService.addCoordinate(this.spaceReference!, request).subscribe((response: HttpResponse<ICoordinate>) => {
+          const body = response.body!;
+          this.coordinates.push({ x: body.x, y: body.y, product: body.product, reference: body.reference });
+        });
       })
       .catch((result: any) => void result);
   }
@@ -97,12 +104,12 @@ export class SpacePhotoComponent implements AfterViewInit {
   }
 
   public removeCoordinate(coordinate: ICoordinate): void {
-    const coordinateRemoveRequest = new CoordinateRemoveRequest(this.spaceReference!, coordinate.reference!, this.photo!.reference);
-    this.spaceCoordinateService.removeCoordinate(coordinateRemoveRequest);
-    const index = this.coordinates.indexOf(coordinate);
-    if (index > -1) {
-      this.coordinates.splice(index, 1);
-    }
+    this.spaceCoordinateService.removeCoordinate(this.spaceReference!, coordinate.reference!).subscribe(() => {
+      const index = this.coordinates.indexOf(coordinate);
+      if (index > -1) {
+        this.coordinates.splice(index, 1);
+      }
+    });
   }
 
   private uploadFile(droopedFile: any): void {
