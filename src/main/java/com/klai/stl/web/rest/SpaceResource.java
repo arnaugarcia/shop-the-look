@@ -8,7 +8,6 @@ import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
-import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -86,14 +85,6 @@ public class SpaceResource {
 
     @DeleteMapping("/spaces/{reference}")
     public ResponseEntity<Void> deleteSpace(@PathVariable String reference) {
-        throw new NotYetImplementedException();
-    }
-
-    @PutMapping("/spaces/{reference}/coordinates")
-    public ResponseEntity<Void> addCoordinateToPhoto(
-        @PathVariable String reference,
-        @Valid @RequestBody SpaceCoordinateRequest coordinateRequest
-    ) {
         throw new NotYetImplementedException();
     }
 }
