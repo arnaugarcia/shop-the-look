@@ -5,7 +5,6 @@ import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static com.klai.stl.web.rest.TestUtil.findAll;
-import static com.klai.stl.web.rest.UserResourceIT.createEntity;
 import static java.lang.String.valueOf;
 import static java.util.List.of;
 import static java.util.Locale.ROOT;
@@ -131,7 +130,7 @@ class ProductImportResourceIT {
     public void initTest() {
         newProductRequest = buildRequest();
         productUpdateRequest = buildUpdateRequest(newProductRequest.getSku());
-        user = createEntity(em, PRODUCT_USER_LOGIN);
+        user = UserResourceIT.createUser(em, PRODUCT_USER_LOGIN);
         em.persist(user);
         company = createBasicCompany(em);
         company.addUser(user);
@@ -193,7 +192,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-multiple-login2")
     public void importSingleProductAsManager() throws Exception {
-        User user = createEntity(em, "manager-multiple-login2");
+        User user = UserResourceIT.createUser(em, "manager-multiple-login2");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -223,7 +222,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-single-login")
     public void importSingleProductAsUser() throws Exception {
-        User user = createEntity(em, "user-single-login");
+        User user = UserResourceIT.createUser(em, "user-single-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -253,7 +252,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-import-login")
     public void importUpdatingProductAsUser() throws Exception {
-        User user = createEntity(em, "user-import-login");
+        User user = UserResourceIT.createUser(em, "user-import-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -289,7 +288,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "admin-import-login", authorities = ADMIN)
     public void importUpdatingProductOfOtherCompanyAsAdmin() throws Exception {
-        User user = createEntity(em, "admin-import-login");
+        User user = UserResourceIT.createUser(em, "admin-import-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -337,7 +336,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-multiple-login")
     public void importMultipleProductsAsUser() throws Exception {
-        User user = createEntity(em, "user-multiple-login");
+        User user = UserResourceIT.createUser(em, "user-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -361,7 +360,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "manager-import-multiple-login", authorities = MANAGER)
     public void updateMultipleProductsAsManager() throws Exception {
-        User user = createEntity(em, "manager-import-multiple-login");
+        User user = UserResourceIT.createUser(em, "manager-import-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -390,7 +389,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "admin-import-multiple-login", authorities = ADMIN)
     public void updateMultipleProductsAsAdmin() throws Exception {
-        User user = createEntity(em, "admin-import-multiple-login");
+        User user = UserResourceIT.createUser(em, "admin-import-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -492,7 +491,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-import-company-login")
     public void importASingleProductForOtherCompanyAsManager() throws Exception {
-        User user = createEntity(em, "manager-import-company-login");
+        User user = UserResourceIT.createUser(em, "manager-import-company-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -516,7 +515,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "update-manager-login")
     public void updateProductAsManager() throws Exception {
-        User user = createEntity(em, "update-manager-login");
+        User user = UserResourceIT.createUser(em, "update-manager-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -575,7 +574,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-multiple-login")
     public void createSingleProductAsManager() throws Exception {
-        User user = createEntity(em, "manager-multiple-login");
+        User user = UserResourceIT.createUser(em, "manager-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -605,7 +604,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-single-login2")
     public void createSingleProductAsUser() throws Exception {
-        User user = createEntity(em, "user-single-login2");
+        User user = UserResourceIT.createUser(em, "user-single-login2");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -635,7 +634,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-import-other-company-login")
     public void updateOtherProductCompanyAsManager() throws Exception {
-        User user = createEntity(em, "manager-import-other-company-login");
+        User user = UserResourceIT.createUser(em, "manager-import-other-company-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);

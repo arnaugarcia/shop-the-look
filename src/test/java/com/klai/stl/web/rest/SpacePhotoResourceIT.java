@@ -3,6 +3,7 @@ package com.klai.stl.web.rest;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
+import static com.klai.stl.web.rest.UserResourceIT.createUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -204,7 +205,7 @@ class SpacePhotoResourceIT {
     @Transactional
     @WithMockUser(username = "bad-delete-photo-user")
     public void deleteSpacePhotoThatNotBelongsToCurrentUser() throws Exception {
-        User currentUser = UserResourceIT.createEntity(em, "bad-delete-photo-user");
+        User currentUser = createUser(em, "bad-delete-photo-user");
         em.persist(currentUser);
 
         restSpaceMockMvc
@@ -213,7 +214,7 @@ class SpacePhotoResourceIT {
     }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
-        User user = UserResourceIT.createEntity(em, login);
+        User user = createUser(em, login);
         em.persist(user);
         company.addUser(user);
         em.persist(company);

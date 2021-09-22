@@ -90,7 +90,7 @@ class PreferencesResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "preferences-manager")
     void updatingPreferenceAsManager() throws Exception {
-        User user = UserResourceIT.createEntity(em, "preferences-manager");
+        User user = UserResourceIT.createUser(em, "preferences-manager");
         em.persist(user);
         company.addUser(user);
 
@@ -220,7 +220,7 @@ class PreferencesResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "bad-manager")
     void gettingOtherCompanyPreferencesAsManager() throws Exception {
-        User user = UserResourceIT.createEntity(em, "bad-manager");
+        User user = UserResourceIT.createUser(em, "bad-manager");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -235,7 +235,7 @@ class PreferencesResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "bad-manager")
     void updatingOtherCompanyPreferencesAsManager() throws Exception {
-        User user = UserResourceIT.createEntity(em, "bad-manager");
+        User user = UserResourceIT.createUser(em, "bad-manager");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -277,7 +277,7 @@ class PreferencesResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "preferences-manager")
     void updatingPreferenceAsCurrentManager() throws Exception {
-        User user = UserResourceIT.createEntity(em, "preferences-manager");
+        User user = UserResourceIT.createUser(em, "preferences-manager");
         em.persist(user);
         company.addUser(user);
 
@@ -299,7 +299,7 @@ class PreferencesResourceIT {
     @Transactional
     @WithMockUser(authorities = ADMIN, username = "preferences-admin-user")
     void updatingPreferenceAsCurrentAdmin() throws Exception {
-        User user = UserResourceIT.createEntity(em, "preferences-admin-user");
+        User user = UserResourceIT.createUser(em, "preferences-admin-user");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -375,7 +375,7 @@ class PreferencesResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "good-current-manager")
     void gettingPreferencesAsCurrentManager() throws Exception {
-        User user = UserResourceIT.createEntity(em, "good-current-manager");
+        User user = UserResourceIT.createUser(em, "good-current-manager");
         em.persist(user);
         company.addUser(user);
         em.persist(company);

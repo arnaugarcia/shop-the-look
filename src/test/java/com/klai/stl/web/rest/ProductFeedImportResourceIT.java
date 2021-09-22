@@ -65,7 +65,7 @@ class ProductFeedImportResourceIT {
     @WithMockUser(username = "trigger-feed-error")
     public void triggerFeedWhenNoFeedIsConfigured() throws Exception {
         company.getPreferences().setRemainingImports(1);
-        User user = UserResourceIT.createEntity(em, "trigger-feed-error");
+        User user = UserResourceIT.createUser(em, "trigger-feed-error");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -87,7 +87,7 @@ class ProductFeedImportResourceIT {
         assertThat(byCompanyReference).isPresent();
         int sizeBeforeAction = byCompanyReference.get().getRemainingImports();
 
-        User user = UserResourceIT.createEntity(em, "import-products");
+        User user = UserResourceIT.createUser(em, "import-products");
         em.persist(user);
         company.addUser(user);
         em.persist(company);

@@ -338,7 +338,7 @@ class SpaceResourceIT {
     }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
-        User user = UserResourceIT.createEntity(em, login);
+        User user = UserResourceIT.createUser(em, login);
         em.persist(user);
         company.addUser(user);
         em.persist(company);

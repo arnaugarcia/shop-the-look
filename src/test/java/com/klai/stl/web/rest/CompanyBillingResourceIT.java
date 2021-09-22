@@ -109,7 +109,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(username = "manager-billing-create", authorities = MANAGER)
     void createBillingAddress() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing-create");
+        final User manager = UserResourceIT.createUser(em, "manager-billing-create");
         em.persist(manager);
         final Company company = createBasicCompany(em);
         company.addUser(manager);
@@ -128,7 +128,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(authorities = ADMIN)
     void createBillingAddressAsAdmin() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final User manager = UserResourceIT.createUser(em, "manager-billing");
         final Company company = createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
@@ -146,7 +146,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-billing-not-error")
     void shouldCreateABillingAddressAsManager() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing-not-error");
+        final User manager = UserResourceIT.createUser(em, "manager-billing-not-error");
         em.persist(manager);
         final Company company = createBasicCompany(em);
         company.setBillingAddress(null);
@@ -195,7 +195,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(username = "manager-billing2", authorities = MANAGER)
     void updateBillingAddress() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing2");
+        final User manager = UserResourceIT.createUser(em, "manager-billing2");
         em.persist(manager);
         final Company company = createBasicCompany(em);
         company.addUser(manager);
@@ -220,7 +220,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(authorities = ADMIN)
     void updateBillingAddressAsAdmin() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final User manager = UserResourceIT.createUser(em, "manager-billing");
         final Company company = createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
@@ -246,14 +246,14 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(username = "bad-manager2", authorities = MANAGER)
     void updateBillingAddressOfOtherCompanyAsManager() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "bad-manager2");
+        final User manager = UserResourceIT.createUser(em, "bad-manager2");
         em.persist(manager);
         final Company company = createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
 
         final Company otherCompany = createBasicCompany(em);
-        final User otherUser = UserResourceIT.createEntity(em);
+        final User otherUser = UserResourceIT.createUser(em);
         otherCompany.addUser(otherUser);
         em.persist(otherCompany);
         em.persist(otherUser);
@@ -288,7 +288,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(username = "manager-billing", authorities = MANAGER)
     void findsYourBillingAddressAsManager() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final User manager = UserResourceIT.createUser(em, "manager-billing");
         em.persist(manager);
         final Company company = createBasicCompany(em);
         company.addUser(manager);
@@ -329,7 +329,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(username = "bad-manager", authorities = MANAGER)
     void notFindsBillingOfOtherCompany() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "bad-manager");
+        final User manager = UserResourceIT.createUser(em, "bad-manager");
         em.persist(manager);
         final Company company = createBasicCompany(em);
         company.addUser(manager);
@@ -351,7 +351,7 @@ class CompanyBillingResourceIT {
             )
             .andExpect(status().isOk());
 
-        final User otherManager = UserResourceIT.createEntity(em, "other-manager");
+        final User otherManager = UserResourceIT.createUser(em, "other-manager");
         final Company otherCompany = createBasicCompany(em);
         otherCompany.addUser(otherManager);
         em.persist(otherCompany);
@@ -391,7 +391,7 @@ class CompanyBillingResourceIT {
     @Transactional
     @WithMockUser(authorities = ADMIN)
     void findsBillingAddressAsAdmin() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "manager-billing");
+        final User manager = UserResourceIT.createUser(em, "manager-billing");
         final Company company = createBasicCompany(em);
         company.addUser(manager);
         em.persist(company);
