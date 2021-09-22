@@ -4,5 +4,9 @@ export interface ICoordinate {
   x: number;
   y: number;
   product: IProduct;
-  reference: string;
+  reference?: string;
+}
+
+export class CoordinateRemoveRequest {
+  constructor(private spaceReference: string, private coordinateReference: string, private photoReference: string) {}
 }

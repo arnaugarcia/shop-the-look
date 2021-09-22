@@ -7,7 +7,7 @@ import { ProductSearchComponent } from '../product-search/product-search.compone
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
-import { ICoordinate } from '../../model/coordinate.model';
+import { CoordinateRemoveRequest, ICoordinate } from '../../model/coordinate.model';
 
 @Component({
   selector: 'stl-space-photo',
@@ -84,7 +84,7 @@ export class SpacePhotoComponent implements AfterViewInit {
 
     ngbModalRef.result
       .then((product: IProduct) => {
-        this.coordinates.push({ x: $event.layerX, y: $event.layerY, product: product, reference: '' });
+        this.coordinates.push({ x: $event.layerX, y: $event.layerY, product: product });
       })
       .catch((result: any) => void result);
   }
@@ -97,7 +97,8 @@ export class SpacePhotoComponent implements AfterViewInit {
   }
 
   public removeCoordinate(coordinate: ICoordinate): void {
-    this.spaceCoordinateService.removeCoordinate(this.spaceReference!, this.photo!.reference, coordinate.reference);
+    const coordinateRemoveRequest = new CoordinateRemoveRequest(this.spaceReference!, coordinate.reference!, this.photo!.reference);
+    this.spaceCoordinateService.removeCoordinate(coordinateRemoveRequest);
     const index = this.coordinates.indexOf(coordinate);
     if (index > -1) {
       this.coordinates.splice(index, 1);

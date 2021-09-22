@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApplicationConfigService } from '../../../core/config/application-config.service';
+import { CoordinateRemoveRequest } from '../model/coordinate.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class SpaceCoordinateService {
     console.error(param);
   }
 
-  removeCoordinate(spaceReference: string, photoReference: string, coordinateReference: string): void {
-    console.error(spaceReference, photoReference, coordinateReference);
+  removeCoordinate(removeRequest: CoordinateRemoveRequest): void {
+    console.error(removeRequest);
   }
 }
