@@ -91,7 +91,7 @@ class SpacePhotoResourceIT {
         spacePhotoRequest = createRequest();
     }
 
-    private Photo createPhoto(EntityManager em, Space space) {
+    public static Photo createPhoto(EntityManager em, Space space) {
         final Photo result = new Photo()
             .space(space)
             .reference(DEFAULT_REFERENCE)
