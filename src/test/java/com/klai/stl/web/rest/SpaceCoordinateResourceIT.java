@@ -2,6 +2,7 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest.builder;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
+import static com.klai.stl.web.rest.ProductResourceIT.createProduct;
 import static com.klai.stl.web.rest.SpacePhotoResourceIT.createPhoto;
 import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
@@ -57,9 +58,14 @@ class SpaceCoordinateResourceIT {
     public void initTest() throws Exception {
         company = createBasicCompany(em);
         space = createSpace(em, company);
+        product = createProduct(em);
+        product.setCompany(company);
+        em.persist(product);
+
         photo = createPhoto(em, space);
         space.addPhoto(photo);
         em.persist(space);
+
         coordinateRequest = createRequest();
     }
 
