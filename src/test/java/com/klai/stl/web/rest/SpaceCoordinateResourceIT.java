@@ -4,7 +4,12 @@ import static com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest.bui
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.SpacePhotoResourceIT.createPhoto;
 import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
+import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static com.klai.stl.web.rest.UserResourceIT.createUser;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
@@ -69,28 +74,56 @@ class SpaceCoordinateResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
-    public void addCoordinateToSpace() throws Exception {}
+    @WithMockUser(username = "user-coordinate-add")
+    public void addCoordinateToSpace() throws Exception {
+        createAndAppendUserToCompanyByLogin("user-coordinate-add");
+        restMockMvc
+            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isCreated())
+            .andExpect(content().contentType(APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.x").value(DEFAULT_X_COORDINATE))
+            .andExpect(jsonPath("$.y").value(DEFAULT_X_COORDINATE))
+            .andExpect(jsonPath("$.productReference").value(product.getReference()))
+            .andExpect(jsonPath("$.photoReference").value(photo.getReference()))
+            .andExpect(jsonPath("$.reference").isNotEmpty());
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void addCoordinateToSpaceThatNotExists() throws Exception {}
+    public void addCoordinateToSpaceThatNotExists() throws Exception {
+        restMockMvc
+            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isNotFound());
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void removeCoordinateToSpaceThatNotExists() throws Exception {}
+    public void removeCoordinateFromSpaceThatNotExists() throws Exception {
+        restMockMvc
+            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user-coordinate-remove")
+    public void removeCoordinate() throws Exception {
+        createAndAppendUserToCompanyByLogin("user-coordinate-remove");
+        restMockMvc
+            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isNoContent());
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void removeCoordinate() throws Exception {}
-
-    @Test
-    @Transactional
-    @WithMockUser
-    public void removeCoordinateFromOtherCompany() throws Exception {}
+    public void removeCoordinateFromOtherCompany() throws Exception {
+        restMockMvc
+            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isForbidden());
+    }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
         User user = createUser(em, login);
