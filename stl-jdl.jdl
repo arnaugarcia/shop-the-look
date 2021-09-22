@@ -118,7 +118,6 @@ entity Product {
     reference String required,
     imageLink String required,
     additionalImageLink String,
-    availability ProductAvailability required,
     price String required,
     category String
 }
@@ -142,7 +141,7 @@ relationship OneToMany {
 
     SubscriptionPlan{company(nif) required} to Company{subscriptionPlan(name)},
 
-    Coordinate{product(sku) required} to Product{coordinate}
+    Product{coordinate} to Coordinate{product(sku) required}
 }
 
 relationship OneToOne {
