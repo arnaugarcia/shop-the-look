@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import com.klai.stl.repository.CoordinateRepository;
 import com.klai.stl.service.SpaceCoordinateService;
 import com.klai.stl.service.dto.CoordinateDTO;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
@@ -7,6 +8,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
+
+    private final CoordinateRepository coordinateRepository;
+
+    public SpaceCoordinateServiceImpl(CoordinateRepository coordinateRepository) {
+        this.coordinateRepository = coordinateRepository;
+    }
 
     @Override
     public CoordinateDTO addCoordinate(String spaceReference, SpaceCoordinateRequest spaceCoordinateRequest) {

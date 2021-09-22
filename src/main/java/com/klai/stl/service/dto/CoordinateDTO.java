@@ -9,8 +9,9 @@ import lombok.Value;
 @Value
 public class CoordinateDTO implements Serializable {
 
+    String reference;
     Double x;
     Double y;
     String productReference;
-    String reference;
+    String photoReference;
 }
