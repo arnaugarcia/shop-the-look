@@ -146,8 +146,50 @@ class SpaceCoordinateResourceIT {
     @WithMockUser
     public void removeCoordinateFromSpaceThatNotExists() throws Exception {
         restMockMvc
-            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(put(API_URL, "SPACE_NOT_EXISTS").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "bad-user-product-add")
+    public void addCoordinateWithOtherCompanyProducts() throws Exception {
+        createAndAppendUserToCompanyByLogin("bad-user-product-add");
+        Product product = createProduct(em);
+
+        SpaceCoordinateRequest coordinateRequest = builder()
+            .photoReference(photo.getReference())
+            .productReference(product.getReference())
+            .x(DEFAULT_X_COORDINATE)
+            .y(DEFAULT_Y_COORDINATE)
+            .build();
+
+        restMockMvc
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "bad-user-photo-add")
+    public void addCoordinateWithOtherCompanyPhoto() throws Exception {
+        createAndAppendUserToCompanyByLogin("bad-user-photo-add");
+        Company company = createBasicCompany(em);
+        Space space = createSpace(em, company);
+        Photo photo = createPhoto(em, space);
+
+        SpaceCoordinateRequest coordinateRequest = builder()
+            .photoReference(photo.getReference())
+            .productReference(product.getReference())
+            .x(DEFAULT_X_COORDINATE)
+            .y(DEFAULT_Y_COORDINATE)
+            .build();
+
+        restMockMvc
+            .perform(
+                put(API_URL, this.space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest))
+            )
+            .andExpect(status().isForbidden());
     }
 
     @Test
@@ -162,8 +204,9 @@ class SpaceCoordinateResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "bad-user-coordinate-remove")
     public void removeCoordinateFromOtherCompany() throws Exception {
+        createAndAppendUserToCompanyByLogin("bad-user-coordinate-remove");
         restMockMvc
             .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isForbidden());
