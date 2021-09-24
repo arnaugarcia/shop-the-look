@@ -22,7 +22,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="reference" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_photo__reference" />
             </column>
             <column name="stl_order" type="integer">
                 <constraints nullable="false"/>
