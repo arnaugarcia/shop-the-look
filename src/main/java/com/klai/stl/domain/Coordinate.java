@@ -27,6 +27,9 @@ public class Coordinate implements Serializable {
     @Column(name = "y")
     private Double y;
 
+    @Column(name = "reference")
+    private String reference;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "coordinates", "company" }, allowSetters = true)
@@ -75,6 +78,19 @@ public class Coordinate implements Serializable {
 
     public void setY(Double y) {
         this.y = y;
+    }
+
+    public String getReference() {
+        return this.reference;
+    }
+
+    public Coordinate reference(String reference) {
+        this.reference = reference;
+        return this;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public Product getProduct() {

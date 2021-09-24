@@ -124,7 +124,8 @@ entity Product {
 
 entity Coordinate {
 	x Double,
-    y Double
+    y Double,
+    reference String required unique
 }
 
 
