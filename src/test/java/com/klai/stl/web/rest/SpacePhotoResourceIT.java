@@ -4,6 +4,7 @@ import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static com.klai.stl.web.rest.UserResourceIT.createUser;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -23,6 +24,7 @@ import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import java.net.URL;
+import java.util.Objects;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,7 +84,8 @@ class SpacePhotoResourceIT {
 
     @BeforeEach
     public void initTest() throws Exception {
-        DEFAULT_DATA = SpacePhotoResourceIT.class.getClassLoader().getResourceAsStream("public/belair.jpeg").readAllBytes();
+        DEFAULT_DATA =
+            Objects.requireNonNull(SpacePhotoResourceIT.class.getClassLoader().getResourceAsStream("public/belair.jpeg")).readAllBytes();
         company = createBasicCompany(em);
         space = createSpace(em, company);
         photo = createPhoto(em, space);
@@ -94,7 +97,7 @@ class SpacePhotoResourceIT {
     public static Photo createPhoto(EntityManager em, Space space) {
         final Photo result = new Photo()
             .space(space)
-            .reference(DEFAULT_REFERENCE)
+            .reference(DEFAULT_REFERENCE + randomAlphanumeric(20).toUpperCase())
             .link(DEFAULT_IMAGE_URL)
             .order(DEFAULT_ORDER)
             .height(DEFAULT_HEIGHT)
