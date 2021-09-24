@@ -12,6 +12,7 @@ import com.klai.stl.service.exception.CoordinateNotFound;
 import com.klai.stl.service.mapper.CoordinateMapper;
 import java.util.function.Predicate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
@@ -68,6 +69,7 @@ public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
     }
 
     @Override
+    @Transactional
     public void removeCoordinate(String spaceReference, String coordinateReference) {
         final Space space = spaceService.findForCurrentUser(spaceReference);
         final Coordinate coordinate = coordinateRepository.findByReference(coordinateReference).orElseThrow(CoordinateNotFound::new);
