@@ -15,7 +15,7 @@ export class SpaceCoordinateService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   addCoordinate(spaceReference: string, request: CoordinateCreateRequest): Observable<EntityResponseType> {
-    return this.http.post<ICoordinate>(`${this.resourceUrl}/${spaceReference}`, request, { observe: 'response' });
+    return this.http.put<ICoordinate>(`${this.resourceUrl}/${spaceReference}/coordinates`, request, { observe: 'response' });
   }
 
   removeCoordinate(spaceReference: string, coordinateReference: string): Observable<HttpResponse<{}>> {
