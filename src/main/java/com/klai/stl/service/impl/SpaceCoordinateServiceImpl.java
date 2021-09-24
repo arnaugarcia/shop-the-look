@@ -42,7 +42,7 @@ public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
     @Override
     public CoordinateDTO addCoordinate(String spaceReference, SpaceCoordinateRequest spaceCoordinateRequest) {
         Space space = spaceService.findForCurrentUser(spaceReference);
-        checkIfPhotoBelongsToSpace(spaceCoordinateRequest, space);
+        checkIfPhotoBelongsToSpace(spaceCoordinateRequest.getPhotoReference(), space);
 
         final Product product = productService.findByReference(spaceCoordinateRequest.getProductReference());
         checkIfProductBelongsToCurrentUserCompany(product);
@@ -59,13 +59,8 @@ public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
         return saveAndTransform(coordinate);
     }
 
-    private void checkIfPhotoBelongsToSpace(SpaceCoordinateRequest spaceCoordinateRequest, Space space) {
-        space
-            .getPhotos()
-            .stream()
-            .filter(byReference(spaceCoordinateRequest.getPhotoReference()))
-            .findFirst()
-            .orElseThrow(BadOwnerException::new);
+    private void checkIfPhotoBelongsToSpace(String photoReference, Space space) {
+        space.getPhotos().stream().filter(byReference(photoReference)).findFirst().orElseThrow(BadOwnerException::new);
     }
 
     private Predicate<Photo> byReference(String photoReference) {
@@ -75,7 +70,9 @@ public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
     @Override
     public void removeCoordinate(String spaceReference, String coordinateReference) {
         final Space space = spaceService.findForCurrentUser(spaceReference);
-        coordinateRepository.findByReference(coordinateReference).orElseThrow(CoordinateNotFound::new);
+        final Coordinate coordinate = coordinateRepository.findByReference(coordinateReference).orElseThrow(CoordinateNotFound::new);
+        checkIfPhotoBelongsToSpace(coordinate.getPhoto().getReference(), space);
+
         coordinateRepository.deleteByReference(coordinateReference);
     }
 

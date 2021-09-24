@@ -10,6 +10,7 @@ import static com.klai.stl.web.rest.UserResourceIT.createUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -197,9 +198,38 @@ class SpaceCoordinateResourceIT {
     @WithMockUser(username = "user-coordinate-remove")
     public void removeCoordinate() throws Exception {
         createAndAppendUserToCompanyByLogin("user-coordinate-remove");
+
+        Coordinate coordinate = new Coordinate()
+            .y(DEFAULT_Y_COORDINATE)
+            .x(DEFAULT_X_COORDINATE)
+            .photo(photo)
+            .reference("REFERENCE")
+            .product(product);
+
+        final Coordinate result = coordinateRepository.save(coordinate);
+
+        int sizeBeforeDelete = coordinateRepository.findBySpaceReference(space.getReference()).size();
+
+        assertThat(sizeBeforeDelete).isNotZero();
+
         restMockMvc
-            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(delete(API_URL_REFERENCE, space.getReference(), result.getReference()).contentType(APPLICATION_JSON))
             .andExpect(status().isNoContent());
+
+        int sizeAfterDelete = coordinateRepository.findBySpaceReference(space.getReference()).size();
+
+        assertThat(sizeAfterDelete).isLessThan(sizeBeforeDelete);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "bad-user-coordinate-not-existing")
+    public void removeCoordinateThatNotExists() throws Exception {
+        createAndAppendUserToCompanyByLogin("bad-user-coordinate-not-existing");
+
+        restMockMvc
+            .perform(delete(API_URL_REFERENCE, space.getReference(), "NOT_EXISTING_REFERENCE").contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -207,8 +237,25 @@ class SpaceCoordinateResourceIT {
     @WithMockUser(username = "bad-user-coordinate-remove")
     public void removeCoordinateFromOtherCompany() throws Exception {
         createAndAppendUserToCompanyByLogin("bad-user-coordinate-remove");
+
+        Company company1 = createBasicCompany(em);
+        Space space1 = createSpace(em, company1);
+        Photo photo1 = createPhoto(em, space1);
+        Product product1 = createProduct(em);
+        product1.setCompany(company1);
+        em.persist(company1);
+
+        Coordinate result = new Coordinate()
+            .y(DEFAULT_Y_COORDINATE)
+            .x(DEFAULT_X_COORDINATE)
+            .photo(photo1)
+            .reference("REFERENCE")
+            .product(product1);
+
+        coordinateRepository.save(result);
+
         restMockMvc
-            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(delete(API_URL_REFERENCE, space.getReference(), "REFERENCE").contentType(APPLICATION_JSON))
             .andExpect(status().isForbidden());
     }
 
