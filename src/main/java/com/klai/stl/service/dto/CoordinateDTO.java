@@ -12,6 +12,5 @@ public class CoordinateDTO implements Serializable {
     String reference;
     Double x;
     Double y;
-    String productReference;
-    String photoReference;
+    ProductDTO product;
 }
