@@ -11,10 +11,10 @@ import lombok.extern.jackson.Jacksonized;
 public class SpaceCoordinateRequest {
 
     @NotNull
-    Integer x;
+    Double x;
 
     @NotNull
-    Integer y;
+    Double y;
 
     @NotNull
     String productReference;
