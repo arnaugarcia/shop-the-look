@@ -165,6 +165,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleCoordinateNotFoundException(
+        com.klai.stl.service.exception.CoordinateNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, ex.getMessage(), "coordinate", "coordinatenotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleCompanyNotFoundException(
         com.klai.stl.service.exception.ProductNotFound ex,
         NativeWebRequest request

@@ -8,6 +8,7 @@ import com.klai.stl.service.*;
 import com.klai.stl.service.dto.CoordinateDTO;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
 import com.klai.stl.service.exception.BadOwnerException;
+import com.klai.stl.service.exception.CoordinateNotFound;
 import com.klai.stl.service.mapper.CoordinateMapper;
 import java.util.function.Predicate;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,7 @@ public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
             .reference(generateReference())
             .x(spaceCoordinateRequest.getX())
             .y(spaceCoordinateRequest.getY());
+
         return saveAndTransform(coordinate);
     }
 
@@ -72,7 +74,9 @@ public class SpaceCoordinateServiceImpl implements SpaceCoordinateService {
 
     @Override
     public void removeCoordinate(String spaceReference, String coordinateReference) {
-        final Space space = spaceService.findByReference(spaceReference);
+        final Space space = spaceService.findForCurrentUser(spaceReference);
+        coordinateRepository.findByReference(coordinateReference).orElseThrow(CoordinateNotFound::new);
+        coordinateRepository.deleteByReference(coordinateReference);
     }
 
     private void checkIfProductBelongsToCurrentUserCompany(Product product) {
