@@ -34,8 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class SpaceCoordinateResourceIT {
 
-    private static final Integer DEFAULT_X_COORDINATE = 19;
-    private static final Integer DEFAULT_Y_COORDINATE = 24;
+    private static final Double DEFAULT_X_COORDINATE = 19.0;
+    private static final Double DEFAULT_Y_COORDINATE = 24.0;
 
     private static final String API_URL = "/api/spaces/{spaceReference}/coordinates";
     private static final String API_URL_REFERENCE = "/api/spaces/{spaceReference}/coordinates/{coordinateReference}";
@@ -110,6 +110,32 @@ class SpaceCoordinateResourceIT {
     @Transactional
     @WithMockUser
     public void addCoordinateToSpaceThatNotExists() throws Exception {
+        restMockMvc
+            .perform(
+                put(API_URL, "SPACE_REFERENCE_NOT_EXISTS")
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(coordinateRequest))
+            )
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user-coordinate-add-product")
+    public void addCoordinateToProductThatNotExists() throws Exception {
+        createAndAppendUserToCompanyByLogin("user-coordinate-add-product");
+        em.remove(product);
+        restMockMvc
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user-coordinate-add-photo")
+    public void addCoordinateToPhotoThatNotExists() throws Exception {
+        createAndAppendUserToCompanyByLogin("user-coordinate-add-photo");
+        em.remove(photo);
         restMockMvc
             .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isNotFound());
