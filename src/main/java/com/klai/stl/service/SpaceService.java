@@ -73,4 +73,6 @@ public interface SpaceService {
      * @return the updated space entity
      */
     SpaceDTO updateSpace(UpdateSpaceRequest newSpaceRequest, String reference);
+
+    void checkIfCurrentUserBelongsToSpace(String spaceReference);
 }

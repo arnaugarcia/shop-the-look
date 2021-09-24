@@ -61,7 +61,7 @@ public class SpaceServiceImpl implements SpaceService {
         return createForCompany(newSpaceRequest, companyService.findByReference(companyReference));
     }
 
-    public SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, Company company) {
+    private SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, Company company) {
         final Space space = spaceMapper.toEntity(newSpaceRequest);
         space.setReference(randomAlphabetic(20).toUpperCase(ROOT));
         space.setCompany(company);
@@ -121,7 +121,8 @@ public class SpaceServiceImpl implements SpaceService {
         return findByReference(reference);
     }
 
-    private void checkIfCurrentUserBelongsToSpace(String spaceReference) {
+    @Override
+    public void checkIfCurrentUserBelongsToSpace(String spaceReference) {
         if (!findByReference(spaceReference).getCompany().getReference().equalsIgnoreCase(userService.getCurrentUserCompanyReference())) {
             throw new BadOwnerException();
         }
