@@ -21,4 +21,12 @@ public interface PhotoService {
      * @param reference the reference of the entity.
      */
     void remove(String reference);
+
+    /**
+     * Finds the photo by his reference
+     * @param reference the reference of the desired photo
+     * @return the photo
+     * @throws com.klai.stl.service.exception.PhotoNotFound if the photo is not found
+     */
+    Photo findByReference(String reference);
 }

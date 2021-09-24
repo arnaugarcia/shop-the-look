@@ -7,6 +7,7 @@ import com.klai.stl.domain.Photo;
 import com.klai.stl.repository.PhotoRepository;
 import com.klai.stl.service.PhotoService;
 import com.klai.stl.service.dto.requests.photo.PhotoRequest;
+import com.klai.stl.service.exception.PhotoNotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,10 @@ public class PhotoServiceImpl implements PhotoService {
     public void remove(String reference) {
         log.debug("Request to delete Photo : {}", reference);
         photoRepository.deleteByReference(reference);
+    }
+
+    @Override
+    public Photo findByReference(String reference) {
+        return photoRepository.findByReference(reference).orElseThrow(PhotoNotFound::new);
     }
 }
