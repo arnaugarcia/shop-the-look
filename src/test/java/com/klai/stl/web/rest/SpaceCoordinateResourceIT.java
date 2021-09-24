@@ -7,13 +7,15 @@ import static com.klai.stl.web.rest.SpacePhotoResourceIT.createPhoto;
 import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static com.klai.stl.web.rest.UserResourceIT.createUser;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
+import com.klai.stl.repository.CoordinateRepository;
 import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +45,9 @@ class SpaceCoordinateResourceIT {
 
     @Autowired
     private MockMvc restMockMvc;
+
+    @Autowired
+    private CoordinateRepository coordinateRepository;
 
     private Company company;
 
@@ -83,8 +88,11 @@ class SpaceCoordinateResourceIT {
     @WithMockUser(username = "user-coordinate-add")
     public void addCoordinateToSpace() throws Exception {
         createAndAppendUserToCompanyByLogin("user-coordinate-add");
+
+        int sizeBeforeInsert = coordinateRepository.findBySpaceReference(space.getReference()).size();
+
         restMockMvc
-            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isCreated())
             .andExpect(content().contentType(APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.x").value(DEFAULT_X_COORDINATE))
@@ -92,6 +100,10 @@ class SpaceCoordinateResourceIT {
             .andExpect(jsonPath("$.productReference").value(product.getReference()))
             .andExpect(jsonPath("$.photoReference").value(photo.getReference()))
             .andExpect(jsonPath("$.reference").isNotEmpty());
+
+        int sizeAfterInsert = coordinateRepository.findBySpaceReference(space.getReference()).size();
+
+        assertThat(sizeAfterInsert).isGreaterThan(sizeBeforeInsert);
     }
 
     @Test
@@ -99,7 +111,7 @@ class SpaceCoordinateResourceIT {
     @WithMockUser
     public void addCoordinateToSpaceThatNotExists() throws Exception {
         restMockMvc
-            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isNotFound());
     }
 
@@ -108,7 +120,7 @@ class SpaceCoordinateResourceIT {
     @WithMockUser
     public void removeCoordinateFromSpaceThatNotExists() throws Exception {
         restMockMvc
-            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isNotFound());
     }
 
@@ -118,7 +130,7 @@ class SpaceCoordinateResourceIT {
     public void removeCoordinate() throws Exception {
         createAndAppendUserToCompanyByLogin("user-coordinate-remove");
         restMockMvc
-            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isNoContent());
     }
 
@@ -127,7 +139,7 @@ class SpaceCoordinateResourceIT {
     @WithMockUser
     public void removeCoordinateFromOtherCompany() throws Exception {
         restMockMvc
-            .perform(post(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
             .andExpect(status().isForbidden());
     }
 
