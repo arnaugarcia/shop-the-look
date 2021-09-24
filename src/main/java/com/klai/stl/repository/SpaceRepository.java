@@ -16,6 +16,6 @@ import org.springframework.stereotype.Repository;
 public interface SpaceRepository extends JpaRepository<Space, Long>, JpaSpecificationExecutor<Space> {
     List<Space> findByCompanyReference(String companyReference);
 
-    @EntityGraph(attributePaths = "photos")
+    @EntityGraph(attributePaths = { "photos", "photos.coordinates" })
     Optional<Space> findByReference(String reference);
 }
