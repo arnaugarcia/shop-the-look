@@ -96,7 +96,7 @@ class SpaceCoordinateResourceIT {
             .andExpect(status().isCreated())
             .andExpect(content().contentType(APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.x").value(DEFAULT_X_COORDINATE))
-            .andExpect(jsonPath("$.y").value(DEFAULT_X_COORDINATE))
+            .andExpect(jsonPath("$.y").value(DEFAULT_Y_COORDINATE))
             .andExpect(jsonPath("$.productReference").value(product.getReference()))
             .andExpect(jsonPath("$.photoReference").value(photo.getReference()))
             .andExpect(jsonPath("$.reference").isNotEmpty());
