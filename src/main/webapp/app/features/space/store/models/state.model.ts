@@ -1,6 +1,6 @@
 import { ISpace } from '../../model/space.model';
 
-export type CurrentStep = 'template' | 'create' | 'customize' | 'enjoy' | 'publish';
+export type CurrentStep = 'template' | 'create' | 'customize' | 'enjoy';
 
 export enum StudioTemplate {
   ONE_PHOTO = 'ONE_PHOTO',

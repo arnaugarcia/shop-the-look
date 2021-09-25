@@ -8,6 +8,6 @@ import { StudioStore } from '../../store/studio.store';
 })
 export class EnjoyComponent {
   constructor(private studioStore: StudioStore) {
-    studioStore.navigate('publish');
+    studioStore.navigate('enjoy');
   }
 }

@@ -7,11 +7,6 @@ import { Observable } from 'rxjs';
 })
 export class SpaceReferenceGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return (
-      route.params.reference !== 'template' &&
-      route.params.reference !== 'customize' &&
-      route.params.reference !== 'publish' &&
-      route.params.reference !== 'enjoy'
-    );
+    return route.params.reference !== 'template' && route.params.reference !== 'customize' && route.params.reference !== 'enjoy';
   }
 }
