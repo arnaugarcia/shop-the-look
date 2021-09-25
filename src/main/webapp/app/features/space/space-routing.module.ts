@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { StudioComponent } from './pages/studio/studio.component';
 import { CreateComponent } from './pages/create/create.component';
-import { PublishComponent } from './pages/publish/publish.component';
 import { EnjoyComponent } from './pages/enjoy/enjoy.component';
 import { CustomizeComponent } from './pages/customize/customize.component';
 import { TemplateComponent } from './pages/template/template.component';
@@ -51,10 +50,6 @@ const spaceRoute: Routes = [
           {
             path: 'customize',
             component: CustomizeComponent,
-          },
-          {
-            path: 'publish',
-            component: PublishComponent,
           },
           {
             path: 'enjoy',
