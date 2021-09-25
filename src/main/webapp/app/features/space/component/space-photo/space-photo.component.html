@@ -32,9 +32,11 @@
     [style.height]="height"
     [style.width]="width"
   ></div>
-  <stl-product-coordinate
-    *ngFor="let coordinate of coordinates"
-    [coordinate]="coordinate"
-    (click)="removeCoordinate(coordinate)"
-  ></stl-product-coordinate>
+  <ng-container *ngIf="coordinates && coordinates.length > 0">
+    <stl-product-coordinate
+      *ngFor="let coordinate of coordinates"
+      [coordinate]="coordinate"
+      (click)="removeCoordinate(coordinate)"
+    ></stl-product-coordinate>
+  </ng-container>
 </ng-container>

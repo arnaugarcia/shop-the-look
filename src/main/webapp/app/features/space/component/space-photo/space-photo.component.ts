@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
@@ -14,7 +14,7 @@ import { CoordinateCreateRequest, ICoordinate } from '../../model/coordinate.mod
   templateUrl: './space-photo.component.html',
   styleUrls: ['./space-photo.component.scss'],
 })
-export class SpacePhotoComponent implements AfterViewInit {
+export class SpacePhotoComponent implements OnInit {
   @Input()
   public spaceReference?: string;
 
@@ -51,7 +51,7 @@ export class SpacePhotoComponent implements AfterViewInit {
     this.width = 'auto';
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.coordinates = this.photo!.coordinates!;
   }
 

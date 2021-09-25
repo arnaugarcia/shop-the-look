@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 import { StudioStore } from '../../store/studio.store';
-import { Observable } from 'rxjs';
 import { CurrentStep } from '../../store/models/state.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'stl-studio',
   templateUrl: './studio.component.html',
   styleUrls: ['./studio.component.scss'],
 })
-export class StudioComponent {
+export class StudioComponent implements OnInit, OnDestroy {
   public contentHeader: ContentHeader;
-  public currentStep$: Observable<CurrentStep> = this.studioStore.currentStep$;
+  public currentStep: CurrentStep = 'create';
+  private stepSubscription = new Subscription();
 
   constructor(private studioStore: StudioStore) {
     this.contentHeader = {
@@ -37,5 +38,13 @@ export class StudioComponent {
         ],
       },
     };
+  }
+
+  ngOnInit(): void {
+    this.stepSubscription = this.studioStore.currentStep$.subscribe((currentStep: CurrentStep) => (this.currentStep = currentStep));
+  }
+
+  ngOnDestroy(): void {
+    this.stepSubscription.unsubscribe();
   }
 }
