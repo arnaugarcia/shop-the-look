@@ -89,7 +89,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
 
     @Override
     public void removePhoto(String spaceReference, String photoReference) {
-        final Space space = spaceService.findByReference(spaceReference);
+        final Space space = spaceService.findForCurrentUser(spaceReference);
         Photo photo = findByReference(photoReference);
         checkThatPhotoBelongsToSpace(space, photo);
         photoRepository.deleteByReference(photoReference);
