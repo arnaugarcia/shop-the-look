@@ -1,4 +1,5 @@
 <!-- card snippet component -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
 <div class="card">
   <div class="card-header">
     <ng-content select=".card-title"></ng-content>
@@ -13,7 +14,7 @@
   <ng-content></ng-content>
 
   <!-- snippet code -->
-  <div [ngbCollapse]="snippetCode.isCollapsed">
+  <div [ngbCollapse]="snippetCode.isCollapsed!">
     <div class="card-body pt-0">
       <!-- nav tabs -->
       <ul ngbNav #nav="ngbNav" [(activeId)]="snippetCode.active" class="nav-tabs">

@@ -15,6 +15,7 @@ import { ProductSearchComponent } from './component/product-search/product-searc
 import { ProductCoordinateComponent } from './component/product-coordinate/product-coordinate.component';
 import { ProductCoordinateTooltipComponent } from './component/product-coordinate-tooltip/product-coordinate-tooltip.component';
 import { StudioStore } from './store/studio.store';
+import { CardSnippetModule } from '../../../@core/components/card-snippet/card-snippet.module';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { StudioStore } from './store/studio.store';
     ProductCoordinateComponent,
     ProductCoordinateTooltipComponent,
   ],
-  imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule],
+  imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule, CardSnippetModule],
   providers: [StudioStore],
 })
 export class SpaceModule {}

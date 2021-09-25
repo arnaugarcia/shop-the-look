@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 // snippetCode interface
 export interface snippetCode {
@@ -24,7 +24,7 @@ export class CoreCardSnippetComponent implements OnInit {
     isCollapsed: true, // default collapsed is true
   };
 
-  @Input() snippetCode: snippetCode;
+  @Input() snippetCode!: snippetCode;
 
   constructor() {}
 
@@ -35,7 +35,7 @@ export class CoreCardSnippetComponent implements OnInit {
    *
    * @param code
    */
-  copyCode(code) {
+  copyCode(code: string): void {
     const selectBox = document.createElement('textarea');
     selectBox.style.position = 'fixed';
     selectBox.value = code;
