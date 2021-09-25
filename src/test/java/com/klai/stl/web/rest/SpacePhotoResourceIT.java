@@ -195,9 +195,9 @@ class SpacePhotoResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "delete-photo-user")
+    @WithMockUser(username = "delete-photo-user-not-exists")
     public void deletePhotoThatNotExists() throws Exception {
-        createAndAppendUserToCompanyByLogin("delete-photo-user");
+        createAndAppendUserToCompanyByLogin("delete-photo-user-not-exists");
 
         restSpaceMockMvc
             .perform(delete(API_URL_DELETE, space.getReference(), "BAD_REFERENCE").contentType(APPLICATION_JSON))
