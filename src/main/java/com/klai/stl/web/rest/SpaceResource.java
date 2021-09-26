@@ -6,11 +6,14 @@ import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 
 import com.klai.stl.service.SpaceService;
+import com.klai.stl.service.criteria.SpaceCriteria;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
+import com.klai.stl.service.impl.SpaceQueryService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import javax.validation.Valid;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
@@ -35,8 +38,11 @@ public class SpaceResource {
 
     private final SpaceService spaceService;
 
-    public SpaceResource(SpaceService spaceService) {
+    private final SpaceQueryService spaceQueryService;
+
+    public SpaceResource(SpaceService spaceService, SpaceQueryService spaceQueryService) {
         this.spaceService = spaceService;
+        this.spaceQueryService = spaceQueryService;
     }
 
     @GetMapping("/spaces")
@@ -45,8 +51,10 @@ public class SpaceResource {
     }
 
     @GetMapping("/me/spaces")
-    public ResponseEntity<Void> findMySpaces() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<SpaceDTO>> findMySpaces(SpaceCriteria spaceCriteria) {
+        log.debug("REST request to get spaces for current user");
+        List<SpaceDTO> result = spaceQueryService.findForCurrentUser(spaceCriteria);
+        return ok().body(result);
     }
 
     @GetMapping("/spaces/{reference}")

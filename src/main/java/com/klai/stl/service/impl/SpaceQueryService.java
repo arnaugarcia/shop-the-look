@@ -1,13 +1,21 @@
 package com.klai.stl.service.impl;
 
-import com.klai.stl.domain.*; // for static metamodels
+import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
+import static java.util.Objects.isNull;
+import static javax.persistence.criteria.JoinType.INNER;
+
+import com.klai.stl.domain.Company;
+import com.klai.stl.domain.Company_;
 import com.klai.stl.domain.Space;
+import com.klai.stl.domain.Space_;
 import com.klai.stl.repository.SpaceRepository;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.criteria.SpaceCriteria;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.mapper.SpaceMapper;
 import java.util.List;
-import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Join;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -33,9 +41,12 @@ public class SpaceQueryService extends QueryService<Space> {
 
     private final SpaceMapper spaceMapper;
 
-    public SpaceQueryService(SpaceRepository spaceRepository, SpaceMapper spaceMapper) {
+    private final UserService userService;
+
+    public SpaceQueryService(SpaceRepository spaceRepository, SpaceMapper spaceMapper, UserService userService) {
         this.spaceRepository = spaceRepository;
         this.spaceMapper = spaceMapper;
+        this.userService = userService;
     }
 
     /**
@@ -47,6 +58,21 @@ public class SpaceQueryService extends QueryService<Space> {
     public List<SpaceDTO> findByCriteria(SpaceCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<Space> specification = createSpecification(criteria);
+        return spaceMapper.toDto(spaceRepository.findAll(specification));
+    }
+
+    /**
+     * Return a {@link List} of {@link SpaceDTO} which matches the criteria from the database.
+     * @return the matching entities.
+     * @param spaceCriteria The object which holds all the filters, which the entities should match.
+     */
+    @Transactional(readOnly = true)
+    public List<SpaceDTO> findForCurrentUser(SpaceCriteria spaceCriteria) {
+        log.debug("find spaces for current user");
+        if (!isCurrentUserAdmin()) {
+            spaceCriteria.setCompanyReference(userService.getCurrentUserCompanyReference());
+        }
+        final Specification<Space> specification = createSpecification(spaceCriteria);
         return spaceMapper.toDto(spaceRepository.findAll(specification));
     }
 
@@ -64,18 +90,6 @@ public class SpaceQueryService extends QueryService<Space> {
     }
 
     /**
-     * Return the number of matching entities in the database.
-     * @param criteria The object which holds all the filters, which the entities should match.
-     * @return the number of matching entities.
-     */
-    @Transactional(readOnly = true)
-    public long countByCriteria(SpaceCriteria criteria) {
-        log.debug("count by criteria : {}", criteria);
-        final Specification<Space> specification = createSpecification(criteria);
-        return spaceRepository.count(specification);
-    }
-
-    /**
      * Function to convert {@link SpaceCriteria} to a {@link Specification}
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
@@ -83,40 +97,20 @@ public class SpaceQueryService extends QueryService<Space> {
     protected Specification<Space> createSpecification(SpaceCriteria criteria) {
         Specification<Space> specification = Specification.where(null);
         if (criteria != null) {
-            if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), Space_.id));
+            if (!isNull(criteria.getKeyword())) {
+                throw new NotYetImplementedException();
             }
-            if (criteria.getName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getName(), Space_.name));
-            }
-            if (criteria.getActive() != null) {
-                specification = specification.and(buildSpecification(criteria.getActive(), Space_.active));
-            }
-            if (criteria.getReference() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getReference(), Space_.reference));
-            }
-            if (criteria.getDescription() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getDescription(), Space_.description));
-            }
-            if (criteria.getMaxPhotos() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getMaxPhotos(), Space_.maxPhotos));
-            }
-            if (criteria.getVisible() != null) {
-                specification = specification.and(buildSpecification(criteria.getVisible(), Space_.visible));
-            }
-            if (criteria.getPhotoId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getPhotoId(), root -> root.join(Space_.photos, JoinType.LEFT).get(Photo_.id))
-                    );
-            }
-            if (criteria.getCompanyId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getCompanyId(), root -> root.join(Space_.company, JoinType.LEFT).get(Company_.id))
-                    );
+            if (!isNull(criteria.getCompanyReference())) {
+                specification.and(findByCompanyReference(criteria.getCompanyReference()));
             }
         }
         return specification;
+    }
+
+    private Specification<Space> findByCompanyReference(String companyReference) {
+        return (root, query, builder) -> {
+            final Join<Space, Company> companyJoin = root.join(Space_.company, INNER);
+            return builder.equal(companyJoin.get(Company_.reference), companyReference);
+        };
     }
 }
