@@ -8,12 +8,11 @@ import { SpaceService } from '../service/space.service';
 import { ISpace } from '../model/space.model';
 
 @Injectable({ providedIn: 'root' })
-export class SpaceRoutingResolveService implements Resolve<ISpace> {
+export class SpaceRoutingResolver implements Resolve<ISpace> {
   constructor(protected service: SpaceService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ISpace> | Observable<never> {
     const reference = route.params['space-reference'];
-    console.error(reference);
     if (reference) {
       return this.service.find(reference).pipe(
         mergeMap((space: HttpResponse<ISpace>) => {
