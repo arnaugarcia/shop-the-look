@@ -10,14 +10,18 @@ import { TemplateComponent } from './pages/template/template.component';
 import { ListComponent } from './pages/list/list.component';
 import { EditComponent } from './pages/edit/edit.component';
 import { SpaceReferenceGuard } from './route/space-reference.guard';
-import { SpaceRoutingResolveService } from './route/space-routing-resolve.service';
 import { CompanyRoutingResolveService } from '../company/route/company-routing-resolve.service';
+import { SpacesRoutingResolver } from './route/spaces-routing.resolver';
+import { SpaceRoutingResolver } from './route/space-routing.resolver';
 
 const spaceRoute: Routes = [
   {
     path: '',
     component: ListComponent,
     canActivate: [UserRouteAccessService],
+    resolve: {
+      spaces: SpacesRoutingResolver,
+    },
   },
   {
     path: 'studio',
@@ -37,7 +41,7 @@ const spaceRoute: Routes = [
         canActivate: [SpaceReferenceGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
-          space: SpaceRoutingResolveService,
+          space: SpaceRoutingResolver,
         },
         children: [
           {
