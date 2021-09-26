@@ -11,6 +11,7 @@ import { ListComponent } from './pages/list/list.component';
 import { EditComponent } from './pages/edit/edit.component';
 import { SpaceReferenceGuard } from './route/space-reference.guard';
 import { SpaceRoutingResolveService } from './route/space-routing-resolve.service';
+import { CompanyRoutingResolveService } from '../company/route/company-routing-resolve.service';
 
 const spaceRoute: Routes = [
   {
@@ -32,7 +33,7 @@ const spaceRoute: Routes = [
         component: CreateComponent,
       },
       {
-        path: ':reference',
+        path: ':space-reference',
         canActivate: [SpaceReferenceGuard],
         runGuardsAndResolvers: 'always',
         resolve: {
@@ -54,6 +55,9 @@ const spaceRoute: Routes = [
           {
             path: 'enjoy',
             component: EnjoyComponent,
+            resolve: {
+              company: CompanyRoutingResolveService,
+            },
           },
         ],
       },

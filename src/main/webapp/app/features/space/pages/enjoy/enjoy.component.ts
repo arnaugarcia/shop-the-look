@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { StudioStore } from '../../store/studio.store';
 import { snippetCode } from '../../../../../@core/components/card-snippet/card-snippet.component';
+import { ActivatedRoute } from '@angular/router';
+import { ISpace } from '../../model/space.model';
+import { ICompany } from '../../../company/model/company.model';
 
 @Component({
   selector: 'stl-enjoy',
@@ -8,44 +11,23 @@ import { snippetCode } from '../../../../../@core/components/card-snippet/card-s
   styleUrls: ['./enjoy.component.scss'],
 })
 export class EnjoyComponent {
-  public code = '';
-  _snippetCodeSwiperNavigations: snippetCode = {
-    html: `
-  <div class="swiper-navigations swiper-container" [swiper]="swiperNavigations">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img class="img-fluid" src="assets/images/banner/banner-7.jpg" alt="banner">
-      </div>
-      <div class="swiper-slide">
-        <img class="img-fluid" src="assets/images/banner/banner-4.jpg" alt="banner">
-      </div>
-      <div class="swiper-slide">
-        <img class="img-fluid" src="assets/images/banner/banner-14.jpg" alt="banner">
-      </div>
-      <div class="swiper-slide">
-        <img class="img-fluid" src="assets/images/banner/banner-3.jpg" alt="banner">
-      </div>
-      <div class="swiper-slide">
-        <img class="img-fluid" src="assets/images/banner/banner-2.jpg" alt="banner">
-      </div>
-    </div>
-    <!-- Add Arrows -->
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-  </div>
-  `,
-    ts: `
-  public swiperNavigations: SwiperConfigInterface = {
-    navigation: true
-  };
-  `,
-  };
+  public snippetCode?: snippetCode;
 
-  constructor(private studioStore: StudioStore) {
+  private space?: ISpace;
+  private company?: ICompany;
+
+  constructor(private studioStore: StudioStore, private route: ActivatedRoute) {
     studioStore.navigate('enjoy');
-    this.code = `<pre prism class='dark'>
-  var x = 1;
-  var y = 2;
-</pre>`;
+    this.route.data.subscribe(({ space, company }) => {
+      this.space = space;
+      this.company = company;
+      this.snippetCode = {
+        html: `
+<script async defer src='https://cdn.shopthelook.com/client/shopthelook.js?v=1.0&key=${this.company!.token!}'></script>
+<div id='space-${this.space!.reference}'></div>
+`,
+        isCollapsed: false,
+      };
+    });
   }
 }

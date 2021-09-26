@@ -7,7 +7,7 @@
           <p class="card-text mb-2">
             <span>Copy and paste the code below on your site and let the magic begins!</span>
           </p>
-          <core-card-snippet [snippetCode]="_snippetCodeSwiperNavigations"></core-card-snippet>
+          <core-card-snippet *ngIf="snippetCode" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
   <a [routerLink]="'../customize'" class="btn btn-outline-secondary btn-prev waves-effect">
     <span class="align-middle d-sm-inline-block d-none">Previous</span>
   </a>
-  <a [routerLink]="'/spaces/list'" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light">
+  <a [routerLink]="'/spaces'" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light">
     <span class="align-middle d-sm-inline-block d-none">Finish</span>
   </a>
 </div>
