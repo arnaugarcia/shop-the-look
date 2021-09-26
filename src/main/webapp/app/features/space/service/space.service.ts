@@ -37,6 +37,11 @@ export class SpaceService {
     return this.http.get<ISpace[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  queryForCurrentUser(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ISpace[]>(this.resourceMeUrl, { params: options, observe: 'response' });
+  }
+
   delete(reference: string): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${reference}`, { observe: 'response' });
   }
