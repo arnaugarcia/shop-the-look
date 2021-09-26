@@ -1,2 +1,20 @@
-<p>list works!</p>
-<button [routerLink]="'studio'">Go to studio</button>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+    <section class="users-list-wrapper">
+      <div class="row match-height">
+        <div class="col-md-6 col-lg-4">
+          <div class="card">
+            <img class="card-img-top" src="/content/images/slider/04.jpg" alt="Card image cap" />
+            <div class="card-body">
+              <h4 class="card-title">Card title</h4>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a [href]="[]" class="btn btn-outline-primary">Edit space</a>
+              <button class="btn btn-danger">Delete space</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
