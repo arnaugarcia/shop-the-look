@@ -3,12 +3,12 @@
     <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
     <section class="users-list-wrapper">
       <div class="row match-height">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-4" *ngFor="let space of spaces">
           <div class="card">
-            <img class="card-img-top" src="/content/images/slider/04.jpg" alt="Card image cap" />
+            <img class="card-img-top" *ngIf="space.photos[0] && space.photos[0].link" [src]="space.photos[0].link" [alt]="space.name" />
             <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <h4 class="card-title">{{ space.name }}</h4>
+              <p class="card-text">{{ space.description }}</p>
               <a [href]="[]" class="btn btn-outline-primary">Edit space</a>
               <button class="btn btn-danger">Delete space</button>
             </div>

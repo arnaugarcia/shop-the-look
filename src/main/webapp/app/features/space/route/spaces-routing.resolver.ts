@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { ISpace } from '../model/space.model';
 import { SpaceService } from '../service/space.service';
 import { HttpResponse } from '@angular/common/http';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +12,14 @@ import { HttpResponse } from '@angular/common/http';
 export class SpacesRoutingResolver implements Resolve<ISpace[]> {
   constructor(private spaceService: SpaceService) {}
   resolve(): Observable<ISpace[]> {
-    this.spaceService.queryForCurrentUser().subscribe((response: HttpResponse<ISpace[]>) => {
-      if (response.ok && response.body) {
-        return of(response.body);
-      } else {
-        return of([]);
-      }
-    });
-    return of([]);
+    return this.spaceService.queryForCurrentUser().pipe(
+      mergeMap((response: HttpResponse<ISpace[]>) => {
+        if (response.body) {
+          return of(response.body);
+        } else {
+          return of([]);
+        }
+      })
+    );
   }
 }

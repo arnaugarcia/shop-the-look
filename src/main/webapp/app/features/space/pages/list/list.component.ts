@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
+import { ActivatedRoute } from '@angular/router';
+import { ISpace } from '../../model/space.model';
 
 @Component({
   selector: 'stl-list',
@@ -7,9 +9,10 @@ import { ContentHeader } from '../../../../layouts/content-header/content-header
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent {
-  contentHeader: ContentHeader;
+  public spaces: ISpace[] = [];
+  public contentHeader: ContentHeader;
 
-  constructor() {
+  constructor(private route: ActivatedRoute) {
     this.contentHeader = {
       headerTitle: 'Spaces',
       actionButton: true,
@@ -28,5 +31,8 @@ export class ListComponent {
         ],
       },
     };
+    this.route.data.subscribe(({ spaces }) => {
+      this.spaces = spaces;
+    });
   }
 }
