@@ -131,6 +131,17 @@ class SpaceResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser
+    public void createSpaceWithoutAName() throws Exception {
+        final NewSpaceRequest request = builder().description(DEFAULT_DESCRIPTION).build();
+
+        restSpaceMockMvc
+            .perform(post(ME_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(request)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
     @WithMockUser(authorities = MANAGER, username = "space-create-manager")
     public void createSpaceAsManager() throws Exception {
         createAndAppendUserToCompanyByLogin("space-create-manager");
@@ -216,7 +227,9 @@ class SpaceResourceIT {
     public void updateSpaceThatNotExists() throws Exception {
         restSpaceMockMvc
             .perform(
-                put(API_URL_REFERENCE, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(updateSpaceRequest))
+                patch(API_URL_REFERENCE, "FAKE_REFERENCE")
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
             )
             .andExpect(status().isNotFound());
     }
@@ -228,7 +241,7 @@ class SpaceResourceIT {
         createAndAppendUserToCompanyByLogin("update-space-manager");
         restSpaceMockMvc
             .perform(
-                put(API_URL_REFERENCE, space.getReference())
+                patch(API_URL_REFERENCE, space.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateSpaceRequest))
             )
@@ -250,7 +263,7 @@ class SpaceResourceIT {
         createAndAppendUserToCompanyByLogin("update-space-user");
         restSpaceMockMvc
             .perform(
-                put(API_URL_REFERENCE, space.getReference())
+                patch(API_URL_REFERENCE, space.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateSpaceRequest))
             )
@@ -271,7 +284,7 @@ class SpaceResourceIT {
     public void updateOtherSpaceAsUser() throws Exception {
         restSpaceMockMvc
             .perform(
-                put(API_URL_REFERENCE, space.getReference())
+                patch(API_URL_REFERENCE, space.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateSpaceRequest))
             )
@@ -284,7 +297,7 @@ class SpaceResourceIT {
     public void updateOtherSpaceAsManager() throws Exception {
         restSpaceMockMvc
             .perform(
-                put(API_URL_REFERENCE, space.getReference())
+                patch(API_URL_REFERENCE, space.getReference())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJsonBytes(updateSpaceRequest))
             )
@@ -336,6 +349,111 @@ class SpaceResourceIT {
         restSpaceMockMvc
             .perform(get(API_URL_REFERENCE, space.getReference()).contentType(APPLICATION_JSON))
             .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "partial-update-name")
+    public void updatesSpaceName() throws Exception {
+        createAndAppendUserToCompanyByLogin("partial-update-name");
+
+        final String SPACE_REFERENCE = "REFERENCE";
+        Space space = new Space()
+            .reference(SPACE_REFERENCE)
+            .name(DEFAULT_NAME)
+            .template(DEFAULT_TEMPLATE)
+            .description(DEFAULT_DESCRIPTION)
+            .company(company);
+
+        spaceRepository.save(space);
+
+        final UpdateSpaceRequest updateSpaceRequest = UpdateSpaceRequest.builder().name(UPDATED_NAME).build();
+
+        restSpaceMockMvc
+            .perform(
+                patch(API_URL_REFERENCE, SPACE_REFERENCE)
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
+            )
+            .andExpect(status().isOk());
+
+        final Optional<Space> spaceOptional = spaceRepository.findByReference(SPACE_REFERENCE);
+        assertThat(spaceOptional).isPresent();
+
+        Space result = spaceOptional.get();
+        assertThat(result.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(result.getTemplate()).isEqualTo(DEFAULT_TEMPLATE);
+        assertThat(result.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "partial-update-template")
+    public void updatesSpaceTemplate() throws Exception {
+        createAndAppendUserToCompanyByLogin("partial-update-template");
+
+        final String SPACE_REFERENCE = "REFERENCE";
+        Space space = new Space()
+            .reference(SPACE_REFERENCE)
+            .name(DEFAULT_NAME)
+            .template(DEFAULT_TEMPLATE)
+            .description(DEFAULT_DESCRIPTION)
+            .company(company);
+
+        spaceRepository.save(space);
+
+        final UpdateSpaceRequest updateSpaceRequest = UpdateSpaceRequest.builder().template(UPDATED_TEMPLATE).build();
+
+        restSpaceMockMvc
+            .perform(
+                patch(API_URL_REFERENCE, SPACE_REFERENCE)
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
+            )
+            .andExpect(status().isOk());
+
+        final Optional<Space> spaceOptional = spaceRepository.findByReference(SPACE_REFERENCE);
+        assertThat(spaceOptional).isPresent();
+
+        Space result = spaceOptional.get();
+        assertThat(result.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(result.getTemplate()).isEqualTo(UPDATED_TEMPLATE);
+        assertThat(result.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "partial-update-template")
+    public void updatesSpaceDescription() throws Exception {
+        createAndAppendUserToCompanyByLogin("partial-update-template");
+
+        final String SPACE_REFERENCE = "REFERENCE";
+        Space space = new Space()
+            .reference(SPACE_REFERENCE)
+            .name(DEFAULT_NAME)
+            .template(DEFAULT_TEMPLATE)
+            .description(DEFAULT_DESCRIPTION)
+            .company(company);
+
+        spaceRepository.save(space);
+
+        final UpdateSpaceRequest updateSpaceRequest = UpdateSpaceRequest.builder().description(UPDATED_DESCRIPTION).build();
+
+        restSpaceMockMvc
+            .perform(
+                patch(API_URL_REFERENCE, SPACE_REFERENCE)
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSpaceRequest))
+            )
+            .andExpect(status().isOk());
+
+        final Optional<Space> spaceOptional = spaceRepository.findByReference(SPACE_REFERENCE);
+        assertThat(spaceOptional).isPresent();
+
+        Space result = spaceOptional.get();
+        assertThat(result.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(result.getTemplate()).isEqualTo(DEFAULT_TEMPLATE);
+        assertThat(result.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
