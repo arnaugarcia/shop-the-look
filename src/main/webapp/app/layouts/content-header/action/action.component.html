@@ -13,7 +13,7 @@
 </div>
 <div class="breadcrumb-right" *ngIf="actions.length == 1 && actions[0] as action">
   <button class="btn btn-primary" type="button" [routerLink]="action.link">
-    <span *ngIf="action.icon" [data-feather]="action.icon"></span>
-    {{ action.name }}
+    <i *ngIf="action.icon" class="mr-sm-50" [data-feather]="action.icon"></i>
+    <span>{{ action.name }}</span>
   </button>
 </div>
