@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SpaceService } from '../../service/space.service';
 import { ActivatedRoute } from '@angular/router';
-import { ISpace } from '../../model/space.model';
+import { ISpace, SpaceRequest } from '../../model/space.model';
 import { StudioStore } from '../../store/studio.store';
 import { StudioTemplate } from '../../store/models/state.model';
 
@@ -34,8 +34,15 @@ export class TemplateComponent implements OnInit {
     this.studioStore.template(option);
     if (this.space) {
       this.space.template = option.valueOf();
-      this.spaceService.update(this.space).subscribe();
+      this.spaceService.partialUpdate(this.createFromForm(), this.space.reference).subscribe();
     }
+  }
+
+  private createFromForm(): SpaceRequest {
+    return {
+      ...new SpaceRequest(),
+      template: this.space?.template,
+    };
   }
 
   private updateForm(space: ISpace): void {

@@ -17,5 +17,5 @@ export class EmptySpace implements ISpace {
 }
 
 export class SpaceRequest {
-  constructor(public name: string, public description?: string | null) {}
+  constructor(public name?: string, public template?: string, public description?: string | null) {}
 }

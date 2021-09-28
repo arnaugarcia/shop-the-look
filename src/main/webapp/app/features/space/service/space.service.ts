@@ -24,8 +24,8 @@ export class SpaceService {
     return this.http.post<ISpace>(this.resourceUrl, request, { observe: 'response', params: options });
   }
 
-  update(space: ISpace): Observable<EntityResponseType> {
-    return this.http.put<ISpace>(`${this.resourceUrl}/${space.reference}`, space, { observe: 'response' });
+  partialUpdate(request: SpaceRequest, companyReference: string): Observable<EntityResponseType> {
+    return this.http.patch<ISpace>(`${this.resourceUrl}/${companyReference}`, request, { observe: 'response' });
   }
 
   find(reference: string): Observable<EntityResponseType> {
