@@ -8,7 +8,6 @@ import { EnjoyComponent } from './pages/enjoy/enjoy.component';
 import { CustomizeComponent } from './pages/customize/customize.component';
 import { TemplateComponent } from './pages/template/template.component';
 import { ListComponent } from './pages/list/list.component';
-import { EditComponent } from './pages/edit/edit.component';
 import { SpaceReferenceGuard } from './route/space-reference.guard';
 import { CompanyRoutingResolveService } from '../company/route/company-routing-resolve.service';
 import { SpacesRoutingResolver } from './route/spaces-routing.resolver';
@@ -46,7 +45,7 @@ const spaceRoute: Routes = [
         children: [
           {
             path: 'edit',
-            component: EditComponent,
+            component: CreateComponent,
           },
           {
             path: 'template',

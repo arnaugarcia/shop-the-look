@@ -8,7 +8,6 @@ import { CustomizeComponent } from './pages/customize/customize.component';
 import { EnjoyComponent } from './pages/enjoy/enjoy.component';
 import { TemplateComponent } from './pages/template/template.component';
 import { ListComponent } from './pages/list/list.component';
-import { EditComponent } from './pages/edit/edit.component';
 import { SpacePhotoComponent } from './component/space-photo/space-photo.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ProductSearchComponent } from './component/product-search/product-search.component';
@@ -25,7 +24,6 @@ import { CardSnippetModule } from '../../../@core/components/card-snippet/card-s
     EnjoyComponent,
     TemplateComponent,
     ListComponent,
-    EditComponent,
     SpacePhotoComponent,
     ProductSearchComponent,
     ProductCoordinateComponent,
