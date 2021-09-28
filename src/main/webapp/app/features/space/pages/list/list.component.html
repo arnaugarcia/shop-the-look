@@ -5,11 +5,14 @@
       <div class="row match-height">
         <div class="col-md-6 col-lg-4" *ngFor="let space of spaces">
           <div class="card">
-            <img class="card-img-top" *ngIf="space.photos[0] && space.photos[0].link" [src]="space.photos[0].link" [alt]="space.name" />
+            <a [routerLink]="[space.reference, 'edit']">
+              <img class="card-img-top" *ngIf="space.photos[0] && space.photos[0].link" [src]="space.photos[0].link" [alt]="space.name" />
+              <img class="card-img-top" *ngIf="!space.photos[0] || !space.photos[0].link" src="/content/images/spaces/default.jpeg" />
+            </a>
             <div class="card-body">
               <h4 class="card-title">{{ space.name }}</h4>
               <p class="card-text">{{ space.description }}</p>
-              <a [href]="[]" class="btn btn-outline-primary">Edit space</a>
+              <a class="btn btn-primary">Edit space</a>
               <button class="btn btn-danger">Delete space</button>
             </div>
           </div>
