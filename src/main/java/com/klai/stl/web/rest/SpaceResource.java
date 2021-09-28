@@ -83,11 +83,10 @@ public class SpaceResource {
             .body(result);
     }
 
-    @PutMapping("/spaces/{reference}")
+    @PatchMapping("/spaces/{reference}")
     public ResponseEntity<SpaceDTO> updateSpace(@PathVariable String reference, @Valid @RequestBody UpdateSpaceRequest updateSpaceRequest) {
         log.debug("REST request to update Space : {}, {}", reference, updateSpaceRequest);
-
-        SpaceDTO result = spaceService.updateSpace(updateSpaceRequest, reference);
+        SpaceDTO result = spaceService.partialUpdate(updateSpaceRequest, reference);
         return ok().headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getReference())).body(result);
     }
 

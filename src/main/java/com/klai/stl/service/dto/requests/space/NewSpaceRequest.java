@@ -1,6 +1,7 @@
 package com.klai.stl.service.dto.requests.space;
 
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -12,7 +13,7 @@ public class NewSpaceRequest extends SpaceRequest implements Serializable {
 
     @Builder
     @Jacksonized
-    public NewSpaceRequest(String name, String description) {
+    public NewSpaceRequest(@NotNull String name, @NotNull String description) {
         super(name, description);
     }
 }

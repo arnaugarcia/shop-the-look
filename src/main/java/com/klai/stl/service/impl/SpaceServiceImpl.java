@@ -1,6 +1,7 @@
 package com.klai.stl.service.impl;
 
 import static java.util.Locale.ROOT;
+import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import com.klai.stl.domain.Company;
@@ -96,7 +97,7 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public SpaceDTO updateSpace(UpdateSpaceRequest updateSpaceRequest, String reference) {
+    public SpaceDTO partialUpdate(UpdateSpaceRequest updateSpaceRequest, String reference) {
         final Space space = findByReference(reference);
         checkIfCurrentUserBelongsToSpace(reference);
         Space result = updateSpace(space, updateSpaceRequest);
@@ -104,9 +105,15 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     private Space updateSpace(Space space, UpdateSpaceRequest updateSpaceRequest) {
-        space.setDescription(updateSpaceRequest.getDescription());
-        space.setName(updateSpaceRequest.getName());
-        space.setTemplate(updateSpaceRequest.getTemplate());
+        if (!isNull(updateSpaceRequest.getTemplate())) {
+            space.setTemplate(updateSpaceRequest.getTemplate());
+        }
+        if (!isNull(updateSpaceRequest.getName())) {
+            space.setName(updateSpaceRequest.getName());
+        }
+        if (!isNull(updateSpaceRequest.getDescription())) {
+            space.setDescription(updateSpaceRequest.getDescription());
+        }
         return space;
     }
 

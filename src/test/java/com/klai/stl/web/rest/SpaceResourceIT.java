@@ -20,6 +20,7 @@ import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.SpaceTemplateOption;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.dto.requests.space.SpaceRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -73,7 +74,7 @@ class SpaceResourceIT {
     private Space space;
 
     private NewSpaceRequest newSpaceRequest;
-    private UpdateSpaceRequest updateSpaceRequest;
+    private SpaceRequest updateSpaceRequest;
 
     @BeforeEach
     public void initTest() {

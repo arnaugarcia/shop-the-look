@@ -72,7 +72,7 @@ public interface SpaceService {
      * @param reference the reference to the space to update
      * @return the updated space entity
      */
-    SpaceDTO updateSpace(UpdateSpaceRequest newSpaceRequest, String reference);
+    SpaceDTO partialUpdate(UpdateSpaceRequest newSpaceRequest, String reference);
 
     void checkIfCurrentUserBelongsToSpace(String spaceReference);
 }
