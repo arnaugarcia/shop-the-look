@@ -456,6 +456,35 @@ class SpaceResourceIT {
         assertThat(result.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
+    @Test
+    @Transactional
+    @WithMockUser(username = "delete-space-user")
+    public void deleteSpace() throws Exception {
+        createAndAppendUserToCompanyByLogin("delete-space-user");
+        restSpaceMockMvc.perform(delete(API_URL_REFERENCE, space.getReference())).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void deleteSpaceThatNotExists() throws Exception {
+        restSpaceMockMvc.perform(delete(API_URL_REFERENCE, "BAD_REFERENCE")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void deleteOtherCompanySpace() throws Exception {
+        restSpaceMockMvc.perform(delete(API_URL_REFERENCE, space.getReference())).andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    public void deleteOtherCompanySpaceAsAdmin() throws Exception {
+        restSpaceMockMvc.perform(delete(API_URL_REFERENCE, space.getReference())).andExpect(status().isNoContent());
+    }
+
     private void createAndAppendUserToCompanyByLogin(String login) {
         User user = UserResourceIT.createUser(em, login);
         em.persist(user);
