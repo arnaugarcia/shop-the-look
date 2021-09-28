@@ -423,9 +423,9 @@ class SpaceResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "partial-update-template")
+    @WithMockUser(username = "partial-update-description")
     public void updatesSpaceDescription() throws Exception {
-        createAndAppendUserToCompanyByLogin("partial-update-template");
+        createAndAppendUserToCompanyByLogin("partial-update-description");
 
         final String SPACE_REFERENCE = "REFERENCE";
         Space space = new Space()
