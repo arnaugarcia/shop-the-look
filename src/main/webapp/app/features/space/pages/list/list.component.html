@@ -7,13 +7,18 @@
           <div class="card">
             <a [routerLink]="[space.reference, 'edit']">
               <img class="card-img-top" *ngIf="space.photos[0] && space.photos[0].link" [src]="space.photos[0].link" [alt]="space.name" />
-              <img class="card-img-top" *ngIf="!space.photos[0] || !space.photos[0].link" src="/content/images/spaces/default.jpeg" />
+              <img
+                class="card-img-top"
+                *ngIf="!space.photos[0] || !space.photos[0].link"
+                src="/content/images/spaces/default.jpeg"
+                [alt]="space.name"
+              />
             </a>
             <div class="card-body">
-              <h4 class="card-title">{{ space.name }}</h4>
-              <p class="card-text">{{ space.description }}</p>
+              <h4 class="card-title">{{ space.name | slice: 0:50 }}</h4>
+              <p class="card-text">{{ space.description | slice: 0:100 }}...</p>
               <a class="btn btn-primary">Edit space</a>
-              <button class="btn btn-danger">Delete space</button>
+              <button class="btn btn-danger pull-right">Delete space</button>
             </div>
           </div>
         </div>
