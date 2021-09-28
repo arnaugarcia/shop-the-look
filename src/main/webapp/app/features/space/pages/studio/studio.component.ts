@@ -17,7 +17,6 @@ export class StudioComponent implements OnInit, OnDestroy {
   constructor(private studioStore: StudioStore) {
     this.contentHeader = {
       headerTitle: 'Spaces',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

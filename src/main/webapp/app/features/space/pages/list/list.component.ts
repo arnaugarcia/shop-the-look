@@ -15,7 +15,6 @@ export class ListComponent {
   constructor(private route: ActivatedRoute) {
     this.contentHeader = {
       headerTitle: 'Spaces',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

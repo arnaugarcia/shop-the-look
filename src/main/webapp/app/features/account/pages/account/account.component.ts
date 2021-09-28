@@ -7,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
   public contentHeader: any;
+
   ngOnInit(): void {
     this.contentHeader = {
       headerTitle: 'Account Settings',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

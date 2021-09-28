@@ -47,7 +47,6 @@ export class ProductComponent implements OnInit, OnDestroy {
   ) {
     this.contentHeader = {
       headerTitle: 'Products',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [
