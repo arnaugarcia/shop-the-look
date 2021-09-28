@@ -13,7 +13,7 @@ import { StudioTemplate } from '../../store/models/state.model';
 export class TemplateComponent implements OnInit {
   public selectedTemplate?: StudioTemplate;
   public readonly StudioTemplates = StudioTemplate;
-  private space?: ISpace;
+  private space!: ISpace;
 
   constructor(private activatedRoute: ActivatedRoute, private studioStore: StudioStore, private spaceService: SpaceService) {
     this.studioStore.navigate('template');
@@ -32,16 +32,14 @@ export class TemplateComponent implements OnInit {
   selectOption(option: StudioTemplate): void {
     this.selectedTemplate = option;
     this.studioStore.template(option);
-    if (this.space) {
-      this.space.template = option.valueOf();
-      this.spaceService.partialUpdate(this.createFromForm(), this.space.reference).subscribe();
-    }
+    this.space.template = option.valueOf();
+    this.spaceService.partialUpdate(this.createFromForm(), this.space.reference).subscribe();
   }
 
   private createFromForm(): SpaceRequest {
     return {
       ...new SpaceRequest(),
-      template: this.space?.template,
+      template: this.space.template,
     };
   }
 
