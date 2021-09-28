@@ -18,8 +18,8 @@ export class ListComponent {
       actions: [
         {
           name: 'New Space',
-          link: '/spaces/create',
-          icon: 'grid',
+          link: '/spaces/studio',
+          icon: 'plus',
         },
       ],
       breadcrumb: {
