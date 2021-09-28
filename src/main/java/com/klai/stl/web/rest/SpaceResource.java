@@ -2,8 +2,7 @@ package com.klai.stl.web.rest;
 
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
-import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
-import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
+import static tech.jhipster.web.util.HeaderUtil.*;
 
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.criteria.SpaceCriteria;
@@ -92,6 +91,8 @@ public class SpaceResource {
 
     @DeleteMapping("/spaces/{reference}")
     public ResponseEntity<Void> deleteSpace(@PathVariable String reference) {
-        throw new NotYetImplementedException();
+        log.debug("REST request to delete a Space by reference {}", reference);
+        spaceService.delete(reference);
+        return ResponseEntity.noContent().headers(createEntityDeletionAlert(applicationName, true, ENTITY_NAME, reference)).build();
     }
 }

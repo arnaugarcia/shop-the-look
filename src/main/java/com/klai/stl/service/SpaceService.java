@@ -60,11 +60,11 @@ public interface SpaceService {
     Space findForCurrentUser(String reference);
 
     /**
-     * Delete the "id" space.
+     * Delete the referenced space.
      *
-     * @param id the id of the entity.
+     * @param reference the reference of the space.
      */
-    void delete(Long id);
+    void delete(String reference);
 
     /**
      * Updates space for the desired company

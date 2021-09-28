@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static java.util.Locale.ROOT;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -91,9 +92,12 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public void delete(Long id) {
-        log.debug("Request to delete Space : {}", id);
-        spaceRepository.deleteById(id);
+    public void delete(String reference) {
+        log.debug("Request to delete Space : {}", reference);
+        if (!isCurrentUserAdmin()) {
+            checkIfCurrentUserBelongsToSpace(reference);
+        }
+        spaceRepository.deleteByReference(reference);
     }
 
     @Override

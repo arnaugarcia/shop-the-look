@@ -18,4 +18,6 @@ public interface SpaceRepository extends JpaRepository<Space, Long>, JpaSpecific
 
     @EntityGraph(attributePaths = { "photos", "photos.coordinates" })
     Optional<Space> findByReference(String reference);
+
+    void deleteByReference(String reference);
 }
