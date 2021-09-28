@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 export interface Action {
   name: string;
@@ -9,6 +9,7 @@ export interface Action {
 @Component({
   selector: 'stl-action',
   templateUrl: './action.component.html',
-  styleUrls: ['./action.component.scss'],
 })
-export class ActionComponent {}
+export class ActionComponent {
+  @Input() public actions: Action[] = [];
+}
