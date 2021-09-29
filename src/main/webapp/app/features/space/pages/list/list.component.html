@@ -18,7 +18,7 @@
               <h4 class="card-title">{{ space.name | slice: 0:50 }}</h4>
               <p class="card-text">{{ space.description | slice: 0:100 }}...</p>
               <a [routerLink]="['studio', space.reference, 'edit']" class="btn btn-primary">Edit space</a>
-              <button class="btn btn-danger pull-right">Delete space</button>
+              <button class="btn btn-danger pull-right" (click)="removeSpace(space)">Delete space</button>
             </div>
           </div>
         </div>

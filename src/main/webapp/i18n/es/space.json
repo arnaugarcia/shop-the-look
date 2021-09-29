@@ -12,7 +12,7 @@
       "updated": "Un Space ha sido actualizado con el identificador {{ param }}",
       "deleted": "Un Space ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Space {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el espacio {{ reference }}?"
       },
       "detail": {
         "title": "Space"
