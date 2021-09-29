@@ -1,8 +1,8 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
-    <section class="users-list-wrapper">
-      <div class="row match-height">
+    <section>
+      <div class="row match-height" *ngIf="spaces.length">
         <div class="col-md-6 col-lg-4" *ngFor="let space of spaces">
           <div class="card">
             <a [routerLink]="['studio', space.reference, 'edit']">
@@ -22,6 +22,11 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="text-center" *ngIf="!spaces.length">
+        <h1 class="mt-5">Nothing here :(</h1>
+        <p class="mb-2 pb-75">You can create a new space using our Space Studio! Click on "<b>new space</b>" to let the magic begins!</p>
+        <img [src]="'/content/images/spaces/empty.svg'" class="img-fluid" alt="No spaces to display" />
       </div>
     </section>
   </div>
