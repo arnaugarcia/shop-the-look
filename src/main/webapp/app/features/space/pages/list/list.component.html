@@ -15,10 +15,18 @@
               />
             </a>
             <div class="card-body">
-              <h4 class="card-title">{{ space.name | slice: 0:50 }}</h4>
-              <p class="card-text">{{ space.description | slice: 0:100 }}...</p>
-              <a [routerLink]="['studio', space.reference, 'edit']" class="btn btn-primary">Edit space</a>
-              <button class="btn btn-danger pull-right" (click)="removeSpace(space)">Delete space</button>
+              <h6 class="item-name">{{ space.name | slice: 0:50 }}</h6>
+              <p class="card-text item-description" *ngIf="space.description">
+                {{ space.description | slice: 0:100 }}<ng-container *ngIf="space.description.length > 100">...</ng-container>
+              </p>
+            </div>
+            <div class="item-options text-center">
+              <a class="btn btn-light btn-wishlist" [routerLink]="['studio', space.reference, 'edit']">
+                <span>Edit</span>
+              </a>
+              <a class="btn btn-danger btn-cart" (click)="removeSpace(space)">
+                <span class="add-to-cart">Delete</span>
+              </a>
             </div>
           </div>
         </div>
