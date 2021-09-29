@@ -22,9 +22,11 @@
             </div>
             <div class="item-options text-center">
               <a class="btn btn-light btn-wishlist" [routerLink]="['studio', space.reference, 'edit']">
+                <i [data-feather]="'edit'" class="mr-25"></i>
                 <span>Edit</span>
               </a>
               <a class="btn btn-danger btn-cart" (click)="removeSpace(space)">
+                <i [data-feather]="'trash'" class="mr-25"></i>
                 <span class="add-to-cart">Delete</span>
               </a>
             </div>
