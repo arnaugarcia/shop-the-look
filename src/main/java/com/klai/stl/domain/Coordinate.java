@@ -2,10 +2,8 @@ package com.klai.stl.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,10 +27,13 @@ public class Coordinate implements Serializable {
     @Column(name = "y")
     private Double y;
 
-    @OneToMany(mappedBy = "coordinate")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "company", "coordinate" }, allowSetters = true)
-    private Set<Product> products = new HashSet<>();
+    @Column(name = "reference")
+    private String reference;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "coordinates", "company" }, allowSetters = true)
+    private Product product;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -79,35 +80,30 @@ public class Coordinate implements Serializable {
         this.y = y;
     }
 
-    public Set<Product> getProducts() {
-        return this.products;
+    public String getReference() {
+        return this.reference;
     }
 
-    public Coordinate products(Set<Product> products) {
-        this.setProducts(products);
+    public Coordinate reference(String reference) {
+        this.reference = reference;
         return this;
     }
 
-    public Coordinate addProduct(Product product) {
-        this.products.add(product);
-        product.setCoordinate(this);
-        return this;
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
-    public Coordinate removeProduct(Product product) {
-        this.products.remove(product);
-        product.setCoordinate(null);
-        return this;
+    public Product getProduct() {
+        return this.product;
     }
 
-    public void setProducts(Set<Product> products) {
-        if (this.products != null) {
-            this.products.forEach(i -> i.setCoordinate(null));
-        }
-        if (products != null) {
-            products.forEach(i -> i.setCoordinate(this));
-        }
-        this.products = products;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Coordinate product(Product product) {
+        this.setProduct(product);
+        return this;
     }
 
     public Photo getPhoto() {

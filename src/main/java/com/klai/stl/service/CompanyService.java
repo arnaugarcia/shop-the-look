@@ -4,9 +4,9 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.PreferencesDTO;
-import com.klai.stl.service.dto.requests.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.PreferencesRequest;
-import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.company.UpdateCompanyRequest;
 import java.util.List;
 
 /**

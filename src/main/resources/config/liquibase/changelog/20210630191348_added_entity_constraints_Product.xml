@@ -14,12 +14,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
 
-        <addForeignKeyConstraint baseColumnNames="coordinate_id"
-                                 baseTableName="product"
-                                 constraintName="fk_product__coordinate_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="coordinate"/>
-
         <addUniqueConstraint columnNames="sku, company_id"
                              tableName="product"
                              constraintName="ux_product_company"/>

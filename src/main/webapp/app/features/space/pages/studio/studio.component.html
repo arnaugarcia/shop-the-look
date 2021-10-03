@@ -1,0 +1,59 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+    <section class="horizontal-wizard">
+      <div class="bs-stepper horizontal-wizard-example">
+        <div class="bs-stepper-header">
+          <div class="step" [class.active]="currentStep == 'create'">
+            <button class="step-trigger" [routerLink]="'create'">
+              <span class="bs-stepper-box">1</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Add/Edit name</span>
+                <span class="bs-stepper-subtitle">Add or edit the name and the description</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" [class.active]="currentStep == 'template'">
+            <button class="step-trigger" [routerLink]="'template'">
+              <span class="bs-stepper-box">2</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Select a template</span>
+                <span class="bs-stepper-subtitle">Select a beautiful template</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" [class.active]="currentStep == 'customize'">
+            <button class="step-trigger" [routerLink]="'customize'">
+              <span class="bs-stepper-box">3</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Personalization</span>
+                <span class="bs-stepper-subtitle">Customize your space</span>
+              </span>
+            </button>
+          </div>
+          <div class="line">
+            <i [data-feather]="'chevron-right'" class="font-medium-2"></i>
+          </div>
+          <div class="step" [class.active]="currentStep == 'enjoy'">
+            <button class="step-trigger" [routerLink]="'enjoy'">
+              <span class="bs-stepper-box">4</span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Enjoy!</span>
+                <span class="bs-stepper-subtitle">Add it to your site</span>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div class="bs-stepper-content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

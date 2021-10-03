@@ -1,4 +1,4 @@
-import { IPhoto } from 'app/entities/photo/photo.model';
+import { IPhoto } from '../../features/space/model/photo.model';
 
 export interface ISpaceTemplate {
   id?: number;

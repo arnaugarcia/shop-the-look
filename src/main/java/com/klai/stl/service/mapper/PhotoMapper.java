@@ -1,20 +1,13 @@
 package com.klai.stl.service.mapper;
 
-import com.klai.stl.domain.*;
-import com.klai.stl.service.dto.PhotoDTO;
-import org.mapstruct.*;
+import com.klai.stl.domain.Photo;
+import com.klai.stl.service.dto.requests.photo.PhotoDTO;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity {@link Photo} and its DTO {@link PhotoDTO}.
  */
-@Mapper(componentModel = "spring", uses = { SpaceMapper.class, SpaceTemplateMapper.class })
+@Mapper(componentModel = "spring")
 public interface PhotoMapper extends EntityMapper<PhotoDTO, Photo> {
-    @Mapping(target = "space", source = "space", qualifiedByName = "reference")
-    @Mapping(target = "spaceTemplate", source = "spaceTemplate", qualifiedByName = "id")
     PhotoDTO toDto(Photo s);
-
-    @Named("id")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    PhotoDTO toDtoId(Photo photo);
 }

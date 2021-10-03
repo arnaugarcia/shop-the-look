@@ -18,8 +18,8 @@ import com.klai.stl.domain.enumeration.CompanyType;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.dto.CompanyDTO;
-import com.klai.stl.service.dto.requests.NewCompanyRequest;
-import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.company.UpdateCompanyRequest;
 import com.klai.stl.service.mapper.CompanyMapper;
 import java.util.List;
 import java.util.Optional;
@@ -135,7 +135,7 @@ public class CompanyResourceIT {
             .industry(DEFAULT_INDUSTRY)
             .companySize(DEFAULT_COMPANY_SIZE);
         // Add required entity
-        User user = UserResourceIT.createEntity(em);
+        User user = UserResourceIT.createUser(em);
         em.persist(user);
         em.flush();
         company.getUsers().add(user);
@@ -182,7 +182,7 @@ public class CompanyResourceIT {
             .industry(UPDATED_INDUSTRY)
             .companySize(UPDATED_COMPANY_SIZE);
         // Add required entity
-        User user = UserResourceIT.createEntity(em);
+        User user = UserResourceIT.createUser(em);
         em.persist(user);
         em.flush();
         company.getUsers().add(user);
@@ -415,7 +415,7 @@ public class CompanyResourceIT {
     @Transactional
     @WithMockUser(username = "good-manager", authorities = MANAGER)
     void updateCompanyAsManager() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "good-manager");
+        final User manager = UserResourceIT.createUser(em, "good-manager");
         em.persist(manager);
         company.addUser(manager);
         // Initialize the database
@@ -522,7 +522,7 @@ public class CompanyResourceIT {
     @Transactional
     @WithMockUser(username = "good-manager", authorities = MANAGER)
     void getYourCompanyAsManager() throws Exception {
-        final User manager = UserResourceIT.createEntity(em, "good-manager");
+        final User manager = UserResourceIT.createUser(em, "good-manager");
         em.persist(manager);
         // Initialize the database
         company.addUser(manager);
@@ -553,7 +553,7 @@ public class CompanyResourceIT {
     @WithMockUser(authorities = ADMIN, username = "current-admin")
     void getCurrentUserCompany() throws Exception {
         // Initialize the database
-        final User user = UserResourceIT.createEntity(em, "current-admin");
+        final User user = UserResourceIT.createUser(em, "current-admin");
         em.persist(user);
         company.addUser(user);
         companyRepository.saveAndFlush(company);
@@ -583,7 +583,7 @@ public class CompanyResourceIT {
     @WithMockUser(authorities = MANAGER, username = "current-manager")
     void getCurrentUserManagerCompany() throws Exception {
         // Initialize the database
-        final User user = UserResourceIT.createEntity(em, "current-manager");
+        final User user = UserResourceIT.createUser(em, "current-manager");
         em.persist(user);
         company.addUser(user);
         companyRepository.saveAndFlush(company);

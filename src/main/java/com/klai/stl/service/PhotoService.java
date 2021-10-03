@@ -1,8 +1,7 @@
 package com.klai.stl.service;
 
-import com.klai.stl.service.dto.PhotoDTO;
-import java.util.List;
-import java.util.Optional;
+import com.klai.stl.domain.Photo;
+import com.klai.stl.service.dto.requests.photo.PhotoRequest;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Photo}.
@@ -11,38 +10,23 @@ public interface PhotoService {
     /**
      * Save a photo.
      *
-     * @param photoDTO the entity to save.
+     * @param photoRequest the entity to save.
      * @return the persisted entity.
      */
-    PhotoDTO save(PhotoDTO photoDTO);
+    Photo create(PhotoRequest photoRequest);
 
     /**
-     * Partially updates a photo.
+     * Delete the "reference" photo.
      *
-     * @param photoDTO the entity to update partially.
-     * @return the persisted entity.
+     * @param reference the reference of the entity.
      */
-    Optional<PhotoDTO> partialUpdate(PhotoDTO photoDTO);
+    void remove(String reference);
 
     /**
-     * Get all the photos.
-     *
-     * @return the list of entities.
+     * Finds the photo by his reference
+     * @param reference the reference of the desired photo
+     * @return the photo
+     * @throws com.klai.stl.service.exception.PhotoNotFound if the photo is not found
      */
-    List<PhotoDTO> findAll();
-
-    /**
-     * Get the "id" photo.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    Optional<PhotoDTO> findOne(Long id);
-
-    /**
-     * Delete the "id" photo.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
+    Photo findByReference(String reference);
 }

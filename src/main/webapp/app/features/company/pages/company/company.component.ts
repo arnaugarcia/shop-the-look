@@ -31,7 +31,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
   constructor(private router: Router) {
     this.contentHeader = {
       headerTitle: 'Company settings',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [this.HOME_PATH, this.COMPANY_PATH, this.OVERVIEW_PATH],

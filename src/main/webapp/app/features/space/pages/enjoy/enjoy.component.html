@@ -1,0 +1,24 @@
+<section>
+  <div class="row">
+    <div class="col-12">
+      <div class="card knowledge-base-bg text-center" style="background-image: url('/content/images/banner/banner.png')">
+        <div class="card-body">
+          <h2 class="text-primary">Your space is ready!</h2>
+          <p class="card-text mb-2">
+            <span>Copy and paste the code below on your site and let the magic begins!</span>
+          </p>
+          <core-card-snippet *ngIf="snippetCode" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section></section>
+<div class="d-flex justify-content-between">
+  <a [routerLink]="'../customize'" class="btn btn-outline-secondary btn-prev waves-effect">
+    <span class="align-middle d-sm-inline-block d-none">Previous</span>
+  </a>
+  <a [routerLink]="'/spaces'" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light">
+    <span class="align-middle d-sm-inline-block d-none">Finish</span>
+  </a>
+</div>

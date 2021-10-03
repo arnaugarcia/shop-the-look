@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { Breadcrumb } from './breadcrumb/breadcrumb.component';
+import { Action } from './action/action.component';
 
-// ContentHeader component interface
 export interface ContentHeader {
   headerTitle: string;
-  actionButton: boolean;
+  actions?: Action[];
   breadcrumb?: Breadcrumb;
 }
 

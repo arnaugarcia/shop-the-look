@@ -4,11 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ISpace } from '../space.model';
-
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
-import { SpaceService } from '../service/space.service';
 import { SpaceDeleteDialogComponent } from '../delete/space-delete-dialog.component';
+import { SpaceService } from '../../../features/space/service/space.service';
+import { ISpace } from '../../../features/space/model/space.model';
 
 @Component({
   selector: 'stl-space',
@@ -55,10 +54,6 @@ export class SpaceComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleNavigation();
-  }
-
-  trackId(index: number, item: ISpace): number {
-    return item.id!;
   }
 
   delete(space: ISpace): void {

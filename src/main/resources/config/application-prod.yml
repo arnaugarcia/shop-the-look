@@ -127,4 +127,7 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  aws:
+    bucket: shopthelook-pre
+    region: eu-west-1

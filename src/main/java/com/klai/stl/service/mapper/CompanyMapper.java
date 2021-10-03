@@ -2,8 +2,8 @@ package com.klai.stl.service.mapper;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.service.dto.CompanyDTO;
-import com.klai.stl.service.dto.requests.NewCompanyRequest;
-import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.company.UpdateCompanyRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -35,16 +35,20 @@ public class Photo implements Serializable {
     private String link;
 
     @NotNull
+    @Column(name = "reference", nullable = false)
+    private String reference;
+
+    @NotNull
     @Column(name = "stl_order", nullable = false)
     private Integer order;
 
     @NotNull
     @Column(name = "height", nullable = false)
-    private Integer height;
+    private Double height;
 
     @NotNull
     @Column(name = "width", nullable = false)
-    private Integer width;
+    private Double width;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "orientation")
@@ -119,6 +123,19 @@ public class Photo implements Serializable {
         this.link = link;
     }
 
+    public String getReference() {
+        return this.reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Photo reference(String reference) {
+        this.reference = reference;
+        return this;
+    }
+
     public Integer getOrder() {
         return this.order;
     }
@@ -132,29 +149,29 @@ public class Photo implements Serializable {
         this.order = order;
     }
 
-    public Integer getHeight() {
+    public Double getHeight() {
         return this.height;
     }
 
-    public Photo height(Integer height) {
+    public Photo height(Double height) {
         this.height = height;
         return this;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public Integer getWidth() {
+    public Double getWidth() {
         return this.width;
     }
 
-    public Photo width(Integer width) {
+    public Photo width(Double width) {
         this.width = width;
         return this;
     }
 
-    public void setWidth(Integer width) {
+    public void setWidth(Double width) {
         this.width = width;
     }
 
@@ -268,6 +285,7 @@ public class Photo implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
+            ", reference='" + getReference() + "'" +
             ", order=" + getOrder() +
             ", height=" + getHeight() +
             ", width=" + getWidth() +

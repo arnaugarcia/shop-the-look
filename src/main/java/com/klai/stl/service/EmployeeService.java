@@ -2,8 +2,8 @@ package com.klai.stl.service;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.service.dto.UserDTO;
-import com.klai.stl.service.dto.requests.NewEmployeeRequestDTO;
-import com.klai.stl.service.dto.requests.UpdateEmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.employee.NewEmployeeRequestDTO;
+import com.klai.stl.service.dto.requests.employee.UpdateEmployeeRequestDTO;
 
 public interface EmployeeService {
     /**

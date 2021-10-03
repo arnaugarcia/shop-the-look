@@ -37,7 +37,6 @@ export class ProductImportComponent {
   ) {
     this.contentHeader = {
       headerTitle: 'Product importer',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

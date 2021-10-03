@@ -11,7 +11,7 @@ import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
-import com.klai.stl.service.dto.requests.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
 import com.klai.stl.web.rest.errors.EmailAlreadyUsedException;
 import com.klai.stl.web.rest.errors.InvalidPasswordException;
 import com.klai.stl.web.rest.errors.LoginAlreadyUsedException;

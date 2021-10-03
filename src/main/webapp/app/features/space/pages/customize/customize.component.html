@@ -1,0 +1,41 @@
+<ng-container *ngIf="space" [ngSwitch]="studioStore.template$ | async">
+  <section *ngSwitchCase="StudioTemplate.THREE_PHOTOS_HORIZONTAL">
+    <stl-space-photo></stl-space-photo>
+    <stl-space-photo></stl-space-photo>
+    <stl-space-photo></stl-space-photo>
+  </section>
+  <section *ngSwitchCase="StudioTemplate.THREE_PHOTOS_VERTICAL">
+    <stl-space-photo></stl-space-photo>
+    <stl-space-photo></stl-space-photo>
+    <stl-space-photo></stl-space-photo>
+  </section>
+  <section *ngSwitchCase="StudioTemplate.ONE_PHOTO">
+    <div class="row">
+      <div class="col-12 mb-1">
+        <h2>{{ studioStore.template$ | async }} template</h2>
+      </div>
+      <div class="col-8 photo-holder">
+        <stl-space-photo [photo]="space.photos[0]" [spaceReference]="space.reference" height="800px"></stl-space-photo>
+      </div>
+      <div class="col-4">
+        <div class="card h-full">
+          <div class="card-header d-flex justify-content-between align-items-end">
+            <h2>{{ space.name }}</h2>
+          </div>
+          <div class="card-body">
+            <p [innerHTML]="space.description"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>
+
+<div class="d-flex justify-content-between mt-2">
+  <button rippleeffect class="btn btn-outline-secondary btn-prev waves-effect" [routerLink]="'../template'">
+    <span class="align-middle d-sm-inline-block d-none">Previous</span>
+  </button>
+  <a type="submit" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light" [routerLink]="'../enjoy'">
+    <span class="align-middle d-sm-inline-block d-none">Next</span>
+  </a>
+</div>

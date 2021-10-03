@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <!--
         Added the entity Photo.
@@ -15,22 +13,25 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="description" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="link" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
+            </column>
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_photo__reference" />
             </column>
             <column name="stl_order" type="integer">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="height" type="integer">
-                <constraints nullable="false" />
+            <column name="height" type="double">
+                <constraints nullable="false"/>
             </column>
-            <column name="width" type="integer">
-                <constraints nullable="false" />
+            <column name="width" type="double">
+                <constraints nullable="false"/>
             </column>
             <column name="orientation" type="varchar(255)">
                 <constraints nullable="true" />

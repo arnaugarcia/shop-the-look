@@ -1,7 +1,9 @@
 package com.klai.stl.service;
 
+import com.klai.stl.domain.Space;
 import com.klai.stl.service.dto.SpaceDTO;
-import java.util.Optional;
+import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,18 +14,18 @@ public interface SpaceService {
     /**
      * Save a space.
      *
-     * @param spaceDTO the entity to save.
+     * @param newSpaceRequest the request of a space to save.
      * @return the persisted entity.
      */
-    SpaceDTO save(SpaceDTO spaceDTO);
+    SpaceDTO createForCurrentUser(NewSpaceRequest newSpaceRequest);
 
     /**
-     * Partially updates a space.
-     *
-     * @param spaceDTO the entity to update partially.
-     * @return the persisted entity.
+     * Create a space for the desired company
+     * @param newSpaceRequest the request of a space to save.
+     * @param companyReference the reference of the company to create the space
+     * @return the persisted entity
      */
-    Optional<SpaceDTO> partialUpdate(SpaceDTO spaceDTO);
+    SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, String companyReference);
 
     /**
      * Get all the spaces.
@@ -34,17 +36,43 @@ public interface SpaceService {
     Page<SpaceDTO> findAll(Pageable pageable);
 
     /**
-     * Get the "id" space.
+     * Get the "reference" space.
      *
-     * @param id the id of the entity.
+     * @param reference the reference of the entity.
      * @return the entity.
      */
-    Optional<SpaceDTO> findOne(Long id);
+    SpaceDTO findOne(String reference);
 
     /**
-     * Delete the "id" space.
+     * Get the "reference" space.
      *
-     * @param id the id of the entity.
+     * @param reference the reference of the entity.
+     * @return the entity.
      */
-    void delete(Long id);
+    Space findByReference(String reference);
+
+    /**
+     * Get the "reference" space for the current user. If not belongs to the current user it throws an Exception.
+     *
+     * @param reference the reference of the entity.
+     * @return the entity.
+     */
+    Space findForCurrentUser(String reference);
+
+    /**
+     * Delete the referenced space.
+     *
+     * @param reference the reference of the space.
+     */
+    void delete(String reference);
+
+    /**
+     * Updates space for the desired company
+     * @param newSpaceRequest the request updating the space
+     * @param reference the reference to the space to update
+     * @return the updated space entity
+     */
+    SpaceDTO partialUpdate(UpdateSpaceRequest newSpaceRequest, String reference);
+
+    void checkIfCurrentUserBelongsToSpace(String spaceReference);
 }

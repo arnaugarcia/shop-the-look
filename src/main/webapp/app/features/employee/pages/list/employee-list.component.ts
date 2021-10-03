@@ -47,7 +47,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     this.contentHeader = {
       headerTitle: 'Employees',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

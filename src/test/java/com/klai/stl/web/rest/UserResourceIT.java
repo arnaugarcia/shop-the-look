@@ -98,7 +98,7 @@ class UserResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which has a required relationship to the User entity.
      */
-    public static User createEntity(EntityManager em) {
+    public static User createUser(EntityManager em) {
         User user = new User();
         user.setLogin(DEFAULT_LOGIN + randomAlphabetic(5).toLowerCase(Locale.ROOT));
         user.setPassword(RandomStringUtils.random(60));
@@ -128,7 +128,7 @@ class UserResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which has a required relationship to the User entity.
      */
-    public static User createEntity(EntityManager em, String login) {
+    public static User createUser(EntityManager em, String login) {
         User user = new User();
         user.setLogin(login);
         user.setPassword(RandomStringUtils.random(60));
@@ -156,7 +156,7 @@ class UserResourceIT {
      * Setups the database with one user.
      */
     public static User initTestUser(Company company, EntityManager em) {
-        User user = createEntity(em);
+        User user = createUser(em);
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
         user.setCompany(company);
@@ -461,7 +461,7 @@ class UserResourceIT {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
 
-        User anotherUser = createEntity(em, "jhipster");
+        User anotherUser = createUser(em, "jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
@@ -502,7 +502,7 @@ class UserResourceIT {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
-        User anotherUser = createEntity(em, "jhipster");
+        User anotherUser = createUser(em, "jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { errorRoute } from './layouts/error/error.route';
-import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import { Authority } from 'app/config/authority.constants';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
@@ -13,33 +12,30 @@ const LAYOUT_ROUTES = [...errorRoute];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(
-      [
-        {
-          path: 'admin',
-          data: {
-            authorities: [Authority.ADMIN],
-          },
-          canActivate: [UserRouteAccessService],
-          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
+    RouterModule.forRoot([
+      {
+        path: 'admin',
+        data: {
+          authorities: [Authority.ADMIN],
         },
-        {
-          path: 'api-docs',
-          canActivate: [UserRouteAccessService],
-          data: {
-            animation: 'api-docs',
-          },
-          component: DocsComponent,
+        canActivate: [UserRouteAccessService],
+        loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
+      },
+      {
+        path: 'api-docs',
+        canActivate: [UserRouteAccessService],
+        data: {
+          animation: 'api-docs',
         },
-        {
-          path: 'auth',
-          loadChildren: () => import('./auth/auth-routing.module').then(m => m.AuthRoutingModule),
-        },
-        HOME_ROUTE,
-        ...LAYOUT_ROUTES,
-      ],
-      { enableTracing: DEBUG_INFO_ENABLED }
-    ),
+        component: DocsComponent,
+      },
+      {
+        path: 'auth',
+        loadChildren: () => import('./auth/auth-routing.module').then(m => m.AuthRoutingModule),
+      },
+      HOME_ROUTE,
+      ...LAYOUT_ROUTES,
+    ]),
   ],
   exports: [RouterModule],
 })

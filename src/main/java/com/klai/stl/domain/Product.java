@@ -3,6 +3,8 @@ package com.klai.stl.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.ProductAvailability;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
@@ -67,9 +69,10 @@ public class Product implements Serializable {
     )
     private Company company;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "products", "photo" }, allowSetters = true)
-    private Coordinate coordinate;
+    @OneToMany(mappedBy = "product")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "photo", "product" }, allowSetters = true)
+    private Set<Coordinate> coordinates = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -228,17 +231,31 @@ public class Product implements Serializable {
         this.company = company;
     }
 
-    public Coordinate getCoordinate() {
-        return this.coordinate;
+    public void setCoordinates(Set<Coordinate> coordinates) {
+        if (this.coordinates != null) {
+            this.coordinates.forEach(i -> i.setProduct(null));
+        }
+        if (coordinates != null) {
+            coordinates.forEach(i -> i.setProduct(this));
+        }
+        this.coordinates = coordinates;
     }
 
-    public Product coordinate(Coordinate coordinate) {
-        this.setCoordinate(coordinate);
+    public Product coordinates(Set<Coordinate> coordinates) {
+        this.setCoordinates(coordinates);
         return this;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+    public Product addCoordinate(Coordinate coordinate) {
+        this.coordinates.add(coordinate);
+        coordinate.setProduct(this);
+        return this;
+    }
+
+    public Product removeCoordinate(Coordinate coordinate) {
+        this.coordinates.remove(coordinate);
+        coordinate.setProduct(null);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

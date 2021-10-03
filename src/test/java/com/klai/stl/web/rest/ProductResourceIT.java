@@ -150,7 +150,7 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-products")
     public void findAllProductsAsManager() throws Exception {
-        User user = UserResourceIT.createEntity(em, "manager-products");
+        User user = UserResourceIT.createUser(em, "manager-products");
         em.persist(user);
 
         Company company1 = createBasicCompany(em);
@@ -179,7 +179,7 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(username = "user-products")
     public void findAllProductsAsUser() throws Exception {
-        User user = UserResourceIT.createEntity(em, "user-products");
+        User user = UserResourceIT.createUser(em, "user-products");
         em.persist(user);
 
         Company company1 = createBasicCompany(em);
@@ -241,7 +241,7 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "filter-products-manager")
     public void filterProductsAsManager() throws Exception {
-        User currentUser = UserResourceIT.createEntity(em, "filter-products-manager");
+        User currentUser = UserResourceIT.createUser(em, "filter-products-manager");
         em.persist(currentUser);
 
         Company company1 = createBasicCompany(em);
@@ -275,7 +275,7 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(username = "filter-products-user")
     public void filterProductsAsUser() throws Exception {
-        User currentUser = UserResourceIT.createEntity(em, "filter-products-user");
+        User currentUser = UserResourceIT.createUser(em, "filter-products-user");
         em.persist(currentUser);
 
         Company company1 = createBasicCompany(em);
@@ -318,7 +318,7 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "delete-product-manager")
     public void deleteProductAsManager() throws Exception {
-        User currentUser = UserResourceIT.createEntity(em, "delete-product-manager");
+        User currentUser = UserResourceIT.createUser(em, "delete-product-manager");
         em.persist(currentUser);
         Company company1 = createBasicCompany(em);
         company1.addProduct(product);
@@ -333,7 +333,7 @@ class ProductResourceIT {
     @Transactional
     @WithMockUser(username = "delete-product-user")
     public void deleteProductAsUser() throws Exception {
-        User currentUser = UserResourceIT.createEntity(em, "delete-product-user");
+        User currentUser = UserResourceIT.createUser(em, "delete-product-user");
         em.persist(currentUser);
         Company company1 = createBasicCompany(em);
         company1.addProduct(product);

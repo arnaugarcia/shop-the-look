@@ -9,8 +9,8 @@ import static tech.jhipster.web.util.PaginationUtil.generatePaginationHttpHeader
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.criteria.CompanyCriteria;
 import com.klai.stl.service.dto.CompanyDTO;
-import com.klai.stl.service.dto.requests.NewCompanyRequest;
-import com.klai.stl.service.dto.requests.UpdateCompanyRequest;
+import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
+import com.klai.stl.service.dto.requests.company.UpdateCompanyRequest;
 import com.klai.stl.service.impl.CompanyQueryService;
 import java.net.URI;
 import java.net.URISyntaxException;

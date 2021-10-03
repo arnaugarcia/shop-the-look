@@ -26,6 +26,11 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./company/company-routing.handler').then(m => m.CompanyRoutingHandler),
       },
       {
+        path: 'spaces',
+        // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
+        loadChildren: () => import('./space/space.module').then(m => m.SpaceModule),
+      },
+      {
         path: 'account',
         // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
         loadChildren: () => import('./account/account.module').then(m => m.AccountModule),

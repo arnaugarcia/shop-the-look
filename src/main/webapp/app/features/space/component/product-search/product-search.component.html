@@ -1,0 +1,32 @@
+<div class="search-input open">
+  <div class="search-input-icon">
+    <span [data-feather]="'search'"></span>
+  </div>
+  <input
+    type="text"
+    placeholder="Search for product by reference, sku, name..."
+    tabindex="0"
+    data-search="search"
+    (keyup)="searchUpdate($event)"
+    class="form-control input"
+  />
+  <button class="btn search-input-close p-0" (click)="activeModal.close('close-button')">
+    <span [data-feather]="'x'"></span>
+  </button>
+  <ul class="search-list search-list-main ps show" *ngIf="products.length > 0">
+    <!--<li class='auto-suggestion justify-content-between ng-star-inserted'><a
+      class='d-flex align-items-center justify-content-between w-100 py-50'>
+      <div class='d-flex justify-content-start'>
+        <i [data-feather]='"file"' class='mr-75'></i>
+        <span>No results found.</span></div>
+    </a>
+    </li>-->
+    <li class="auto-suggestion ng-star-inserted" *ngFor="let product of products">
+      <a class="d-flex align-items-center justify-content-between w-100" (click)="selectProduct(product)">
+        <div class="d-flex justify-content-start align-items-center">
+          <span>[{{ product.sku }}] - {{ product.name }}</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

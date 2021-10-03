@@ -114,3 +114,6 @@ jhipster:
 application:
   feed:
     cron-schedule: '*/30 * * * * *'
+  aws:
+    bucket: shopthelook-pre
+    region: eu-west-1

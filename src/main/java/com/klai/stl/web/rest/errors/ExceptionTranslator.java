@@ -142,8 +142,34 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleCompanyNotFoundException(
+        com.klai.stl.service.exception.SpaceNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, "Space not found", "space", "spacenotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleUserNotFoundException(com.klai.stl.service.exception.UserNotFound ex, NativeWebRequest request) {
         NotFoundException problem = new NotFoundException(NOT_FOUND, "User not found", "user", "usernotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleCoordinateNotFoundException(
+        com.klai.stl.service.exception.CoordinateNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, ex.getMessage(), "coordinate", "coordinatenotfound");
         return create(
             problem,
             request,
@@ -193,6 +219,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handlePhotoReadExceptionException(
+        com.klai.stl.service.exception.PhotoReadException ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(BAD_REQUEST, ex.getMessage(), "photo", "photoinvalid");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleBadOwnerException(com.klai.stl.service.exception.NoRemainingImports ex, NativeWebRequest request) {
         TooManyRequestsException problem = new TooManyRequestsException(
             TOO_MANY_REQUESTS,
@@ -226,6 +265,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         NativeWebRequest request
     ) {
         NotFoundException problem = new NotFoundException(NOT_FOUND, "Employee not found", "employee", "employeenotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handlePhotoNotFoundException(com.klai.stl.service.exception.PhotoNotFound ex, NativeWebRequest request) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, ex.getMessage(), "photo", "photonotfound");
         return create(
             problem,
             request,

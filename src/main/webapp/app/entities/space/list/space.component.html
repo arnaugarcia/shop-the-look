@@ -53,9 +53,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let space of spaces; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let space of spaces" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/space', space.id, 'view']">{{ space.id }}</a>
+            <a [routerLink]="['/space', space.reference, 'view']">{{ space.reference }}</a>
           </td>
           <td>{{ space.name }}</td>
           <td>{{ space.active }}</td>
@@ -65,12 +65,22 @@
           <td>{{ space.visible }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/space', space.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <button
+                type="submit"
+                [routerLink]="['/space', space.reference, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" stlTranslate="entity.action.view">View</span>
               </button>
 
-              <button type="submit" [routerLink]="['/space', space.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                type="submit"
+                [routerLink]="['/space', space.reference, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" stlTranslate="entity.action.edit">Edit</span>
               </button>

@@ -11,7 +11,6 @@ import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.exception.ProductNotFound;
 import com.klai.stl.service.mapper.ProductMapper;
-import java.util.Optional;
 import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +45,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProductDTO> findOne(Long id) {
-        log.debug("Request to get Product : {}", id);
-        return productRepository.findById(id).map(productMapper::toDto);
+    public Product findByReference(String reference) {
+        log.debug("Request to find a Product  by reference {}", reference);
+        return productRepository.findByReference(reference).orElseThrow(ProductNotFound::new);
     }
 
     @Override
