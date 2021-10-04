@@ -43,7 +43,7 @@ public class UploadServiceImpl implements UploadService {
             amazonS3.putObject(awsClientProperties.getBucket(), uploadImageRequest.getUploadPath(), path.toFile());
             log.debug("Finished uploading photo to AWS");
         } catch (IOException e) {
-            throw new PhotoUploadException(e.getMessage());
+            throw new PhotoUploadException();
         } finally {
             log.debug("Deleting temporal file {}", destinationFile);
             removeLocalFile(destinationFile);
@@ -62,7 +62,7 @@ public class UploadServiceImpl implements UploadService {
         try {
             delete(destinationFile);
         } catch (IOException e) {
-            throw new PhotoCleanException();
+            throw new PhotoCleanException(e.getMessage());
         }
     }
 }
