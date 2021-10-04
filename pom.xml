@@ -8,7 +8,7 @@
     <groupId>com.klai.stl</groupId>
     <artifactId>shop-the-look</artifactId>
     <version>0.0.5-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>Shop The Look</name>
 
     <repositories>
