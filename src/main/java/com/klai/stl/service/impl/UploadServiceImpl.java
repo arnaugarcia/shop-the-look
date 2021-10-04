@@ -43,7 +43,7 @@ public class UploadServiceImpl implements UploadService {
             amazonS3.putObject(awsClientProperties.getBucket(), uploadImageRequest.getUploadPath(), path.toFile());
             log.debug("Finished uploading photo to AWS");
         } catch (IOException e) {
-            throw new PhotoUploadException();
+            throw new PhotoUploadException(e.getMessage());
         } finally {
             log.debug("Deleting temporal file {}", destinationFile);
             removeLocalFile(destinationFile);
