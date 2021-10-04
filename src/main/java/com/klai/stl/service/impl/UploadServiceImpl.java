@@ -1,68 +1,49 @@
 package com.klai.stl.service.impl;
 
-import static java.nio.file.Files.*;
-import static java.nio.file.Paths.get;
+import static software.amazon.awssdk.core.sync.RequestBody.fromBytes;
+import static software.amazon.awssdk.services.s3.model.PutObjectRequest.builder;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.klai.stl.config.AWSClientProperties;
 import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
-import com.klai.stl.service.exception.PhotoCleanException;
-import com.klai.stl.service.exception.PhotoUploadException;
-import com.klai.stl.service.exception.PhotoWriteException;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
 public class UploadServiceImpl implements UploadService {
 
     private final Logger log = LoggerFactory.getLogger(UploadService.class);
 
-    private final AmazonS3 amazonS3;
+    private final S3Client s3Client;
     private final AWSClientProperties awsClientProperties;
 
-    public UploadServiceImpl(AmazonS3 amazonS3, ApplicationProperties applicationProperties) {
-        this.amazonS3 = amazonS3;
+    public UploadServiceImpl(S3Client s3Client, ApplicationProperties applicationProperties) {
+        this.s3Client = s3Client;
         this.awsClientProperties = applicationProperties.getAws();
     }
 
     @Override
     public URL uploadImage(UploadImageRequest uploadImageRequest) {
         log.debug("Uploading image to AmazonS3 with params {}", uploadImageRequest);
-        final Path destinationFile = get(uploadImageRequest.getLocalFilePath());
-        try {
-            final Path path = write(destinationFile, uploadImageRequest.getData());
-            if (!exists(path) || !isReadable(path)) {
-                throw new PhotoWriteException();
-            }
-            amazonS3.putObject(awsClientProperties.getBucket(), uploadImageRequest.getUploadPath(), path.toFile());
-            log.debug("Finished uploading photo to AWS");
-        } catch (IOException e) {
-            throw new PhotoUploadException();
-        } finally {
-            log.debug("Deleting temporal file {}", destinationFile);
-            removeLocalFile(destinationFile);
-        }
-        if (!existsObject(uploadImageRequest.getUploadPath())) {
-            throw new PhotoUploadException();
-        }
-        return amazonS3.getUrl(awsClientProperties.getBucket(), uploadImageRequest.getUploadPath());
+        PutObjectRequest putObjectRequest = builder()
+            .bucket(awsClientProperties.getBucket())
+            .key(uploadImageRequest.getUploadPath())
+            .build();
+
+        s3Client.putObject(putObjectRequest, fromBytes(uploadImageRequest.getData()));
+        log.debug("Finished uploading photo to AWS");
+        return findUrl(uploadImageRequest.getUploadPath());
     }
 
-    private boolean existsObject(String path) {
-        return amazonS3.doesObjectExist(awsClientProperties.getBucket(), path);
-    }
-
-    private void removeLocalFile(Path destinationFile) {
-        try {
-            delete(destinationFile);
-        } catch (IOException e) {
-            throw new PhotoCleanException(e.getMessage());
-        }
+    private URL findUrl(String path) {
+        log.debug("Finding URL of the bucket by path {}", path);
+        GetUrlRequest request = GetUrlRequest.builder().bucket(awsClientProperties.getBucket()).key(path).build();
+        return s3Client.utilities().getUrl(request);
     }
 }
