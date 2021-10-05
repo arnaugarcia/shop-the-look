@@ -949,6 +949,30 @@ class AccountResourceIT {
     @Test
     @Transactional
     void registerCompanyWhenUserEmailExistsAndEnsureThatCompanyIsNotPersisted() throws Exception {
+        User user = UserResourceIT.createUser(em, "good-user-login");
+        user.setEmail("company-register@example.com");
+        user.setCompany(company);
+        em.persist(user);
+
+        ManagedUserVM companyUserVM = new ManagedUserVM();
+        companyUserVM.setLogin("user-login");
+        companyUserVM.setName("companyName");
+        companyUserVM.setPassword("password");
+        companyUserVM.setNif("TESTNIF");
+        companyUserVM.setUrl("https://acme.inc");
+        companyUserVM.setPhone("692464645");
+        companyUserVM.setEmail("company-register@example.com");
+
+        restAccountMockMvc
+            .perform(post("/api/register").contentType(APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(companyUserVM)))
+            .andExpect(status().isBadRequest());
+
+        assertThat(companyRepository.findByNif("TESTNIF")).isEmpty();
+    }
+
+    @Test
+    @Transactional
+    void registerCompanyWhenUserLoginExistsAndEnsureThatCompanyIsNotPersisted() throws Exception {
         User user = UserResourceIT.createUser(em, "user-login");
         user.setCompany(company);
         em.persist(user);
