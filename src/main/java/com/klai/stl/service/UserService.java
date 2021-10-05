@@ -261,18 +261,16 @@ public class UserService {
         return user;
     }
 
-    public void addAuthority(String login, String authorityName) {
+    public void addAuthority(String login, String authority) {
         final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
-        user.getAuthorities().add(new Authority(authorityName));
+        authorityRepository.findById(authority).ifPresent(user.getAuthorities()::add);
         userRepository.save(user);
-        this.clearUserCaches(user);
     }
 
     public void removeAuthority(String login, String authorityName) {
         final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
         user.getAuthorities().removeIf(authority -> authority.getName().equalsIgnoreCase(authorityName));
         userRepository.save(user);
-        this.clearUserCaches(user);
     }
 
     /**

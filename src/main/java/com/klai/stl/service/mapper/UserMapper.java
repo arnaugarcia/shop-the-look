@@ -80,7 +80,17 @@ public class UserMapper {
         Set<Authority> authorities = new HashSet<>();
 
         if (authoritiesAsString != null) {
-            authorities = authoritiesAsString.stream().map(Authority::new).collect(Collectors.toSet());
+            authorities =
+                authoritiesAsString
+                    .stream()
+                    .map(
+                        string -> {
+                            Authority auth = new Authority();
+                            auth.setName(string);
+                            return auth;
+                        }
+                    )
+                    .collect(Collectors.toSet());
         }
 
         return authorities;

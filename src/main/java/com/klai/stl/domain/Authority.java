@@ -27,12 +27,6 @@ public class Authority implements Serializable {
     @Column(length = 50)
     private String name;
 
-    public Authority(String name) {
-        this.name = name;
-    }
-
-    public Authority() {}
-
     public String getName() {
         return name;
     }
