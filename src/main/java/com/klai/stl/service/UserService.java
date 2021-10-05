@@ -265,12 +265,14 @@ public class UserService {
         final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
         authorityRepository.findById(authority).ifPresent(user.getAuthorities()::add);
         userRepository.save(user);
+        this.clearUserCaches(user);
     }
 
     public void removeAuthority(String login, String authority) {
         final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
         authorityRepository.findById(authority).ifPresent(user.getAuthorities()::remove);
         userRepository.save(user);
+        this.clearUserCaches(user);
     }
 
     /**
