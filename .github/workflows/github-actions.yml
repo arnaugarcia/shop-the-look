@@ -44,5 +44,9 @@ jobs:
                   npm run ci:backend:test
             - name: Build docker image
               run: ./mvnw package -Pprod,api-docs verify jib:dockerBuild
+            - name: Tag docker image
+              run: docker tag shop-the-look:latest ${{ secrets.AWS_ECR_REPOSITORY }}/shop-the-look:latest
+            - name: Push docker image
+              run: docker push ${{ secrets.AWS_ECR_REPOSITORY }}/shop-the-look:latest
 
 
