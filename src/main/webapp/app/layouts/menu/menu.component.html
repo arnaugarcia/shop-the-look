@@ -32,7 +32,7 @@
 <div [ngClass]="{ 'd-block': isScrolled }" class="shadow-bottom"></div>
 
 <!-- Main menu -->
-<div (scroll)="onSidebarScroll()" [perfectScrollbar] class="main-menu-content">
+<div (scroll)="onSidebarScroll()" [perfectScrollbar] class="main-menu-content" *ngIf="account">
   <ul class="navigation navigation-main">
     <li [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'">
       <a (click)="collapseMenus()" [routerLink]="'/'" class="d-flex align-items-center">
