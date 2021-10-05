@@ -950,4 +950,17 @@ class AccountResourceIT {
             )
             .andExpect(status().isInternalServerError());
     }
+
+    @Test
+    void registerInvalidCompanyAndEnsureThatIsNotPersisted() {
+        ManagedUserVM companyUserVM = new ManagedUserVM();
+        companyUserVM.setLogin("company-test-register-invalid");
+        companyUserVM.setName("companyName");
+        companyUserVM.setPassword("password");
+        companyUserVM.setNif("TESTCIF");
+        companyUserVM.setUrl("https://acme.inc");
+        companyUserVM.setPhone("692464645");
+        companyUserVM.setEmail("company-test-register-invalid@example.com");
+        assertThat(userRepository.findOneByLogin("company-test-register-invalid")).isEmpty();
+    }
 }
