@@ -31,7 +31,7 @@
       "success": "<strong>Registre guardat!</strong> Si us plau, consulti el seu compte de correu electrònic per confirmar.",
       "error": {
         "fail": "<strong>Error en registre!</strong> Si us plau, torni-ho a intentar més tard.",
-        "userexists": "<strong>El nom d'usuari ja existeix!</strong> Si us plau, esculli'n un altre.",
+        "userexists": "<strong>El nom d'usuari o correu electronic ja existeix!</strong> Si us plau, esculli'n un altre.",
         "nifexists": "<strong>El NIF/NIE/CIF ja existeix!</strong> Si us plau, inici sessió.",
         "emailexists": "<strong>L'adreça de correu electronic ja existeix!</strong> Si us plau, esculli'n una altre."
       }

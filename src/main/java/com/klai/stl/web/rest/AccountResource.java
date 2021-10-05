@@ -15,6 +15,7 @@ import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
 import com.klai.stl.web.rest.errors.EmailAlreadyUsedException;
 import com.klai.stl.web.rest.errors.InvalidPasswordException;
 import com.klai.stl.web.rest.errors.LoginAlreadyUsedException;
+import com.klai.stl.web.rest.errors.UserAlreadyExistsException;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -65,6 +67,7 @@ public class AccountResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
+    @Transactional
     @PostMapping("/register")
     @ResponseStatus(CREATED)
     public void registerCompany(@Valid @RequestBody ManagedUserVM companyUserVM) {
@@ -84,8 +87,13 @@ public class AccountResource {
             .companySize(companyUserVM.getSize())
             .build();
         final CompanyDTO company = companyService.save(companyRequest);
-        User user = userService.registerManager(companyUserVM, company.getReference(), companyUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        try { // This is the ugliest thing in this platform. Please refactor this.
+            User user = userService.registerManager(companyUserVM, company.getReference(), companyUserVM.getPassword());
+            mailService.sendActivationEmail(user);
+        } catch (Exception e) { // This is the ugliest thing in this platform. Please refactor this.
+            companyService.delete(company.getReference());
+            throw new UserAlreadyExistsException();
+        }
     }
 
     /**
