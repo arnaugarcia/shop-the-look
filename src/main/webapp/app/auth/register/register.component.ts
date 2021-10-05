@@ -102,7 +102,10 @@ export class RegisterComponent implements AfterViewInit {
           langKey: this.translateService.currentLang,
         })
         .subscribe(
-          () => (this.success = true),
+          () => {
+            this.resetAllErrors();
+            this.success = true;
+          },
           response => this.processError(response)
         );
     }
@@ -115,7 +118,16 @@ export class RegisterComponent implements AfterViewInit {
     this.passwordTextType = !this.passwordTextType;
   }
 
+  private resetAllErrors(): void {
+    this.doNotMatch = false;
+    this.error = false;
+    this.errorNIFExists = false;
+    this.errorEmailExists = false;
+    this.errorUserExists = false;
+  }
+
   private processError(response: HttpErrorResponse): void {
+    this.resetAllErrors();
     if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {
       this.errorUserExists = true;
     } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
