@@ -172,7 +172,7 @@ jhipster:
     license: unlicensed
     license-url:
   security:
-    content-security-policy: "frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:"
+    content-security-policy: "frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.cloudfront.net https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:"
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
