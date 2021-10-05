@@ -3,7 +3,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE, NIF_ALREADY_USED_TYPE } from 'app/config/error.constants';
+import {
+  EMAIL_ALREADY_USED_TYPE,
+  LOGIN_ALREADY_USED_TYPE,
+  NIF_ALREADY_USED_TYPE,
+  USER_ALREADY_EXISTS_TYPE,
+} from 'app/config/error.constants';
 import { RegisterService } from './register.service';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '../../../@core/types';
@@ -128,7 +133,7 @@ export class RegisterComponent implements AfterViewInit {
 
   private processError(response: HttpErrorResponse): void {
     this.resetAllErrors();
-    if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {
+    if ((response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) || response.error.type === USER_ALREADY_EXISTS_TYPE) {
       this.errorUserExists = true;
     } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
       this.errorEmailExists = true;
