@@ -16,7 +16,8 @@
           "required": "The company name is required."
         },
         "phone": {
-          "required": "The phone number is required."
+          "required": "The phone number is required.",
+          "pattern": "The phone number is invalid."
         },
         "url": {
           "required": "The URL is required.",

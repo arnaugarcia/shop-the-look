@@ -14,6 +14,8 @@ const PATTERN_LOGIN = '^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0
 
 const PATTERN_NIF = '([a-z]|[A-Z]|[0-9])[0-9]{7}([a-z]|[A-Z]|[0-9])';
 
+const PATTERN_PHONE = '^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$';
+
 @Component({
   selector: 'stl-register',
   templateUrl: './register.component.html',
@@ -34,7 +36,7 @@ export class RegisterComponent implements AfterViewInit {
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(PATTERN_LOGIN)]],
     email: ['', [Validators.required, Validators.email]],
     name: ['', Validators.required],
-    phone: ['', Validators.required],
+    phone: ['', [Validators.required, Validators.pattern(PATTERN_PHONE)]],
     url: ['', [Validators.required, Validators.pattern(PATTERN_URL)]],
     nif: ['', [Validators.required, Validators.pattern(PATTERN_NIF)]],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
