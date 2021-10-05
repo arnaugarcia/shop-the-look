@@ -267,9 +267,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void removeAuthority(String login, String authority) {
+    public void removeAuthority(String login, String authorityName) {
         final User user = getUserWithAuthoritiesByLogin(login).orElseThrow(EmployeeNotFound::new);
-        authorityRepository.findById(authority).ifPresent(user.getAuthorities()::remove);
+        user.getAuthorities().removeIf(authority -> authority.getName().equalsIgnoreCase(authorityName));
         userRepository.save(user);
     }
 
