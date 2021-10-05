@@ -16,7 +16,8 @@
           "required": "El nom de l'empresa es necessari."
         },
         "phone": {
-          "required": "El número de telèfon es necessari."
+          "required": "El número de telèfon es necessari.",
+          "pattern": "El número es erroni."
         },
         "url": {
           "required": "La URL de l'empresa es necessari.",

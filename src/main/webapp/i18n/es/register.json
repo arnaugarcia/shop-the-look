@@ -16,7 +16,8 @@
           "required": "El nombre de la empresa es obligatorio."
         },
         "phone": {
-          "required": "El número de teléfono es obligatorio."
+          "required": "El número de teléfono es obligatorio.",
+          "pattern": "El número de teléfono no es válido."
         },
         "url": {
           "required": "La URL de la empresa es obligatoria.",
