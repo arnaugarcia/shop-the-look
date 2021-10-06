@@ -1,6 +1,5 @@
 package com.klai.stl.service.impl;
 
-import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
 import static java.util.Objects.isNull;
 import static javax.persistence.criteria.JoinType.INNER;
 
@@ -69,9 +68,7 @@ public class SpaceQueryService extends QueryService<Space> {
     @Transactional(readOnly = true)
     public List<SpaceDTO> findForCurrentUser(SpaceCriteria spaceCriteria) {
         log.debug("find spaces for current user");
-        if (!isCurrentUserAdmin()) {
-            spaceCriteria.setCompanyReference(userService.getCurrentUserCompanyReference());
-        }
+        spaceCriteria.setCompanyReference(userService.getCurrentUserCompanyReference());
         final Specification<Space> specification = createSpecification(spaceCriteria);
         return spaceMapper.toDto(spaceRepository.findAll(specification));
     }
@@ -101,13 +98,13 @@ public class SpaceQueryService extends QueryService<Space> {
                 throw new NotYetImplementedException();
             }
             if (!isNull(criteria.getCompanyReference())) {
-                specification.and(findByCompanyReference(criteria.getCompanyReference()));
+                specification = specification.and(byCompanyReference(criteria.getCompanyReference()));
             }
         }
         return specification;
     }
 
-    private Specification<Space> findByCompanyReference(String companyReference) {
+    private Specification<Space> byCompanyReference(String companyReference) {
         return (root, query, builder) -> {
             final Join<Space, Company> companyJoin = root.join(Space_.company, INNER);
             return builder.equal(companyJoin.get(Company_.reference), companyReference);
