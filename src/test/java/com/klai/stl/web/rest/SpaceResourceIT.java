@@ -2,12 +2,12 @@ package com.klai.stl.web.rest;
 
 import static com.klai.stl.domain.enumeration.SpaceTemplateOption.ONE_PHOTO;
 import static com.klai.stl.domain.enumeration.SpaceTemplateOption.THREE_PHOTOS_HORIZONTAL;
-import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
-import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
+import static com.klai.stl.security.AuthoritiesConstants.*;
 import static com.klai.stl.service.dto.requests.space.NewSpaceRequest.builder;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -483,6 +483,24 @@ class SpaceResourceIT {
     @WithMockUser(authorities = ADMIN)
     public void deleteOtherCompanySpaceAsAdmin() throws Exception {
         restSpaceMockMvc.perform(delete(API_URL_REFERENCE, space.getReference())).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "space-user-list")
+    public void findOwnSpaces() throws Exception {
+        createAndAppendUserToCompanyByLogin("space-user-list");
+        int spacesCount = spaceRepository.findByCompanyReference(company.getReference()).size();
+        Company company2 = createBasicCompany(em);
+        createSpace(em, company2);
+        restSpaceMockMvc.perform(get(ME_API_URL)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(spacesCount)));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = USER)
+    public void findAllSpacesAsUser() throws Exception {
+        restSpaceMockMvc.perform(get(API_URL)).andExpect(status().isForbidden());
     }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
