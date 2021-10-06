@@ -13,7 +13,7 @@ import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.SpacePhotoService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
-import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
+import com.klai.stl.service.dto.requests.s3.UploadObjectRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.PhotoNotFound;
@@ -64,7 +64,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
         final String photoReference = generatePhotoReference();
         final String photoFileName = "photo-" + photoReference;
 
-        final UploadImageRequest uploadImageRequest = UploadImageRequest
+        final UploadObjectRequest uploadObjectRequest = UploadObjectRequest
             .builder()
             .data(spacePhotoRequest.getData())
             .destinationFolder(buildDestinationFolderFor(space))
@@ -73,7 +73,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
             .build();
 
         final Dimension imageDimension = getImageDimension(spacePhotoRequest.getData());
-        final URL url = uploadService.uploadImage(uploadImageRequest);
+        final URL url = uploadService.uploadObject(uploadObjectRequest);
 
         final Photo photo = new Photo()
             .name(photoFileName)

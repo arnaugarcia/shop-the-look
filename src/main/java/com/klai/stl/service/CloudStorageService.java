@@ -1,26 +1,19 @@
 package com.klai.stl.service;
 
-import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
+import com.klai.stl.service.dto.requests.s3.UploadObjectRequest;
 import java.net.URL;
 
 public interface CloudStorageService {
     /**
-     * Uploads the image with the requested data
-     * @param newImageRequest the image parameters neecessary to upload
-     * @return the url of the cloud stored image
+     * Uploads the object with the requested data
+     * @param newObjectRequest the object with the required parameters
+     * @return the url of the cloud stored object
      */
-    URL uploadImage(UploadImageRequest newImageRequest);
+    URL uploadObject(UploadObjectRequest newObjectRequest);
 
     /**
-     * Removes the image from cloud
-     * @param imageReference the reference of the image to delete
-     * @param spaceReference the reference of the space where the image is stored
+     * Removes the object from the cloud
+     * @param objectPath the path of the object to delete
      */
-    void removeImage(String spaceReference, String imageReference);
-
-    /**
-     * Removes the folder and all its contents
-     * @param folderName the folder name to delete
-     */
-    void removeFolder(String folderName);
+    void removeObject(String objectPath);
 }

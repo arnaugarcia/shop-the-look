@@ -114,7 +114,7 @@ class SpacePhotoResourceIT {
     @Transactional
     @WithMockUser(username = "add-photo-user")
     public void addPhotoToSpace() throws Exception {
-        when(cloudStorageService.uploadImage(any())).thenReturn(new URL(DEFAULT_IMAGE_URL));
+        when(cloudStorageService.uploadObject(any())).thenReturn(new URL(DEFAULT_IMAGE_URL));
 
         Long databaseSizeBeforePhoto = photoRepository.count();
 
