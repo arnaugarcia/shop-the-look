@@ -5,7 +5,7 @@ import static software.amazon.awssdk.services.s3.model.PutObjectRequest.builder;
 
 import com.klai.stl.config.AWSClientProperties;
 import com.klai.stl.config.ApplicationProperties;
-import com.klai.stl.service.UploadService;
+import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
 import java.net.URL;
 import org.slf4j.Logger;
@@ -16,14 +16,14 @@ import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
-public class UploadServiceImpl implements UploadService {
+public class CloudStorageServiceImpl implements CloudStorageService {
 
-    private final Logger log = LoggerFactory.getLogger(UploadService.class);
+    private final Logger log = LoggerFactory.getLogger(CloudStorageService.class);
 
     private final S3Client s3Client;
     private final AWSClientProperties awsClientProperties;
 
-    public UploadServiceImpl(S3Client s3Client, ApplicationProperties applicationProperties) {
+    public CloudStorageServiceImpl(S3Client s3Client, ApplicationProperties applicationProperties) {
         this.s3Client = s3Client;
         this.awsClientProperties = applicationProperties.getAws();
     }
@@ -40,6 +40,12 @@ public class UploadServiceImpl implements UploadService {
         log.debug("Finished uploading photo to AWS");
         return findUrl(uploadImageRequest.getUploadPath());
     }
+
+    @Override
+    public void removeImage(String spaceReference, String imageReference) {}
+
+    @Override
+    public void removeFolder(String folderName) {}
 
     private URL findUrl(String path) {
         log.debug("Finding URL of the bucket by path {}", path);

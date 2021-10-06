@@ -21,7 +21,7 @@ import com.klai.stl.domain.Space;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.PhotoRepository;
 import com.klai.stl.repository.SpaceRepository;
-import com.klai.stl.service.UploadService;
+import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import java.net.URL;
 import java.util.Objects;
@@ -69,7 +69,7 @@ class SpacePhotoResourceIT {
     private MockMvc restSpaceMockMvc;
 
     @MockBean
-    private UploadService uploadService;
+    private CloudStorageService cloudStorageService;
 
     @Autowired
     private PhotoRepository photoRepository;
@@ -114,7 +114,7 @@ class SpacePhotoResourceIT {
     @Transactional
     @WithMockUser(username = "add-photo-user")
     public void addPhotoToSpace() throws Exception {
-        when(uploadService.uploadImage(any())).thenReturn(new URL(DEFAULT_IMAGE_URL));
+        when(cloudStorageService.uploadImage(any())).thenReturn(new URL(DEFAULT_IMAGE_URL));
 
         Long databaseSizeBeforePhoto = photoRepository.count();
 

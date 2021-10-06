@@ -9,9 +9,9 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import com.klai.stl.domain.Photo;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.PhotoRepository;
+import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.SpacePhotoService;
 import com.klai.stl.service.SpaceService;
-import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
 import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
@@ -40,13 +40,13 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     private final Logger log = LoggerFactory.getLogger(SpacePhotoServiceImpl.class);
 
     private final SpaceService spaceService;
-    private final UploadService uploadService;
+    private final CloudStorageService uploadService;
     private final PhotoRepository photoRepository;
     private final PhotoMapper photoMapper;
 
     public SpacePhotoServiceImpl(
         SpaceService spaceService,
-        UploadService uploadService,
+        CloudStorageService uploadService,
         PhotoRepository photoRepository,
         PhotoMapper photoMapper
     ) {
