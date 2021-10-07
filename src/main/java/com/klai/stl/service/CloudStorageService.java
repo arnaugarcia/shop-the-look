@@ -13,7 +13,7 @@ public interface CloudStorageService {
 
     /**
      * Removes the object from the cloud
-     * @param objectPath the path of the object to delete
+     * @param objectKey the key of the object to delete
      */
-    void removeObject(String objectPath);
+    void removeObject(String objectKey);
 }

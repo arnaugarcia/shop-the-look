@@ -40,7 +40,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     private final Logger log = LoggerFactory.getLogger(SpacePhotoServiceImpl.class);
 
     private final SpaceService spaceService;
-    private final CloudStorageService uploadService;
+    private final CloudStorageService cloudStorageService;
     private final PhotoRepository photoRepository;
     private final PhotoMapper photoMapper;
 
@@ -51,7 +51,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
         PhotoMapper photoMapper
     ) {
         this.spaceService = spaceService;
-        this.uploadService = uploadService;
+        this.cloudStorageService = uploadService;
         this.photoRepository = photoRepository;
         this.photoMapper = photoMapper;
     }
@@ -73,12 +73,13 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
             .build();
 
         final Dimension imageDimension = getImageDimension(spacePhotoRequest.getData());
-        final URL url = uploadService.uploadObject(uploadObjectRequest);
+        final URL url = cloudStorageService.uploadObject(uploadObjectRequest);
 
         final Photo photo = new Photo()
             .name(photoFileName)
             .reference(photoReference)
             .height(imageDimension.getHeight())
+            .key(uploadObjectRequest.getUploadPath())
             .width(imageDimension.getWidth())
             .link(url.toString())
             .order(spacePhotoRequest.getOrder())
@@ -88,11 +89,13 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     }
 
     @Override
+    @Transactional
     public void removePhoto(String spaceReference, String photoReference) {
         final Space space = spaceService.findForCurrentUser(spaceReference);
         Photo photo = findByReference(photoReference);
         checkThatPhotoBelongsToSpace(space, photo);
         photoRepository.deleteByReference(photoReference);
+        cloudStorageService.removeObject(photo.getKey());
     }
 
     private void checkThatPhotoBelongsToSpace(Space space, Photo photo) {

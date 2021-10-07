@@ -42,14 +42,14 @@ public class CloudStorageServiceImpl implements CloudStorageService {
     }
 
     @Override
-    public void removeObject(String objectPath) {
-        if (!existsObject(objectPath)) {
-            throw new ObjectNotFoundException(objectPath);
+    public void removeObject(String objectKey) {
+        if (!existsObject(objectKey)) {
+            throw new ObjectNotFoundException(objectKey);
         }
         final DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest
             .builder()
             .bucket(awsClientProperties.getBucket())
-            .key(objectPath)
+            .key(objectKey)
             .build();
         s3Client.deleteObject(deleteObjectRequest);
     }
