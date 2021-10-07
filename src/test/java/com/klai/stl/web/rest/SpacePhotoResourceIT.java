@@ -25,6 +25,7 @@ import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,6 +103,7 @@ class SpacePhotoResourceIT {
             .order(DEFAULT_ORDER)
             .height(DEFAULT_HEIGHT)
             .width(DEFAULT_WIDTH);
+        result.key("space-" + space.getReference() + "/photo-" + result.getReference() + ".jpg");
         em.persist(result);
         return result;
     }
@@ -130,11 +132,19 @@ class SpacePhotoResourceIT {
             .andExpect(jsonPath("$.height").value(DEFAULT_HEIGHT))
             .andExpect(jsonPath("$.width").value(DEFAULT_WIDTH))
             .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
+            .andExpect(jsonPath("$.link").isNotEmpty())
             .andExpect(jsonPath("$.reference").isNotEmpty());
 
         Long databaseSizeAfterPhoto = photoRepository.count();
 
         assertThat(databaseSizeAfterPhoto).isGreaterThan(databaseSizeBeforePhoto);
+
+        final Optional<Photo> photoOptional = photoRepository.findByReference(photo.getReference());
+        assertThat(photoOptional).isPresent();
+        Photo result = photoOptional.get();
+        assertThat(result.getReference()).isNotEmpty();
+        assertThat(result.getLink()).isNotEmpty();
+        assertThat(result.getKey()).isNotEmpty();
     }
 
     @Test
