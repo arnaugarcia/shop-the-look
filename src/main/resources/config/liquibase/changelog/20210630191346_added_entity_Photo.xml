@@ -24,6 +24,9 @@
             <column name="reference" type="varchar(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_photo__reference" />
             </column>
+            <column name="cloud_key" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="stl_order" type="integer">
                 <constraints nullable="false"/>
             </column>
@@ -67,6 +70,8 @@
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>
+            <column name="reference" type="string"/>
+            <column name="cloud_key" type="string"/>
             <column name="link" type="string"/>
             <column name="stl_order" type="numeric"/>
             <column name="height" type="numeric"/>

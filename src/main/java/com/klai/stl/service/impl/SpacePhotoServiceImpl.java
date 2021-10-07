@@ -9,11 +9,11 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import com.klai.stl.domain.Photo;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.PhotoRepository;
+import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.SpacePhotoService;
 import com.klai.stl.service.SpaceService;
-import com.klai.stl.service.UploadService;
 import com.klai.stl.service.dto.requests.photo.PhotoDTO;
-import com.klai.stl.service.dto.requests.s3.UploadImageRequest;
+import com.klai.stl.service.dto.requests.s3.UploadObjectRequest;
 import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.PhotoNotFound;
@@ -40,18 +40,18 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     private final Logger log = LoggerFactory.getLogger(SpacePhotoServiceImpl.class);
 
     private final SpaceService spaceService;
-    private final UploadService uploadService;
+    private final CloudStorageService cloudStorageService;
     private final PhotoRepository photoRepository;
     private final PhotoMapper photoMapper;
 
     public SpacePhotoServiceImpl(
         SpaceService spaceService,
-        UploadService uploadService,
+        CloudStorageService uploadService,
         PhotoRepository photoRepository,
         PhotoMapper photoMapper
     ) {
         this.spaceService = spaceService;
-        this.uploadService = uploadService;
+        this.cloudStorageService = uploadService;
         this.photoRepository = photoRepository;
         this.photoMapper = photoMapper;
     }
@@ -64,7 +64,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
         final String photoReference = generatePhotoReference();
         final String photoFileName = "photo-" + photoReference;
 
-        final UploadImageRequest uploadImageRequest = UploadImageRequest
+        final UploadObjectRequest uploadObjectRequest = UploadObjectRequest
             .builder()
             .data(spacePhotoRequest.getData())
             .destinationFolder(buildDestinationFolderFor(space))
@@ -73,12 +73,13 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
             .build();
 
         final Dimension imageDimension = getImageDimension(spacePhotoRequest.getData());
-        final URL url = uploadService.uploadImage(uploadImageRequest);
+        final URL url = cloudStorageService.uploadObject(uploadObjectRequest);
 
         final Photo photo = new Photo()
             .name(photoFileName)
             .reference(photoReference)
             .height(imageDimension.getHeight())
+            .key(uploadObjectRequest.getUploadPath())
             .width(imageDimension.getWidth())
             .link(url.toString())
             .order(spacePhotoRequest.getOrder())
@@ -88,11 +89,13 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     }
 
     @Override
+    @Transactional
     public void removePhoto(String spaceReference, String photoReference) {
         final Space space = spaceService.findForCurrentUser(spaceReference);
         Photo photo = findByReference(photoReference);
         checkThatPhotoBelongsToSpace(space, photo);
         photoRepository.deleteByReference(photoReference);
+        cloudStorageService.removeObject(photo.getKey());
     }
 
     private void checkThatPhotoBelongsToSpace(Space space, Photo photo) {

@@ -7,11 +7,11 @@ import lombok.extern.jackson.Jacksonized;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class UploadImageRequest extends UploadRequest {
+public class UploadObjectRequest extends UploadRequest {
 
     @Builder
     @Jacksonized
-    public UploadImageRequest(byte[] data, String fileName, String destinationFolder, String fileExtension) {
+    public UploadObjectRequest(byte[] data, String fileName, String destinationFolder, String fileExtension) {
         super(data, fileName, destinationFolder, fileExtension);
     }
 
