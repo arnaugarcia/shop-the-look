@@ -39,7 +39,7 @@ public class Photo implements Serializable {
     private String reference;
 
     @NotNull
-    @Column(name = "key", nullable = false)
+    @Column(name = "cloud_key", nullable = false)
     private String key;
 
     @NotNull
