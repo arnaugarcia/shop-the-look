@@ -39,6 +39,10 @@ public class Photo implements Serializable {
     private String reference;
 
     @NotNull
+    @Column(name = "key", nullable = false)
+    private String key;
+
+    @NotNull
     @Column(name = "stl_order", nullable = false)
     private Integer order;
 
@@ -133,6 +137,19 @@ public class Photo implements Serializable {
 
     public Photo reference(String reference) {
         this.reference = reference;
+        return this;
+    }
+
+    public String getKey() {
+        return this.key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Photo key(String key) {
+        this.key = key;
         return this;
     }
 
@@ -286,6 +303,7 @@ public class Photo implements Serializable {
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", reference='" + getReference() + "'" +
+            ", key='" + getKey() + "'" +
             ", order=" + getOrder() +
             ", height=" + getHeight() +
             ", width=" + getWidth() +
