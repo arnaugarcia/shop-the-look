@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.SpaceRepository;
+import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.UserService;
@@ -41,16 +42,20 @@ public class SpaceServiceImpl implements SpaceService {
 
     private final CompanyService companyService;
 
+    private final CloudStorageService cloudStorageService;
+
     public SpaceServiceImpl(
         SpaceRepository spaceRepository,
         SpaceMapper spaceMapper,
         UserService userService,
-        CompanyService companyService
+        CompanyService companyService,
+        CloudStorageService cloudStorageService
     ) {
         this.spaceRepository = spaceRepository;
         this.spaceMapper = spaceMapper;
         this.userService = userService;
         this.companyService = companyService;
+        this.cloudStorageService = cloudStorageService;
     }
 
     @Override
@@ -92,11 +97,14 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
+    @Transactional
     public void delete(String reference) {
         log.debug("Request to delete Space : {}", reference);
         if (!isCurrentUserAdmin()) {
             checkIfCurrentUserBelongsToSpace(reference);
         }
+        Space space = findByReference(reference);
+        removeAllPhotosFrom(space);
         spaceRepository.deleteByReference(reference);
     }
 
@@ -106,19 +114,6 @@ public class SpaceServiceImpl implements SpaceService {
         checkIfCurrentUserBelongsToSpace(reference);
         Space result = updateSpace(space, updateSpaceRequest);
         return saveAndTransform(result);
-    }
-
-    private Space updateSpace(Space space, UpdateSpaceRequest updateSpaceRequest) {
-        if (!isNull(updateSpaceRequest.getTemplate())) {
-            space.setTemplate(updateSpaceRequest.getTemplate());
-        }
-        if (!isNull(updateSpaceRequest.getName())) {
-            space.setName(updateSpaceRequest.getName());
-        }
-        if (!isNull(updateSpaceRequest.getDescription())) {
-            space.setDescription(updateSpaceRequest.getDescription());
-        }
-        return space;
     }
 
     @Override
@@ -137,5 +132,22 @@ public class SpaceServiceImpl implements SpaceService {
         if (!findByReference(spaceReference).getCompany().getReference().equalsIgnoreCase(userService.getCurrentUserCompanyReference())) {
             throw new BadOwnerException();
         }
+    }
+
+    private Space updateSpace(Space space, UpdateSpaceRequest updateSpaceRequest) {
+        if (!isNull(updateSpaceRequest.getTemplate())) {
+            space.setTemplate(updateSpaceRequest.getTemplate());
+        }
+        if (!isNull(updateSpaceRequest.getName())) {
+            space.setName(updateSpaceRequest.getName());
+        }
+        if (!isNull(updateSpaceRequest.getDescription())) {
+            space.setDescription(updateSpaceRequest.getDescription());
+        }
+        return space;
+    }
+
+    private void removeAllPhotosFrom(Space space) {
+        space.getPhotos().forEach(photo -> cloudStorageService.removeObject(photo.getKey()));
     }
 }
