@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { ISubscriptionPlan } from '../model/subscription-plan.model';
+import { createRequestOption } from '../../../core/request/request-util';
 
 export type EntityResponseType = HttpResponse<ISubscriptionPlan>;
 export type EntityArrayResponseType = HttpResponse<ISubscriptionPlan[]>;
@@ -13,7 +14,8 @@ export class SubscriptionService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  query(): Observable<EntityArrayResponseType> {
-    return this.http.get<ISubscriptionPlan[]>(this.resourceUrl, { observe: 'response' });
+  query(reference?: string): Observable<EntityArrayResponseType> {
+    const options = createRequestOption({ companyReference: reference });
+    return this.http.get<ISubscriptionPlan[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 }

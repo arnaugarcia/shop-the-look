@@ -11,8 +11,9 @@ export class SubscriptionRoutingResolveService implements Resolve<ISubscriptionP
   constructor(protected service: SubscriptionService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ISubscriptionPlan[]> | Promise<ISubscriptionPlan[]> | ISubscriptionPlan[] {
+    const reference = route.parent?.params.reference;
     const EMPTY = of([]);
-    return this.service.query().pipe(
+    return this.service.query(reference).pipe(
       mergeMap((response: HttpResponse<ISubscriptionPlan[]>) => {
         if (response.body) {
           return of(response.body);
