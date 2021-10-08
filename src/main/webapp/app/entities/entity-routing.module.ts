@@ -14,11 +14,6 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'shopTheLookApp.spaceTemplate.home.title' },
         loadChildren: () => import('./space-template/space-template.module').then(m => m.SpaceTemplateModule),
       },
-      {
-        path: 'subscription-plan',
-        data: { pageTitle: 'shopTheLookApp.subscriptionPlan.home.title' },
-        loadChildren: () => import('./subscription-plan/subscription-plan.module').then(m => m.SubscriptionPlanModule),
-      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],
