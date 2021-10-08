@@ -9,12 +9,12 @@
   <!--/ title text and switch button -->
 
   <!-- pricing plan cards -->
-  <div class="row pricing-card" *ngIf="!error">
+  <div class="row pricing-card" *ngIf="subscriptions.length">
     <div class="col-12 col-sm-offset-2 col-sm-10 col-md-12 col-lg-offset-2 col-lg-10 mx-auto">
       <div class="row">
         <!-- basic plan -->
         <stl-pricing-plan
-          *ngFor="let plan of plans"
+          *ngFor="let plan of subscriptions"
           [plan]="plan"
           (selectedPlan)="selectedPlan($event)"
           class="col-12 col-md-4"
@@ -25,7 +25,7 @@
   </div>
   <!--/ pricing plan cards -->
 
-  <div class="text-center" *ngIf="error">
+  <div class="text-center" *ngIf="!subscriptions.length">
     <ngb-alert role="alert" class="alert alert-danger" [dismissible]="false">
       <h4 class="alert-heading">Error</h4>
       <div class="alert-body">There is been an error loading the subscription plans. Please, try again later.</div>

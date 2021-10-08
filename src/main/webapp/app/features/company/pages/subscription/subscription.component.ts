@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ISubscriptionPlan } from '../../model/subscription-plan.model';
-import { SubscriptionService } from '../../service/subscription.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'stl-subscription',
@@ -9,21 +8,14 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
   styleUrls: ['./subscription.component.scss'],
 })
 export class SubscriptionComponent implements OnInit {
-  public plans: ISubscriptionPlan[] = [];
-  public error = false;
+  public subscriptions: ISubscriptionPlan[] = [];
 
-  constructor(private subscriptionService: SubscriptionService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.subscriptionService.query().subscribe(
-      (response: HttpResponse<ISubscriptionPlan[]>) => {
-        this.plans = response.body!;
-      },
-      (error: HttpErrorResponse) => {
-        this.error = true;
-        console.error('Error loading the subscription plans', error);
-      }
-    );
+    this.route.data.subscribe(({ subscriptions }) => {
+      this.subscriptions = subscriptions;
+    });
   }
 
   selectedPlan($event: ISubscriptionPlan): void {

@@ -1,8 +1,9 @@
 export interface ISubscriptionPlan {
-  name?: string;
+  name: string;
   description?: string | null;
-  popular?: string;
-  price?: number;
-  benefits?: string[];
-  current?: boolean;
+  reference: string;
+  popular: boolean;
+  price: number;
+  benefits: string[];
+  current: boolean;
 }
