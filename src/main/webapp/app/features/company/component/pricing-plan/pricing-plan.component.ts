@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ISubscriptionPlan } from '../../model/subscription-plan.model';
 
 @Component({
@@ -8,5 +8,8 @@ import { ISubscriptionPlan } from '../../model/subscription-plan.model';
 })
 export class PricingPlanComponent {
   @Input()
-  plan!: ISubscriptionPlan;
+  public plan!: ISubscriptionPlan;
+
+  @Output()
+  public selectedPlan = new EventEmitter<ISubscriptionPlan>();
 }
