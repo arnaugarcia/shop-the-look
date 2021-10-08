@@ -5,4 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './subscription.component.html',
   styleUrls: ['./subscription.component.scss'],
 })
-export class SubscriptionComponent {}
+export class SubscriptionComponent {
+  monthly = false;
+}

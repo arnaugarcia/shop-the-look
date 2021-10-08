@@ -12,6 +12,7 @@ import { CompanyModalErrorComponent } from './component/company-modal-error/comp
 import { CompanyModalSuccessComponent } from './component/company-modal-success/company-modal-success.component';
 import { PreferencesComponent } from './pages/preferences/preferences.component';
 import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
+import { PricingPlanComponent } from './component/pricing-plan/pricing-plan.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ContentHeaderModule } from '../../layouts/content-header/content-header
     CompanyModalErrorComponent,
     CompanyModalSuccessComponent,
     PreferencesComponent,
+    PricingPlanComponent,
   ],
   imports: [SharedModule, ContentHeaderModule],
 })
