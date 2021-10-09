@@ -44,42 +44,42 @@ public class SpaceResource {
         this.spaceQueryService = spaceQueryService;
     }
 
-    @GetMapping("/spaces")
-    public ResponseEntity<Void> findSpaces() {
-        throw new NotYetImplementedException();
-    }
-
-    @GetMapping("/me/spaces")
-    public ResponseEntity<List<SpaceDTO>> findMySpaces(SpaceCriteria spaceCriteria) {
+    @GetMapping("/company/spaces")
+    public ResponseEntity<List<SpaceDTO>> findOwnCompanySpaces(SpaceCriteria spaceCriteria) {
         log.debug("REST request to get spaces for current user");
         List<SpaceDTO> result = spaceQueryService.findForCurrentUser(spaceCriteria);
         return ok().body(result);
     }
 
-    @GetMapping("/spaces/{reference}")
-    public ResponseEntity<SpaceDTO> findSpace(@PathVariable String reference) {
-        log.debug("REST request to get Space : {}", reference);
-        return ok(spaceService.findOne(reference));
+    @GetMapping("/companies/{reference}/spaces")
+    public ResponseEntity<List<SpaceDTO>> findSpacesForCompany(@PathVariable String reference, SpaceCriteria spaceCriteria) {
+        log.debug("REST request to get spaces for company {}", reference);
+        List<SpaceDTO> result = spaceQueryService.findForCompany(spaceCriteria, reference);
+        return ok().body(result);
     }
 
-    @PostMapping("/spaces")
-    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody NewSpaceRequest newSpaceRequest, @RequestParam String companyReference)
-        throws URISyntaxException {
-        log.debug("REST request to save an Space");
-        SpaceDTO result = spaceService.createForCompany(newSpaceRequest, companyReference);
-        return created(new URI("/api/spaces/" + result.getReference()))
-            .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
-            .body(result);
+    @PostMapping("/companies/{reference}/spaces")
+    public ResponseEntity<List<SpaceDTO>> createSpaceForCompany(
+        @PathVariable String reference,
+        @Valid @RequestBody NewSpaceRequest newSpaceRequest
+    ) {
+        throw new NotYetImplementedException();
     }
 
-    @PostMapping("/me/spaces")
-    public ResponseEntity<SpaceDTO> createSpaceForCurrentUser(@Valid @RequestBody NewSpaceRequest newSpaceRequest)
+    @PostMapping("/company/spaces")
+    public ResponseEntity<SpaceDTO> createSpaceForOwnCompany(@Valid @RequestBody NewSpaceRequest newSpaceRequest)
         throws URISyntaxException {
         log.debug("REST request to save an Space");
         SpaceDTO result = spaceService.createForCurrentUser(newSpaceRequest);
         return created(new URI("/api/spaces/" + result.getReference()))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
+    }
+
+    @GetMapping("/spaces/{reference}")
+    public ResponseEntity<SpaceDTO> findSpace(@PathVariable String reference) {
+        log.debug("REST request to get Space : {}", reference);
+        return ok(spaceService.findOne(reference));
     }
 
     @PatchMapping("/spaces/{reference}")

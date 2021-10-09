@@ -1,13 +1,14 @@
 package com.klai.stl.service.criteria;
 
 import java.io.Serializable;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+@Value
+@Builder
+@Jacksonized
 public class SpaceCriteria implements Serializable {
 
     String keyword;
-    String companyReference;
 }
