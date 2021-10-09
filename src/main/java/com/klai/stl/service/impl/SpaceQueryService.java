@@ -66,6 +66,11 @@ public class SpaceQueryService extends QueryService<Space> {
         log.debug("find spaces for company {} by criteria {}", companyReference, spaceCriteria);
         Specification<Space> specification = createSpecification(spaceCriteria);
         specification = specification.and(byCompanyReference(companyReference));
+        return findBySpecification(specification);
+    }
+
+    private List<SpaceDTO> findBySpecification(Specification<Space> specification) {
+        log.debug("find spaces for company by specification {}", specification);
         return spaceMapper.toDto(spaceRepository.findAll(specification));
     }
 

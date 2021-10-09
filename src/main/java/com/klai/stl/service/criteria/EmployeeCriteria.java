@@ -4,9 +4,9 @@ import java.io.Serializable;
 import lombok.Value;
 
 @Value
-public final class EmployeeCriteria implements Serializable {
+public class EmployeeCriteria implements Serializable {
 
-    private String keyword;
+    String keyword;
 
-    private String company;
+    String company;
 }
