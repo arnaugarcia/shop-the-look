@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <!--
         Added the entity SubscriptionPlan.
@@ -20,16 +18,25 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="category" type="varchar(255)">
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_subscription_plan__reference" />
+            </column>
+            <column name="popular" type="boolean">
                 <constraints nullable="false" />
             </column>
-            <column name="max_products" type="integer">
+            <column name="price" type="double">
                 <constraints nullable="false" />
             </column>
-            <column name="max_spaces" type="integer">
+            <column name="order" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="max_requests" type="integer">
+            <column name="products" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="spaces" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="requests" type="integer">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -54,10 +61,13 @@
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>
-            <column name="category" type="string"/>
-            <column name="max_products" type="numeric"/>
-            <column name="max_spaces" type="numeric"/>
-            <column name="max_requests" type="numeric"/>
+            <column name="reference" type="string"/>
+            <column name="popular" type="boolean"/>
+            <column name="price" type="numeric"/>
+            <column name="order" type="numeric"/>
+            <column name="products" type="numeric"/>
+            <column name="spaces" type="numeric"/>
+            <column name="requests" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

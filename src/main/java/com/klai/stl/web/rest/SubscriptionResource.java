@@ -1,6 +1,5 @@
 package com.klai.stl.web.rest;
 
-import com.klai.stl.domain.enumeration.SubscriptionCategory;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
 import java.util.List;
 import org.hibernate.cfg.NotYetImplementedException;
@@ -24,9 +23,9 @@ public class SubscriptionResource {
     @PutMapping("/companies/{reference}/subscriptions")
     public ResponseEntity<SubscriptionPlanDTO> updateSubscriptionForCompany(
         @PathVariable(name = "reference") String companyReference,
-        @RequestBody SubscriptionCategory subscriptionCategory
+        @RequestBody String subscriptionReference
     ) {
-        log.debug("REST request to update company {} subscription with subscription {}", companyReference, subscriptionCategory);
+        log.debug("REST request to update company {} subscription with subscription {}", companyReference, subscriptionReference);
         throw new NotYetImplementedException();
     }
 

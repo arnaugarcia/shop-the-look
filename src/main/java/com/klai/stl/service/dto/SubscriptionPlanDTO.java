@@ -1,30 +1,29 @@
 package com.klai.stl.service.dto;
 
-import com.klai.stl.domain.enumeration.SubscriptionCategory;
 import java.io.Serializable;
-import javax.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.SubscriptionPlan} entity.
  */
-@Data
+@Value
+@Builder
+@AllArgsConstructor
 public class SubscriptionPlanDTO implements Serializable {
 
-    @NotNull
-    private String name;
+    String name;
 
-    private String description;
+    String description;
 
-    @NotNull
-    private SubscriptionCategory category;
+    String reference;
 
-    @NotNull
-    private Integer maxProducts;
+    boolean popular;
 
-    @NotNull
-    private Integer maxSpaces;
+    double price;
 
-    @NotNull
-    private Integer maxRequests;
+    boolean current;
+
+    SubscriptionBenefitsDTO benefits;
 }
