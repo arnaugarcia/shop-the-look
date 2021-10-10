@@ -8,7 +8,6 @@ import com.klai.stl.domain.Company_;
 import com.klai.stl.domain.Space;
 import com.klai.stl.domain.Space_;
 import com.klai.stl.repository.SpaceRepository;
-import com.klai.stl.service.UserService;
 import com.klai.stl.service.criteria.SpaceCriteria;
 import com.klai.stl.service.dto.SpaceDTO;
 import com.klai.stl.service.mapper.SpaceMapper;
@@ -39,12 +38,9 @@ public class SpaceQueryService extends QueryService<Space> {
 
     private final SpaceMapper spaceMapper;
 
-    private final UserService userService;
-
-    public SpaceQueryService(SpaceRepository spaceRepository, SpaceMapper spaceMapper, UserService userService) {
+    public SpaceQueryService(SpaceRepository spaceRepository, SpaceMapper spaceMapper) {
         this.spaceRepository = spaceRepository;
         this.spaceMapper = spaceMapper;
-        this.userService = userService;
     }
 
     /**
@@ -52,20 +48,9 @@ public class SpaceQueryService extends QueryService<Space> {
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<SpaceDTO> findForCurrentUser(SpaceCriteria spaceCriteria) {
-        log.debug("find spaces for current user");
-        return findForCompany(spaceCriteria, userService.getCurrentUserCompanyReference());
-    }
-
-    /**
-     * Return a {@link List} of {@link SpaceDTO} which matches the criteria from the database.
-     * @return the matching entities.
-     */
-    @Transactional(readOnly = true)
-    public List<SpaceDTO> findForCompany(SpaceCriteria spaceCriteria, String companyReference) {
-        log.debug("find spaces for company {} by criteria {}", companyReference, spaceCriteria);
+    public List<SpaceDTO> findByCriteria(SpaceCriteria spaceCriteria) {
+        log.debug("find spaces for by criteria {}", spaceCriteria);
         Specification<Space> specification = createSpecification(spaceCriteria);
-        specification = specification.and(byCompanyReference(companyReference));
         return findBySpecification(specification);
     }
 
@@ -79,11 +64,14 @@ public class SpaceQueryService extends QueryService<Space> {
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
-    protected Specification<Space> createSpecification(SpaceCriteria criteria) {
+    private Specification<Space> createSpecification(SpaceCriteria criteria) {
         Specification<Space> specification = Specification.where(null);
         if (!isNull(criteria)) {
             if (!isNull(criteria.getKeyword())) {
                 throw new NotYetImplementedException();
+            }
+            if (!isNull(criteria.getCompanyReference())) {
+                specification = specification.and(byCompanyReference(criteria.getCompanyReference()));
             }
         }
         return specification;

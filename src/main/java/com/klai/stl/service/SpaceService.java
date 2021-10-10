@@ -2,10 +2,10 @@ package com.klai.stl.service;
 
 import com.klai.stl.domain.Space;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.criteria.SpaceCriteriaDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Space}.
@@ -28,28 +28,12 @@ public interface SpaceService {
     SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, String companyReference);
 
     /**
-     * Get all the spaces.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<SpaceDTO> findAll(Pageable pageable);
-
-    /**
      * Get the "reference" space.
      *
      * @param reference the reference of the entity.
      * @return the entity.
      */
     SpaceDTO findOne(String reference);
-
-    /**
-     * Get the "reference" space.
-     *
-     * @param reference the reference of the entity.
-     * @return the entity.
-     */
-    Space findByReference(String reference);
 
     /**
      * Get the "reference" space for the current user. If not belongs to the current user it throws an Exception.
@@ -74,5 +58,18 @@ public interface SpaceService {
      */
     SpaceDTO partialUpdate(UpdateSpaceRequest newSpaceRequest, String reference);
 
-    void checkIfCurrentUserBelongsToSpace(String spaceReference);
+    /**
+     * Finds by given criteria for the desired company
+     * @param spaceCriteria the criteria to match spaces
+     * @param reference the reference of the company
+     * @return a list of spaces
+     */
+    List<SpaceDTO> findByCriteriaForCompany(SpaceCriteriaDTO spaceCriteria, String reference);
+
+    /**
+     * Finds by given criteria and current user company
+     * @param spaceCriteria the criteria to match spaces
+     * @return a list of spaces
+     */
+    List<SpaceDTO> findByCriteriaForCurrentUser(SpaceCriteriaDTO spaceCriteria);
 }
