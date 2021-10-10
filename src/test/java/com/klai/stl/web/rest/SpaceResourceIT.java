@@ -60,6 +60,7 @@ class SpaceResourceIT {
     private static final String API_URL = "/api/spaces";
     private static final String API_URL_REFERENCE = "/api/spaces/{reference}";
     private static final String COMPANY_API_URL = "/api/company/spaces";
+    private static final String COMPANY_API_URL_REFERENCE = "/api/companies/{reference}/spaces";
 
     @Autowired
     private SpaceRepository spaceRepository;
@@ -175,7 +176,9 @@ class SpaceResourceIT {
 
         restSpaceMockMvc
             .perform(
-                post(API_URL_ADMIN, company.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest))
+                post(COMPANY_API_URL_REFERENCE, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(newSpaceRequest))
             )
             .andExpect(status().isCreated());
 
@@ -219,7 +222,11 @@ class SpaceResourceIT {
     @WithMockUser(authorities = ADMIN)
     public void createSpaceForOtherCompanyThatNotExistsAsAdmin() throws Exception {
         restSpaceMockMvc
-            .perform(post(API_URL_ADMIN, "FAKE_REFERENCE").contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newSpaceRequest)))
+            .perform(
+                post(COMPANY_API_URL_REFERENCE, "FAKE_REFERENCE")
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(newSpaceRequest))
+            )
             .andExpect(status().isNotFound());
     }
 

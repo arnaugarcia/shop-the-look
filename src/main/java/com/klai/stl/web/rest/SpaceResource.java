@@ -13,7 +13,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,11 +54,14 @@ public class SpaceResource {
     }
 
     @PostMapping("/companies/{reference}/spaces")
-    public ResponseEntity<List<SpaceDTO>> createSpaceForCompany(
+    public ResponseEntity<SpaceDTO> createSpaceForCompany(
         @PathVariable String reference,
         @Valid @RequestBody NewSpaceRequest newSpaceRequest
-    ) {
-        throw new NotYetImplementedException();
+    ) throws URISyntaxException {
+        SpaceDTO result = spaceService.createForCompany(newSpaceRequest, reference);
+        return created(new URI("/api/spaces/" + result.getReference()))
+            .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
+            .body(result);
     }
 
     @PostMapping("/company/spaces")
