@@ -50,6 +50,7 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
     @Override
     public List<SubscriptionPlanDTO> findSubscriptionsForCompany(String companyReference) {
+        log.debug("Finding subscriptions for company {}", companyReference);
         Optional<SubscriptionPlan> currentSubscriptionPlan = ofNullable(findSubscriptionPlanBy(companyReference));
         final List<SubscriptionPlanDTO> subscriptions = findAllSubscriptions();
         currentSubscriptionPlan.flatMap(findSubscriptionIn(subscriptions)).ifPresent(SubscriptionPlanDTO::setAsCurrent);
@@ -58,6 +59,7 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
     @Override
     public List<SubscriptionPlanDTO> findSubscriptionsForCurrentUserCompany() {
+        log.debug("Finding subscriptions for current user company");
         return findSubscriptionsForCompany(userService.getCurrentUserCompanyReference());
     }
 
