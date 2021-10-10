@@ -2,12 +2,15 @@ package com.klai.stl.service.impl;
 
 import static java.util.Optional.ofNullable;
 
+import com.klai.stl.domain.Company;
 import com.klai.stl.domain.SubscriptionPlan;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.SubscriptionPlanRepository;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
+import com.klai.stl.service.exception.SubscriptionPlanNotFound;
 import com.klai.stl.service.mapper.SubscriptionPlanMapper;
 import java.util.List;
 import java.util.Optional;
@@ -36,16 +39,20 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
     private final UserService userService;
 
+    private final CompanyRepository companyRepository;
+
     public SubscriptionPlanServiceImpl(
         SubscriptionPlanRepository subscriptionPlanRepository,
         SubscriptionPlanMapper subscriptionPlanMapper,
         CompanyService companyService,
-        UserService userService
+        UserService userService,
+        CompanyRepository companyRepository
     ) {
         this.subscriptionPlanRepository = subscriptionPlanRepository;
         this.subscriptionPlanMapper = subscriptionPlanMapper;
         this.companyService = companyService;
         this.userService = userService;
+        this.companyRepository = companyRepository;
     }
 
     @Override
@@ -59,13 +66,20 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
     @Override
     public List<SubscriptionPlanDTO> findSubscriptionsForCurrentUserCompany() {
-        log.debug("Finding subscriptions for current user company");
         return findSubscriptionsForCompany(userService.getCurrentUserCompanyReference());
     }
 
     @Override
     public SubscriptionPlanDTO updateSubscriptionPlanForCompany(String companyReference, String subscriptionReference) {
-        return null;
+        final Company company = companyService.findByReference(companyReference);
+        final SubscriptionPlan subscriptionPlan = findByReference(subscriptionReference);
+        company.subscriptionPlan(subscriptionPlan);
+        companyRepository.save(company);
+        return subscriptionPlanMapper.toDto(subscriptionPlan);
+    }
+
+    private SubscriptionPlan findByReference(String subscriptionReference) {
+        return subscriptionPlanRepository.findByReference(subscriptionReference).orElseThrow(SubscriptionPlanNotFound::new);
     }
 
     private List<SubscriptionPlanDTO> findAllSubscriptions() {
