@@ -3,27 +3,31 @@ package com.klai.stl.service.dto;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.SubscriptionPlan} entity.
  */
-@Value
+@Data
 @Builder
 @AllArgsConstructor
 public class SubscriptionPlanDTO implements Serializable {
 
-    String name;
+    private String name;
 
-    String description;
+    private String description;
 
-    String reference;
+    private String reference;
 
-    boolean popular;
+    private boolean popular;
 
-    double price;
+    private double price;
 
-    boolean current;
+    private boolean current;
 
-    SubscriptionBenefitsDTO benefits;
+    private SubscriptionBenefitsDTO benefits;
+
+    public void setAsCurrent() {
+        this.setCurrent(true);
+    }
 }
