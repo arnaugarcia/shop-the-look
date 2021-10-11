@@ -631,7 +631,7 @@
                             <image>adoptopenjdk:11-jre-hotspot</image>
                         </from>
                         <to>
-                            <image>${artifactId}:latest</image>
+                            <image>${project.artifactId}:latest</image>
                         </to>
                         <container>
                             <entrypoint>
@@ -1043,7 +1043,7 @@
                 </dependency>
             </dependencies>
             <build>
-                <finalName>stl-${version}</finalName>
+                <finalName>stl-${project.version}</finalName>
                 <plugins>
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>
