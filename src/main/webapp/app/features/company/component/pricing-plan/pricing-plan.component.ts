@@ -12,4 +12,8 @@ export class PricingPlanComponent {
 
   @Output()
   public selectedPlan = new EventEmitter<ISubscriptionPlan>();
+
+  selectPlan(selectedPlan: ISubscriptionPlan): void {
+    this.selectedPlan.emit(selectedPlan);
+  }
 }

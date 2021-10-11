@@ -17,8 +17,10 @@
       </div>
     </div>
     <stl-pricing-plan-benefits [benefits]="plan.benefits"></stl-pricing-plan-benefits>
-    <button class="btn btn-block btn-outline-success mt-2" *ngIf="plan.current" [disabled]="plan.current">Your current plan</button>
-    <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.current && plan.price">Switch plan</button>
-    <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.current && !plan.price">Contact</button>
+    <button class="btn btn-block btn-outline-success mt-2" *ngIf="plan.current" [disabled]="plan.current" (click)="selectPlan(plan)">
+      Your current plan
+    </button>
+    <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.current && plan.price" (click)="selectPlan(plan)">Switch plan</button>
+    <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.current && !plan.price" (click)="selectPlan(plan)">Contact</button>
   </div>
 </div>
