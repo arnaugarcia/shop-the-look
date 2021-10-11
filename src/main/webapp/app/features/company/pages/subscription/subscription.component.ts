@@ -28,14 +28,16 @@ export class SubscriptionComponent implements OnInit {
       window.open('mailto:contact@weareklai.com?subject=[Shop The Look] - Custom pricing', '_blank');
     }
     if (this.accountService.isAdmin()) {
-      this.subscriptionService.updateForCompany(this.companyReference!, selectedPlan.reference).subscribe(this.loadAll, this.onError);
+      this.subscriptionService.updateForCompany(this.companyReference!, selectedPlan.reference).subscribe(() => {
+        this.loadAll();
+      }, this.onError());
     }
   }
   private loadAll(): void {
     if (this.companyReference) {
-      this.subscriptionService.queryForCompany(this.companyReference).subscribe(this.onSuccess, this.onError);
+      this.subscriptionService.queryForCompany(this.companyReference).subscribe(this.onSuccess(), this.onError());
     } else {
-      this.subscriptionService.queryForOwnCompany().subscribe(this.onSuccess, this.onError);
+      this.subscriptionService.queryForOwnCompany().subscribe(this.onSuccess(), this.onError());
     }
   }
 

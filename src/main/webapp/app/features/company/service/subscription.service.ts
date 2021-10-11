@@ -22,7 +22,7 @@ export class SubscriptionService {
   updateForCompany(reference: string, subscriptionReference: string): Observable<EntityResponseType> {
     return this.http.put<ISubscriptionPlan>(
       `/api/companies/${reference}/subscriptions`,
-      { reference: subscriptionReference },
+      { subscriptionReference: subscriptionReference },
       { observe: 'response' }
     );
   }
