@@ -15,9 +15,6 @@ import com.klai.stl.service.exception.SubscriptionPlanNotFound;
 import com.klai.stl.service.mapper.CompanySubscriptionMapper;
 import com.klai.stl.service.mapper.SubscriptionPlanMapper;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -83,23 +80,5 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
     private SubscriptionPlan findByReference(String subscriptionReference) {
         return subscriptionPlanRepository.findByReference(subscriptionReference).orElseThrow(SubscriptionPlanNotFound::new);
-    }
-
-    private List<SubscriptionPlanDTO> findAllSubscriptions() {
-        return subscriptionPlanRepository.findAll().stream().map(subscriptionPlanMapper::toDto).collect(toList());
-    }
-
-    private Function<SubscriptionPlan, Optional<? extends SubscriptionPlanDTO>> findSubscriptionIn(
-        List<SubscriptionPlanDTO> subscriptions
-    ) {
-        return subscriptionPlan -> subscriptions.stream().filter(byReference(subscriptionPlan.getReference())).findFirst();
-    }
-
-    private Predicate<SubscriptionPlanDTO> byReference(String subscriptionReference) {
-        return subscriptionPlanDTO -> subscriptionPlanDTO.getReference().equalsIgnoreCase(subscriptionReference);
-    }
-
-    private SubscriptionPlan findSubscriptionPlanBy(String companyReference) {
-        return companyService.findByReference(companyReference).getSubscriptionPlan();
     }
 }
