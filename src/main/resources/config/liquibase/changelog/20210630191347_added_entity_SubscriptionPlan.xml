@@ -27,7 +27,7 @@
             <column name="price" type="double">
                 <constraints nullable="false" />
             </column>
-            <column name="order" type="integer">
+            <column name="position" type="integer">
                 <constraints nullable="false" />
             </column>
             <column name="products" type="integer">
@@ -64,7 +64,7 @@
             <column name="reference" type="string"/>
             <column name="popular" type="boolean"/>
             <column name="price" type="numeric"/>
-            <column name="order" type="numeric"/>
+            <column name="position" type="numeric"/>
             <column name="products" type="numeric"/>
             <column name="spaces" type="numeric"/>
             <column name="requests" type="numeric"/>

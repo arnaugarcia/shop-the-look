@@ -47,7 +47,7 @@ public class SubscriptionPlan implements Serializable {
     private Double price;
 
     @NotNull
-    @Column(name = "order", nullable = false)
+    @Column(name = "position", nullable = false)
     private Integer order;
 
     @NotNull
