@@ -4,6 +4,7 @@ import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * A DTO for the {@link com.klai.stl.domain.SubscriptionPlan} entity.
@@ -11,6 +12,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class SubscriptionPlanDTO implements Serializable {
 
     private String name;
@@ -26,8 +28,4 @@ public class SubscriptionPlanDTO implements Serializable {
     private boolean current;
 
     private SubscriptionBenefitsDTO benefits;
-
-    public void setAsCurrent() {
-        this.setCurrent(true);
-    }
 }

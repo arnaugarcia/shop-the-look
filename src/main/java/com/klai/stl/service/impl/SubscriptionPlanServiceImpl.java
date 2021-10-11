@@ -1,22 +1,23 @@
 package com.klai.stl.service.impl;
 
-import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.SubscriptionPlanRepository;
+import com.klai.stl.repository.projections.CompanySubscription;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
 import com.klai.stl.service.exception.SubscriptionPlanNotFound;
+import com.klai.stl.service.mapper.CompanySubscriptionMapper;
 import com.klai.stl.service.mapper.SubscriptionPlanMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
     private final SubscriptionPlanMapper subscriptionPlanMapper;
 
+    private final CompanySubscriptionMapper companySubscriptionMapper;
+
     private final CompanyService companyService;
 
     private final UserService userService;
@@ -44,12 +47,14 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     public SubscriptionPlanServiceImpl(
         SubscriptionPlanRepository subscriptionPlanRepository,
         SubscriptionPlanMapper subscriptionPlanMapper,
+        CompanySubscriptionMapper companySubscriptionMapper,
         CompanyService companyService,
         UserService userService,
         CompanyRepository companyRepository
     ) {
         this.subscriptionPlanRepository = subscriptionPlanRepository;
         this.subscriptionPlanMapper = subscriptionPlanMapper;
+        this.companySubscriptionMapper = companySubscriptionMapper;
         this.companyService = companyService;
         this.userService = userService;
         this.companyRepository = companyRepository;
@@ -58,10 +63,8 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     @Override
     public List<SubscriptionPlanDTO> findSubscriptionsForCompany(String companyReference) {
         log.debug("Finding subscriptions for company {}", companyReference);
-        Optional<SubscriptionPlan> currentSubscriptionPlan = ofNullable(findSubscriptionPlanBy(companyReference));
-        final List<SubscriptionPlanDTO> subscriptions = findAllSubscriptions();
-        currentSubscriptionPlan.flatMap(findSubscriptionIn(subscriptions)).ifPresent(SubscriptionPlanDTO::setAsCurrent);
-        return subscriptions;
+        final List<CompanySubscription> subscriptions = subscriptionPlanRepository.findCompanySubscriptionsByReference(companyReference);
+        return subscriptions.stream().map(companySubscriptionMapper::toDto).collect(toList());
     }
 
     @Override
@@ -83,7 +86,7 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     }
 
     private List<SubscriptionPlanDTO> findAllSubscriptions() {
-        return subscriptionPlanRepository.findAll().stream().map(subscriptionPlanMapper::toDto).collect(Collectors.toList());
+        return subscriptionPlanRepository.findAll().stream().map(subscriptionPlanMapper::toDto).collect(toList());
     }
 
     private Function<SubscriptionPlan, Optional<? extends SubscriptionPlanDTO>> findSubscriptionIn(
