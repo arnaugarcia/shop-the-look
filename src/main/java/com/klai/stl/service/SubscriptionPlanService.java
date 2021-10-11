@@ -1,6 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
+import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import java.util.List;
 
 /**
@@ -23,8 +24,8 @@ public interface SubscriptionPlanService {
     /**
      * Updates the subscription plan for the desired company
      * @param companyReference the company reference
-     * @param subscriptionReference the subscription reference
+     * @param updateSubscriptionRequest the subscription reference
      * @return the updated subscription
      */
-    SubscriptionPlanDTO updateSubscriptionPlanForCompany(String companyReference, String subscriptionReference);
+    SubscriptionPlanDTO updateSubscriptionPlanForCompany(String companyReference, UpdateSubscriptionRequest updateSubscriptionRequest);
 }

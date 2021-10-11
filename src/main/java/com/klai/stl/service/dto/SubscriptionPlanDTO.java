@@ -1,5 +1,7 @@
 package com.klai.stl.service.dto;
 
+import static java.util.Objects.isNull;
+
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +34,6 @@ public class SubscriptionPlanDTO implements Serializable {
     private boolean custom;
 
     public boolean isCustom() {
-        return benefits.allAreZero();
+        return !isNull(benefits) && benefits.allAreZero();
     }
 }

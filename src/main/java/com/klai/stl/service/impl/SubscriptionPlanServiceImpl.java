@@ -11,6 +11,7 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
+import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import com.klai.stl.service.exception.SubscriptionPlanNotFound;
 import com.klai.stl.service.mapper.CompanySubscriptionMapper;
 import com.klai.stl.service.mapper.SubscriptionPlanMapper;
@@ -70,9 +71,12 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     }
 
     @Override
-    public SubscriptionPlanDTO updateSubscriptionPlanForCompany(String companyReference, String subscriptionReference) {
+    public SubscriptionPlanDTO updateSubscriptionPlanForCompany(
+        String companyReference,
+        UpdateSubscriptionRequest updateSubscriptionRequest
+    ) {
         final Company company = companyService.findByReference(companyReference);
-        final SubscriptionPlan subscriptionPlan = findByReference(subscriptionReference);
+        final SubscriptionPlan subscriptionPlan = findByReference(updateSubscriptionRequest.getSubscriptionReference());
         company.subscriptionPlan(subscriptionPlan);
         companyRepository.save(company);
         return subscriptionPlanMapper.toDto(subscriptionPlan);

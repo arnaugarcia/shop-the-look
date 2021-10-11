@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
+import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,10 @@ public class SubscriptionResource {
     @PutMapping("/companies/{reference}/subscriptions")
     public ResponseEntity<SubscriptionPlanDTO> updateSubscriptionForCompany(
         @PathVariable(name = "reference") String companyReference,
-        @RequestBody String subscriptionReference
+        @RequestBody UpdateSubscriptionRequest updateSubscriptionRequest
     ) {
-        log.debug("REST request to update company {} subscription with subscription {}", companyReference, subscriptionReference);
-        return ok(subscriptionPlanService.updateSubscriptionPlanForCompany(companyReference, subscriptionReference));
+        log.debug("REST request to update company {} subscription with subscription {}", companyReference, updateSubscriptionRequest);
+        return ok(subscriptionPlanService.updateSubscriptionPlanForCompany(companyReference, updateSubscriptionRequest));
     }
 
     @GetMapping("/company/subscriptions")
