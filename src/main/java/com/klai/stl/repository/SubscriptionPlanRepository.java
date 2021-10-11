@@ -9,10 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * Spring Data SQL repository for the SubscriptionPlan entity.
- */
-@SuppressWarnings("unused")
 @Repository
 public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPlan, Long> {
     Optional<SubscriptionPlan> findByReference(String subscriptionReference);
