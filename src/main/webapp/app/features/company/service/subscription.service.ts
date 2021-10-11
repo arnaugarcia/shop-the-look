@@ -18,4 +18,12 @@ export class SubscriptionService {
   queryForOwnCompany(): Observable<EntityArrayResponseType> {
     return this.http.get<ISubscriptionPlan[]>(`/api/company/subscriptions`, { observe: 'response' });
   }
+
+  updateForCompany(reference: string, subscriptionReference: string): Observable<EntityResponseType> {
+    return this.http.put<ISubscriptionPlan>(
+      `/api/companies/${reference}/subscriptions`,
+      { reference: subscriptionReference },
+      { observe: 'response' }
+    );
+  }
 }
