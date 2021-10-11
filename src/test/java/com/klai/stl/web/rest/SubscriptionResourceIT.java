@@ -27,8 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class SubscriptionResourceIT {
 
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
+    private static final String NAME = "NAME";
+    private static final String DESCRIPTION = "DESCRIPTION";
+    private static final String REFERENCE = "REFERENCE";
+    private static final Integer ORDER = 1;
+    private static final Double PRICE = 10.00;
+    private static final Boolean POPULAR = true;
+    private static final Integer PRODUCTS = 10;
+    private static final Integer SPACES = 10;
+    private static final Integer REQUESTS = 10;
 
     private static final String API_URL_COMPANIES = "/api/companies/{reference}/subscriptions";
     private static final String API_URL_OWN = "/api/company/subscriptions";
@@ -57,13 +64,18 @@ class SubscriptionResourceIT {
             .perform(delete(API_URL_OWN).contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(NAME));
     }
 
     @Test
     @Transactional
     @WithMockUser
     public void findSubscriptionsWhenCompanyDontHaveOnePayed() throws Exception {}
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void findCustomSubscription() throws Exception {}
 
     @Test
     @Transactional
