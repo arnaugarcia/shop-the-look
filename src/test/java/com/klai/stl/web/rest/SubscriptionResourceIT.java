@@ -3,12 +3,15 @@ package com.klai.stl.web.rest;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
+import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.SubscriptionPlanRepository;
+import java.util.function.Function;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +47,9 @@ class SubscriptionResourceIT {
     private SubscriptionPlanRepository subscriptionPlanRepository;
 
     @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -53,6 +59,8 @@ class SubscriptionResourceIT {
 
     @BeforeEach
     public void initTest() {
+        companyRepository.findAll().stream().map(removeSubscription()).forEach(companyRepository::save);
+        subscriptionPlanRepository.deleteAll();
         company = createBasicCompany(em);
     }
 
@@ -61,7 +69,7 @@ class SubscriptionResourceIT {
     @WithMockUser
     public void findSubscriptionsForCurrentUser() throws Exception {
         restSubscriptionMockMvc
-            .perform(delete(API_URL_OWN).contentType(APPLICATION_JSON))
+            .perform(get(API_URL_OWN).contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.name").value(NAME));
@@ -81,7 +89,7 @@ class SubscriptionResourceIT {
     @Transactional
     @WithMockUser
     public void findSubscriptionsForOtherCompanyAsUser() throws Exception {
-        restSubscriptionMockMvc.perform(delete(API_URL_COMPANIES).contentType(APPLICATION_JSON)).andExpect(status().isForbidden());
+        restSubscriptionMockMvc.perform(get(API_URL_COMPANIES).contentType(APPLICATION_JSON)).andExpect(status().isForbidden());
     }
 
     @Test
@@ -130,5 +138,12 @@ class SubscriptionResourceIT {
         em.persist(user);
         company.addUser(user);
         em.persist(company);
+    }
+
+    private Function<Company, Company> removeSubscription() {
+        return company1 -> {
+            company1.subscriptionPlan(null);
+            return company1;
+        };
     }
 }
