@@ -28,4 +28,10 @@ public class SubscriptionPlanDTO implements Serializable {
     private boolean current;
 
     private SubscriptionBenefitsDTO benefits;
+
+    private boolean custom;
+
+    public boolean isCustom() {
+        return benefits.allAreZero();
+    }
 }

@@ -6,6 +6,7 @@ export interface ISubscriptionPlan {
   price: number;
   benefits: ISubscriptionBenefits;
   current: boolean;
+  custom: boolean;
 }
 
 export interface ISubscriptionBenefits {
