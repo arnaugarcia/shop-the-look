@@ -13,9 +13,7 @@
         <sub class="pricing-duration text-body font-medium-1 font-weight-bold">/month</sub>
       </div>
     </div>
-    <ul class="list-group list-group-circle text-left">
-      <li class="list-group-item" *ngFor="let benefit of plan.benefits">{{ benefit }}</li>
-    </ul>
+    <stl-pricing-plan-benefits [benefits]="plan.benefits"></stl-pricing-plan-benefits>
     <button class="btn btn-block btn-outline-success mt-2" *ngIf="plan.current">Your current plan</button>
     <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.current">Upgrade</button>
   </div>

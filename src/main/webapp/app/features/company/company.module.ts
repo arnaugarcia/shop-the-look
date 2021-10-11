@@ -13,6 +13,7 @@ import { CompanyModalSuccessComponent } from './component/company-modal-success/
 import { PreferencesComponent } from './pages/preferences/preferences.component';
 import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
 import { PricingPlanComponent } from './component/pricing-plan/pricing-plan.component';
+import { PricingPlanBenefitsComponent } from './component/pricing-plan-benefits/pricing-plan-benefits.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { PricingPlanComponent } from './component/pricing-plan/pricing-plan.comp
     CompanyModalSuccessComponent,
     PreferencesComponent,
     PricingPlanComponent,
+    PricingPlanBenefitsComponent,
   ],
   imports: [SharedModule, ContentHeaderModule],
 })

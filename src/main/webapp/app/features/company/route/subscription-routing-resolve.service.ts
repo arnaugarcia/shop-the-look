@@ -12,15 +12,24 @@ export class SubscriptionRoutingResolveService implements Resolve<ISubscriptionP
 
   resolve(route: ActivatedRouteSnapshot): Observable<ISubscriptionPlan[]> | Promise<ISubscriptionPlan[]> | ISubscriptionPlan[] {
     const reference = route.parent?.params.reference;
-    const EMPTY = of([]);
-    return this.service.query(reference).pipe(
-      mergeMap((response: HttpResponse<ISubscriptionPlan[]>) => {
-        if (response.body) {
-          return of(response.body);
-        }
-        return EMPTY;
-      }),
-      catchError(() => EMPTY)
+    if (reference) {
+      return this.service.queryForCompany(reference).pipe(
+        mergeMap(this.transformCompanySubscription()),
+        catchError(() => of([]))
+      );
+    }
+    return this.service.queryForOwnCompany().pipe(
+      mergeMap(this.transformCompanySubscription()),
+      catchError(() => of([]))
     );
+  }
+
+  private transformCompanySubscription() {
+    return (response: HttpResponse<ISubscriptionPlan[]>) => {
+      if (response.body) {
+        return of(response.body);
+      }
+      return of([]);
+    };
   }
 }

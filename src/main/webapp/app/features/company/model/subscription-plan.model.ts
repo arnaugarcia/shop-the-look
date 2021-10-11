@@ -1,9 +1,15 @@
 export interface ISubscriptionPlan {
   name: string;
-  description?: string | null;
+  description?: string;
   reference: string;
   popular: boolean;
   price: number;
-  benefits: string[];
+  benefits: ISubscriptionBenefits;
   current: boolean;
+}
+
+export interface ISubscriptionBenefits {
+  products: number;
+  spaces: number;
+  requests: number;
 }
