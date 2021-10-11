@@ -14,13 +14,13 @@ public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPl
     Optional<SubscriptionPlan> findByReference(String subscriptionReference);
 
     @Query(
-        value = "select subcription.*, IF(company.reference IS NULL, 'false', 'true') as current " +
+        value = "select subcription.*, company.reference as companyReference " +
         "from subscription_plan subcription " +
         "         left join company " +
-        "                   on subcription.id = (select subscription_plan_id from company where company.reference = 'ATLTK3JVUH') " +
+        "                   on subcription.id = (select subscription_plan_id from company where company.reference = :reference) " +
         "where company.reference = :reference or company.reference is null " +
-        "order by subcription.order",
+        "order by subcription.position",
         nativeQuery = true
     )
-    List<CompanySubscription> findCompanySubscriptionsByReference(@Param("reference") String companyReference);
+    List<CompanySubscription> findCompanySubscriptionsByReference(@Param("reference") String reference);
 }

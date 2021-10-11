@@ -1,5 +1,7 @@
 package com.klai.stl.repository.projections;
 
+import static java.util.Objects.isNull;
+
 public interface CompanySubscription {
     String getName();
 
@@ -19,5 +21,9 @@ public interface CompanySubscription {
 
     Integer getRequests();
 
-    Boolean getCurrent();
+    String getCompanyReference();
+
+    default Boolean getCurrent() {
+        return !isNull(getCompanyReference());
+    }
 }
