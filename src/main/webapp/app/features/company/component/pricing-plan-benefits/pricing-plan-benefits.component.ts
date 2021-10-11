@@ -8,5 +8,8 @@ import { ISubscriptionBenefits } from '../../model/subscription-plan.model';
 })
 export class PricingPlanBenefitsComponent {
   @Input()
+  public customPlan!: boolean;
+
+  @Input()
   public benefits!: ISubscriptionBenefits;
 }

@@ -1,10 +1,10 @@
 <ul class="list-group list-group-circle text-left">
-  <li class="list-group-item" *ngIf="benefits.products > 0">Products {{ benefits.products }}</li>
-  <li class="list-group-item" *ngIf="benefits.products <= 0">Unlimited products</li>
+  <li class="list-group-item" *ngIf="!customPlan">Products {{ benefits.products }}</li>
+  <li class="list-group-item" *ngIf="customPlan">Unlimited products</li>
 
-  <li class="list-group-item" *ngIf="benefits.requests > 0">Requests {{ benefits.requests }}</li>
-  <li class="list-group-item" *ngIf="benefits.requests <= 0">Unlimited requests</li>
+  <li class="list-group-item" *ngIf="!customPlan">Requests {{ benefits.requests }}</li>
+  <li class="list-group-item" *ngIf="customPlan">Unlimited requests</li>
 
-  <li class="list-group-item" *ngIf="benefits.spaces > 0">Spaces {{ benefits.spaces }}</li>
-  <li class="list-group-item" *ngIf="benefits.spaces <= 0">Unlimited spaces</li>
+  <li class="list-group-item" *ngIf="!customPlan">Spaces {{ benefits.spaces }}</li>
+  <li class="list-group-item" *ngIf="customPlan">Unlimited spaces</li>
 </ul>
