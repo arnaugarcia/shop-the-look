@@ -61,6 +61,7 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     @Override
     public List<SubscriptionPlanDTO> findSubscriptionsForCompany(String companyReference) {
         log.debug("Finding subscriptions for company {}", companyReference);
+        companyService.findByReference(companyReference);
         final List<CompanySubscription> subscriptions = subscriptionPlanRepository.findCompanySubscriptionsByReference(companyReference);
         return subscriptions.stream().map(companySubscriptionMapper::toDto).collect(toList());
     }
