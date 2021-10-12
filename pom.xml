@@ -90,6 +90,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jackson.version>2.9.5</jackson.version>
         <aws-java-sdk.version>2.17.46</aws-java-sdk.version>
+        <stripe.version>20.79.0</stripe.version>
     </properties>
 
     <dependencyManagement>
@@ -357,6 +358,12 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>iam</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>${stripe.version}</version>
         </dependency>
     </dependencies>
 
