@@ -13,7 +13,11 @@ public interface CompanySubscription {
 
     Double getPrice();
 
-    Integer getOrder();
+    Integer getPosition();
+
+    default Integer getOrder() {
+        return getPosition();
+    }
 
     Integer getProducts();
 

@@ -29,6 +29,8 @@ public class SubscriptionPlanDTO implements Serializable {
 
     private boolean current;
 
+    private int order;
+
     private SubscriptionBenefitsDTO benefits;
 
     private boolean custom;
