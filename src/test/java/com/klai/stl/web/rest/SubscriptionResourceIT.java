@@ -1,7 +1,9 @@
 package com.klai.stl.web.rest;
 
+import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
+import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,6 +17,7 @@ import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.SubscriptionPlanRepository;
+import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import java.util.function.Function;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +65,8 @@ class SubscriptionResourceIT {
 
     private SubscriptionPlan subscriptionPlan;
 
+    private UpdateSubscriptionRequest updateSubscriptionRequest;
+
     @BeforeEach
     public void initTest() {
         companyRepository.findAll().stream().map(removeSubscription()).forEach(companyRepository::save);
@@ -72,6 +77,11 @@ class SubscriptionResourceIT {
         subscriptionPlan = subscriptionPlanRepository.save(subscriptionPlan);
         company.subscriptionPlan(subscriptionPlan);
         company = companyRepository.save(company);
+        updateSubscriptionRequest = createUpdateSubscriptionRequest(subscriptionPlan.getReference());
+    }
+
+    private UpdateSubscriptionRequest createUpdateSubscriptionRequest(String subscriptionReference) {
+        return new UpdateSubscriptionRequest(subscriptionReference);
     }
 
     private SubscriptionPlan createSubscriptionPlan(EntityManager em) {
@@ -180,13 +190,28 @@ class SubscriptionResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
-    public void findSubscriptionsForOtherCompanyAsAdmin() throws Exception {}
+    @WithMockUser(authorities = ADMIN)
+    public void findSubscriptionForOtherCompanyAsAdmin() throws Exception {
+        company.users(null);
+        company.subscriptionPlan(null);
+        companyRepository.save(company);
 
-    @Test
-    @Transactional
-    @WithMockUser
-    public void updateSubscriptionForOtherCompanyAsAdmin() throws Exception {}
+        restSubscriptionMockMvc
+            .perform(get(API_URL_COMPANIES, company.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$[*].name").value(NAME))
+            .andExpect(jsonPath("$[*].description").value(DESCRIPTION))
+            .andExpect(jsonPath("$[*].price").value(PRICE))
+            .andExpect(jsonPath("$[*].current").value(false))
+            .andExpect(jsonPath("$[*].custom").value(false))
+            .andExpect(jsonPath("$[*].popular").value(POPULAR))
+            .andExpect(jsonPath("$[*].reference").isNotEmpty())
+            .andExpect(jsonPath("$[*].benefits.products").value(PRODUCTS))
+            .andExpect(jsonPath("$[*].benefits.requests").value(REQUESTS))
+            .andExpect(jsonPath("$[*].benefits.spaces").value(SPACES))
+            .andExpect(jsonPath("$[*].order").value(ORDER));
+    }
 
     @Test
     @Transactional
@@ -204,13 +229,50 @@ class SubscriptionResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser
-    public void updateSubscriptionForCompanyThatNotExistsAsAdmin() throws Exception {}
+    @WithMockUser(authorities = ADMIN)
+    public void updateSubscriptionForCompanyAsAdmin() throws Exception {
+        company.users(null);
+        company.subscriptionPlan(null);
+        companyRepository.save(company);
+
+        restSubscriptionMockMvc
+            .perform(
+                get(API_URL_COMPANIES, company.getReference())
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(updateSubscriptionRequest))
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$[*].name").value(NAME))
+            .andExpect(jsonPath("$[*].description").value(DESCRIPTION))
+            .andExpect(jsonPath("$[*].price").value(PRICE))
+            .andExpect(jsonPath("$[*].current").value(false))
+            .andExpect(jsonPath("$[*].custom").value(false))
+            .andExpect(jsonPath("$[*].popular").value(POPULAR))
+            .andExpect(jsonPath("$[*].reference").isNotEmpty())
+            .andExpect(jsonPath("$[*].benefits.products").value(PRODUCTS))
+            .andExpect(jsonPath("$[*].benefits.requests").value(REQUESTS))
+            .andExpect(jsonPath("$[*].benefits.spaces").value(SPACES))
+            .andExpect(jsonPath("$[*].order").value(ORDER));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(authorities = ADMIN)
+    public void updateSubscriptionForCompanyThatNotExistsAsAdmin() throws Exception {
+        restSubscriptionMockMvc
+            .perform(
+                get(API_URL_COMPANIES, REFERENCE).content(convertObjectToJsonBytes(updateSubscriptionRequest)).contentType(APPLICATION_JSON)
+            )
+            .andExpect(status().isNotFound());
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void updateSubscriptionForCompanyThatNotExistsAsUser() throws Exception {}
+    public void updateSubscriptionForCompanyThatNotExistsAsUser() throws Exception {
+        restSubscriptionMockMvc.perform(put(API_URL_COMPANIES, REFERENCE).contentType(APPLICATION_JSON)).andExpect(status().isForbidden());
+    }
 
     private void createAndAppendUserToCompanyByLogin(String login) {
         User user = UserResourceIT.createUser(em, login);
