@@ -5,6 +5,7 @@ import com.klai.stl.service.PaymentService;
 import com.klai.stl.service.SubscriptionCheckoutService;
 import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.dto.CheckoutResponseDTO;
+import com.klai.stl.service.reponse.CheckoutData;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,5 +22,7 @@ public class SubscriptionCheckoutServiceImpl implements SubscriptionCheckoutServ
     @Override
     public CheckoutResponseDTO getCheckoutDataForSubscriptionPlan(String subscriptionPlanReference) {
         final SubscriptionPlan subscription = subscriptionService.findSubscriptionByReference(subscriptionPlanReference);
+        final CheckoutData checkout = paymentService.checkout(subscription.getPaymentGatewayItemReference());
+        return CheckoutResponseDTO.builder().checkoutUrl(checkout.getCheckoutUrl().toString()).build();
     }
 }

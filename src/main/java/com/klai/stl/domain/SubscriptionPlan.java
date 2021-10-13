@@ -50,6 +50,9 @@ public class SubscriptionPlan implements Serializable {
     @Column(name = "position", nullable = false)
     private Integer order;
 
+    @Column(name = "payment_gateway_item_reference")
+    private String paymentGatewayItemReference;
+
     @NotNull
     @Column(name = "products", nullable = false)
     private Integer products;
@@ -102,6 +105,11 @@ public class SubscriptionPlan implements Serializable {
 
     public SubscriptionPlan order(Integer order) {
         this.order = order;
+        return this;
+    }
+
+    public SubscriptionPlan paymentGatewayItemReference(String paymentGatewayItemReference) {
+        this.paymentGatewayItemReference = paymentGatewayItemReference;
         return this;
     }
 
@@ -171,6 +179,8 @@ public class SubscriptionPlan implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", order='" + getOrder() + "'" +
+            ", paymentGatewayItemReference='" + getPaymentGatewayItemReference() + "'" +
             ", products=" + getProducts() +
             ", spaces=" + getSpaces() +
             ", requests=" + getRequests() +

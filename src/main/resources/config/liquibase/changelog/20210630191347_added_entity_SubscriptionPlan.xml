@@ -30,6 +30,9 @@
             <column name="position" type="integer">
                 <constraints nullable="false" />
             </column>
+            <column name="payment_gateway_item_reference" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="products" type="integer">
                 <constraints nullable="false" />
             </column>
@@ -65,6 +68,7 @@
             <column name="popular" type="boolean"/>
             <column name="price" type="numeric"/>
             <column name="position" type="numeric"/>
+            <column name="payment_gateway_item_reference" type="string"/>
             <column name="products" type="numeric"/>
             <column name="spaces" type="numeric"/>
             <column name="requests" type="numeric"/>

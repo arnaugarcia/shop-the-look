@@ -1,4 +1,4 @@
-id;name;description;reference;popular;price;position;products;spaces;requests
-1;Silver Plan;Silver Plan;AFU4MIG4JMVQJME;false;49;1;2500;5;20000
-2;Gold Plan;Gold Plan;KU5JEJ74K96GSLS;true;79;2;500000;100;5000000
-3;Custom Plan;Custom Plan;5S5MAM8L5IPSDVE;false;0;3;0;0;0
+id;name;description;reference;popular;price;position;payment_gateway_item_reference;products;spaces;requests
+1;Silver Plan;Silver Plan;AFU4MIG4JMVQJME;false;49;1;price_1JiErFLQttstmIiWzRfUBP8l;2500;5;20000
+2;Gold Plan;Gold Plan;KU5JEJ74K96GSLS;true;79;2;price_1JkB5nLQttstmIiWsNIcDtwI;500000;100;5000000
+3;Custom Plan;Custom Plan;5S5MAM8L5IPSDVE;false;0;3;price_1JkBTtLQttstmIiWB8viW1wk;0;0;0
