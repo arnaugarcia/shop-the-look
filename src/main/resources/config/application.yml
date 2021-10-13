@@ -145,7 +145,6 @@ info:
 #
 # Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
-
 jhipster:
   clientApp:
     name: 'shopTheLookApp'
@@ -162,7 +161,7 @@ jhipster:
   api-docs:
     default-include-pattern: ${server.servlet.context-path:}/api/.*
     management-include-pattern: ${server.servlet.context-path:}/management/.*
-    title: ShopTheLook API
+    title: Shop the look API
     description: ShopTheLook API documentation
     version: 0.0.1
     terms-of-service-url:
