@@ -72,6 +72,11 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     }
 
     @Override
+    public SubscriptionPlan findSubscriptionByReference(String subscriptionPlanReference) {
+        return findByReference(subscriptionPlanReference);
+    }
+
+    @Override
     public SubscriptionPlanDTO updateSubscriptionPlanForCompany(
         String companyReference,
         UpdateSubscriptionRequest updateSubscriptionRequest

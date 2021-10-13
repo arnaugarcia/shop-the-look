@@ -1,5 +1,6 @@
 package com.klai.stl.service;
 
+import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
 import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import java.util.List;
@@ -20,6 +21,12 @@ public interface SubscriptionPlanService {
      * @return a list of subscriptions
      */
     List<SubscriptionPlanDTO> findSubscriptionsForCurrentUserCompany();
+
+    /**
+     * Find the referenced subscription
+     * @return a subscription if it exists
+     */
+    SubscriptionPlan findSubscriptionByReference(String subscriptionPlanReference);
 
     /**
      * Updates the subscription plan for the desired company

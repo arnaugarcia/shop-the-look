@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.service.PaymentService;
 import com.klai.stl.service.SubscriptionCheckoutService;
 import com.klai.stl.service.SubscriptionPlanService;
@@ -19,6 +20,6 @@ public class SubscriptionCheckoutServiceImpl implements SubscriptionCheckoutServ
 
     @Override
     public CheckoutResponseDTO getCheckoutDataForSubscriptionPlan(String subscriptionPlanReference) {
-        return null;
+        final SubscriptionPlan subscription = subscriptionService.findSubscriptionByReference(subscriptionPlanReference);
     }
 }
