@@ -2,6 +2,7 @@ package com.klai.stl.web.rest;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import com.klai.stl.service.SubscriptionCheckoutService;
 import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.dto.CheckoutResponseDTO;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
@@ -19,9 +20,11 @@ public class SubscriptionResource {
     private final Logger log = LoggerFactory.getLogger(SubscriptionResource.class);
 
     private final SubscriptionPlanService subscriptionPlanService;
+    private final SubscriptionCheckoutService checkoutService;
 
-    public SubscriptionResource(SubscriptionPlanService subscriptionPlanService) {
+    public SubscriptionResource(SubscriptionPlanService subscriptionPlanService, SubscriptionCheckoutService checkoutService) {
         this.subscriptionPlanService = subscriptionPlanService;
+        this.checkoutService = checkoutService;
     }
 
     /**
@@ -63,12 +66,15 @@ public class SubscriptionResource {
 
     /**
      * Get the checkout information for the current user company and the subscription to buy
-     * @param reference the reference of the subscription
+     * @param subscriptionReference the reference of the subscription
      * @return the checkout data of the payment gateway
      */
-    @PostMapping("/company/subscriptions/{reference}/checkout")
-    public ResponseEntity<CheckoutResponseDTO> getCheckoutForSubscription(@PathVariable String reference) {
-        log.debug("REST request to get the checkout information of subscription for current user company and subscription {}", reference);
-        return ok().body(null);
+    @PostMapping("/company/subscriptions/{subscriptionReference}/checkout")
+    public ResponseEntity<CheckoutResponseDTO> getCheckoutForSubscription(@PathVariable String subscriptionReference) {
+        log.debug(
+            "REST request to get the checkout information of subscription for current user company and subscription {}",
+            subscriptionReference
+        );
+        return ok().body(checkoutService.getCheckoutDataForSubscriptionPlan(subscriptionReference));
     }
 }
