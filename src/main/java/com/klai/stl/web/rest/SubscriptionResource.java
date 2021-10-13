@@ -3,6 +3,7 @@ package com.klai.stl.web.rest;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.klai.stl.service.SubscriptionPlanService;
+import com.klai.stl.service.dto.CheckoutResponseDTO;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
 import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import java.util.List;
@@ -43,5 +44,11 @@ public class SubscriptionResource {
     public ResponseEntity<List<SubscriptionPlanDTO>> findSubscriptionForCurrentUserCompany() {
         log.debug("REST request to find current user company subscriptions");
         return ok().body(subscriptionPlanService.findSubscriptionsForCurrentUserCompany());
+    }
+
+    @PostMapping("/company/subscriptions/{reference}/checkout")
+    public ResponseEntity<CheckoutResponseDTO> getCheckoutForSubscription(@PathVariable String reference) {
+        log.debug("REST request to get the checkout information of subscription for current user company and subscription {}", reference);
+        return ok().body(null);
     }
 }
