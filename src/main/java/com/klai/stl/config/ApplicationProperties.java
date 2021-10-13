@@ -16,4 +16,6 @@ public class ApplicationProperties {
     private final FeedConfiguration feed = new FeedConfiguration();
 
     private final AWSClientProperties aws = new AWSClientProperties();
+
+    private final StripeClientProperties stripe = new StripeClientProperties();
 }

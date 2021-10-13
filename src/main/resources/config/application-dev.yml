@@ -109,3 +109,5 @@ application:
   aws:
     bucket: shopthelook-pre
     region: eu-west-1
+  stripe:
+    apiKey: sk_test_51JiETxLQttstmIiWRhGKAZ5UQqjSUcxwzA0ssiRxyNLKKmGUr9l4ngEhBxTkWGspig5atTNi8LfUmEJPboL2i6od00kQGYkqJs
