@@ -13,6 +13,8 @@ import { CompanyRoutingResolveService } from './route/company-routing-resolve.se
 import { PreferencesComponent } from './pages/preferences/preferences.component';
 import { PreferencesResolveService } from './route/preferences-resolve.service';
 import { SubscriptionRoutingResolveService } from './route/subscription-routing-resolve.service';
+import { CheckoutSuccessComponent } from './pages/checkout/checkout-success/checkout-success.component';
+import { CheckoutErrorComponent } from './pages/checkout/checkout-error/checkout-error.component';
 
 @NgModule({
   imports: [CompanyModule],
@@ -85,6 +87,16 @@ export const COMPANY_CHILDREN_NAVIGATION = [
     resolve: {
       subscriptions: SubscriptionRoutingResolveService,
     },
+    children: [
+      {
+        path: 'success',
+        component: CheckoutSuccessComponent,
+      },
+      {
+        path: 'error',
+        component: CheckoutErrorComponent,
+      },
+    ],
   },
   {
     path: 'api-key',
