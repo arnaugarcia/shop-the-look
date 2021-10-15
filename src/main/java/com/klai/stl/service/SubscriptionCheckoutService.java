@@ -8,5 +8,5 @@ public interface SubscriptionCheckoutService {
      * @param subscriptionPlanReference the reference of the subscription plan tu chekout
      * @return the checkout response
      */
-    CheckoutResponseDTO getCheckoutDataForSubscriptionPlan(String subscriptionPlanReference);
+    CheckoutResponseDTO buildCheckoutDataBySubscriptionPlanForCurrentUserCompany(String subscriptionPlanReference);
 }

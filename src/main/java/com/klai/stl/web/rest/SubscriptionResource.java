@@ -75,6 +75,6 @@ public class SubscriptionResource {
             "REST request to get the checkout information of subscription for current user company and subscription {}",
             subscriptionReference
         );
-        return ok().body(checkoutService.getCheckoutDataForSubscriptionPlan(subscriptionReference));
+        return ok().body(checkoutService.buildCheckoutDataBySubscriptionPlanForCurrentUserCompany(subscriptionReference));
     }
 }

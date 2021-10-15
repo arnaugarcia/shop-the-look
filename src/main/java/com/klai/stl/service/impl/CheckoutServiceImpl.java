@@ -3,6 +3,7 @@ package com.klai.stl.service.impl;
 import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.config.StripeClientProperties;
 import com.klai.stl.service.CheckoutService;
+import com.klai.stl.service.dto.requests.CheckoutRequest;
 import com.klai.stl.service.reponse.CheckoutData;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -24,9 +25,9 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public CheckoutData checkout(String itemReference) {
+    public CheckoutData checkout(CheckoutRequest checkoutRequest) {
         try {
-            Map<String, Object> params = buildCheckoutSessionParams(itemReference);
+            Map<String, Object> params = buildCheckoutSessionParams(checkoutRequest);
             Session session = Session.create(params);
             return CheckoutData.builder().checkoutUrl(new URL(session.getUrl())).build();
         } catch (StripeException | MalformedURLException e) {
@@ -35,12 +36,12 @@ public class CheckoutServiceImpl implements CheckoutService {
         }
     }
 
-    private Map<String, Object> buildCheckoutSessionParams(String itemReference) {
+    private Map<String, Object> buildCheckoutSessionParams(CheckoutRequest checkoutRequest) {
         List<Object> paymentMethodTypes = new ArrayList<>();
         paymentMethodTypes.add("card");
         List<Object> lineItems = new ArrayList<>();
         Map<String, Object> lineItem1 = new HashMap<>();
-        lineItem1.put("price", itemReference);
+        lineItem1.put("price", checkoutRequest.getItemReference());
         lineItem1.put("quantity", 1);
         lineItems.add(lineItem1);
         Map<String, Object> params = new HashMap<>();
@@ -49,6 +50,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         params.put("payment_method_types", paymentMethodTypes);
         params.put("line_items", lineItems);
         params.put("mode", "subscription");
+        params.put("client_reference_id", checkoutRequest.getCompanyReference());
         return params;
     }
 }
