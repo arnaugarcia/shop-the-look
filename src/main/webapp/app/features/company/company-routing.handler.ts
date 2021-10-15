@@ -87,16 +87,17 @@ export const COMPANY_CHILDREN_NAVIGATION = [
     resolve: {
       subscriptions: SubscriptionRoutingResolveService,
     },
-    children: [
-      {
-        path: 'success',
-        component: CheckoutSuccessComponent,
-      },
-      {
-        path: 'error',
-        component: CheckoutErrorComponent,
-      },
-    ],
+  },
+  {
+    path: 'subscription/success',
+    component: CheckoutSuccessComponent,
+    resolve: {
+      subscriptions: SubscriptionRoutingResolveService,
+    },
+  },
+  {
+    path: 'subscription/error',
+    component: CheckoutErrorComponent,
   },
   {
     path: 'api-key',
