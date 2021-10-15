@@ -81,7 +81,7 @@ class SubscriptionResourceIT {
     }
 
     private UpdateSubscriptionRequest createUpdateSubscriptionRequest(String subscriptionReference) {
-        return new UpdateSubscriptionRequest(subscriptionReference);
+        return UpdateSubscriptionRequest.builder().subscriptionReference(subscriptionReference).build();
     }
 
     private SubscriptionPlan createSubscriptionPlan(EntityManager em) {
