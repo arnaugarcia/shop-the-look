@@ -12,10 +12,7 @@
         </div>
         <div class="text-center">
           <h1 class="mb-1 text-white">Congratulations!</h1>
-          <p class="card-text m-auto">
-            <!--You have successfully subscribed to {{subscription.name}}!-->
-            You have successfully subscribed to Gold Subscription!
-          </p>
+          <p class="card-text m-auto" *ngIf="subscription">You have successfully subscribed to {{ subscription.name }}!</p>
         </div>
       </div>
     </div>
