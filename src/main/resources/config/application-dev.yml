@@ -106,8 +106,11 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 application:
+  host: http://localhost:9000
   aws:
     bucket: shopthelook-pre
     region: eu-west-1
   stripe:
     apiKey: sk_test_51JiETxLQttstmIiWRhGKAZ5UQqjSUcxwzA0ssiRxyNLKKmGUr9l4ngEhBxTkWGspig5atTNi8LfUmEJPboL2i6od00kQGYkqJs
+    success-url: http://localhost:8080/success
+    cancel-url: http://localhost:8080/cancel

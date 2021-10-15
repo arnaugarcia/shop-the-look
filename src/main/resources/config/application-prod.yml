@@ -128,6 +128,11 @@ jhipster:
 # ===================================================================
 
 application:
+  host: https://d2j17sg7k2laja.cloudfront.net
   aws:
     bucket: shopthelook-pre
     region: eu-west-1
+  stripe:
+    api-key:
+    success-url:
+    cancel-url:
