@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ISubscriptionPlan } from '../../model/subscription-plan.model';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionService } from '../../service/subscription.service';
 import { AccountService } from '../../../../core/auth/account.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ICheckoutData } from '../../model/checkout.model';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'stl-subscription',
@@ -14,7 +16,12 @@ export class SubscriptionComponent implements OnInit {
   public subscriptions: ISubscriptionPlan[] = [];
   private companyReference?: string;
 
-  constructor(private route: ActivatedRoute, private accountService: AccountService, private subscriptionService: SubscriptionService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private accountService: AccountService,
+    private subscriptionService: SubscriptionService,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ subscriptions }) => {
@@ -30,6 +37,10 @@ export class SubscriptionComponent implements OnInit {
     if (this.accountService.isAdmin()) {
       this.subscriptionService.updateForCompany(this.companyReference!, selectedPlan.reference).subscribe(() => {
         this.loadAll();
+      }, this.onError());
+    } else {
+      this.subscriptionService.checkoutSubscription(selectedPlan.reference).subscribe((response: HttpResponse<ICheckoutData>) => {
+        this.document.location.href = response.body!.checkoutUrl;
       }, this.onError());
     }
   }

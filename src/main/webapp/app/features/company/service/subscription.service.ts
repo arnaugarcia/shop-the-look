@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { ISubscriptionPlan } from '../model/subscription-plan.model';
+import { ICheckoutData } from '../model/checkout.model';
 
 export type EntityResponseType = HttpResponse<ISubscriptionPlan>;
 export type EntityArrayResponseType = HttpResponse<ISubscriptionPlan[]>;
@@ -25,5 +26,9 @@ export class SubscriptionService {
       { subscriptionReference: subscriptionReference },
       { observe: 'response' }
     );
+  }
+
+  checkoutSubscription(subscriptionReference: string): Observable<HttpResponse<ICheckoutData>> {
+    return this.http.post<ICheckoutData>(`/api/company/subscriptions/${subscriptionReference}/checkout`, null, { observe: 'response' });
   }
 }
