@@ -77,11 +77,8 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     }
 
     @Override
-    public SubscriptionPlanDTO updateSubscriptionPlanForCompany(
-        String companyReference,
-        UpdateSubscriptionRequest updateSubscriptionRequest
-    ) {
-        final Company company = companyService.findByReference(companyReference);
+    public SubscriptionPlanDTO updateSubscriptionPlanForCompany(UpdateSubscriptionRequest updateSubscriptionRequest) {
+        final Company company = companyService.findByReference(updateSubscriptionRequest.getCompanyReference());
         final SubscriptionPlan subscriptionPlan = findByReference(updateSubscriptionRequest.getSubscriptionReference());
         company.subscriptionPlan(subscriptionPlan);
         companyRepository.save(company);

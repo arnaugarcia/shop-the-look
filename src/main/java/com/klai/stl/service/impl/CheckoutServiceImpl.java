@@ -39,11 +39,17 @@ public class CheckoutServiceImpl implements CheckoutService {
     private Map<String, Object> buildCheckoutSessionParams(CheckoutRequest checkoutRequest) {
         List<Object> paymentMethodTypes = new ArrayList<>();
         paymentMethodTypes.add("card");
+
         List<Object> lineItems = new ArrayList<>();
         Map<String, Object> lineItem1 = new HashMap<>();
         lineItem1.put("price", checkoutRequest.getItemReference());
         lineItem1.put("quantity", 1);
         lineItems.add(lineItem1);
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("company_reference", checkoutRequest.getCompanyReference());
+        metadata.put("company_reference", checkoutRequest.getCompanyReference());
+
         Map<String, Object> params = new HashMap<>();
         params.put("success_url", stripeClientProperties.getSuccessUrl());
         params.put("cancel_url", stripeClientProperties.getCancelUrl());
@@ -51,6 +57,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         params.put("line_items", lineItems);
         params.put("mode", "subscription");
         params.put("client_reference_id", checkoutRequest.getCompanyReference());
+        params.put("metadata", metadata);
         return params;
     }
 }

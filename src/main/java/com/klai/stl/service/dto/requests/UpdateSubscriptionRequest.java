@@ -7,5 +7,6 @@ import lombok.Value;
 @Builder
 public class UpdateSubscriptionRequest {
 
+    String companyReference;
     String subscriptionReference;
 }

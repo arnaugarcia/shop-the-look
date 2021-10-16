@@ -30,9 +30,8 @@ public interface SubscriptionPlanService {
 
     /**
      * Updates the subscription plan for the desired company
-     * @param companyReference the company reference
      * @param updateSubscriptionRequest the subscription reference
      * @return the updated subscription
      */
-    SubscriptionPlanDTO updateSubscriptionPlanForCompany(String companyReference, UpdateSubscriptionRequest updateSubscriptionRequest);
+    SubscriptionPlanDTO updateSubscriptionPlanForCompany(UpdateSubscriptionRequest updateSubscriptionRequest);
 }

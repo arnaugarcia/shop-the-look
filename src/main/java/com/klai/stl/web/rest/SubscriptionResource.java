@@ -51,7 +51,7 @@ public class SubscriptionResource {
         @RequestBody UpdateSubscriptionRequest updateSubscriptionRequest
     ) {
         log.debug("REST request to update company {} subscription with subscription {}", companyReference, updateSubscriptionRequest);
-        return ok(subscriptionPlanService.updateSubscriptionPlanForCompany(companyReference, updateSubscriptionRequest));
+        return ok(subscriptionPlanService.updateSubscriptionPlanForCompany(updateSubscriptionRequest));
     }
 
     /**
