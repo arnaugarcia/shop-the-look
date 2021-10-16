@@ -39,6 +39,7 @@ public class SubscriptionCheckoutServiceImpl implements SubscriptionCheckoutServ
             .builder()
             .itemReference(subscription.getPaymentGatewayItemReference())
             .companyReference(companyReference)
+            .subscriptionReference(subscription.getReference())
             .build();
 
         final CheckoutData checkout = checkoutService.checkout(checkoutRequest);

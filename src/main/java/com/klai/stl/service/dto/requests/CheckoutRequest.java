@@ -8,5 +8,6 @@ import lombok.Value;
 public class CheckoutRequest {
 
     String companyReference;
+    String subscriptionReference;
     String itemReference;
 }

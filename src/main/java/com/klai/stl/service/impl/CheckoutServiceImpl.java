@@ -48,7 +48,7 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         Map<String, String> metadata = new HashMap<>();
         metadata.put("company_reference", checkoutRequest.getCompanyReference());
-        metadata.put("company_reference", checkoutRequest.getCompanyReference());
+        metadata.put("subscription_reference", checkoutRequest.getSubscriptionReference());
 
         Map<String, Object> params = new HashMap<>();
         params.put("success_url", stripeClientProperties.getSuccessUrl());
