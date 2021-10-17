@@ -31,17 +31,18 @@ export class SubscriptionComponent implements OnInit {
   }
 
   selectedPlan(selectedPlan: ISubscriptionPlan): void {
-    if (selectedPlan.custom) {
-      window.open('mailto:contact@weareklai.com?subject=[Shop The Look] - Custom pricing', '_blank');
-    }
     if (this.accountService.isAdmin()) {
       this.subscriptionService.updateForCompany(this.companyReference!, selectedPlan.reference).subscribe(() => {
         this.loadAll();
       }, this.onError());
     } else {
-      this.subscriptionService.checkoutSubscription(selectedPlan.reference).subscribe((response: HttpResponse<ICheckoutData>) => {
-        this.document.location.href = response.body!.checkoutUrl;
-      }, this.onError());
+      if (selectedPlan.custom) {
+        window.open('mailto:contact@weareklai.com?subject=[Shop The Look] - Custom pricing', '_blank');
+      } else {
+        this.subscriptionService.checkoutSubscription(selectedPlan.reference).subscribe((response: HttpResponse<ICheckoutData>) => {
+          this.document.location.href = response.body!.checkoutUrl;
+        }, this.onError());
+      }
     }
   }
   private loadAll(): void {
