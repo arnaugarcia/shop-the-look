@@ -20,7 +20,10 @@
     <button class="btn btn-block btn-outline-success mt-2" *ngIf="plan.current" [disabled]="plan.current" (click)="selectPlan(plan)">
       Your current plan
     </button>
-    <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.current && !plan.custom" (click)="selectPlan(plan)">Switch plan</button>
-    <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.current && plan.custom" (click)="selectPlan(plan)">Contact</button>
+    <ng-container *ngIf="!plan.current">
+      <button class="btn btn-block btn-primary mt-2" *ngIf="!plan.custom" (click)="selectPlan(plan)">Switch plan</button>
+      <button class="btn btn-block btn-primary mt-2" *ngIf="plan.custom && !isAdmin" (click)="selectPlan(plan)">Contact</button>
+      <button class="btn btn-block btn-primary mt-2" *ngIf="plan.custom && isAdmin" (click)="selectPlan(plan)">Switch plan</button>
+    </ng-container>
   </div>
 </div>
