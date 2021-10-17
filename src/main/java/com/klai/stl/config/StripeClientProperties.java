@@ -14,6 +14,9 @@ public class StripeClientProperties {
     private String apiKey;
 
     @NotNull
+    private String webhookSecret;
+
+    @NotNull
     private String successUrl;
 
     @NotNull
