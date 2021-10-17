@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.klai.stl.service.WebhookEventService;
 import com.klai.stl.service.dto.webhook.StripeEvent;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class WebhookResource {
     @PostMapping("/payments/stripe")
     public ResponseEntity<Void> processStripeEvent(
         @RequestHeader("Stripe-Signature") String endpointSecret,
-        @RequestBody StripeEvent event
+        @Valid @RequestBody StripeEvent event
     ) {
         log.debug("Webhook event from Stripe gateway: {}", event);
         stripeWebhookEventService.processEvent(event, endpointSecret);
