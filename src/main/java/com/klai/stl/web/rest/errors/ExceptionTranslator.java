@@ -192,7 +192,20 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleBadOwnerException(com.klai.stl.service.exception.BadOwnerException ex, NativeWebRequest request) {
-        ForbiddenException problem = new ForbiddenException(NOT_FOUND, "You aren't the owner of this", "user", "forbidden");
+        ForbiddenException problem = new ForbiddenException(FORBIDDEN, "You aren't the owner of this", "user", "forbidden");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleWebhookSecretError(
+        com.klai.stl.service.exception.WebhookSecretError ex,
+        NativeWebRequest request
+    ) {
+        ForbiddenException problem = new ForbiddenException(FORBIDDEN, ex.getMessage(), "webhook", "forbidden");
         return create(
             problem,
             request,
