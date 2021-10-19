@@ -84,7 +84,7 @@ class SubscriptionResourceIT {
         return UpdateSubscriptionRequest.builder().subscriptionReference(subscriptionReference).build();
     }
 
-    private SubscriptionPlan createSubscriptionPlan(EntityManager em) {
+    public static SubscriptionPlan createSubscriptionPlan(EntityManager em) {
         SubscriptionPlan subscriptionPlan = new SubscriptionPlan()
             .name(NAME)
             .reference(REFERENCE + randomAlphanumeric(20).toUpperCase())
