@@ -8,7 +8,6 @@ import com.klai.stl.service.WebhookEventService;
 import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import com.klai.stl.service.dto.webhook.StripeEvent;
 import com.klai.stl.service.exception.WebhookSecretError;
-import com.klai.stl.web.rest.WebhookResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StripeWebhookEventServiceImpl implements WebhookEventService<StripeEvent> {
 
-    private final Logger log = LoggerFactory.getLogger(WebhookResource.class);
+    private final Logger log = LoggerFactory.getLogger(StripeWebhookEventServiceImpl.class);
 
     private final SubscriptionPlanService subscriptionPlanService;
 

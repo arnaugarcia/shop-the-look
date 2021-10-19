@@ -23,9 +23,9 @@ public class StripeEvent {
     @Value
     public static class Object {
 
-        String id;
-        String object;
-        String customer_email;
+        @JsonProperty(value = "customer_email")
+        String customerEmail;
+
         Metadata metadata;
         String mode;
         String url;
