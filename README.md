@@ -1,5 +1,7 @@
 # ShopTheLook
 
+[![GitHub Actions CI](https://github.com/klai-dev/shop-the-look/actions/workflows/github-actions.yml/badge.svg)](https://github.com/klai-dev/shop-the-look/actions/workflows/github-actions.yml)
+
 This application was generated using JHipster 7.1.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.1.0](https://www.jhipster.tech/documentation-archive/v7.1.0).
 
 ## Development
