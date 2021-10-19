@@ -1,5 +1,9 @@
 package com.klai.stl.web.rest;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.SubscriptionPlan;
@@ -41,15 +45,19 @@ class SubscriptionCheckoutResourceIT {
     @Test
     @Transactional
     @WithMockUser
-    public void checkoutSubscriptionThatNotExists() {}
+    public void checkoutSubscriptionThatNotExists() throws Exception {
+        restSubscriptionMockMvc
+            .perform(post(API_URL, "INVALID_SUBSCRIPTION").contentType(APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+    }
 
     @Test
     @Transactional
     @WithMockUser
-    public void checkoutCompanyThatNotExists() {}
+    public void checkoutCompanyThatNotExists() throws Exception {}
 
     @Test
     @Transactional
     @WithMockUser
-    public void checkoutAndGetTheCheckoutUrl() {}
+    public void checkoutAndGetTheCheckoutUrl() throws Exception {}
 }

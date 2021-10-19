@@ -232,6 +232,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleSubscriptionException(
+        com.klai.stl.service.exception.SubscriptionPlanNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, ex.getMessage(), "subscription", "subscriptionnotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handlePhotoReadExceptionException(
         com.klai.stl.service.exception.PhotoReadException ex,
         NativeWebRequest request
