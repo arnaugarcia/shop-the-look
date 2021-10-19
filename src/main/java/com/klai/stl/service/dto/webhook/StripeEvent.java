@@ -1,6 +1,7 @@
 package com.klai.stl.service.dto.webhook;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 
@@ -12,6 +13,8 @@ public class StripeEvent {
     String object;
     int created;
     Data data;
+
+    @NotNull
     String type;
 
     @Value
