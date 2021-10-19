@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/webhook")
+@RequestMapping("/webhooks")
 public class WebhookResource {
 
     private final Logger log = LoggerFactory.getLogger(WebhookResource.class);
