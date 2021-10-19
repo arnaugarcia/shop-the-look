@@ -1,12 +1,13 @@
 package com.klai.stl.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.klai.stl.domain.enumeration.SubscriptionCategory;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -16,6 +17,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "subscription_plan")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Getter
+@Setter
 public class SubscriptionPlan implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,21 +35,35 @@ public class SubscriptionPlan implements Serializable {
     private String description;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
-    private SubscriptionCategory category;
+    @Column(name = "reference", nullable = false, unique = true)
+    private String reference;
 
     @NotNull
-    @Column(name = "max_products", nullable = false)
-    private Integer maxProducts;
+    @Column(name = "popular", nullable = false)
+    private Boolean popular;
 
     @NotNull
-    @Column(name = "max_spaces", nullable = false)
-    private Integer maxSpaces;
+    @Column(name = "price", nullable = false)
+    private Double price;
 
     @NotNull
-    @Column(name = "max_requests", nullable = false)
-    private Integer maxRequests;
+    @Column(name = "position", nullable = false)
+    private Integer order;
+
+    @Column(name = "payment_gateway_item_reference")
+    private String paymentGatewayItemReference;
+
+    @NotNull
+    @Column(name = "products", nullable = false)
+    private Integer products;
+
+    @NotNull
+    @Column(name = "spaces", nullable = false)
+    private Integer spaces;
+
+    @NotNull
+    @Column(name = "requests", nullable = false)
+    private Integer requests;
 
     @OneToMany(mappedBy = "subscriptionPlan")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -56,22 +73,9 @@ public class SubscriptionPlan implements Serializable {
     )
     private Set<Company> companies = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public SubscriptionPlan id(Long id) {
         this.id = id;
         return this;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public SubscriptionPlan name(String name) {
@@ -79,77 +83,49 @@ public class SubscriptionPlan implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
     public SubscriptionPlan description(String description) {
         this.description = description;
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public SubscriptionCategory getCategory() {
-        return this.category;
-    }
-
-    public SubscriptionPlan category(SubscriptionCategory category) {
-        this.category = category;
+    public SubscriptionPlan reference(String reference) {
+        this.reference = reference;
         return this;
     }
 
-    public void setCategory(SubscriptionCategory category) {
-        this.category = category;
-    }
-
-    public Integer getMaxProducts() {
-        return this.maxProducts;
-    }
-
-    public SubscriptionPlan maxProducts(Integer maxProducts) {
-        this.maxProducts = maxProducts;
+    public SubscriptionPlan popular(Boolean popular) {
+        this.popular = popular;
         return this;
     }
 
-    public void setMaxProducts(Integer maxProducts) {
-        this.maxProducts = maxProducts;
-    }
-
-    public Integer getMaxSpaces() {
-        return this.maxSpaces;
-    }
-
-    public SubscriptionPlan maxSpaces(Integer maxSpaces) {
-        this.maxSpaces = maxSpaces;
+    public SubscriptionPlan price(Double price) {
+        this.price = price;
         return this;
     }
 
-    public void setMaxSpaces(Integer maxSpaces) {
-        this.maxSpaces = maxSpaces;
-    }
-
-    public Integer getMaxRequests() {
-        return this.maxRequests;
-    }
-
-    public SubscriptionPlan maxRequests(Integer maxRequests) {
-        this.maxRequests = maxRequests;
+    public SubscriptionPlan order(Integer order) {
+        this.order = order;
         return this;
     }
 
-    public void setMaxRequests(Integer maxRequests) {
-        this.maxRequests = maxRequests;
+    public SubscriptionPlan paymentGatewayItemReference(String paymentGatewayItemReference) {
+        this.paymentGatewayItemReference = paymentGatewayItemReference;
+        return this;
     }
 
-    public Set<Company> getCompanies() {
-        return this.companies;
+    public SubscriptionPlan products(Integer products) {
+        this.products = products;
+        return this;
+    }
+
+    public SubscriptionPlan spaces(Integer spaces) {
+        this.spaces = spaces;
+        return this;
+    }
+
+    public SubscriptionPlan requests(Integer requests) {
+        this.requests = requests;
+        return this;
     }
 
     public SubscriptionPlan companies(Set<Company> companies) {
@@ -179,8 +155,6 @@ public class SubscriptionPlan implements Serializable {
         this.companies = companies;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -205,10 +179,11 @@ public class SubscriptionPlan implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", category='" + getCategory() + "'" +
-            ", maxProducts=" + getMaxProducts() +
-            ", maxSpaces=" + getMaxSpaces() +
-            ", maxRequests=" + getMaxRequests() +
+            ", order='" + getOrder() + "'" +
+            ", paymentGatewayItemReference='" + getPaymentGatewayItemReference() + "'" +
+            ", products=" + getProducts() +
+            ", spaces=" + getSpaces() +
+            ", requests=" + getRequests() +
             "}";
     }
 }

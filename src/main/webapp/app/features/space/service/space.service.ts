@@ -11,17 +11,12 @@ export type EntityArrayResponseType = HttpResponse<ISpace[]>;
 @Injectable({ providedIn: 'root' })
 export class SpaceService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/spaces');
-  protected resourceMeUrl = this.applicationConfigService.getEndpointFor('api/me/spaces');
+  protected resourceCompanyUrl = this.applicationConfigService.getEndpointFor('api/company/spaces');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(request: SpaceRequest): Observable<EntityResponseType> {
-    return this.http.post<ISpace>(this.resourceMeUrl, request, { observe: 'response' });
-  }
-
-  createForCompany(request: SpaceRequest, companyReference: string): Observable<EntityResponseType> {
-    const options = createRequestOption({ companyReference: companyReference });
-    return this.http.post<ISpace>(this.resourceUrl, request, { observe: 'response', params: options });
+    return this.http.post<ISpace>(this.resourceCompanyUrl, request, { observe: 'response' });
   }
 
   partialUpdate(request: SpaceRequest, companyReference: string): Observable<EntityResponseType> {
@@ -39,7 +34,7 @@ export class SpaceService {
 
   queryForCurrentUser(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<ISpace[]>(this.resourceMeUrl, { params: options, observe: 'response' });
+    return this.http.get<ISpace[]>(this.resourceCompanyUrl, { params: options, observe: 'response' });
   }
 
   delete(reference: string): Observable<HttpResponse<{}>> {

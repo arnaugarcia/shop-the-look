@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = { UserMapper.class, SubscriptionPlanMapper.class })
 public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     @Mapping(target = "users", source = "users")
+    @Mapping(target = "subscriptionPlan", source = "subscriptionPlan.name")
     CompanyDTO toDto(Company s);
 
     Company toEntity(NewCompanyRequest companyRequest);

@@ -7,7 +7,7 @@
 
     <groupId>com.klai.stl</groupId>
     <artifactId>shop-the-look</artifactId>
-    <version>0.0.8-SNAPSHOT</version>
+    <version>0.0.9-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Shop The Look</name>
 
@@ -90,6 +90,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jackson.version>2.9.5</jackson.version>
         <aws-java-sdk.version>2.17.46</aws-java-sdk.version>
+        <stripe.version>20.82.0</stripe.version>
     </properties>
 
     <dependencyManagement>
@@ -357,6 +358,12 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>iam</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>${stripe.version}</version>
         </dependency>
     </dependencies>
 
@@ -631,7 +638,7 @@
                             <image>adoptopenjdk:11-jre-hotspot</image>
                         </from>
                         <to>
-                            <image>${artifactId}:latest</image>
+                            <image>${project.artifactId}:latest</image>
                         </to>
                         <container>
                             <entrypoint>
@@ -1043,7 +1050,7 @@
                 </dependency>
             </dependencies>
             <build>
-                <finalName>stl-${version}</finalName>
+                <finalName>stl-${project.version}</finalName>
                 <plugins>
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>

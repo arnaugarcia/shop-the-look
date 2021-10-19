@@ -16,7 +16,8 @@
 spring:
   profiles:
     # Uncomment the following line to enable tests against production database type rather than H2, using Testcontainers
-    #active: testcontainers
+    # active: testcontainers
+    active: test
   application:
     name: ShopTheLook
   datasource:
@@ -117,3 +118,5 @@ application:
   aws:
     bucket: shopthelook-pre
     region: eu-west-1
+  stripe:
+    webhookSecret: WEBHOOK_SECRET

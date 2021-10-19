@@ -1,0 +1,20 @@
+<div class="row">
+  <!-- Congratulations Card -->
+  <div class="col-12 col-md-12 col-lg-12">
+    <div class="card card-congratulations">
+      <div class="card-body text-center">
+        <img src="/content/images/elements/decore-left.png" class="congratulations-img-left" alt="card-img-left" />
+        <img src="/content/images/elements/decore-right.png" class="congratulations-img-right" alt="card-img-right" />
+        <div class="avatar avatar-xl bg-primary shadow">
+          <div class="avatar-content">
+            <i [data-feather]="'award'" class="font-large-1"></i>
+          </div>
+        </div>
+        <div class="text-center">
+          <h1 class="mb-1 text-white">Congratulations!</h1>
+          <p class="card-text m-auto" *ngIf="subscription">You have successfully subscribed to {{ subscription.name }}!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

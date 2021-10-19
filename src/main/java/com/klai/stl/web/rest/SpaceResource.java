@@ -5,16 +5,14 @@ import static org.springframework.http.ResponseEntity.ok;
 import static tech.jhipster.web.util.HeaderUtil.*;
 
 import com.klai.stl.service.SpaceService;
-import com.klai.stl.service.criteria.SpaceCriteria;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.criteria.SpaceCriteriaDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
-import com.klai.stl.service.impl.SpaceQueryService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,49 +35,49 @@ public class SpaceResource {
 
     private final SpaceService spaceService;
 
-    private final SpaceQueryService spaceQueryService;
-
-    public SpaceResource(SpaceService spaceService, SpaceQueryService spaceQueryService) {
+    public SpaceResource(SpaceService spaceService) {
         this.spaceService = spaceService;
-        this.spaceQueryService = spaceQueryService;
     }
 
-    @GetMapping("/spaces")
-    public ResponseEntity<Void> findSpaces() {
-        throw new NotYetImplementedException();
-    }
-
-    @GetMapping("/me/spaces")
-    public ResponseEntity<List<SpaceDTO>> findMySpaces(SpaceCriteria spaceCriteria) {
+    @GetMapping("/company/spaces")
+    public ResponseEntity<List<SpaceDTO>> findOwnCompanySpaces(SpaceCriteriaDTO spaceCriteria) {
         log.debug("REST request to get spaces for current user");
-        List<SpaceDTO> result = spaceQueryService.findForCurrentUser(spaceCriteria);
+        List<SpaceDTO> result = spaceService.findByCriteriaForCurrentUser(spaceCriteria);
         return ok().body(result);
     }
 
-    @GetMapping("/spaces/{reference}")
-    public ResponseEntity<SpaceDTO> findSpace(@PathVariable String reference) {
-        log.debug("REST request to get Space : {}", reference);
-        return ok(spaceService.findOne(reference));
+    @GetMapping("/companies/{reference}/spaces")
+    public ResponseEntity<List<SpaceDTO>> findSpacesForCompany(@PathVariable String reference, SpaceCriteriaDTO spaceCriteria) {
+        log.debug("REST request to get spaces for company {}", reference);
+        List<SpaceDTO> result = spaceService.findByCriteriaForCompany(spaceCriteria, reference);
+        return ok().body(result);
     }
 
-    @PostMapping("/spaces")
-    public ResponseEntity<SpaceDTO> createSpace(@Valid @RequestBody NewSpaceRequest newSpaceRequest, @RequestParam String companyReference)
-        throws URISyntaxException {
-        log.debug("REST request to save an Space");
-        SpaceDTO result = spaceService.createForCompany(newSpaceRequest, companyReference);
+    @PostMapping("/companies/{reference}/spaces")
+    public ResponseEntity<SpaceDTO> createSpaceForCompany(
+        @PathVariable String reference,
+        @Valid @RequestBody NewSpaceRequest newSpaceRequest
+    ) throws URISyntaxException {
+        SpaceDTO result = spaceService.createForCompany(newSpaceRequest, reference);
         return created(new URI("/api/spaces/" + result.getReference()))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
     }
 
-    @PostMapping("/me/spaces")
-    public ResponseEntity<SpaceDTO> createSpaceForCurrentUser(@Valid @RequestBody NewSpaceRequest newSpaceRequest)
+    @PostMapping("/company/spaces")
+    public ResponseEntity<SpaceDTO> createSpaceForOwnCompany(@Valid @RequestBody NewSpaceRequest newSpaceRequest)
         throws URISyntaxException {
         log.debug("REST request to save an Space");
         SpaceDTO result = spaceService.createForCurrentUser(newSpaceRequest);
         return created(new URI("/api/spaces/" + result.getReference()))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);
+    }
+
+    @GetMapping("/spaces/{reference}")
+    public ResponseEntity<SpaceDTO> findSpace(@PathVariable String reference) {
+        log.debug("REST request to get Space : {}", reference);
+        return ok(spaceService.findOne(reference));
     }
 
     @PatchMapping("/spaces/{reference}")

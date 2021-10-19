@@ -12,16 +12,17 @@ import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.SpaceService;
 import com.klai.stl.service.UserService;
+import com.klai.stl.service.criteria.SpaceCriteria;
 import com.klai.stl.service.dto.SpaceDTO;
+import com.klai.stl.service.dto.criteria.SpaceCriteriaDTO;
 import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
 import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.SpaceNotFound;
 import com.klai.stl.service.mapper.SpaceMapper;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,18 +45,22 @@ public class SpaceServiceImpl implements SpaceService {
 
     private final CloudStorageService cloudStorageService;
 
+    private final SpaceQueryService spaceQueryService;
+
     public SpaceServiceImpl(
         SpaceRepository spaceRepository,
         SpaceMapper spaceMapper,
         UserService userService,
         CompanyService companyService,
-        CloudStorageService cloudStorageService
+        CloudStorageService cloudStorageService,
+        SpaceQueryService spaceQueryService
     ) {
         this.spaceRepository = spaceRepository;
         this.spaceMapper = spaceMapper;
         this.userService = userService;
         this.companyService = companyService;
         this.cloudStorageService = cloudStorageService;
+        this.spaceQueryService = spaceQueryService;
     }
 
     @Override
@@ -66,25 +71,6 @@ public class SpaceServiceImpl implements SpaceService {
     @Override
     public SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, String companyReference) {
         return createForCompany(newSpaceRequest, companyService.findByReference(companyReference));
-    }
-
-    private SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, Company company) {
-        final Space space = spaceMapper.toEntity(newSpaceRequest);
-        space.setReference(randomAlphabetic(20).toUpperCase(ROOT));
-        space.setCompany(company);
-        space.setActive(false);
-        return saveAndTransform(space);
-    }
-
-    private SpaceDTO saveAndTransform(Space space) {
-        return spaceMapper.toDto(spaceRepository.save(space));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SpaceDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Spaces");
-        return spaceRepository.findAll(pageable).map(spaceMapper::toDto);
     }
 
     @Override
@@ -117,7 +103,22 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public Space findByReference(String reference) {
+    public List<SpaceDTO> findByCriteriaForCompany(SpaceCriteriaDTO spaceCriteriaDTO, String companyReference) {
+        checkIfCurrentUserBelongsToSpace(companyReference);
+        final SpaceCriteria spaceCriteria = SpaceCriteria.from(spaceCriteriaDTO).companyReference(companyReference).build();
+        return spaceQueryService.findByCriteria(spaceCriteria);
+    }
+
+    @Override
+    public List<SpaceDTO> findByCriteriaForCurrentUser(SpaceCriteriaDTO spaceCriteriaDTO) {
+        final SpaceCriteria spaceCriteria = SpaceCriteria
+            .from(spaceCriteriaDTO)
+            .companyReference(userService.getCurrentUserCompanyReference())
+            .build();
+        return spaceQueryService.findByCriteria(spaceCriteria);
+    }
+
+    private Space findByReference(String reference) {
         return spaceRepository.findByReference(reference).orElseThrow(SpaceNotFound::new);
     }
 
@@ -127,7 +128,6 @@ public class SpaceServiceImpl implements SpaceService {
         return findByReference(reference);
     }
 
-    @Override
     public void checkIfCurrentUserBelongsToSpace(String spaceReference) {
         if (!findByReference(spaceReference).getCompany().getReference().equalsIgnoreCase(userService.getCurrentUserCompanyReference())) {
             throw new BadOwnerException();
@@ -149,5 +149,17 @@ public class SpaceServiceImpl implements SpaceService {
 
     private void removeAllPhotosFrom(Space space) {
         space.getPhotos().forEach(photo -> cloudStorageService.removeObject(photo.getKey()));
+    }
+
+    private SpaceDTO createForCompany(NewSpaceRequest newSpaceRequest, Company company) {
+        final Space space = spaceMapper.toEntity(newSpaceRequest);
+        space.setReference(randomAlphabetic(20).toUpperCase(ROOT));
+        space.setCompany(company);
+        space.setActive(false);
+        return saveAndTransform(space);
+    }
+
+    private SpaceDTO saveAndTransform(Space space) {
+        return spaceMapper.toDto(spaceRepository.save(space));
     }
 }

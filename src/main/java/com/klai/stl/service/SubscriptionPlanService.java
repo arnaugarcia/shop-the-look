@@ -1,48 +1,37 @@
 package com.klai.stl.service;
 
+import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
+import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.SubscriptionPlan}.
  */
 public interface SubscriptionPlanService {
     /**
-     * Save a subscriptionPlan.
-     *
-     * @param subscriptionPlanDTO the entity to save.
-     * @return the persisted entity.
+     * Finds the subscriptions for the desired company
+     * @param companyReference the company reference
+     * @return a list of subscriptions
      */
-    SubscriptionPlanDTO save(SubscriptionPlanDTO subscriptionPlanDTO);
+    List<SubscriptionPlanDTO> findSubscriptionsForCompany(String companyReference);
 
     /**
-     * Partially updates a subscriptionPlan.
-     *
-     * @param subscriptionPlanDTO the entity to update partially.
-     * @return the persisted entity.
+     * Finds the subscriptions for the current user company
+     * @return a list of subscriptions
      */
-    Optional<SubscriptionPlanDTO> partialUpdate(SubscriptionPlanDTO subscriptionPlanDTO);
+    List<SubscriptionPlanDTO> findSubscriptionsForCurrentUserCompany();
 
     /**
-     * Get all the subscriptionPlans.
-     *
-     * @return the list of entities.
+     * Find the referenced subscription
+     * @return a subscription if it exists
      */
-    List<SubscriptionPlanDTO> findAll();
+    SubscriptionPlan findSubscriptionByReference(String subscriptionPlanReference);
 
     /**
-     * Get the "id" subscriptionPlan.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
+     * Updates the subscription plan for the desired company
+     * @param updateSubscriptionRequest the subscription reference
+     * @return the updated subscription
      */
-    Optional<SubscriptionPlanDTO> findOne(Long id);
-
-    /**
-     * Delete the "id" subscriptionPlan.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
+    SubscriptionPlanDTO updateSubscriptionPlanForCompany(UpdateSubscriptionRequest updateSubscriptionRequest);
 }

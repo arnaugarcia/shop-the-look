@@ -12,6 +12,10 @@ import { CompanyModalErrorComponent } from './component/company-modal-error/comp
 import { CompanyModalSuccessComponent } from './component/company-modal-success/company-modal-success.component';
 import { PreferencesComponent } from './pages/preferences/preferences.component';
 import { ContentHeaderModule } from '../../layouts/content-header/content-header.module';
+import { PricingPlanComponent } from './component/pricing-plan/pricing-plan.component';
+import { PricingPlanBenefitsComponent } from './component/pricing-plan-benefits/pricing-plan-benefits.component';
+import { CheckoutSuccessComponent } from './pages/checkout/checkout-success/checkout-success.component';
+import { CheckoutErrorComponent } from './pages/checkout/checkout-error/checkout-error.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +30,10 @@ import { ContentHeaderModule } from '../../layouts/content-header/content-header
     CompanyModalErrorComponent,
     CompanyModalSuccessComponent,
     PreferencesComponent,
+    PricingPlanComponent,
+    PricingPlanBenefitsComponent,
+    CheckoutSuccessComponent,
+    CheckoutErrorComponent,
   ],
   imports: [SharedModule, ContentHeaderModule],
 })

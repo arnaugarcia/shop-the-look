@@ -5,11 +5,13 @@ import com.klai.stl.domain.enumeration.CompanySize;
 import com.klai.stl.domain.enumeration.CompanyType;
 import java.io.Serializable;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 @Value
-public final class NewCompanyRequest extends CompanyRequest implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class NewCompanyRequest extends CompanyRequest implements Serializable {
 
     @Builder
     @Jacksonized

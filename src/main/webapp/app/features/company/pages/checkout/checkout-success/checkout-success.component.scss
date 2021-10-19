@@ -1,0 +1,41 @@
+@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '~bootstrap/scss/mixins';
+
+// Congratulations Card
+.card-congratulations {
+  background: linear-gradient(118deg, rgba($primary, 1), rgba($primary, 0.7));
+  color: $white;
+
+  // image on left
+  .congratulations-img-left {
+    width: 200px;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    @include media-breakpoint-down(xs) {
+      width: 140px;
+    }
+  }
+  // image on right
+  .congratulations-img-right {
+    width: 175px;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    @include media-breakpoint-down(xs) {
+      width: 140px;
+    }
+  }
+
+  .avatar {
+    margin-bottom: 2rem;
+  }
+}
+// congratulation medal card
+.congratulation-medal {
+  position: absolute;
+  top: 0;
+  right: 37px;
+}

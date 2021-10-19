@@ -123,7 +123,6 @@ public class ProductDTO implements Serializable {
         return "ProductDTO{" +
             ", sku='" + getSku() + "'" +
             ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", reference='" + getReference() + "'" +
             ", imageLink='" + getImageLink() + "'" +
