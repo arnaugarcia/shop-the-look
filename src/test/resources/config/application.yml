@@ -118,3 +118,5 @@ application:
   aws:
     bucket: shopthelook-pre
     region: eu-west-1
+  stripe:
+    webhookSecret: WEBHOOK_SECRET
