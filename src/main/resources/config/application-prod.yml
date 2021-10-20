@@ -33,7 +33,7 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/ShopTheLook?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/stl?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password:
     hikari:
@@ -128,11 +128,11 @@ jhipster:
 # ===================================================================
 
 application:
-  host: https://d2j17sg7k2laja.cloudfront.net
   aws:
     bucket: shopthelook-pre
     region: eu-west-1
   stripe:
     api-key:
-    success-url:
-    cancel-url:
+    webhook-secret:
+    success-url: http://localhost:9000/company/subscription/success
+    cancel-url: http://localhost:9000/company/subscription/error
