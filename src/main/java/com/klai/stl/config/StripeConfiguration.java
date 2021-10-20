@@ -13,6 +13,6 @@ public class StripeConfiguration {
     public StripeConfiguration(ApplicationProperties applicationProperties) {
         final String apiKey = applicationProperties.getStripe().getApiKey();
         Stripe.apiKey = apiKey;
-        log.info("Configured Stripe API Key ({})", apiKey);
+        log.debug("Configured Stripe API Key ({})", apiKey);
     }
 }
