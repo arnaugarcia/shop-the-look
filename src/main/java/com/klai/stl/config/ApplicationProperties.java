@@ -13,15 +13,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    private String host;
-
     private final FeedConfiguration feed = new FeedConfiguration();
 
     private final AWSClientProperties aws = new AWSClientProperties();
 
     private final StripeClientProperties stripe = new StripeClientProperties();
-
-    public void setHost(String host) {
-        this.host = host;
-    }
 }
