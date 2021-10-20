@@ -2,7 +2,7 @@ package com.klai.stl.service.impl;
 
 import static java.util.Objects.isNull;
 
-import com.klai.stl.config.StripeClientProperties;
+import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.WebhookEventService;
 import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
@@ -23,9 +23,9 @@ public class StripeWebhookEventServiceImpl implements WebhookEventService<Stripe
 
     private static final String STRIPE_EVENT = "checkout.session.completed";
 
-    public StripeWebhookEventServiceImpl(SubscriptionPlanService subscriptionPlanService, StripeClientProperties stripeClientProperties) {
+    public StripeWebhookEventServiceImpl(SubscriptionPlanService subscriptionPlanService, ApplicationProperties applicationProperties) {
         this.subscriptionPlanService = subscriptionPlanService;
-        this.WEBHOOK_SECRET = stripeClientProperties.getWebhookSecret();
+        this.WEBHOOK_SECRET = applicationProperties.getStripe().getWebhookSecret();
     }
 
     @Override

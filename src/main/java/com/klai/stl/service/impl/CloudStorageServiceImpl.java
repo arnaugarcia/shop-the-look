@@ -4,6 +4,7 @@ import static software.amazon.awssdk.core.sync.RequestBody.fromBytes;
 import static software.amazon.awssdk.services.s3.model.PutObjectRequest.builder;
 
 import com.klai.stl.config.AWSClientProperties;
+import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.dto.requests.s3.UploadObjectRequest;
 import com.klai.stl.service.exception.ObjectNotFoundException;
@@ -22,9 +23,9 @@ public class CloudStorageServiceImpl implements CloudStorageService {
     private final S3Client s3Client;
     private final AWSClientProperties awsClientProperties;
 
-    public CloudStorageServiceImpl(S3Client s3Client, AWSClientProperties awsClientProperties) {
+    public CloudStorageServiceImpl(S3Client s3Client, ApplicationProperties applicationProperties) {
         this.s3Client = s3Client;
-        this.awsClientProperties = awsClientProperties;
+        this.awsClientProperties = applicationProperties.getAws();
     }
 
     @Override

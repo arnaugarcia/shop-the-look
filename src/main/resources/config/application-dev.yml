@@ -97,7 +97,6 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
-
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -111,7 +110,7 @@ application:
     bucket: shopthelook-pre
     region: eu-west-1
   stripe:
-    api-key: ${STRIPE_APIKEY}
+    api-key:
     webhook-secret:
     success-url: http://localhost:9000/company/subscription/success
     cancel-url: http://localhost:9000/company/subscription/error

@@ -1,5 +1,6 @@
 package com.klai.stl.service.impl;
 
+import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.config.StripeClientProperties;
 import com.klai.stl.service.CheckoutService;
 import com.klai.stl.service.dto.requests.CheckoutRequest;
@@ -19,8 +20,8 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private final StripeClientProperties stripeClientProperties;
 
-    public CheckoutServiceImpl(StripeClientProperties stripeClientProperties) {
-        this.stripeClientProperties = stripeClientProperties;
+    public CheckoutServiceImpl(ApplicationProperties applicationProperties) {
+        this.stripeClientProperties = applicationProperties.getStripe();
     }
 
     @Override
