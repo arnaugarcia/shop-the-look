@@ -5,3 +5,4 @@ services:
     image: shop-the-look
     environment:
       - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - STRIPE_API_KEY=

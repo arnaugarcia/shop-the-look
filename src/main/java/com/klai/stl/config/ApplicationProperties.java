@@ -1,7 +1,7 @@
 package com.klai.stl.config;
 
 import lombok.Getter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Properties specific to Shop The Look.
@@ -10,12 +10,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * See {@link tech.jhipster.config.JHipsterProperties} for a good example.
  */
 @Getter
-@ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
+@Configuration
 public class ApplicationProperties {
 
     private final FeedConfiguration feed = new FeedConfiguration();
-
-    private final AWSClientProperties aws = new AWSClientProperties();
-
-    private final StripeClientProperties stripe = new StripeClientProperties();
 }

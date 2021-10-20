@@ -14,8 +14,8 @@ public class AWSConfiguration {
     private final AWSClientProperties awsClientProperties;
     private final S3Client s3Client;
 
-    public AWSConfiguration(ApplicationProperties applicationProperties) {
-        this.awsClientProperties = applicationProperties.getAws();
+    public AWSConfiguration(AWSClientProperties awsClientProperties) {
+        this.awsClientProperties = awsClientProperties;
         this.s3Client = createAWSS3Client();
     }
 

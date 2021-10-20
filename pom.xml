@@ -663,6 +663,14 @@
                                     <file>/entrypoint.sh</file>
                                     <mode>755</mode>
                                 </permission>
+                                <permission>
+                                    <file>/container-limits.sh</file>
+                                    <mode>755</mode>
+                                </permission>
+                                <permission>
+                                    <file>/java-default-options.sh</file>
+                                    <mode>755</mode>
+                                </permission>
                             </permissions>
                         </extraDirectories>
                     </configuration>

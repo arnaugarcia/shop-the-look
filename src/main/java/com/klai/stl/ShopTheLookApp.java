@@ -1,6 +1,5 @@
 package com.klai.stl;
 
-import com.klai.stl.config.ApplicationProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableConfigurationProperties({ LiquibaseProperties.class })
 public class ShopTheLookApp {
 
     private static final Logger log = LoggerFactory.getLogger(ShopTheLookApp.class);
