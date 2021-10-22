@@ -12,5 +12,8 @@ public final class Constants {
     public static final String DEFAULT_LANGUAGE = "en";
     public static final String ADMIN_COMPANY_NIF = "B42951921";
 
+    public static final String STRIPE_CHECKOUT_PARAM_COMPANY_KEY = "company_reference";
+    public static final String STRIPE_CHECKOUT_PARAM_SUBSCRIPTION_KEY = "subscription_reference";
+
     private Constants() {}
 }
