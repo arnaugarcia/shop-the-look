@@ -13,8 +13,8 @@ import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.webhook.stripe.dto.StripeMetadata;
 import java.util.Optional;
 import javax.persistence.EntityManager;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@Ignore
+@Disabled
 class WebhookResourceIT { // Write this tests with https://stackoverflow.com/questions/65306706/writing-unit-tests-for-stripe-webhooks-stripe-signature
 
     private static final String WEBHOOK_HEADER = "Stripe-Signature";
