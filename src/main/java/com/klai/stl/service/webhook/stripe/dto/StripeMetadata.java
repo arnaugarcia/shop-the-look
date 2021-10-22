@@ -1,5 +1,7 @@
 package com.klai.stl.service.webhook.stripe.dto;
 
+import static com.klai.stl.config.Constants.STRIPE_CHECKOUT_PARAM_COMPANY_KEY;
+import static com.klai.stl.config.Constants.STRIPE_CHECKOUT_PARAM_SUBSCRIPTION_KEY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.Map;
@@ -27,8 +29,8 @@ public class StripeMetadata {
 
     public static StripeMetadata from(Map<String, String> rawMetadata) {
         return builder()
-            .companyReference(rawMetadata.get("companyReference"))
-            .subscriptionReference(rawMetadata.get("subscriptionReference"))
+            .companyReference(rawMetadata.get(STRIPE_CHECKOUT_PARAM_COMPANY_KEY))
+            .subscriptionReference(rawMetadata.get(STRIPE_CHECKOUT_PARAM_SUBSCRIPTION_KEY))
             .build();
     }
 }

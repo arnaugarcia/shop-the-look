@@ -1,5 +1,8 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.config.Constants.STRIPE_CHECKOUT_PARAM_COMPANY_KEY;
+import static com.klai.stl.config.Constants.STRIPE_CHECKOUT_PARAM_SUBSCRIPTION_KEY;
+
 import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.config.StripeClientProperties;
 import com.klai.stl.service.CheckoutService;
@@ -47,8 +50,8 @@ public class CheckoutServiceImpl implements CheckoutService {
         lineItems.add(lineItem1);
 
         Map<String, String> metadata = new HashMap<>();
-        metadata.put("company_reference", checkoutRequest.getCompanyReference());
-        metadata.put("subscription_reference", checkoutRequest.getSubscriptionReference());
+        metadata.put(STRIPE_CHECKOUT_PARAM_COMPANY_KEY, checkoutRequest.getCompanyReference());
+        metadata.put(STRIPE_CHECKOUT_PARAM_SUBSCRIPTION_KEY, checkoutRequest.getSubscriptionReference());
 
         Map<String, Object> params = new HashMap<>();
         params.put("success_url", stripeClientProperties.getSuccessUrl());
