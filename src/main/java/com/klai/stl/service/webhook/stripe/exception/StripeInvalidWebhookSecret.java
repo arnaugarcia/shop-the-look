@@ -1,8 +1,8 @@
 package com.klai.stl.service.webhook.stripe.exception;
 
-public class StripeWebhookSecret extends StripeWebhookException {
+public class StripeInvalidWebhookSecret extends StripeWebhookException {
 
-    public StripeWebhookSecret() {
+    public StripeInvalidWebhookSecret() {
         super("Invalid Webhook secret signature. What are you trying here buddy? ¬¬");
     }
 }

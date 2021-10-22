@@ -3,7 +3,7 @@ package com.klai.stl.web.rest.errors;
 import static com.klai.stl.web.rest.errors.ErrorConstants.*;
 
 import com.klai.stl.service.exception.UsernameAlreadyUsedException;
-import com.klai.stl.service.webhook.stripe.exception.StripeWebhookSecret;
+import com.klai.stl.service.webhook.stripe.exception.StripeInvalidWebhookSecret;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -202,7 +202,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleWebhookSecretError(StripeWebhookSecret ex, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleWebhookSecretError(StripeInvalidWebhookSecret ex, NativeWebRequest request) {
         ForbiddenException problem = new ForbiddenException(FORBIDDEN, ex.getMessage(), "webhook", "forbidden");
         return create(
             problem,

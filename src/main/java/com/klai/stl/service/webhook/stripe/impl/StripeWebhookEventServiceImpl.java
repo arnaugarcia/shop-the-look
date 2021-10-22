@@ -7,8 +7,8 @@ import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import com.klai.stl.service.webhook.WebhookEventService;
 import com.klai.stl.service.webhook.stripe.dto.StripeMetadata;
-import com.klai.stl.service.webhook.stripe.exception.StripeWebhookDeserialization;
-import com.klai.stl.service.webhook.stripe.exception.StripeWebhookSecret;
+import com.klai.stl.service.webhook.stripe.exception.StripeInvalidWebhookSecret;
+import com.klai.stl.service.webhook.stripe.exception.StripeWebhookDeserializationError;
 import com.stripe.model.Event;
 import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.StripeObject;
@@ -62,11 +62,11 @@ public class StripeWebhookEventServiceImpl implements WebhookEventService<String
 
     private Session buildSessionFrom(Event event) {
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-        final StripeObject stripeObject = dataObjectDeserializer.getObject().orElseThrow(StripeWebhookDeserialization::new);
+        final StripeObject stripeObject = dataObjectDeserializer.getObject().orElseThrow(StripeWebhookDeserializationError::new);
         log.info("Processing stripe webhook object ({})", stripeObject);
         Session session = (Session) stripeObject;
         if (isNull(session)) {
-            throw new StripeWebhookDeserialization();
+            throw new StripeWebhookDeserializationError();
         }
         return session;
     }
@@ -75,7 +75,7 @@ public class StripeWebhookEventServiceImpl implements WebhookEventService<String
         try {
             return Webhook.constructEvent(payload, headerSignature, WEBHOOK_SECRET);
         } catch (Exception e) {
-            throw new StripeWebhookSecret();
+            throw new StripeInvalidWebhookSecret();
         }
     }
 }
