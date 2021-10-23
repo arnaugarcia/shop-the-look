@@ -1,14 +1,12 @@
-<section>
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          <p class="card-text mb-2">
-            <span>This is your api key. You must import this script to your site for enable Spaces in your site</span>
-          </p>
-          <core-card-snippet *ngIf="snippetCode" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
-        </div>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-10">
+    <h2>API Key</h2>
   </div>
-</section>
+  <div class="col-2 text-right">
+    <button type="button" class="btn btn-warning text-right" disabled>Regenerate token</button>
+  </div>
+  <div class="container">
+    <p class="mb-2">This is your api key. You must import this script to your site for enable Spaces in your site.</p>
+    <core-card-snippet *ngIf="snippetCode" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
+  </div>
+</div>
