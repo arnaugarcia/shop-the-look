@@ -8,7 +8,8 @@ import { CoreConfig } from '../../../@core/types';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import * as dayjs from 'dayjs';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
+import { AccountService } from '../../core/auth/account.service';
 
 @Component({
   selector: 'stl-main',
@@ -23,6 +24,7 @@ export class MainComponent implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any>;
 
   constructor(
+    private accountService: AccountService,
     @Inject(DOCUMENT) private document: any,
     private titleService: Title,
     private elementRef: ElementRef,
@@ -42,6 +44,14 @@ export class MainComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    // try to log in automatically
+    this.accountService.identity().subscribe();
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateTitle();
+      }
+    });
     // Subscribe to config changes
     this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
