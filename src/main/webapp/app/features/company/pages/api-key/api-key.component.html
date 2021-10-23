@@ -1,1 +1,16 @@
-<p>api-key works!</p>
+<div class="row">
+  <div class="col-10">
+    <h2>API Key</h2>
+  </div>
+  <div class="col-2 text-right">
+    <button type="button" class="btn btn-warning text-right" disabled>Regenerate token</button>
+  </div>
+  <div class="container">
+    <p class="mb-2">This is your api key. You must import this script to your site for enable Spaces in your site.</p>
+    <core-card-snippet *ngIf="snippetCode && !error" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
+    <div role="alert" class="alert show alert-danger" *ngIf="error">
+      <h4 class="alert-heading">Error</h4>
+      <div class="alert-body">Error loading company details</div>
+    </div>
+  </div>
+</div>

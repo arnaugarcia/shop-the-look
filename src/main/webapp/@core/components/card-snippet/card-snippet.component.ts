@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 // snippetCode interface
 export interface snippetCode {
+  showHeader?: boolean;
   isCollapsed?: boolean;
   active?: string;
   html?: string;
