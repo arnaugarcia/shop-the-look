@@ -1,7 +1,7 @@
 <!-- card snippet component -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
 <div class="card">
-  <div class="card-header">
+  <div class="card-header" *ngIf="snippetCode.showHeader">
     <ng-content select=".card-title"></ng-content>
 
     <i class="code-icon" (click)="snippetCode.isCollapsed = !snippetCode.isCollapsed" [attr.aria-expanded]="!snippetCode.isCollapsed"></i>
