@@ -16,6 +16,7 @@ import { PricingPlanComponent } from './component/pricing-plan/pricing-plan.comp
 import { PricingPlanBenefitsComponent } from './component/pricing-plan-benefits/pricing-plan-benefits.component';
 import { CheckoutSuccessComponent } from './pages/checkout/checkout-success/checkout-success.component';
 import { CheckoutErrorComponent } from './pages/checkout/checkout-error/checkout-error.component';
+import { CardSnippetModule } from '../../../@core/components/card-snippet/card-snippet.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,6 @@ import { CheckoutErrorComponent } from './pages/checkout/checkout-error/checkout
     CheckoutSuccessComponent,
     CheckoutErrorComponent,
   ],
-  imports: [SharedModule, ContentHeaderModule],
+  imports: [SharedModule, ContentHeaderModule, CardSnippetModule],
 })
 export class CompanyModule {}
