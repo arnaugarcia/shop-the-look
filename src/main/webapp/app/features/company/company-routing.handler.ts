@@ -116,7 +116,7 @@ export const COMPANY_CHILDREN_NAVIGATION = [
     path: 'api-key',
     component: ApiKeyComponent,
     resolve: {
-      billingAddress: BillingAddressRoutingResolveService,
+      company: CompanyRoutingResolveService,
     },
   },
 ];

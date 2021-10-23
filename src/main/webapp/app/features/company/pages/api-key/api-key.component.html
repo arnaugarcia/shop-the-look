@@ -7,6 +7,10 @@
   </div>
   <div class="container">
     <p class="mb-2">This is your api key. You must import this script to your site for enable Spaces in your site.</p>
-    <core-card-snippet *ngIf="snippetCode" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
+    <core-card-snippet *ngIf="snippetCode && !error" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
+    <div role="alert" class="alert show alert-danger" *ngIf="error">
+      <h4 class="alert-heading">Error</h4>
+      <div class="alert-body">Error loading company details</div>
+    </div>
   </div>
 </div>
