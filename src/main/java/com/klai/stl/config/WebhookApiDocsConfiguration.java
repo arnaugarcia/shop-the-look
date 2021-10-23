@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 import tech.jhipster.config.JHipsterProperties;
 
@@ -28,27 +29,28 @@ public class WebhookApiDocsConfiguration {
     @Bean
     @Profile("!test")
     public Docket openAPISpringfoxWebhooksDocket(@Value("${spring.application.name:application}") String appName) {
+        Contact contact = new Contact(apiDocs.getContactName(), apiDocs.getContactUrl(), apiDocs.getContactEmail());
         ApiInfo apiInfo = new ApiInfo(
             StringUtils.capitalize(appName) + " " + "Webhook gateway API",
             "Webhook API for managing payments",
-            "0.0.8",
-            "",
-            ApiInfo.DEFAULT_CONTACT,
-            "",
-            "",
+            apiDocs.getVersion(),
+            apiDocs.getTermsOfServiceUrl(),
+            contact,
+            apiDocs.getLicense(),
+            apiDocs.getLicenseUrl(),
             new ArrayList()
         );
         Docket docket = new Docket(OAS_30);
         return docket
             .apiInfo(apiInfo)
             .useDefaultResponseMessages(true)
-            .groupName("webhook")
+            .groupName("webhooks")
             .forCodeGeneration(true)
             .directModelSubstitute(ByteBuffer.class, String.class)
             .genericModelSubstitutes(new Class[] { ResponseEntity.class })
             .ignoredParameterTypes(new Class[] { Pageable.class })
             .select()
-            .paths(PathSelectors.regex("/webhook/.*"))
+            .paths(PathSelectors.regex("/webhooks/.*"))
             .build();
     }
 }
