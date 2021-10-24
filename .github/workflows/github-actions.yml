@@ -35,17 +35,16 @@ jobs:
             - name: Login to ECR
               id: login-ecr
               uses: aws-actions/amazon-ecr-login@v1
-            - name: Run backend test
+            - name: Give permissions
               run: |
                   chmod +x mvnw
-                  npm run ci:backend:test
             - name: Build docker image
               run: ./mvnw package -Pprod,api-docs verify jib:dockerBuild
             - name: Tag docker image
               run: docker tag shop-the-look:latest ${{ secrets.AWS_ECR_REPOSITORY }}/shop-the-look:latest
             - name: Push docker image
               run: docker push ${{ secrets.AWS_ECR_REPOSITORY }}/shop-the-look:latest
-            - name: Force deployment
+            - name: Force new ECS deployment
               run: |
                 aws ecs update-service --cluster ${{ secrets.AWS_ECS_CLUSTER }} --service ${{ secrets.AWS_ECS_SERVICE }} --force-new-deployment
 
