@@ -1,9 +1,10 @@
 function setupProxy() {
   const tls = process.env.TLS;
-  const conf = [
+  return [
     {
       context: [
         '/api',
+        '/client/api',
         '/services',
         '/management',
         '/swagger-resources',
@@ -18,7 +19,6 @@ function setupProxy() {
       changeOrigin: tls,
     },
   ];
-  return conf;
 }
 
 module.exports = setupProxy();
