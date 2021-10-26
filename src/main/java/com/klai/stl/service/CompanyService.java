@@ -104,4 +104,12 @@ public interface CompanyService {
      * @return the entity
      */
     CompanyDTO findByCurrentUser();
+
+    /**
+     * Get the company by his token
+     * @param token the token to search company by
+     * @return the DTO
+     * @throws com.klai.stl.service.exception.CompanyNotFound if no token has been found for company
+     */
+    CompanyDTO findByToken(String token);
 }

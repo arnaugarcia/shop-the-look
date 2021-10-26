@@ -167,6 +167,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CompanyDTO findByToken(String token) {
+        return companyMapper.toDto(companyRepository.findByToken(token).orElseThrow(CompanyNotFound::new));
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public CompanyDTO findOne(String reference) {
         log.debug("Request to get Company : {}", reference);

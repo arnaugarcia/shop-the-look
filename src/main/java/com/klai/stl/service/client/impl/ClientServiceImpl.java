@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientServiceImpl implements ClientService {
 
+    // Apply cache here
     @Override
     public SpaceDTO findByReference(String reference) {
         return null;
