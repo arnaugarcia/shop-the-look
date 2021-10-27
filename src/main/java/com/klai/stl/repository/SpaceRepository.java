@@ -7,6 +7,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,4 +27,9 @@ public interface SpaceRepository extends JpaRepository<Space, Long>, JpaSpecific
     Optional<Space> findByReference(String reference);
 
     void deleteByReference(String reference);
+
+    @Query(
+        "select space from Space space left join fetch Photo photo on photo.space = space left join fetch Coordinate coordinate on coordinate.photo = photo where space.reference = :reference"
+    )
+    Optional<Space> findByReferenceWithEagerRelationships(@Param("reference") String reference);
 }
