@@ -1,7 +1,8 @@
 package com.klai.stl.service.client.aspect;
 
+import static java.util.Arrays.stream;
+
 import com.klai.stl.service.CompanyService;
-import java.util.Arrays;
 import java.util.function.Predicate;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,17 +24,15 @@ public class ClientHeaderAspect {
     @Around("methodAnnotatedWithValidHeaderAnnotation()")
     public Object validateHeader(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         CodeSignature codeSignature = (CodeSignature) proceedingJoinPoint.getSignature();
-        final String token = Arrays
-            .stream(codeSignature.getParameterNames())
-            .filter(byParamName("token"))
-            .findFirst()
-            .orElseThrow(RuntimeException::new);
+
+        stream(codeSignature.getParameterNames()).filter(byToken()).findFirst().orElseThrow(RuntimeException::new);
+
         companyService.findByToken(proceedingJoinPoint.getArgs()[0].toString());
         return proceedingJoinPoint.proceed();
     }
 
-    private Predicate<String> byParamName(String paramName) {
-        return methodParameter -> methodParameter.equalsIgnoreCase(paramName);
+    private Predicate<String> byToken() {
+        return methodParameter -> methodParameter.equalsIgnoreCase("token");
     }
 
     @Pointcut(
