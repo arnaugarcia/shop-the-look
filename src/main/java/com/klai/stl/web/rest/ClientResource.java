@@ -4,7 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.klai.stl.service.client.ClientService;
 import com.klai.stl.service.client.annotation.ValidClientHeader;
-import com.klai.stl.service.client.dto.SpaceDTO;
+import com.klai.stl.service.client.dto.SpaceClientDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class ClientResource {
 
     @ValidClientHeader
     @GetMapping("/spaces/{reference}")
-    public ResponseEntity<SpaceDTO> getSpaceInfo(@RequestHeader("STL-Token") String token, @PathVariable String reference) {
+    public ResponseEntity<SpaceClientDTO> getSpaceInfo(@RequestHeader("STL-Token") String token, @PathVariable String reference) {
         log.info("REST request to get space ({}) data for company ({})", reference, token);
         return ok().body(clientService.findByReference(reference));
     }

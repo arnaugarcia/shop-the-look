@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Value;
 
 @Value
-public class CoordinateDTO implements Serializable {
+public class CoordinateClientDTO implements Serializable {
 
     String x;
     String y;

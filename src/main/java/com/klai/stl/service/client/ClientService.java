@@ -1,7 +1,7 @@
 package com.klai.stl.service.client;
 
-import com.klai.stl.service.client.dto.SpaceDTO;
+import com.klai.stl.service.client.dto.SpaceClientDTO;
 
 public interface ClientService {
-    SpaceDTO findByReference(String reference);
+    SpaceClientDTO findByReference(String reference);
 }

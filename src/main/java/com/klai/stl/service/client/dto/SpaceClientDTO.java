@@ -1,16 +1,15 @@
 package com.klai.stl.service.client.dto;
 
-import java.util.List;
+import java.io.Serializable;
 import lombok.Value;
 
 @Value
-public class SpaceDTO {
+public class SpaceClientDTO implements Serializable {
 
     String name;
 
     String description;
 
     String template;
-
-    List<PhotoDTO> photos;
+    //List<PhotoClientDTO> photos;
 }
