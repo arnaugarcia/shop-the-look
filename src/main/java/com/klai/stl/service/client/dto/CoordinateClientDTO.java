@@ -6,6 +6,7 @@ import lombok.Value;
 @Value
 public class CoordinateClientDTO implements Serializable {
 
-    String x;
-    String y;
+    Integer x;
+    Integer y;
+    ProductClientDTO product;
 }

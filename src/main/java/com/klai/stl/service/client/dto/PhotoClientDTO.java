@@ -1,7 +1,6 @@
 package com.klai.stl.service.client.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Value;
 
@@ -12,9 +11,9 @@ public class PhotoClientDTO implements Serializable {
 
     Integer order;
 
-    Double height;
+    Integer height;
 
-    Double width;
+    Integer width;
 
-    List<CoordinateClientDTO> coordinates = new ArrayList<>();
+    List<CoordinateClientDTO> coordinates;
 }
