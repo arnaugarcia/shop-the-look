@@ -39,7 +39,7 @@ public class SpacePhotoResource {
     public ResponseEntity<PhotoDTO> addPhotoToSpace(@PathVariable String spaceReference, @RequestBody SpacePhotoRequest spacePhotoRequest)
         throws URISyntaxException {
         log.debug("REST request to add a photo {} to space {}", spacePhotoRequest, spaceReference);
-        final PhotoDTO result = spacePhotoService.addPhoto(spacePhotoRequest, spaceReference);
+        final PhotoDTO result = spacePhotoService.addPhoto(spaceReference, spacePhotoRequest);
         return created(new URI("/api/spaces/" + spaceReference + "/photos"))
             .headers(createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getReference()))
             .body(result);

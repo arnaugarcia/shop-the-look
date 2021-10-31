@@ -57,7 +57,7 @@ public class SpacePhotoServiceImpl implements SpacePhotoService {
     }
 
     @Override
-    public PhotoDTO addPhoto(SpacePhotoRequest spacePhotoRequest, String spaceReference) {
+    public PhotoDTO addPhoto(String spaceReference, SpacePhotoRequest spacePhotoRequest) {
         log.debug("Adding photo {} to space {}", spacePhotoRequest, spaceReference);
         final Space space = spaceService.findForCurrentUser(spaceReference);
 
