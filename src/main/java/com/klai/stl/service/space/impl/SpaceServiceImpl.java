@@ -95,7 +95,7 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public SpaceDTO partialUpdate(UpdateSpaceRequest updateSpaceRequest, String reference) {
+    public SpaceDTO partialUpdate(String reference, UpdateSpaceRequest updateSpaceRequest) {
         final Space space = findByReference(reference);
         checkIfCurrentUserBelongsToSpace(reference);
         Space result = updateSpace(space, updateSpaceRequest);

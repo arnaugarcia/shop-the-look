@@ -52,11 +52,12 @@ public interface SpaceService {
 
     /**
      * Updates space for the desired company
+     *
      * @param newSpaceRequest the request updating the space
-     * @param reference the reference to the space to update
+     * @param reference       the reference to the space to update
      * @return the updated space entity
      */
-    SpaceDTO partialUpdate(UpdateSpaceRequest newSpaceRequest, String reference);
+    SpaceDTO partialUpdate(String reference, UpdateSpaceRequest newSpaceRequest);
 
     /**
      * Finds by given criteria for the desired company
