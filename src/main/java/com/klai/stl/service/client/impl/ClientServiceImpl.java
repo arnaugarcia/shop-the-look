@@ -19,10 +19,9 @@ public class ClientServiceImpl implements ClientService {
         this.spaceClientMapper = spaceClientMapper;
     }
 
-    // Apply cache here
     @Override
     public SpaceClientDTO findByReference(String reference) {
-        final Space space = spaceRepository.findByReference(reference).orElseThrow(SpaceNotFound::new);
+        final Space space = spaceRepository.findByReferenceWithEagerRelationships(reference).orElseThrow(SpaceNotFound::new);
         return spaceClientMapper.map(space);
     }
 }

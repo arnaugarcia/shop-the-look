@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -21,8 +22,13 @@ public interface SpaceRepository extends JpaRepository<Space, Long>, JpaSpecific
 
     List<Space> findByCompanyReference(String companyReference);
 
-    @EntityGraph(attributePaths = { "photos", "photos.coordinates", "photos.coordinates.product" })
+    @EntityGraph(attributePaths = { "photos", "photos.coordinates" })
     Optional<Space> findByReference(String reference);
+
+    @Query(
+        "select distinct space from Space space left join fetch space.photos photo left join fetch photo.coordinates coordinate left join fetch coordinate.product"
+    )
+    Optional<Space> findByReferenceWithEagerRelationships(String reference);
 
     void deleteByReference(String reference);
 }
