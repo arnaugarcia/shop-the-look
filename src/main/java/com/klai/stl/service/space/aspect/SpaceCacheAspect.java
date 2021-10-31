@@ -23,7 +23,7 @@ public class SpaceCacheAspect {
         this.cacheManager = cacheManager;
     }
 
-    @Around(value = "" + "spacePhotosAreUpdated() ||" + "spaceCoordinatesAreUpdated() ||" + "spaceIsDeleted() ||" + "spaceIsUpdated()")
+    @Around(value = "spacePhotosAreUpdated() || spaceCoordinatesAreUpdated() || spaceIsDeleted() || spaceIsUpdated()")
     public Object clearSpaceCache(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         final String spaceReference = (String) proceedingJoinPoint.getArgs()[0];
         log.info("Cleaning cache for space {}", spaceReference);
