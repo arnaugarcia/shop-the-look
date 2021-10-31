@@ -27,7 +27,6 @@ public class ClientServiceImpl implements ClientService {
     @Cacheable(value = SPACES_CACHE)
     public SpaceClientDTO findByReference(String reference) {
         final Space space = spaceRepository.findByReferenceWithEagerRelationships(reference).orElseThrow(spaceNotFound(reference));
-
         return spaceClientMapper.map(space);
     }
 

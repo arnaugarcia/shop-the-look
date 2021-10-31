@@ -3,7 +3,6 @@ package com.klai.stl.service.space.aspect;
 import static java.util.Objects.requireNonNull;
 
 import com.klai.stl.repository.SpaceRepository;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
