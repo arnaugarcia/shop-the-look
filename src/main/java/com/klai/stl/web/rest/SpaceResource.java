@@ -4,11 +4,11 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static tech.jhipster.web.util.HeaderUtil.*;
 
-import com.klai.stl.service.SpaceService;
-import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.criteria.SpaceCriteriaDTO;
-import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
-import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
+import com.klai.stl.service.space.SpaceService;
+import com.klai.stl.service.space.criteria.SpaceCriteriaDTO;
+import com.klai.stl.service.space.dto.SpaceDTO;
+import com.klai.stl.service.space.request.NewSpaceRequest;
+import com.klai.stl.service.space.request.UpdateSpaceRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

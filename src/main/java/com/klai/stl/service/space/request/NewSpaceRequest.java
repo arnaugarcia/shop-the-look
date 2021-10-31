@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.requests.space;
+package com.klai.stl.service.space.request;
 
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;

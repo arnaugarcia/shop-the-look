@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.requests.photo;
+package com.klai.stl.service.space.request;
 
 import java.net.URL;
 import lombok.Builder;

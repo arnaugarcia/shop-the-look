@@ -1,7 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.domain.Photo;
-import com.klai.stl.service.dto.requests.photo.PhotoRequest;
+import com.klai.stl.service.space.request.PhotoRequest;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Photo}.

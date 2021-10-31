@@ -1,5 +1,6 @@
-package com.klai.stl.service.dto;
+package com.klai.stl.service.space.dto;
 
+import com.klai.stl.service.dto.ProductDTO;
 import java.io.Serializable;
 import lombok.Value;
 

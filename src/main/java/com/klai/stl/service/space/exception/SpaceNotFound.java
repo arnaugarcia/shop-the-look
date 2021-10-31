@@ -1,4 +1,4 @@
-package com.klai.stl.service.exception;
+package com.klai.stl.service.space.exception;
 
 public class SpaceNotFound extends RuntimeException {
 

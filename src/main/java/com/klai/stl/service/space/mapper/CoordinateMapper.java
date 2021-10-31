@@ -1,7 +1,9 @@
-package com.klai.stl.service.mapper;
+package com.klai.stl.service.space.mapper;
 
 import com.klai.stl.domain.Coordinate;
-import com.klai.stl.service.dto.CoordinateDTO;
+import com.klai.stl.service.mapper.EntityMapper;
+import com.klai.stl.service.mapper.ProductMapper;
+import com.klai.stl.service.space.dto.CoordinateDTO;
 import org.mapstruct.Mapper;
 
 /**

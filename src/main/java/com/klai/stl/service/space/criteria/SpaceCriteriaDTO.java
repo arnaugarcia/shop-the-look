@@ -1,4 +1,4 @@
-package com.klai.stl.service.dto.criteria;
+package com.klai.stl.service.space.criteria;
 
 import lombok.Value;
 

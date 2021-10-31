@@ -1,6 +1,6 @@
 package com.klai.stl.web.rest;
 
-import static com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest.builder;
+import static com.klai.stl.service.space.request.SpaceCoordinateRequest.builder;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
 import static com.klai.stl.web.rest.ProductResourceIT.createProduct;
 import static com.klai.stl.web.rest.SpacePhotoResourceIT.createPhoto;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
 import com.klai.stl.repository.CoordinateRepository;
-import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
+import com.klai.stl.service.space.request.SpaceCoordinateRequest;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

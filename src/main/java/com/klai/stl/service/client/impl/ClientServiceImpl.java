@@ -6,8 +6,9 @@ import com.klai.stl.domain.Space;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.client.ClientService;
 import com.klai.stl.service.client.dto.SpaceClientDTO;
+import com.klai.stl.service.client.exception.SpaceNotFound;
 import com.klai.stl.service.client.mapper.SpaceClientMapper;
-import com.klai.stl.service.exception.SpaceNotFound;
+import java.util.function.Supplier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,12 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Cacheable(value = SPACES_CACHE)
     public SpaceClientDTO findByReference(String reference) {
-        final Space space = spaceRepository.findByReferenceWithEagerRelationships(reference).orElseThrow(SpaceNotFound::new);
+        final Space space = spaceRepository.findByReferenceWithEagerRelationships(reference).orElseThrow(spaceNotFound(reference));
+
         return spaceClientMapper.map(space);
+    }
+
+    private Supplier<SpaceNotFound> spaceNotFound(String reference) {
+        return () -> new SpaceNotFound(reference);
     }
 }

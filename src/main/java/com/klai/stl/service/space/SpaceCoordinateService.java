@@ -1,7 +1,7 @@
-package com.klai.stl.service;
+package com.klai.stl.service.space;
 
-import com.klai.stl.service.dto.CoordinateDTO;
-import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
+import com.klai.stl.service.space.dto.CoordinateDTO;
+import com.klai.stl.service.space.request.SpaceCoordinateRequest;
 
 public interface SpaceCoordinateService {
     /**

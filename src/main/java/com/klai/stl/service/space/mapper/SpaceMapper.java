@@ -1,8 +1,9 @@
-package com.klai.stl.service.mapper;
+package com.klai.stl.service.space.mapper;
 
 import com.klai.stl.domain.Space;
-import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
+import com.klai.stl.service.mapper.EntityMapper;
+import com.klai.stl.service.space.dto.SpaceDTO;
+import com.klai.stl.service.space.request.NewSpaceRequest;
 import org.mapstruct.Mapper;
 
 /**

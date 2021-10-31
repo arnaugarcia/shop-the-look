@@ -1,6 +1,5 @@
-package com.klai.stl.service.criteria;
+package com.klai.stl.service.space.criteria;
 
-import com.klai.stl.service.dto.criteria.SpaceCriteriaDTO;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Value;

@@ -1,15 +1,19 @@
-package com.klai.stl.service.impl;
+package com.klai.stl.service.space.impl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.domain.*;
 import com.klai.stl.repository.CoordinateRepository;
-import com.klai.stl.service.*;
-import com.klai.stl.service.dto.CoordinateDTO;
-import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
+import com.klai.stl.service.PhotoService;
+import com.klai.stl.service.ProductService;
+import com.klai.stl.service.UserService;
 import com.klai.stl.service.exception.BadOwnerException;
 import com.klai.stl.service.exception.CoordinateNotFound;
-import com.klai.stl.service.mapper.CoordinateMapper;
+import com.klai.stl.service.space.SpaceCoordinateService;
+import com.klai.stl.service.space.SpaceService;
+import com.klai.stl.service.space.dto.CoordinateDTO;
+import com.klai.stl.service.space.mapper.CoordinateMapper;
+import com.klai.stl.service.space.request.SpaceCoordinateRequest;
 import java.util.function.Predicate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

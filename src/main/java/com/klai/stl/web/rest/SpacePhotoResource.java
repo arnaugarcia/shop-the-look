@@ -4,9 +4,9 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.noContent;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 
-import com.klai.stl.service.SpacePhotoService;
-import com.klai.stl.service.dto.requests.photo.PhotoDTO;
-import com.klai.stl.service.dto.requests.space.SpacePhotoRequest;
+import com.klai.stl.service.space.SpacePhotoService;
+import com.klai.stl.service.space.dto.PhotoDTO;
+import com.klai.stl.service.space.request.SpacePhotoRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.slf4j.Logger;

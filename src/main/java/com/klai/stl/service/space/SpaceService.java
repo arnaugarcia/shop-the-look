@@ -1,10 +1,10 @@
-package com.klai.stl.service;
+package com.klai.stl.service.space;
 
 import com.klai.stl.domain.Space;
-import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.criteria.SpaceCriteriaDTO;
-import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
-import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
+import com.klai.stl.service.space.criteria.SpaceCriteriaDTO;
+import com.klai.stl.service.space.dto.SpaceDTO;
+import com.klai.stl.service.space.request.NewSpaceRequest;
+import com.klai.stl.service.space.request.UpdateSpaceRequest;
 import java.util.List;
 
 /**

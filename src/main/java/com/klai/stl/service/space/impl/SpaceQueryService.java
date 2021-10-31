@@ -1,4 +1,4 @@
-package com.klai.stl.service.impl;
+package com.klai.stl.service.space.impl;
 
 import static java.util.Objects.isNull;
 import static javax.persistence.criteria.JoinType.INNER;
@@ -8,9 +8,9 @@ import com.klai.stl.domain.Company_;
 import com.klai.stl.domain.Space;
 import com.klai.stl.domain.Space_;
 import com.klai.stl.repository.SpaceRepository;
-import com.klai.stl.service.criteria.SpaceCriteria;
-import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.mapper.SpaceMapper;
+import com.klai.stl.service.space.criteria.SpaceCriteria;
+import com.klai.stl.service.space.dto.SpaceDTO;
+import com.klai.stl.service.space.mapper.SpaceMapper;
 import java.util.List;
 import javax.persistence.criteria.Join;
 import org.hibernate.cfg.NotYetImplementedException;

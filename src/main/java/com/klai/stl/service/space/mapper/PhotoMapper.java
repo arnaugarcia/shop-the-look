@@ -1,7 +1,8 @@
-package com.klai.stl.service.mapper;
+package com.klai.stl.service.space.mapper;
 
 import com.klai.stl.domain.Photo;
-import com.klai.stl.service.dto.requests.photo.PhotoDTO;
+import com.klai.stl.service.mapper.EntityMapper;
+import com.klai.stl.service.space.dto.PhotoDTO;
 import org.mapstruct.Mapper;
 
 /**
