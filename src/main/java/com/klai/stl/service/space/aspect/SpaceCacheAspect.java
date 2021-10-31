@@ -23,7 +23,7 @@ public class SpaceCacheAspect {
         this.cacheManager = cacheManager;
     }
 
-    @Around(value = "spaceIsModified()")
+    @Around(value = "" + "spacePhotosAreUpdated() ||" + "spaceCoordinatesAreUpdated() ||" + "spaceIsDeleted() ||" + "spaceIsUpdated()")
     public Object clearSpaceCache(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         final String spaceReference = (String) proceedingJoinPoint.getArgs()[0];
         log.info("Cleaning cache for space {}", spaceReference);
@@ -31,12 +31,17 @@ public class SpaceCacheAspect {
         return proceedingJoinPoint.proceed();
     }
 
-    @Pointcut(
-        value = "within(" +
-        "com.klai.stl.service.space.SpaceCoordinateService+ ||" +
-        " com.klai.stl.service.space.SpacePhotoService+) && execution(* *(String, ..))"
-    )
-    public void spaceIsModified() {}
+    @Pointcut(value = "within(com.klai.stl.service.space.SpacePhotoService+) && execution(* *(String, ..))")
+    public void spacePhotosAreUpdated() {}
+
+    @Pointcut(value = "within(com.klai.stl.service.space.SpaceCoordinateService+) && execution(* *(String, ..))")
+    public void spaceCoordinatesAreUpdated() {}
+
+    @Pointcut(value = "execution(void com.klai.stl.service.space.SpaceService.delete(String))")
+    public void spaceIsDeleted() {}
+
+    @Pointcut(value = "execution(* com.klai.stl.service.space.SpaceService.partialUpdate(String, ..))")
+    public void spaceIsUpdated() {}
 
     private void clearSpaceCacheByReference(String spaceReference) {
         requireNonNull(cacheManager.getCache(SpaceRepository.SPACES_CACHE)).evict(spaceReference);
