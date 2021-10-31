@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class ClientHeaderAspect {
+public class ClientTokenAspect {
 
     private final CompanyRepository companyRepository;
 
-    public ClientHeaderAspect(CompanyRepository companyRepository) {
+    public ClientTokenAspect(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 
