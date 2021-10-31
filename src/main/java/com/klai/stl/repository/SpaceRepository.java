@@ -16,6 +16,8 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface SpaceRepository extends JpaRepository<Space, Long>, JpaSpecificationExecutor<Space> {
+    String SPACES_CACHE = "spaces";
+
     @Override
     @EntityGraph(attributePaths = { "photos", "photos.coordinates" })
     List<Space> findAll(Specification<Space> specification);
