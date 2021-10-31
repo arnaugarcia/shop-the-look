@@ -88,9 +88,25 @@ class ClientSpaceResourceIT {
 
     @Test
     @Transactional
+    public void findSpaceWithNullToken() throws Exception {
+        restSubscriptionMockMvc
+            .perform(get(API_URL, space.getReference()).contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void findSpaceWithEmptyToken() throws Exception {
+        restSubscriptionMockMvc
+            .perform(get(API_URL, space.getReference()).header(TOKEN_HEADER_KEY, "").contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
     public void findSpaceWithInvalidReference() throws Exception {
         restSubscriptionMockMvc
             .perform(get(API_URL, "INVALID_REFERENCE").header(TOKEN_HEADER_KEY, company.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isBadRequest());
     }
 }

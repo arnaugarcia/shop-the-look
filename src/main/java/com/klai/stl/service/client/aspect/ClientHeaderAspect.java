@@ -2,7 +2,8 @@ package com.klai.stl.service.client.aspect;
 
 import static java.util.Arrays.stream;
 
-import com.klai.stl.service.CompanyService;
+import com.klai.stl.repository.CompanyRepository;
+import com.klai.stl.service.client.exception.InvalidTokenException;
 import java.util.function.Predicate;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientHeaderAspect {
 
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
 
-    public ClientHeaderAspect(CompanyService companyService) {
-        this.companyService = companyService;
+    public ClientHeaderAspect(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
     }
 
     @Around("methodAnnotatedWithValidHeaderAnnotation()")
@@ -27,16 +28,17 @@ public class ClientHeaderAspect {
 
         stream(codeSignature.getParameterNames()).filter(byToken()).findFirst().orElseThrow(RuntimeException::new);
 
-        companyService.findByToken(proceedingJoinPoint.getArgs()[0].toString());
-        return proceedingJoinPoint.proceed();
-    }
+        companyRepository.findByToken(proceedingJoinPoint.getArgs()[0].toString()).orElseThrow(InvalidTokenException::new);
 
-    private Predicate<String> byToken() {
-        return methodParameter -> methodParameter.equalsIgnoreCase("token");
+        return proceedingJoinPoint.proceed();
     }
 
     @Pointcut(
         value = "@within(com.klai.stl.service.client.annotation.ValidClientHeader) || @annotation(com.klai.stl.service.client.annotation.ValidClientHeader)"
     )
     public void methodAnnotatedWithValidHeaderAnnotation() {}
+
+    private Predicate<String> byToken() {
+        return methodParameter -> methodParameter.equalsIgnoreCase("token");
+    }
 }

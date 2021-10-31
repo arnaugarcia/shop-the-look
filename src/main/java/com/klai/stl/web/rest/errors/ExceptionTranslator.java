@@ -243,6 +243,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidTokenException(
+        com.klai.stl.service.client.exception.InvalidTokenException ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(BAD_REQUEST, ex.getMessage(), "token", "invalidtoken");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleSubscriptionException(
         com.klai.stl.service.exception.SubscriptionPlanNotFound ex,
         NativeWebRequest request
