@@ -22,10 +22,9 @@ public class ClientResource {
         this.clientService = clientService;
     }
 
-    @ValidClientHeader
     @GetMapping("/spaces/{reference}")
-    public ResponseEntity<SpaceClientDTO> getSpaceInfo(@RequestHeader("STL-Token") String token, @PathVariable String reference) {
-        log.info("REST request to get space ({}) data for company ({})", reference, token);
+    public ResponseEntity<SpaceClientDTO> getSpaceInfo(@PathVariable String reference) {
+        log.info("REST request to get space ({})", reference);
         return ok().body(clientService.findByReference(reference));
     }
 }
