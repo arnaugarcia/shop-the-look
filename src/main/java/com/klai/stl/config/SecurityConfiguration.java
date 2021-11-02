@@ -152,8 +152,6 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic()
-                .and()
                 .apply(clientSecurityConfigurerAdapter());
             // @formatter:on
         }

@@ -1,12 +1,12 @@
 package com.klai.stl.service.impl;
 
+import static com.klai.stl.security.ApiSecurityUtils.isCurrentUserAdmin;
+import static com.klai.stl.security.ApiSecurityUtils.isCurrentUserManager;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
-import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
-import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
 import static java.util.Objects.isNull;
 
 import com.klai.stl.domain.User;
-import com.klai.stl.security.SecurityUtils;
+import com.klai.stl.security.ApiSecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.EmployeeService;
 import com.klai.stl.service.UserService;
@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public User updateEmployee(UpdateEmployeeRequestDTO employeeRequest, String login) {
-        if (SecurityUtils.isCurrentUserManager()) {
+        if (ApiSecurityUtils.isCurrentUserManager()) {
             companyService.checkLoginBelongsToCompany(login, findCurrentUserCompanyReference());
         }
         userService.updateUser(employeeRequest, login);
@@ -110,6 +110,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private String findCurrentUserCompanyReference() {
-        return findUserCompanyReference(SecurityUtils.getCurrentUserLogin().get());
+        return findUserCompanyReference(ApiSecurityUtils.getCurrentUserLogin().get());
     }
 }

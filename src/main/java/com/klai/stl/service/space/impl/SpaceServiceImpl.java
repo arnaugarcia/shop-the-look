@@ -1,6 +1,6 @@
 package com.klai.stl.service.space.impl;
 
-import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
+import static com.klai.stl.security.ApiSecurityUtils.isCurrentUserAdmin;
 import static java.util.Locale.ROOT;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;

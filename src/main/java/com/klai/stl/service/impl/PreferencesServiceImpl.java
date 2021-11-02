@@ -1,6 +1,6 @@
 package com.klai.stl.service.impl;
 
-import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
+import static com.klai.stl.security.ApiSecurityUtils.isCurrentUserManager;
 import static java.time.ZonedDateTime.now;
 
 import com.klai.stl.domain.Preferences;

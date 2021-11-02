@@ -15,9 +15,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * Test class for the {@link SecurityUtils} utility class.
+ * Test class for the {@link ApiSecurityUtils} utility class.
  */
-class SecurityUtilsUnitTest {
+class ApiSecurityUtilsUnitTest {
 
     @BeforeEach
     @AfterEach
@@ -30,7 +30,7 @@ class SecurityUtilsUnitTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
-        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        Optional<String> login = ApiSecurityUtils.getCurrentUserLogin();
         assertThat(login).contains("admin");
     }
 
@@ -39,7 +39,7 @@ class SecurityUtilsUnitTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "token"));
         SecurityContextHolder.setContext(securityContext);
-        Optional<String> jwt = SecurityUtils.getCurrentUserJWT();
+        Optional<String> jwt = ApiSecurityUtils.getCurrentUserJWT();
         assertThat(jwt).contains("token");
     }
 
@@ -48,7 +48,7 @@ class SecurityUtilsUnitTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
-        boolean isAuthenticated = SecurityUtils.isAuthenticated();
+        boolean isAuthenticated = ApiSecurityUtils.isAuthenticated();
         assertThat(isAuthenticated).isTrue();
     }
 
@@ -59,7 +59,7 @@ class SecurityUtilsUnitTest {
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("anonymous", "anonymous", authorities));
         SecurityContextHolder.setContext(securityContext);
-        boolean isAuthenticated = SecurityUtils.isAuthenticated();
+        boolean isAuthenticated = ApiSecurityUtils.isAuthenticated();
         assertThat(isAuthenticated).isFalse();
     }
 
@@ -71,7 +71,7 @@ class SecurityUtilsUnitTest {
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("user", "user", authorities));
         SecurityContextHolder.setContext(securityContext);
 
-        assertThat(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.USER)).isTrue();
-        assertThat(SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)).isFalse();
+        assertThat(ApiSecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.USER)).isTrue();
+        assertThat(ApiSecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)).isFalse();
     }
 }

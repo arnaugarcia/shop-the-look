@@ -1,6 +1,6 @@
 package com.klai.stl.service.impl;
 
-import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
+import static com.klai.stl.security.ApiSecurityUtils.isCurrentUserAdmin;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import com.klai.stl.domain.BillingAddress;

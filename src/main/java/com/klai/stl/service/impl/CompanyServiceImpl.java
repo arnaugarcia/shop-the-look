@@ -1,14 +1,14 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.config.Constants.ADMIN_COMPANY_NIF;
-import static com.klai.stl.security.SecurityUtils.getCurrentUserLogin;
-import static com.klai.stl.security.SecurityUtils.isCurrentUserManager;
+import static com.klai.stl.security.ApiSecurityUtils.getCurrentUserLogin;
+import static com.klai.stl.security.ApiSecurityUtils.isCurrentUserManager;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
-import com.klai.stl.security.SecurityUtils;
+import com.klai.stl.security.ApiSecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.TokenService;
 import com.klai.stl.service.UserService;
@@ -142,7 +142,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void checkCurrentUserBelongsToCompany(String companyReference) {
-        checkLoginBelongsToCompany(SecurityUtils.getCurrentUserLogin().get(), companyReference);
+        checkLoginBelongsToCompany(ApiSecurityUtils.getCurrentUserLogin().get(), companyReference);
     }
 
     private Predicate<UserDTO> byLogin(String login) {
