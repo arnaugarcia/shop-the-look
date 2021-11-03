@@ -122,6 +122,19 @@ class SpaceCoordinateResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser
+    public void addCoordinateToEmptySpaceReference() throws Exception {
+        restMockMvc
+            .perform(
+                put("/api/spaces//{spaceReference}/coordinates", "SPACE_REFERENCE_NOT_EXISTS")
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJsonBytes(coordinateRequest))
+            )
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
     @WithMockUser(username = "user-coordinate-add-product")
     public void addCoordinateToProductThatNotExists() throws Exception {
         createAndAppendUserToCompanyByLogin("user-coordinate-add-product");
