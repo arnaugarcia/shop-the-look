@@ -1,9 +1,8 @@
 package com.klai.stl.service.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.klai.stl.service.space.mapper.PhotoMapper;
+import com.klai.stl.service.space.mapper.PhotoMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 class PhotoMapperTest {
 

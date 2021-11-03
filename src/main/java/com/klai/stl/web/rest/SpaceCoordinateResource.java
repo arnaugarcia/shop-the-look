@@ -5,9 +5,9 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static tech.jhipster.web.util.HeaderUtil.createEntityCreationAlert;
 import static tech.jhipster.web.util.HeaderUtil.createEntityDeletionAlert;
 
-import com.klai.stl.service.SpaceCoordinateService;
-import com.klai.stl.service.dto.CoordinateDTO;
-import com.klai.stl.service.dto.requests.space.SpaceCoordinateRequest;
+import com.klai.stl.service.space.SpaceCoordinateService;
+import com.klai.stl.service.space.dto.CoordinateDTO;
+import com.klai.stl.service.space.request.SpaceCoordinateRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.validation.Valid;

@@ -126,6 +126,23 @@ class ProductImportResourceIT {
         return product;
     }
 
+    public static Product createProductForCompany(EntityManager em, Company company) {
+        Product product = new Product()
+            .sku(DEFAULT_SKU + randomAlphabetic(5).toUpperCase(ROOT))
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION)
+            .link(DEFAULT_LINK)
+            .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
+            .imageLink(DEFAULT_IMAGE_LINK)
+            .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
+            .availability(DEFAULT_AVAILABILITY)
+            .price("DEFAULT_PRICE")
+            .category(DEFAULT_CATEGORY)
+            .company(company);
+        em.persist(product);
+        return product;
+    }
+
     @BeforeEach
     public void initTest() {
         newProductRequest = buildRequest();

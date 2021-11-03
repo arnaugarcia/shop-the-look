@@ -8,6 +8,7 @@ import com.klai.stl.service.dto.requests.PreferencesRequest;
 import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.company.UpdateCompanyRequest;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Company}.
@@ -104,4 +105,12 @@ public interface CompanyService {
      * @return the entity
      */
     CompanyDTO findByCurrentUser();
+
+    /**
+     * Get the company by his token
+     *
+     * @param token the token to search company by
+     * @return the entity
+     */
+    Optional<Company> findByToken(String token);
 }

@@ -1,6 +1,6 @@
 package com.klai.stl.service;
 
-import static com.klai.stl.security.SecurityUtils.getCurrentUserLogin;
+import static com.klai.stl.security.ApiSecurityUtils.getCurrentUserLogin;
 import static java.util.Optional.ofNullable;
 
 import com.klai.stl.config.Constants;

@@ -143,11 +143,24 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleCompanyNotFoundException(
-        com.klai.stl.service.exception.SpaceNotFound ex,
+    public ResponseEntity<Problem> handleSpaceNotFoundException(
+        com.klai.stl.service.space.exception.SpaceNotFound ex,
         NativeWebRequest request
     ) {
         NotFoundException problem = new NotFoundException(NOT_FOUND, "Space not found", "space", "spacenotfound");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleSpaceClientNotFoundException(
+        com.klai.stl.service.client.exception.SpaceNotFound ex,
+        NativeWebRequest request
+    ) {
+        NotFoundException problem = new NotFoundException(NOT_FOUND, ex.getMessage(), "space", "spacenotfound");
         return create(
             problem,
             request,
@@ -222,6 +235,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             "company",
             "referencenotfound"
         );
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidTokenException(
+        com.klai.stl.service.client.exception.InvalidTokenException ex,
+        NativeWebRequest request
+    ) {
+        BadRequestAlertException problem = new BadRequestAlertException(BAD_REQUEST, ex.getMessage(), "token", "invalidtoken");
         return create(
             problem,
             request,

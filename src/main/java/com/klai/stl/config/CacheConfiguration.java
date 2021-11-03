@@ -48,6 +48,7 @@ public class CacheConfiguration {
         return cm -> {
             createCache(cm, com.klai.stl.repository.UserRepository.USERS_BY_LOGIN_CACHE);
             createCache(cm, com.klai.stl.repository.UserRepository.USERS_BY_EMAIL_CACHE);
+            createCache(cm, com.klai.stl.repository.SpaceRepository.SPACES_CACHE);
             createCache(cm, com.klai.stl.domain.User.class.getName());
             createCache(cm, com.klai.stl.domain.Authority.class.getName());
             createCache(cm, com.klai.stl.domain.User.class.getName() + ".authorities");

@@ -4,11 +4,11 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static tech.jhipster.web.util.HeaderUtil.*;
 
-import com.klai.stl.service.SpaceService;
-import com.klai.stl.service.dto.SpaceDTO;
-import com.klai.stl.service.dto.criteria.SpaceCriteriaDTO;
-import com.klai.stl.service.dto.requests.space.NewSpaceRequest;
-import com.klai.stl.service.dto.requests.space.UpdateSpaceRequest;
+import com.klai.stl.service.space.SpaceService;
+import com.klai.stl.service.space.criteria.SpaceCriteriaDTO;
+import com.klai.stl.service.space.dto.SpaceDTO;
+import com.klai.stl.service.space.request.NewSpaceRequest;
+import com.klai.stl.service.space.request.UpdateSpaceRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -83,7 +83,7 @@ public class SpaceResource {
     @PatchMapping("/spaces/{reference}")
     public ResponseEntity<SpaceDTO> updateSpace(@PathVariable String reference, @Valid @RequestBody UpdateSpaceRequest updateSpaceRequest) {
         log.debug("REST request to update Space : {}, {}", reference, updateSpaceRequest);
-        SpaceDTO result = spaceService.partialUpdate(updateSpaceRequest, reference);
+        SpaceDTO result = spaceService.partialUpdate(reference, updateSpaceRequest);
         return ok().headers(createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getReference())).body(result);
     }
 

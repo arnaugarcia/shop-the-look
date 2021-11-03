@@ -4,7 +4,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.UserRepository;
-import com.klai.stl.security.SecurityUtils;
+import com.klai.stl.security.ApiSecurityUtils;
 import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.MailService;
 import com.klai.stl.service.UserService;
@@ -154,7 +154,7 @@ public class AccountResource {
      */
     @PostMapping("/account")
     public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
-        String userLogin = SecurityUtils
+        String userLogin = ApiSecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(() -> new AccountResourceException("Current user login not found"));
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());

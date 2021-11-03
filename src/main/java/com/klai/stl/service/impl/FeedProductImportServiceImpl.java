@@ -1,7 +1,7 @@
 package com.klai.stl.service.impl;
 
 import static com.klai.stl.domain.enumeration.ImportMethod.FEED;
-import static com.klai.stl.security.SecurityUtils.isCurrentUserAdmin;
+import static com.klai.stl.security.ApiSecurityUtils.isCurrentUserAdmin;
 import static java.util.stream.Collectors.toList;
 
 import com.klai.stl.service.*;
