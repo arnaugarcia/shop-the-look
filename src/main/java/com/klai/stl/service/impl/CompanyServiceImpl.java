@@ -24,6 +24,7 @@ import com.klai.stl.service.exception.NIFAlreadyRegistered;
 import com.klai.stl.service.mapper.CompanyMapper;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -167,8 +168,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDTO findByToken(String token) {
-        return companyMapper.toDto(companyRepository.findByToken(token).orElseThrow(CompanyNotFound::new));
+    public Optional<Company> findByToken(String token) {
+        return companyRepository.findByToken(token);
     }
 
     @Override
