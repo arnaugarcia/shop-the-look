@@ -150,7 +150,7 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(problemSupport)
                 .and()
                 .requestMatchers()
-                .antMatchers("/client/**")
+                .antMatchers("/client/api/**")
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()

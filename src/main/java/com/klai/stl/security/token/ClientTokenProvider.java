@@ -3,6 +3,7 @@ package com.klai.stl.security.token;
 import com.klai.stl.domain.Company;
 import com.klai.stl.service.CompanyService;
 import java.util.ArrayList;
+import java.util.Optional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -18,8 +19,11 @@ public class ClientTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        final Company company = companyService.findByToken(token).orElseThrow(InvalidTokenException::new);
-        User principal = new User(company.getReference(), "", new ArrayList<>());
+        final Optional<Company> company = companyService.findByToken(token);
+        if (company.isEmpty()) {
+            return null;
+        }
+        User principal = new User(company.get().getReference(), "", new ArrayList<>());
         return new UsernamePasswordAuthenticationToken(principal, token, new ArrayList<>());
     }
 }
