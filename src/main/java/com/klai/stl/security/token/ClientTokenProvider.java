@@ -18,7 +18,7 @@ public class ClientTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        final Company company = companyService.findByToken(token).orElseThrow(RuntimeException::new); // TODO: Replace this with a custom exception
+        final Company company = companyService.findByToken(token).orElseThrow(InvalidTokenException::new);
         User principal = new User(company.getReference(), "", new ArrayList<>());
         return new UsernamePasswordAuthenticationToken(principal, token, new ArrayList<>());
     }
