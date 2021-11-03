@@ -10,7 +10,7 @@ export type EntityResponseType = HttpResponse<ICoordinate>;
   providedIn: 'root',
 })
 export class SpaceCoordinateService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/spaces/');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/spaces');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
