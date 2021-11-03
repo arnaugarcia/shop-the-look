@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,9 +29,9 @@ public interface SpaceRepository extends JpaRepository<Space, Long>, JpaSpecific
     Optional<Space> findByReference(String reference);
 
     @Query(
-        "select distinct space from Space space left join fetch space.photos photo left join fetch photo.coordinates coordinate left join fetch coordinate.product"
+        "select distinct space from Space space left join fetch space.photos photo left join fetch photo.coordinates coordinate left join fetch coordinate.product where space.reference = :reference"
     )
-    Optional<Space> findByReferenceWithEagerRelationships(String reference);
+    Optional<Space> findByReferenceWithEagerRelationships(@Param("reference") String reference);
 
     void deleteByReference(String reference);
 }
