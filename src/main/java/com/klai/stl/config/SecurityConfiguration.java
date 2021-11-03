@@ -8,10 +8,10 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 import com.klai.stl.security.jwt.JWTConfigurer;
 import com.klai.stl.security.jwt.TokenProvider;
 import com.klai.stl.security.token.ClientTokenConfigurer;
+import com.klai.stl.security.token.ClientTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -132,8 +132,11 @@ public class SecurityConfiguration {
 
         private final SecurityProblemSupport problemSupport;
 
-        public ClientSecurityConfigurationAdapter(SecurityProblemSupport problemSupport) {
+        private final ClientTokenProvider clientTokenProvider;
+
+        public ClientSecurityConfigurationAdapter(SecurityProblemSupport problemSupport, ClientTokenProvider clientTokenProvider) {
             this.problemSupport = problemSupport;
+            this.clientTokenProvider = clientTokenProvider;
         }
 
         @Override
@@ -157,7 +160,7 @@ public class SecurityConfiguration {
         }
 
         private ClientTokenConfigurer clientSecurityConfigurerAdapter() {
-            return new ClientTokenConfigurer();
+            return new ClientTokenConfigurer(clientTokenProvider);
         }
     }
 }
