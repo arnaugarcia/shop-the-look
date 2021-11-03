@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.api;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;

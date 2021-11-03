@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.api;
 
 import com.klai.stl.config.Constants;
 import com.klai.stl.domain.User;

@@ -22,6 +22,7 @@ import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.space.request.NewSpaceRequest;
 import com.klai.stl.service.space.request.SpaceRequest;
 import com.klai.stl.service.space.request.UpdateSpaceRequest;
+import com.klai.stl.web.rest.api.SpaceResource;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.Ignore;

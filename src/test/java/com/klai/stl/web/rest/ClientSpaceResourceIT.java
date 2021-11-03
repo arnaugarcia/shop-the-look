@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
+import com.klai.stl.web.rest.api.SpaceResource;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -21,6 +21,7 @@ import com.klai.stl.service.dto.CompanyDTO;
 import com.klai.stl.service.dto.requests.company.NewCompanyRequest;
 import com.klai.stl.service.dto.requests.company.UpdateCompanyRequest;
 import com.klai.stl.service.mapper.CompanyMapper;
+import com.klai.stl.web.rest.api.CompanyResource;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;

@@ -10,6 +10,7 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.service.CheckoutService;
 import com.klai.stl.service.reponse.CheckoutData;
+import com.klai.stl.web.rest.api.SpaceResource;
 import java.net.URL;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;

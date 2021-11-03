@@ -17,6 +17,7 @@ import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.mapper.UserMapper;
+import com.klai.stl.web.rest.api.UserResource;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
 import java.util.*;

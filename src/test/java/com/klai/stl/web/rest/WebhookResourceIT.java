@@ -11,6 +11,7 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.service.webhook.stripe.dto.StripeMetadata;
+import com.klai.stl.web.rest.api.SpaceResource;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;

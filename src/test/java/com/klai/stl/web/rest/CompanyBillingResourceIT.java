@@ -16,6 +16,7 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.BillingAddressRepository;
 import com.klai.stl.service.dto.requests.BillingAddressRequest;
+import com.klai.stl.web.rest.api.CompanyBillingResource;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;

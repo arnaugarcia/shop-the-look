@@ -19,6 +19,7 @@ import com.klai.stl.domain.Product;
 import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.web.rest.api.ProductResource;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

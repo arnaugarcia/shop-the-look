@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.webhook;
 
 import static org.springframework.http.ResponseEntity.ok;
 

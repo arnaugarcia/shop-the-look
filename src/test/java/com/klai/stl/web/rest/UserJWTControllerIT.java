@@ -9,6 +9,7 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.UserRepository;
+import com.klai.stl.web.rest.api.UserJWTController;
 import com.klai.stl.web.rest.vm.LoginVM;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;

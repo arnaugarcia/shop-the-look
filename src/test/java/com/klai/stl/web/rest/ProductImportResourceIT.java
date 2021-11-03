@@ -22,6 +22,7 @@ import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.dto.requests.NewProductRequest;
 import com.klai.stl.service.mapper.ProductMapper;
+import com.klai.stl.web.rest.api.ProductResource;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
