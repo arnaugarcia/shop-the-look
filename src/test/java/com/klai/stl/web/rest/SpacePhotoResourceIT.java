@@ -23,6 +23,7 @@ import com.klai.stl.repository.PhotoRepository;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.service.CloudStorageService;
 import com.klai.stl.service.space.request.SpacePhotoRequest;
+import com.klai.stl.web.rest.api.SpacePhotoResource;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.api;
 
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;

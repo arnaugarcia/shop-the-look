@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.api;
 
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.noContent;

@@ -23,6 +23,7 @@ import com.klai.stl.security.AuthoritiesConstants;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.AdminUserDTO;
 import com.klai.stl.service.dto.PasswordChangeDTO;
+import com.klai.stl.web.rest.api.AccountResource;
 import com.klai.stl.web.rest.vm.KeyAndPasswordVM;
 import com.klai.stl.web.rest.vm.ManagedUserVM;
 import java.time.Instant;

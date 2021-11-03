@@ -18,6 +18,7 @@ import com.klai.stl.domain.User;
 import com.klai.stl.repository.CompanyRepository;
 import com.klai.stl.repository.SubscriptionPlanRepository;
 import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
+import com.klai.stl.web.rest.api.SpaceResource;
 import java.util.function.Function;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;

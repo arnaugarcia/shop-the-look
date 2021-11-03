@@ -3,7 +3,7 @@ package com.klai.stl.cucumber.stepdefs;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.klai.stl.web.rest.UserResource;
+import com.klai.stl.web.rest.api.UserResource;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

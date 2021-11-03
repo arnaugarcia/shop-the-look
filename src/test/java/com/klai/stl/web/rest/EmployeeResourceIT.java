@@ -19,6 +19,7 @@ import com.klai.stl.repository.UserRepository;
 import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.employee.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.employee.UpdateEmployeeRequestDTO;
+import com.klai.stl.web.rest.api.EmployeeResource;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;

@@ -1,9 +1,8 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.client;
 
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.klai.stl.service.client.ClientService;
-import com.klai.stl.service.client.annotation.ValidClientHeader;
 import com.klai.stl.service.client.dto.SpaceClientDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

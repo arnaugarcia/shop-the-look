@@ -18,6 +18,7 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
 import com.klai.stl.repository.CoordinateRepository;
 import com.klai.stl.service.space.request.SpaceCoordinateRequest;
+import com.klai.stl.web.rest.api.SpaceCoordinateResource;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.api;
 
 import static tech.jhipster.web.util.HeaderUtil.createEntityUpdateAlert;
 import static tech.jhipster.web.util.ResponseUtil.wrapOrNotFound;

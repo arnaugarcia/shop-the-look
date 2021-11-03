@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest;
+package com.klai.stl.web.rest.api;
 
 import com.klai.stl.service.FeedProductImportService;
 import com.klai.stl.service.dto.ProductDTO;

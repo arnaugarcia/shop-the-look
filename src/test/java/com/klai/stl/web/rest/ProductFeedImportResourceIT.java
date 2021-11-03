@@ -15,6 +15,7 @@ import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.ImportMethod;
 import com.klai.stl.repository.PreferencesRepository;
 import com.klai.stl.service.FeedService;
+import com.klai.stl.web.rest.api.ProductResource;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Optional;

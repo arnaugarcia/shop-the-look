@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
+import com.klai.stl.web.rest.api.SpaceResource;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +76,7 @@ class ClientSpaceResourceIT {
     public void findSpaceWithoutToken() throws Exception {
         restSubscriptionMockMvc
             .perform(get(API_URL, space.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -83,7 +84,7 @@ class ClientSpaceResourceIT {
     public void findSpaceWithInvalidToken() throws Exception {
         restSubscriptionMockMvc
             .perform(get(API_URL, space.getReference()).header(TOKEN_HEADER_KEY, "INVALID_TOKEN").contentType(APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -91,7 +92,7 @@ class ClientSpaceResourceIT {
     public void findSpaceWithNullToken() throws Exception {
         restSubscriptionMockMvc
             .perform(get(API_URL, space.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -99,7 +100,7 @@ class ClientSpaceResourceIT {
     public void findSpaceWithEmptyToken() throws Exception {
         restSubscriptionMockMvc
             .perform(get(API_URL, space.getReference()).header(TOKEN_HEADER_KEY, "").contentType(APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -107,6 +108,6 @@ class ClientSpaceResourceIT {
     public void findSpaceWithInvalidReference() throws Exception {
         restSubscriptionMockMvc
             .perform(get(API_URL, "INVALID_REFERENCE").header(TOKEN_HEADER_KEY, company.getReference()).contentType(APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isUnauthorized());
     }
 }
