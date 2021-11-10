@@ -6,12 +6,10 @@
   (onFileDrop)="onFileDropped($event)"
   [uploader]="uploader"
   [class.error]="error"
-  [style.height]="height"
-  [style.width]="width"
   class="py-5 text-center font-medium-5 text-uppercase file-drop-zone"
 ></div>
 
-<div class="uploading-image" *ngIf="loading" [style.height]="height" [style.width]="width">
+<div *ngIf="loading" class="uploading-image">
   <div class="loading">
     <div class="effect-1 effects"></div>
     <div class="effect-2 effects"></div>
@@ -25,13 +23,7 @@
       <i [data-feather]="'trash'"></i>
     </span>
   </a>
-  <div
-    class="loaded-image"
-    (click)="addCoordinate($event)"
-    [style.backgroundImage]="'url(' + photo.link + ')'"
-    [style.height]="height"
-    [style.width]="width"
-  ></div>
+  <img (click)="addCoordinate($event)" [alt]="photo.reference" [src]="photo.link" class="loaded-image" />
   <ng-container *ngIf="coordinates && coordinates.length > 0">
     <stl-product-coordinate
       *ngFor="let coordinate of coordinates"

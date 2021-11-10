@@ -19,12 +19,6 @@ export class SpacePhotoComponent implements OnInit {
   public spaceReference?: string;
 
   @Input()
-  public height: string;
-
-  @Input()
-  public width: string;
-
-  @Input()
   public photo?: IPhoto;
 
   public coordinates: ICoordinate[] = [];
@@ -46,10 +40,7 @@ export class SpacePhotoComponent implements OnInit {
     private spacePhotoService: SpacePhotoService,
     private spaceCoordinateService: SpaceCoordinateService,
     private modalService: NgbModal
-  ) {
-    this.height = 'auto';
-    this.width = 'auto';
-  }
+  ) {}
 
   ngOnInit(): void {
     this.coordinates = this.photo!.coordinates!;

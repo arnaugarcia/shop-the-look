@@ -39,7 +39,9 @@
 }
 
 .loaded-image {
-  background-size: 100% 100%;
+  width: 100%;
+  background-size: cover;
+  margin: 0 auto;
   background-repeat: no-repeat;
 }
 .notify-badge {
