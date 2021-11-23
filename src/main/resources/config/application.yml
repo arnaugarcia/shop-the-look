@@ -184,3 +184,12 @@ jhipster:
 application:
   feed:
     cron-schedule: '@midnight'
+
+client:
+  cors:
+    allowed-origins: '*'
+    allowed-methods: '*'
+    allowed-headers: '*'
+    exposed-headers: 'STL-Token'
+    allow-credentials: true
+    max-age: 1800
