@@ -36,12 +36,9 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     private final JHipsterProperties jHipsterProperties;
 
-    private final ClientProperties clientProperties;
-
-    public WebConfigurer(Environment env, JHipsterProperties jHipsterProperties, ClientProperties clientProperties) {
+    public WebConfigurer(Environment env, JHipsterProperties jHipsterProperties) {
         this.env = env;
         this.jHipsterProperties = jHipsterProperties;
-        this.clientProperties = clientProperties;
     }
 
     @Override
@@ -94,30 +91,18 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         return extractedPath.substring(0, extractionEndIndex);
     }
 
-    @Bean(name = "ApiCorsFilter")
-    public CorsFilter webCorsFilter() {
+    @Bean
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = jHipsterProperties.getCors();
         if (!CollectionUtils.isEmpty(config.getAllowedOrigins()) || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
-            log.debug("Registering API CORS filter");
+            log.debug("Registering CORS filter");
             source.registerCorsConfiguration("/api/**", config);
-            source.registerCorsConfiguration("/client/api/**", config);
             source.registerCorsConfiguration("/management/**", config);
             source.registerCorsConfiguration("/v2/api-docs", config);
             source.registerCorsConfiguration("/v3/api-docs", config);
             source.registerCorsConfiguration("/swagger-resources", config);
             source.registerCorsConfiguration("/swagger-ui/**", config);
-        }
-        return new CorsFilter(source);
-    }
-
-    @Bean(name = "ClientCorsFilter")
-    public CorsFilter clientCorsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = clientProperties.getCors();
-        if (!CollectionUtils.isEmpty(config.getAllowedOrigins()) || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
-            log.debug("Registering Client CORS filter");
-            source.registerCorsConfiguration("/client/api/**", config);
         }
         return new CorsFilter(source);
     }

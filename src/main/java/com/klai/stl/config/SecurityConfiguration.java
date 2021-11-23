@@ -9,7 +9,6 @@ import com.klai.stl.security.jwt.JWTConfigurer;
 import com.klai.stl.security.jwt.TokenProvider;
 import com.klai.stl.security.token.ClientTokenConfigurer;
 import com.klai.stl.security.token.ClientTokenProvider;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -24,9 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 import tech.jhipster.config.JHipsterProperties;
@@ -44,12 +40,11 @@ public class SecurityConfiguration {
         private final TokenProvider tokenProvider;
 
         private final CorsFilter corsFilter;
-
         private final SecurityProblemSupport problemSupport;
 
         public ApiWebSecurityConfigurationAdapter(
             TokenProvider tokenProvider,
-            @Qualifier("ApiCorsFilter") CorsFilter corsFilter,
+            CorsFilter corsFilter,
             JHipsterProperties jHipsterProperties,
             SecurityProblemSupport problemSupport
         ) {
@@ -139,16 +134,16 @@ public class SecurityConfiguration {
 
         private final ClientTokenProvider clientTokenProvider;
 
-        private final CorsFilter corsFilter;
+        private final ClientCorsFilter clientCorsFilter;
 
         public ClientSecurityConfigurationAdapter(
             SecurityProblemSupport problemSupport,
             ClientTokenProvider clientTokenProvider,
-            @Qualifier("ApiCorsFilter") CorsFilter corsFilter
+            ClientCorsFilter clientCorsFilter
         ) {
             this.problemSupport = problemSupport;
             this.clientTokenProvider = clientTokenProvider;
-            this.corsFilter = corsFilter;
+            this.clientCorsFilter = clientCorsFilter;
         }
 
         @Override
@@ -157,7 +152,7 @@ public class SecurityConfiguration {
             http
                 .csrf()
                 .disable()
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(clientCorsFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(problemSupport)
                 .accessDeniedHandler(problemSupport)

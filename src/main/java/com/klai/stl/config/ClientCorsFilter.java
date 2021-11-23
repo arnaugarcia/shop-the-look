@@ -15,6 +15,7 @@ import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Configuration
 public class ClientCorsFilter extends OncePerRequestFilter {
 
     private final CorsProcessor processor = new DefaultCorsProcessor();
@@ -27,9 +28,9 @@ public class ClientCorsFilter extends OncePerRequestFilter {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
 
-        config.setAllowedOriginPatterns(of("*"));
+        config.setAllowedOrigins(of("*"));
 
-        config.setAllowedMethods(of("GET", "OPTIONS"));
+        config.setAllowedMethods(of("GET"));
 
         config.addAllowedHeader("STL-Token");
 
