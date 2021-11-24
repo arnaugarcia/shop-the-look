@@ -134,16 +134,16 @@ public class SecurityConfiguration {
 
         private final ClientTokenProvider clientTokenProvider;
 
-        private final ClientCorsFilter clientCorsFilter;
+        private final CorsFilter corsFilter;
 
         public ClientSecurityConfigurationAdapter(
             SecurityProblemSupport problemSupport,
             ClientTokenProvider clientTokenProvider,
-            ClientCorsFilter clientCorsFilter
+            CorsFilter corsFilter
         ) {
             this.problemSupport = problemSupport;
             this.clientTokenProvider = clientTokenProvider;
-            this.clientCorsFilter = clientCorsFilter;
+            this.corsFilter = corsFilter;
         }
 
         @Override
@@ -152,7 +152,7 @@ public class SecurityConfiguration {
             http
                 .csrf()
                 .disable()
-                .addFilterBefore(clientCorsFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(problemSupport)
                 .accessDeniedHandler(problemSupport)
