@@ -2,10 +2,10 @@
   <section *ngSwitchCase="StudioTemplate.TWO_PHOTO">
     <div class="row">
       <div class="col-lg-6">
-        <stl-space-photo></stl-space-photo>
+        <stl-space-photo [photo]="space.photos[0]" [spaceReference]="space.reference"></stl-space-photo>
       </div>
       <div class="col-lg-6">
-        <stl-space-photo></stl-space-photo>
+        <stl-space-photo [photo]="space.photos[1]" [spaceReference]="space.reference"></stl-space-photo>
       </div>
     </div>
   </section>
