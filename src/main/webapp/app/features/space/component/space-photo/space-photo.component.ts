@@ -61,10 +61,6 @@ export class SpacePhotoComponent implements OnInit {
       return;
     }
     if (!this.spaceReference) {
-      this.alertService.addAlert({
-        type: 'danger',
-        message: 'Something went wrong with the upload, please try again layer',
-      });
       throw new Error('No space reference was specified for this photo');
     }
     this.fileReader.onloadend = () => {
@@ -127,6 +123,10 @@ export class SpacePhotoComponent implements OnInit {
   }
 
   private onUploadError(error: HttpErrorResponse): void {
+    this.alertService.addAlert({
+      type: 'danger',
+      message: 'Something went wrong with the upload, please try again layer',
+    });
     console.error(error);
   }
 }
