@@ -1,7 +1,7 @@
 package com.klai.stl.web.rest;
 
 import static com.klai.stl.domain.enumeration.SpaceTemplateOption.ONE_PHOTO;
-import static com.klai.stl.domain.enumeration.SpaceTemplateOption.THREE_PHOTOS_HORIZONTAL;
+import static com.klai.stl.domain.enumeration.SpaceTemplateOption.TWO_PHOTO;
 import static com.klai.stl.security.AuthoritiesConstants.*;
 import static com.klai.stl.service.space.request.NewSpaceRequest.builder;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
@@ -54,7 +54,7 @@ class SpaceResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final SpaceTemplateOption DEFAULT_TEMPLATE = THREE_PHOTOS_HORIZONTAL;
+    private static final SpaceTemplateOption DEFAULT_TEMPLATE = TWO_PHOTO;
     private static final SpaceTemplateOption UPDATED_TEMPLATE = ONE_PHOTO;
 
     private static final String API_URL_ADMIN = "/api/spaces?companyReference={reference}";
