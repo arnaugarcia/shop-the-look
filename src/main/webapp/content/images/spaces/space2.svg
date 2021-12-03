@@ -1,1 +1,28 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 701.56 604.5"><defs><style>.cls-1{fill:#d2d2d2;}.cls-2{font-size:180.93px;fill:#f2f2f2;font-family:Montserrat-Light, Montserrat;font-weight:300;}</style></defs><rect class="cls-1" width="200" height="604.5" rx="30"/><text class="cls-2" transform="translate(61.35 370.72)">1</text><text x="0.74" y="2.46"/><text x="0.74" y="2.46"/><rect class="cls-1" x="250.63" width="200" height="604.5" rx="30"/><rect class="cls-1" x="501.56" width="200" height="604.5" rx="30"/><text class="cls-2" transform="translate(301.01 370.72)">2</text><text class="cls-2" transform="translate(551.37 375.03)">3</text></svg>
+<svg data-name='Layer 1' id='Layer_1' viewBox='0 0 680 597.45' xmlns='http://www.w3.org/2000/svg'>
+    <defs>
+        <style>.cls-1 {
+            fill: #d2d2d2;
+        }
+
+        .cls-2, .cls-3 {
+            isolation: isolate;
+            fill: #f2f2f2;
+            font-family: Montserrat-Light, Montserrat;
+            font-weight: 300;
+        }
+
+        .cls-2 {
+            font-size: 180.93px;
+        }
+
+        .cls-3 {
+            font-size: 178.82px;
+        }</style>
+    </defs>
+    <path class='cls-1'
+          d='M48.3,0H273.7C300.38,0,322,13.28,322,29.65V567.8c0,16.37-21.62,29.65-48.3,29.65H48.3C21.62,597.45,0,584.17,0,567.8V29.65C0,13.28,21.62,0,48.3,0Z' />
+    <text class='cls-2' transform='translate(122.35 367.29)'>1</text>
+    <path class='cls-1'
+          d='M404.6,0H631.4C658.24,0,680,13.28,680,29.65V567.8c0,16.37-21.76,29.65-48.6,29.65H404.6c-26.84,0-48.6-13.28-48.6-29.65V29.65C356,13.28,377.76,0,404.6,0Z' />
+    <text class='cls-3' transform='translate(473.77 366.4) scale(1.01 1)'>2</text>
+</svg>
