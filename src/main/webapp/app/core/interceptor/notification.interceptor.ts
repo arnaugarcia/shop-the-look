@@ -23,14 +23,6 @@ export class NotificationInterceptor implements HttpInterceptor {
               alertParams = decodeURIComponent(event.headers.get(headerKey)!.replace(/\+/g, ' '));
             }
           }
-
-          if (alert) {
-            this.alertService.addAlert({
-              type: 'success',
-              translationKey: alert,
-              translationParams: { param: alertParams },
-            });
-          }
         }
       })
     );
