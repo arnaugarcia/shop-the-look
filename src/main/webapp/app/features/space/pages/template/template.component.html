@@ -28,11 +28,7 @@
       </div>
     </div>
     <div class="col-md-4 col-sm-6 col-12">
-      <div
-        class="card"
-        [class.active]="selectedTemplate === StudioTemplates.THREE_PHOTOS_VERTICAL"
-        (click)="selectOption(StudioTemplates.THREE_PHOTOS_VERTICAL)"
-      >
+      <div class="card" (click)="selectOption(StudioTemplates.TWO_PHOTO)" [class.active]="selectedTemplate === StudioTemplates.TWO_PHOTO">
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space2.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
@@ -45,18 +41,14 @@
       </div>
     </div>
     <div class="col-md-4 col-sm-6 col-12">
-      <div
-        class="card"
-        [class.active]="selectedTemplate === StudioTemplates.THREE_PHOTOS_HORIZONTAL"
-        (click)="selectOption(StudioTemplates.THREE_PHOTOS_HORIZONTAL)"
-      >
+      <div class="card">
         <a>
           <div class="p-2">
             <img src="/content/images/spaces/space3.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
           </div>
           <div class="card-body text-center">
-            <h4>One Photo</h4>
-            <p class="text-body mt-1 mb-0">Lorem ipsum</p>
+            <h4>Custom space</h4>
+            <p class="text-body mt-1 mb-0">Wanna custom layout? Contact us!</p>
           </div>
         </a>
       </div>

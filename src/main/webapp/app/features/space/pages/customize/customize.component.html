@@ -1,11 +1,5 @@
 <ng-container *ngIf="space" [ngSwitch]="studioStore.template$ | async">
-  <section *ngSwitchCase="StudioTemplate.THREE_PHOTOS_HORIZONTAL">
-    <stl-space-photo></stl-space-photo>
-    <stl-space-photo></stl-space-photo>
-    <stl-space-photo></stl-space-photo>
-  </section>
-  <section *ngSwitchCase="StudioTemplate.THREE_PHOTOS_VERTICAL">
-    <stl-space-photo></stl-space-photo>
+  <section *ngSwitchCase="StudioTemplate.TWO_PHOTO">
     <stl-space-photo></stl-space-photo>
     <stl-space-photo></stl-space-photo>
   </section>
