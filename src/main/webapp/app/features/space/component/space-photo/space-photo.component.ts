@@ -8,6 +8,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
 import { CoordinateCreateRequest, ICoordinate } from '../../model/coordinate.model';
+import { AlertService } from '../../../../core/util/alert.service';
+import { Alert } from 'selenium-webdriver';
 
 @Component({
   selector: 'stl-space-photo',
@@ -38,6 +40,7 @@ export class SpacePhotoComponent implements OnInit {
 
   constructor(
     private spacePhotoService: SpacePhotoService,
+    private alertService: AlertService,
     private spaceCoordinateService: SpaceCoordinateService,
     private modalService: NgbModal
   ) {}
@@ -59,6 +62,7 @@ export class SpacePhotoComponent implements OnInit {
       return;
     }
     if (!this.spaceReference) {
+      this.alertService.addAlert({ type: 'danger', message: 'Something went wrong with the upload' });
       throw new Error('No space reference was specified for this photo');
     }
     this.fileReader.onloadend = () => {
