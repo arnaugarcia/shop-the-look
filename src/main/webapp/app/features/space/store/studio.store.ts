@@ -6,7 +6,6 @@ import { EmptySpace, ISpace } from '../model/space.model';
 
 @Injectable()
 export class StudioStore extends ComponentStore<StudioState> {
-  public readonly space$: Observable<ISpace> = this.select(state => state.space);
   public readonly currentStep$: Observable<CurrentStep> = this.select(state => state.step);
   public readonly template$: Observable<StudioTemplate> = this.select(state => state.template);
 
