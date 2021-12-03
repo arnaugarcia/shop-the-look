@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
 import { CoordinateCreateRequest, ICoordinate } from '../../model/coordinate.model';
+import { AlertService } from '../../../../core/util/alert.service';
 
 @Component({
   selector: 'stl-space-photo',
@@ -38,6 +39,7 @@ export class SpacePhotoComponent implements OnInit {
 
   constructor(
     private spacePhotoService: SpacePhotoService,
+    private alertService: AlertService,
     private spaceCoordinateService: SpaceCoordinateService,
     private modalService: NgbModal
   ) {}
@@ -121,6 +123,10 @@ export class SpacePhotoComponent implements OnInit {
   }
 
   private onUploadError(error: HttpErrorResponse): void {
+    this.alertService.addAlert({
+      type: 'danger',
+      message: 'Something went wrong with the upload, please try again layer',
+    });
     console.error(error);
   }
 }
