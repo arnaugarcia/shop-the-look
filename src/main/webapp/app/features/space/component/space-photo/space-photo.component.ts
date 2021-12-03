@@ -9,7 +9,6 @@ import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
 import { CoordinateCreateRequest, ICoordinate } from '../../model/coordinate.model';
 import { AlertService } from '../../../../core/util/alert.service';
-import { Alert } from 'selenium-webdriver';
 
 @Component({
   selector: 'stl-space-photo',

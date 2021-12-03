@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { CurrentStep, StudioState, StudioTemplate } from './models/state.model';
 import { Observable } from 'rxjs';
-import { EmptySpace, ISpace } from '../model/space.model';
+import { EmptySpace } from '../model/space.model';
 
 @Injectable()
 export class StudioStore extends ComponentStore<StudioState> {
