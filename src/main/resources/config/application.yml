@@ -162,7 +162,7 @@ jhipster:
     management-include-pattern: ${server.servlet.context-path:}/management/.*
     title: Shop the look API
     description: ShopTheLook API documentation
-    version: 0.0.17-SNAPSHOT
+    version: 0.0.18-SNAPSHOT
     terms-of-service-url:
     contact-name:
     contact-url:
