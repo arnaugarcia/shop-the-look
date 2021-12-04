@@ -1,6 +1,16 @@
 <div *ngIf="space" class="card">
   <a (click)="editClick.emit(space)">
-    <img *ngIf="space.photos[0] && space.photos[0].link" [alt]="space.name" [src]="space.photos[0].link" class="card-img-top" />
+    <ng-container *ngIf="space.photos">
+      <div *ngIf="space.photos.length > 1" class="row m-0">
+        <div class="col-lg-6 p-0">
+          <img [alt]="space.name" [src]="space.photos[0].link" class="card-img-top" />
+        </div>
+        <div class="col-lg-6 p-0">
+          <img [alt]="space.name" [src]="space.photos[1].link" class="card-img-top" />
+        </div>
+      </div>
+      <img *ngIf="space.photos.length === 1" [alt]="space.name" [src]="space.photos[0].link" class="card-img-top" />
+    </ng-container>
     <img
       *ngIf="!space.photos[0] || !space.photos[0].link"
       [alt]="space.name"
