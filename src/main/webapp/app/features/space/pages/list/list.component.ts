@@ -60,7 +60,7 @@ export class ListComponent {
   }
 
   public onEditSpace(space: ISpace): void {
-    this.router.navigate(['studio', space.reference, 'edit']);
+    this.router.navigate(['spaces', 'studio', space.reference, 'edit']);
   }
 
   private loadPage(): void {
