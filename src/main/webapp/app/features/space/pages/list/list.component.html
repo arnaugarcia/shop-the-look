@@ -4,7 +4,7 @@
     <section>
       <div class="row match-height" *ngIf="spaces.length">
         <div class="col-md-6 col-lg-4" *ngFor="let space of spaces">
-          <stl-space-card (editClick)="onEditSpace($event)" (removeClick)="removeSpace($event)" [space]="space"> </stl-space-card>
+          <stl-space-card (editClick)="onEditSpace($event)" (removeClick)="removeSpace($event)" [space]="space"></stl-space-card>
         </div>
       </div>
       <div class="text-center" *ngIf="!spaces.length">
