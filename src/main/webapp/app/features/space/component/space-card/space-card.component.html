@@ -1,0 +1,28 @@
+<div *ngIf="space" class="card">
+  <a (click)="editClick.emit(space)">
+    <img *ngIf="space.photos[0] && space.photos[0].link" [alt]="space.name" [src]="space.photos[0].link" class="card-img-top" />
+    <img
+      *ngIf="!space.photos[0] || !space.photos[0].link"
+      [alt]="space.name"
+      class="card-img-top"
+      src="/content/images/spaces/default.jpeg"
+    />
+  </a>
+  <div class="card-body">
+    <h6 class="item-name">{{ space.name | slice: 0:50 }}</h6>
+    <p *ngIf="space.description" class="card-text item-description">
+      {{ space.description | slice: 0:100 }}
+      <ng-container *ngIf="space.description.length > 100">...</ng-container>
+    </p>
+  </div>
+  <div class="item-options text-center">
+    <a (click)="editClick.emit(space)" class="btn btn-light btn-wishlist">
+      <i [data-feather]="'edit'" class="mr-25"></i>
+      <span>Edit</span>
+    </a>
+    <a (click)="removeClick.emit(space)" class="btn btn-danger btn-cart">
+      <i [data-feather]="'trash'" class="mr-25"></i>
+      <span class="add-to-cart">Delete</span>
+    </a>
+  </div>
+</div>

@@ -16,6 +16,7 @@ import { ProductCoordinateTooltipComponent } from './component/product-coordinat
 import { StudioStore } from './store/studio.store';
 import { CardSnippetModule } from '../../../@core/components/card-snippet/card-snippet.module';
 import { SpaceDeleteDialogComponent } from './component/space-delete-dialog/space-delete-dialog.component';
+import { SpaceCardComponent } from './component/space-card/space-card.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SpaceDeleteDialogComponent } from './component/space-delete-dialog/spac
     ProductCoordinateComponent,
     ProductCoordinateTooltipComponent,
     SpaceDeleteDialogComponent,
+    SpaceCardComponent,
   ],
   imports: [SharedModule, SpaceRoutingModule, ContentHeaderModule, FileUploadModule, CardSnippetModule],
   providers: [StudioStore],

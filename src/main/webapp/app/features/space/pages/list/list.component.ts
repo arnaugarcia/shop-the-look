@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISpace } from '../../model/space.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceService } from '../../service/space.service';
@@ -16,7 +16,7 @@ export class ListComponent {
   public spaces: ISpace[] = [];
   public contentHeader: ContentHeader;
 
-  constructor(private spaceService: SpaceService, private route: ActivatedRoute, private modalService: NgbModal) {
+  constructor(private spaceService: SpaceService, private router: Router, private route: ActivatedRoute, private modalService: NgbModal) {
     this.contentHeader = {
       headerTitle: 'Spaces',
       actions: [
@@ -57,6 +57,10 @@ export class ListComponent {
         console.error(reason);
       }
     });
+  }
+
+  public onEditSpace(space: ISpace): void {
+    this.router.navigate(['studio', space.reference, 'edit']);
   }
 
   private loadPage(): void {
