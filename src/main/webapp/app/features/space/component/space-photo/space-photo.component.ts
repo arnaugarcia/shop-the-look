@@ -3,12 +3,12 @@ import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
 import { SpacePhotoService } from '../../service/space-photo.service';
-import { ProductSearchComponent } from '../product-search/product-search.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
 import { CoordinateCreateRequest, ICoordinate } from '../../model/coordinate.model';
 import { AlertService } from '../../../../core/util/alert.service';
+import { ProductSearchComponent } from '../product-search/product-search.component';
 
 @Component({
   selector: 'stl-space-photo',
@@ -32,8 +32,8 @@ export class SpacePhotoComponent implements OnInit {
     isHTML5: true,
   });
 
-  @ViewChild('photoCoordinates', { static: false, read: ElementRef })
-  private photoCoordinates!: ElementRef;
+  @ViewChild('photoElement')
+  public photoElement?: ElementRef;
 
   private fileReader = new FileReader();
 
@@ -76,14 +76,22 @@ export class SpacePhotoComponent implements OnInit {
     });
 
     ngbModalRef.result
-      .then(
-        (product: IProduct) =>
-          new CoordinateCreateRequest(product.reference!, this.photo!.reference, Number($event.layerX), Number($event.layerY))
-      )
+      .then((product: IProduct) => {
+        const node = $event.target as HTMLElement;
+        const rect = node.getBoundingClientRect();
+        const x = (100 * ($event.clientX - rect.left)) / this.photoElement?.nativeElement.clientWidth; // x position within the element.
+        const y = (100 * ($event.clientY - rect.top)) / this.photoElement?.nativeElement.clientHeight; // y position within the element.
+        return new CoordinateCreateRequest(product.reference!, this.photo!.reference, x, y);
+      })
       .then((request: CoordinateCreateRequest) => {
         this.spaceCoordinateService.addCoordinate(this.spaceReference!, request).subscribe((response: HttpResponse<ICoordinate>) => {
           const coordinate = response.body!;
-          this.coordinates.push({ x: coordinate.x, y: coordinate.y, product: coordinate.product, reference: coordinate.reference });
+          this.coordinates.push({
+            x: coordinate.x,
+            y: coordinate.y,
+            product: coordinate.product,
+            reference: coordinate.reference,
+          });
         });
       })
       .catch((result: any) => void result);
