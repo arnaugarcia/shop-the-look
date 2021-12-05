@@ -79,8 +79,8 @@ export class SpacePhotoComponent implements OnInit {
       .then((product: IProduct) => {
         const node = $event.target as HTMLElement;
         const rect = node.getBoundingClientRect();
-        const x = (100 * ($event.clientX - rect.left)) / this.photoElement?.nativeElement.clientWidth; //x position within the element.
-        const y = (100 * ($event.clientY - rect.top)) / this.photoElement?.nativeElement.clientHeight; //y position within the element.
+        const x = (100 * ($event.clientX - rect.left)) / this.photoElement?.nativeElement.clientWidth; // x position within the element.
+        const y = (100 * ($event.clientY - rect.top)) / this.photoElement?.nativeElement.clientHeight; // y position within the element.
         return new CoordinateCreateRequest(product.reference!, this.photo!.reference, x, y);
       })
       .then((request: CoordinateCreateRequest) => {
@@ -111,14 +111,6 @@ export class SpacePhotoComponent implements OnInit {
         this.coordinates.splice(index, 1);
       }
     });
-  }
-
-  mouseOver($event: MouseEvent): void {
-    /*const node = $event.target as HTMLElement;
-    const rect = node.getBoundingClientRect();
-    const x = $event.clientX - rect.left; //x position within the element.
-    const y = $event.clientY - rect.top;  //y position within the element.
-    console.error(x, y);*/
   }
 
   private uploadFile(droopedFile: any): void {
