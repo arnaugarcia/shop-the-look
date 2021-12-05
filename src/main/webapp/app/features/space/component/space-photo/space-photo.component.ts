@@ -32,8 +32,8 @@ export class SpacePhotoComponent implements OnInit {
     isHTML5: true,
   });
 
-  @ViewChild('photoCoordinates', { static: false, read: ElementRef })
-  private photoCoordinates!: ElementRef;
+  @ViewChild('photoElement')
+  public photoElement?: ElementRef;
 
   private fileReader = new FileReader();
 
@@ -76,14 +76,20 @@ export class SpacePhotoComponent implements OnInit {
     });
 
     ngbModalRef.result
-      .then(
-        (product: IProduct) =>
-          new CoordinateCreateRequest(product.reference!, this.photo!.reference, Number($event.layerX), Number($event.layerY))
-      )
+      .then((product: IProduct) => {
+        const x = (100 * $event.layerX) / this.photoElement?.nativeElement.clientWidth;
+        const y = (100 * $event.layerY) / this.photoElement?.nativeElement.clientHeight;
+        return new CoordinateCreateRequest(product.reference!, this.photo!.reference, x, y);
+      })
       .then((request: CoordinateCreateRequest) => {
         this.spaceCoordinateService.addCoordinate(this.spaceReference!, request).subscribe((response: HttpResponse<ICoordinate>) => {
           const coordinate = response.body!;
-          this.coordinates.push({ x: coordinate.x, y: coordinate.y, product: coordinate.product, reference: coordinate.reference });
+          this.coordinates.push({
+            x: coordinate.x,
+            y: coordinate.y,
+            product: coordinate.product,
+            reference: coordinate.reference,
+          });
         });
       })
       .catch((result: any) => void result);
