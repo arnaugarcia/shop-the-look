@@ -77,9 +77,17 @@ export class SpacePhotoComponent implements OnInit {
 
     ngbModalRef.result
       .then((product: IProduct) => {
-        const x = (100 * $event.layerX) / this.photoElement?.nativeElement.clientWidth;
-        const y = (100 * $event.layerY) / this.photoElement?.nativeElement.clientHeight;
-        return new CoordinateCreateRequest(product.reference!, this.photo!.reference, x, y);
+        const node = $event.target as HTMLElement;
+        const rect = node.getBoundingClientRect();
+        const x = $event.clientX - rect.left; //x position within the element.
+        const y = $event.clientY - rect.top; //y position within the element.
+
+        return new CoordinateCreateRequest(
+          product.reference!,
+          this.photo!.reference,
+          (100 * x) / this.photoElement?.nativeElement.clientWidth, // (B * C) / A
+          (100 * y) / this.photoElement?.nativeElement.clientHeight
+        );
       })
       .then((request: CoordinateCreateRequest) => {
         this.spaceCoordinateService.addCoordinate(this.spaceReference!, request).subscribe((response: HttpResponse<ICoordinate>) => {
@@ -109,6 +117,14 @@ export class SpacePhotoComponent implements OnInit {
         this.coordinates.splice(index, 1);
       }
     });
+  }
+
+  mouseOver($event: MouseEvent): void {
+    /*const node = $event.target as HTMLElement;
+    const rect = node.getBoundingClientRect();
+    const x = $event.clientX - rect.left; //x position within the element.
+    const y = $event.clientY - rect.top;  //y position within the element.
+    console.error(x, y);*/
   }
 
   private uploadFile(droopedFile: any): void {
