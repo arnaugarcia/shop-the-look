@@ -3,12 +3,12 @@ import { FileUploader } from 'ng2-file-upload';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IPhoto, PhotoRequest } from '../../model/photo.model';
 import { SpacePhotoService } from '../../service/space-photo.service';
-import { ProductSearchComponent } from '../product-search/product-search.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SpaceCoordinateService } from '../../service/space-coordinate.service';
 import { IProduct } from '../../../product/models/product.model';
 import { CoordinateCreateRequest, ICoordinate } from '../../model/coordinate.model';
 import { AlertService } from '../../../../core/util/alert.service';
+import { ProductSearchComponent } from '../product-search/product-search.component';
 
 @Component({
   selector: 'stl-space-photo',
@@ -79,15 +79,9 @@ export class SpacePhotoComponent implements OnInit {
       .then((product: IProduct) => {
         const node = $event.target as HTMLElement;
         const rect = node.getBoundingClientRect();
-        const x = $event.clientX - rect.left; //x position within the element.
-        const y = $event.clientY - rect.top; //y position within the element.
-
-        return new CoordinateCreateRequest(
-          product.reference!,
-          this.photo!.reference,
-          (100 * x) / this.photoElement?.nativeElement.clientWidth, // (B * C) / A
-          (100 * y) / this.photoElement?.nativeElement.clientHeight
-        );
+        const x = (100 * ($event.clientX - rect.left)) / this.photoElement?.nativeElement.clientWidth; //x position within the element.
+        const y = (100 * ($event.clientY - rect.top)) / this.photoElement?.nativeElement.clientHeight; //y position within the element.
+        return new CoordinateCreateRequest(product.reference!, this.photo!.reference, x, y);
       })
       .then((request: CoordinateCreateRequest) => {
         this.spaceCoordinateService.addCoordinate(this.spaceReference!, request).subscribe((response: HttpResponse<ICoordinate>) => {
