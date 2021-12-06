@@ -23,8 +23,8 @@ export class EnjoyComponent {
       this.company = company;
       this.snippetCode = {
         html: `
-<script async defer src='https://cdn.shopthelook.com/client/shopthelook.js?v=1.0&key=${this.company!.token!}'></script>
-<div id='space-${this.space!.reference}'></div>
+<script src='https://shop-the-look-client-js.s3.eu-west-1.amazonaws.com/shopthelook.min.js?key=${this.company!.token!}'></script>
+<div space='${this.space!.reference}'></div>
 `,
         isCollapsed: false,
       };
