@@ -3,6 +3,8 @@ package com.klai.stl.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -21,13 +23,20 @@ public class Coordinate implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "x")
+    @NotNull
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "100")
+    @Column(name = "x", nullable = false)
     private Double x;
 
-    @Column(name = "y")
+    @NotNull
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "100")
+    @Column(name = "y", nullable = false)
     private Double y;
 
-    @Column(name = "reference")
+    @NotNull
+    @Column(name = "reference", nullable = false)
     private String reference;
 
     @ManyToOne(optional = false)
