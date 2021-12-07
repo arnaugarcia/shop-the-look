@@ -8,8 +8,7 @@ import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static com.klai.stl.web.rest.UserResourceIT.createUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -105,6 +104,74 @@ class SpaceCoordinateResourceIT {
         int sizeAfterInsert = coordinateRepository.findBySpaceReference(space.getReference()).size();
 
         assertThat(sizeAfterInsert).isGreaterThan(sizeBeforeInsert);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void addCoordinateWithXGreaterThanHundred() throws Exception {
+        final SpaceCoordinateRequest coordinateRequest = builder()
+            .photoReference(photo.getReference())
+            .x(101D)
+            .y(DEFAULT_Y_COORDINATE)
+            .productReference(product.getReference())
+            .build();
+
+        restMockMvc
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void addCoordinateWithYGreaterThanHundred() throws Exception {
+        final SpaceCoordinateRequest coordinateRequest = builder()
+            .photoReference(photo.getReference())
+            .x(DEFAULT_X_COORDINATE)
+            .y(101D)
+            .productReference(product.getReference())
+            .build();
+
+        restMockMvc
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void addCoordinateWithYLowerThanZero() throws Exception {
+        final SpaceCoordinateRequest coordinateRequest = builder()
+            .photoReference(photo.getReference())
+            .x(DEFAULT_X_COORDINATE)
+            .y(-10D)
+            .productReference(product.getReference())
+            .build();
+
+        restMockMvc
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    public void addCoordinateWithXLowerThanZero() throws Exception {
+        final SpaceCoordinateRequest coordinateRequest = builder()
+            .photoReference(photo.getReference())
+            .x(-10D)
+            .y(DEFAULT_Y_COORDINATE)
+            .productReference(product.getReference())
+            .build();
+
+        restMockMvc
+            .perform(put(API_URL, space.getReference()).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(coordinateRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));
     }
 
     @Test
