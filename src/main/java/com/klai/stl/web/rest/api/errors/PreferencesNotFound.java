@@ -1,6 +1,6 @@
-package com.klai.stl.web.rest.errors;
+package com.klai.stl.web.rest.api.errors;
 
-import static com.klai.stl.web.rest.errors.ErrorConstants.INTERNAL_SERVER;
+import static com.klai.stl.web.rest.api.errors.ErrorConstants.INTERNAL_SERVER;
 
 public class PreferencesNotFound extends NotFoundException {
 

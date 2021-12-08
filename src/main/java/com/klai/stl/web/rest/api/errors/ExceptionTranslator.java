@@ -1,6 +1,6 @@
-package com.klai.stl.web.rest.errors;
+package com.klai.stl.web.rest.api.errors;
 
-import static com.klai.stl.web.rest.errors.ErrorConstants.*;
+import static com.klai.stl.web.rest.api.errors.ErrorConstants.*;
 
 import com.klai.stl.service.exception.UsernameAlreadyUsedException;
 import com.klai.stl.service.webhook.stripe.exception.StripeInvalidWebhookSecret;

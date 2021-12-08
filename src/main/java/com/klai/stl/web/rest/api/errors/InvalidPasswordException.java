@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest.errors;
+package com.klai.stl.web.rest.api.errors;
 
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;

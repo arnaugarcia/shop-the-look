@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest.errors;
+package com.klai.stl.web.rest.api.errors;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 
-public class InternalServerErrorException extends AbstractThrowableProblem {
+public class ForbiddenException extends AbstractThrowableProblem {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,12 +14,12 @@ public class InternalServerErrorException extends AbstractThrowableProblem {
 
     private final String errorKey;
 
-    public InternalServerErrorException(String defaultMessage, String entityName, String errorKey) {
-        this(ErrorConstants.INTERNAL_SERVER, defaultMessage, entityName, errorKey);
+    public ForbiddenException(String defaultMessage, String entityName, String errorKey) {
+        this(ErrorConstants.FORBIDDEN, defaultMessage, entityName, errorKey);
     }
 
-    public InternalServerErrorException(URI type, String defaultMessage, String entityName, String errorKey) {
-        super(type, defaultMessage, Status.INTERNAL_SERVER_ERROR, null, null, null, getAlertParameters(entityName, errorKey));
+    public ForbiddenException(URI type, String defaultMessage, String entityName, String errorKey) {
+        super(type, defaultMessage, Status.FORBIDDEN, null, null, null, getAlertParameters(entityName, errorKey));
         this.entityName = entityName;
         this.errorKey = errorKey;
     }

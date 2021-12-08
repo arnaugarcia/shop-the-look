@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest.vm;
+package com.klai.stl.web.rest.api.vm;
 
 /**
  * View Model object for storing the user's key and password.

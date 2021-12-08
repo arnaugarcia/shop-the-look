@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest.errors;
+package com.klai.stl.web.rest.api.errors;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 
-public class ForbiddenException extends AbstractThrowableProblem {
+public class TooManyRequestsException extends AbstractThrowableProblem {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,12 +14,12 @@ public class ForbiddenException extends AbstractThrowableProblem {
 
     private final String errorKey;
 
-    public ForbiddenException(String defaultMessage, String entityName, String errorKey) {
-        this(ErrorConstants.FORBIDDEN, defaultMessage, entityName, errorKey);
+    public TooManyRequestsException(String defaultMessage, String entityName, String errorKey) {
+        this(ErrorConstants.DEFAULT_TYPE, defaultMessage, entityName, errorKey);
     }
 
-    public ForbiddenException(URI type, String defaultMessage, String entityName, String errorKey) {
-        super(type, defaultMessage, Status.FORBIDDEN, null, null, null, getAlertParameters(entityName, errorKey));
+    public TooManyRequestsException(URI type, String defaultMessage, String entityName, String errorKey) {
+        super(type, defaultMessage, Status.TOO_MANY_REQUESTS, null, null, null, getAlertParameters(entityName, errorKey));
         this.entityName = entityName;
         this.errorKey = errorKey;
     }

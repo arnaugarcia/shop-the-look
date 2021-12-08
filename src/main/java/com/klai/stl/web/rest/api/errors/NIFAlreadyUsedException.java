@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest.errors;
+package com.klai.stl.web.rest.api.errors;
 
 public class NIFAlreadyUsedException extends BadRequestAlertException {
 

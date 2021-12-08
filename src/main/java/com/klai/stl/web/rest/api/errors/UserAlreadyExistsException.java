@@ -1,6 +1,6 @@
-package com.klai.stl.web.rest.errors;
+package com.klai.stl.web.rest.api.errors;
 
-import static com.klai.stl.web.rest.errors.ErrorConstants.ERR_CREATING_USER;
+import static com.klai.stl.web.rest.api.errors.ErrorConstants.ERR_CREATING_USER;
 
 public class UserAlreadyExistsException extends BadRequestAlertException {
 

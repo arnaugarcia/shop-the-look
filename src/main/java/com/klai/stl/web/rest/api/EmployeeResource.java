@@ -13,7 +13,7 @@ import com.klai.stl.service.dto.UserDTO;
 import com.klai.stl.service.dto.requests.employee.NewEmployeeRequestDTO;
 import com.klai.stl.service.dto.requests.employee.UpdateEmployeeRequestDTO;
 import com.klai.stl.service.impl.EmployeeQueryService;
-import com.klai.stl.web.rest.errors.BadRequestAlertException;
+import com.klai.stl.web.rest.api.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

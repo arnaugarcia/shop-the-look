@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest.vm;
+package com.klai.stl.web.rest.api.vm;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

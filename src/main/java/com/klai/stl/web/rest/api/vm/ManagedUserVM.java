@@ -1,4 +1,4 @@
-package com.klai.stl.web.rest.vm;
+package com.klai.stl.web.rest.api.vm;
 
 import com.klai.stl.domain.enumeration.CompanyIndustry;
 import com.klai.stl.domain.enumeration.CompanySize;
