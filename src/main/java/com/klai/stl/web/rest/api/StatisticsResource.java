@@ -31,7 +31,7 @@ public class StatisticsResource {
     @GetMapping("/subscription")
     public ResponseEntity<SubscriptionStatusDTO> findSubscriptionStats() {
         log.debug("REST request to find subscription status for current user");
-        final SubscriptionStatusDTO result = statisticsService.findSubscriptionStatus();
+        final SubscriptionStatusDTO result = statisticsService.findSubscriptionStatistics();
         return ok().body(result);
     }
 }
