@@ -1,5 +1,7 @@
 package com.klai.stl.service.statistics.impl;
 
+import static com.klai.stl.service.statistics.dto.GeneralStatisticsDTO.builder;
+
 import com.klai.stl.repository.StatisticsRepository;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.statistics.StatisticsService;
@@ -28,7 +30,16 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public GeneralStatisticsDTO findGeneralStatistics() {
         final String currentUserCompanyReference = userService.getCurrentUserCompanyReference();
-        return statisticsRepository.findGeneralStatisticsByCompanyReference(currentUserCompanyReference);
+        Long spacesCount = statisticsRepository.countSpacesByCompanyReference(currentUserCompanyReference);
+        Long photosCount = statisticsRepository.countPhotosByCompanyReference(currentUserCompanyReference);
+        Long employeesCount = statisticsRepository.countEmployeesByCompanyReference(currentUserCompanyReference);
+        Long productsCount = statisticsRepository.countProductsByCompanyReference(currentUserCompanyReference);
+        return builder()
+            .totalSpaces(spacesCount)
+            .totalPhotos(photosCount)
+            .totalEmployees(employeesCount)
+            .totalProducts(productsCount)
+            .build();
     }
 
     @Override

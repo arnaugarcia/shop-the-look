@@ -1,7 +1,11 @@
 package com.klai.stl.repository;
 
-import com.klai.stl.service.statistics.dto.GeneralStatisticsDTO;
-
 public interface StatisticsRepository {
-    GeneralStatisticsDTO findGeneralStatisticsByCompanyReference(String companyReference);
+    Long countSpacesByCompanyReference(String companyReference);
+
+    Long countPhotosByCompanyReference(String companyReference);
+
+    Long countEmployeesByCompanyReference(String companyReference);
+
+    Long countProductsByCompanyReference(String companyReference);
 }

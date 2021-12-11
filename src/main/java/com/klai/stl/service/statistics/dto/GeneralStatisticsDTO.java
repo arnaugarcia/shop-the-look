@@ -9,8 +9,8 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class GeneralStatisticsDTO {
 
-    int totalSpaces;
-    int totalEmployees;
-    int totalProducts;
-    int totalPhotos;
+    Long totalSpaces;
+    Long totalEmployees;
+    Long totalProducts;
+    Long totalPhotos;
 }
