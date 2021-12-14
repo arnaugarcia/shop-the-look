@@ -16,6 +16,7 @@ import com.klai.stl.service.exception.SubscriptionPlanNotFound;
 import com.klai.stl.service.mapper.CompanySubscriptionMapper;
 import com.klai.stl.service.mapper.SubscriptionPlanMapper;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,12 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
         company.subscriptionPlan(subscriptionPlan);
         companyRepository.save(company);
         return subscriptionPlanMapper.toDto(subscriptionPlan);
+    }
+
+    @Override
+    public Optional<SubscriptionPlan> findCurrentSubscriptionPlanByCompanyReference(String companyReference) {
+        final Company company = companyService.findByReference(companyReference);
+        return subscriptionPlanRepository.findCurrentSubscriptionPlanByCompanyReference(company.getReference());
     }
 
     private SubscriptionPlan findByReference(String subscriptionReference) {

@@ -1,16 +1,20 @@
 package com.klai.stl.service.statistics.impl;
 
 import static com.klai.stl.service.statistics.dto.GeneralStatisticsDTO.builder;
+import static com.klai.stl.service.statistics.dto.SubscriptionStatusDTO.from;
 import static java.util.stream.Collectors.toList;
 
+import com.klai.stl.domain.Company;
+import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.repository.StatisticsRepository;
+import com.klai.stl.service.SubscriptionPlanService;
 import com.klai.stl.service.UserService;
+import com.klai.stl.service.exception.SubscriptionPlanNotFound;
 import com.klai.stl.service.statistics.StatisticsService;
 import com.klai.stl.service.statistics.dto.GeneralStatisticsDTO;
 import com.klai.stl.service.statistics.dto.SpaceDTO;
 import com.klai.stl.service.statistics.dto.SubscriptionStatusDTO;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,15 +22,25 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private final UserService userService;
     private final StatisticsRepository statisticsRepository;
+    private final SubscriptionPlanService subscriptionPlanService;
 
-    public StatisticsServiceImpl(UserService userService, StatisticsRepository statisticsRepository) {
+    public StatisticsServiceImpl(
+        UserService userService,
+        StatisticsRepository statisticsRepository,
+        SubscriptionPlanService subscriptionPlanService
+    ) {
         this.userService = userService;
         this.statisticsRepository = statisticsRepository;
+        this.subscriptionPlanService = subscriptionPlanService;
     }
 
     @Override
     public SubscriptionStatusDTO findSubscriptionStatistics() {
-        return null;
+        final Company company = userService.getCurrentUserCompany();
+        final SubscriptionPlan subscriptionPlan = subscriptionPlanService
+            .findCurrentSubscriptionPlanByCompanyReference(company.getReference())
+            .orElseThrow(SubscriptionPlanNotFound::new);
+        return from(subscriptionPlan, company);
     }
 
     @Override

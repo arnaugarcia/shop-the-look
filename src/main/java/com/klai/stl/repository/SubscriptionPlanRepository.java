@@ -23,4 +23,14 @@ public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPl
         nativeQuery = true
     )
     List<CompanySubscription> findCompanySubscriptionsByReference(@Param("reference") String reference);
+
+    @Query(
+        value = "select subcription.* " +
+        "                from subscription_plan subcription " +
+        "                         left join company " +
+        "                                   on subcription.id = (select subscription_plan_id from company where company.reference = :reference) " +
+        "                where company.reference = :reference",
+        nativeQuery = true
+    )
+    Optional<SubscriptionPlan> findCurrentSubscriptionPlanByCompanyReference(@Param("reference") String companyReference);
 }

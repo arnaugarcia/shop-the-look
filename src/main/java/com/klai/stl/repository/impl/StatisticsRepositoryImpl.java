@@ -19,26 +19,26 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     public Long countSpacesByCompanyReference(String companyReference) {
         final String SPACES_COUNT_QUERY = "select count(space) from Space space where space.company.reference = :reference";
 
-        return executeQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
+        return executeCountQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
     }
 
     @Override
     public Long countPhotosByCompanyReference(String companyReference) {
         final String SPACES_COUNT_QUERY =
             "select count(photo.id) from Space space join Photo photo on photo.space.id = space.id where space.company.reference = :reference";
-        return executeQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
+        return executeCountQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
     }
 
     @Override
     public Long countEmployeesByCompanyReference(String companyReference) {
         final String SPACES_COUNT_QUERY = "select count(employee) from User employee where employee.company.reference = :reference";
-        return executeQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
+        return executeCountQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
     }
 
     @Override
     public Long countProductsByCompanyReference(String companyReference) {
         final String SPACES_COUNT_QUERY = "select count(product) from Product product where product.company.reference = :reference";
-        return executeQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
+        return executeCountQueryWithCompanyReference(entityManager, SPACES_COUNT_QUERY, companyReference);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
         return entityManager.createNativeQuery(SPACES_QUERY, Tuple.class).setParameter("reference", companyReference).getResultList();
     }
 
-    private Long executeQueryWithCompanyReference(EntityManager entityManager, String SPACES_COUNT_QUERY, String companyReference) {
+    private Long executeCountQueryWithCompanyReference(EntityManager entityManager, String SPACES_COUNT_QUERY, String companyReference) {
         return entityManager.createQuery(SPACES_COUNT_QUERY, Long.class).setParameter("reference", companyReference).getSingleResult();
     }
 }
