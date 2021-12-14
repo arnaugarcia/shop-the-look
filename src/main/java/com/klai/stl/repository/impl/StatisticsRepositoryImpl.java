@@ -44,8 +44,20 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     @Override
     public List<Tuple> findSpacesByCompanyReference(String companyReference) {
         final String SPACES_QUERY =
-            "select distinct space.name as name, space.description as description, space.photos.size as photos, photo.coordinates.size as coordinates from Space space join Photo photo on photo.space.id = space.id where space.company.reference = :reference";
-        return entityManager.createQuery(SPACES_QUERY, Tuple.class).setParameter("reference", companyReference).getResultList();
+            "select distinct space0_.name, " +
+            "                space0_.description, " +
+            "                (select count(photos2_.space_id) from photo photos2_ where space0_.id = photos2_.space_id) as photos, " +
+            "                (select count(coordinate.id)" +
+            "                 from space space " +
+            "                          left join photo photo on space.id = photo.space_id " +
+            "                          left join coordinate coordinate on photo.id = coordinate.photo_id " +
+            "                 where space.reference = space0_.reference) as coordinates " +
+            " from space space0_ " +
+            "         inner join photo photo1_ on (photo1_.space_id = space0_.id) " +
+            "         cross join company company4_" +
+            " where space0_.company_id = company4_.id" +
+            "  and company4_.reference = :reference";
+        return entityManager.createNativeQuery(SPACES_QUERY, Tuple.class).setParameter("reference", companyReference).getResultList();
     }
 
     private Long executeQueryWithCompanyReference(EntityManager entityManager, String SPACES_COUNT_QUERY, String companyReference) {
