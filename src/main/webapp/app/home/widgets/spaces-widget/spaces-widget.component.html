@@ -41,17 +41,17 @@
     </div>
   </div>
 </div>
-<div class="card card-congratulations">
+<div class="card">
   <div class="card-body text-center">
     <div class="avatar avatar-xl bg-primary shadow">
       <div class="avatar-content">
         <i class="font-large-1" data-feather="alert-circle"></i>
       </div>
     </div>
-    <div class="text-center">
+    <div class="text-center mt-2">
       <h1 class="mb-1">No spaces configured</h1>
       <p class="card-text m-auto w-75">You can create a new space using our Space Studio!</p>
-      <a class="btn btn-primary mt-2">Go to space studio!</a>
+      <a [routerLink]="['spaces', 'studio', 'create']" class="btn btn-primary mt-2">Go to space studio!</a>
     </div>
   </div>
 </div>
