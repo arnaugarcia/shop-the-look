@@ -4,6 +4,7 @@ import com.klai.stl.domain.SubscriptionPlan;
 import com.klai.stl.service.dto.SubscriptionPlanDTO;
 import com.klai.stl.service.dto.requests.UpdateSubscriptionRequest;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.SubscriptionPlan}.
@@ -30,8 +31,17 @@ public interface SubscriptionPlanService {
 
     /**
      * Updates the subscription plan for the desired company
+     *
      * @param updateSubscriptionRequest the subscription reference
      * @return the updated subscription
      */
     SubscriptionPlanDTO updateSubscriptionPlanForCompany(UpdateSubscriptionRequest updateSubscriptionRequest);
+
+    /**
+     * Fins the current active subscription for the desired company
+     *
+     * @param companyReference the reference of the company to search the subscription for
+     * @return empty() if there is no subscription a complete Subscription plan entity
+     */
+    Optional<SubscriptionPlan> findCurrentSubscriptionPlanByCompanyReference(String companyReference);
 }

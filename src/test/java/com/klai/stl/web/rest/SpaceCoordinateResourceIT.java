@@ -7,6 +7,8 @@ import static com.klai.stl.web.rest.SpacePhotoResourceIT.createPhoto;
 import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
 import static com.klai.stl.web.rest.UserResourceIT.createUser;
+import static java.util.Locale.ROOT;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -59,6 +61,17 @@ class SpaceCoordinateResourceIT {
     private Photo photo;
 
     private SpaceCoordinateRequest coordinateRequest;
+
+    public static Coordinate createCoordinate(EntityManager em, Photo photo, Product product) {
+        Coordinate coordinate = new Coordinate()
+            .x(DEFAULT_X_COORDINATE)
+            .y(DEFAULT_Y_COORDINATE)
+            .reference(randomAlphanumeric(20).toUpperCase(ROOT))
+            .product(product)
+            .photo(photo);
+        em.persist(coordinate);
+        return coordinate;
+    }
 
     @BeforeEach
     public void initTest() throws Exception {

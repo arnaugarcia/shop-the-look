@@ -1,0 +1,24 @@
+<div *ngIf="subscriptionStatus" class="card card-congratulations">
+  <div (click)="navigateSubscriptionPage()" class="card-body text-center" style="cursor: pointer">
+    <img alt="card-img-left" class="congratulations-img-left" src="/content/images/elements/decore-left.png" />
+    <img alt="card-img-right" class="congratulations-img-right" src="/content/images/elements/decore-right.png" />
+    <div class="avatar avatar-xl bg-primary shadow">
+      <div class="avatar-content">
+        <i class="font-large-1" data-feather="award"></i>
+      </div>
+    </div>
+    <div class="text-center">
+      <p class="card-text m-auto w-75">
+        <b>Congratulations!</b> You have the <strong>{{ subscriptionStatus.name }}</strong> subscription!
+      </p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!subscriptionStatus" class="card">
+  <div class="card-body">
+    <h5 class="mb-75 mt-2">You don't have any active subscription :(</h5>
+    <p class="card-text font-small-3">You're missing some of the great opportunities that offers a subscription</p>
+    <a [routerLink]="['company', 'subscription']" class="btn btn-primary" type="button">See available subscriptions</a>
+  </div>
+</div>

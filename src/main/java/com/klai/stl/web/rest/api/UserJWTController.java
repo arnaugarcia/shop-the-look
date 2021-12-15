@@ -3,7 +3,7 @@ package com.klai.stl.web.rest.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.klai.stl.security.jwt.JWTFilter;
 import com.klai.stl.security.jwt.TokenProvider;
-import com.klai.stl.web.rest.vm.LoginVM;
+import com.klai.stl.web.rest.api.vm.LoginVM;
 import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
