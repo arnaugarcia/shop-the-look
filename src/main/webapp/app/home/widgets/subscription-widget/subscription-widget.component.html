@@ -1,9 +1,9 @@
 <div *ngIf="subscriptionStatus" class="card card-congratulation-medal">
   <div class="card-body">
     <h5>Congratulations! 🎉 {{ account?.firstName }}!</h5>
-    <p class="card-text font-small-3">You have the {{ subscriptionStatus.name }}</p>
+    <p class="card-text font-small-3">Your company have the {{ subscriptionStatus.name }}</p>
     <h3 class="mb-75 mt-2">
-      <a>{{ subscriptionStatus.price }}€ Plan</a>
+      <a>{{ subscriptionStatus.price }}€/Month Plan</a>
     </h3>
     <button [routerLink]="['company', 'subscription']" class="btn btn-primary" type="button">View or change active subscription</button>
   </div>

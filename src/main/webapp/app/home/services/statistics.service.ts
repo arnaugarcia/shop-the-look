@@ -8,7 +8,7 @@ import { SubscriptionStatus } from '../models/statistics.model';
   providedIn: 'root',
 })
 export class StatisticsService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/statistics');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/stats');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
