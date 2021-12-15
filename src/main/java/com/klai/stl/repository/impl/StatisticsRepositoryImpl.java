@@ -46,6 +46,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
         final String SPACES_QUERY =
             "select distinct space0_.name, " +
             "                space0_.description, " +
+            "                space0_.reference, " +
             "                (select count(photos2_.space_id) from photo photos2_ where space0_.id = photos2_.space_id) as photos, " +
             "                (select count(coordinate.id)" +
             "                 from space space " +
