@@ -1,5 +1,5 @@
-<div *ngIf="spaces.length == 0" class="card card-company-table">
-  <div *ngIf="spaces.length > 0" class="card-body p-0">
+<div *ngIf="spaces.length > 0" class="card card-company-table">
+  <div class="card-body p-0">
     <div class="table-responsive">
       <table class="table">
         <thead>
@@ -41,7 +41,7 @@
     </div>
   </div>
 </div>
-<div class="card">
+<div *ngIf="spaces.length == 0" class="card">
   <div class="card-body text-center">
     <div class="avatar avatar-xl bg-primary shadow">
       <div class="avatar-content">
