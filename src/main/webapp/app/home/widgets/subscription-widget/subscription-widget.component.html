@@ -1,0 +1,17 @@
+<div *ngIf="subscriptionStatus" class="card card-congratulation-medal">
+  <div class="card-body">
+    <h5>Congratulations! 🎉 {{ account?.firstName }}!</h5>
+    <p class="card-text font-small-3">You have the {{ subscriptionStatus.name }}</p>
+    <h3 class="mb-75 mt-2">
+      <a>{{ subscriptionStatus.price }}€ Plan</a>
+    </h3>
+    <button [routerLink]="['company', 'subscription']" class="btn btn-primary" type="button">View active subscription</button>
+  </div>
+</div>
+<div *ngIf="!subscriptionStatus" class="card">
+  <div class="card-body">
+    <h5 class="mb-75 mt-2">You don't have any active subscription :(</h5>
+    <p class="card-text font-small-3">You're missing some of the great opportunities that offers a subscription</p>
+    <a [routerLink]="['company', 'subscription']" class="btn btn-primary" type="button">See available subscriptions</a>
+  </div>
+</div>

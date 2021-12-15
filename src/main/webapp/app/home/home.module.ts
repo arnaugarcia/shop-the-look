@@ -4,9 +4,10 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { HOME_ROUTE } from './home.route';
 import { HomeComponent } from './home.component';
+import { SubscriptionWidgetComponent } from './widgets/subscription-widget/subscription-widget.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, SubscriptionWidgetComponent],
 })
 export class HomeModule {}
