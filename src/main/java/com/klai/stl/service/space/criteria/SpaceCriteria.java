@@ -12,6 +12,6 @@ public class SpaceCriteria implements Serializable {
     String companyReference;
 
     public static SpaceCriteriaBuilder from(SpaceCriteriaDTO spaceCriteriaDTO) {
-        return builder().keyword(spaceCriteriaDTO.getKeyword());
+        return SpaceCriteria.builder().keyword(spaceCriteriaDTO.getKeyword());
     }
 }
