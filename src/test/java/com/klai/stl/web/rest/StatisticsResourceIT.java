@@ -225,9 +225,9 @@ class StatisticsResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "custom-subscription-user")
+    @WithMockUser(username = "non-commercial-name-subscription-user")
     public void shouldReturnSubscriptionWithNonCompanyCommercialName() throws Exception {
-        createAndAppendUserToCompanyByLogin("custom-subscription-user");
+        createAndAppendUserToCompanyByLogin("non-commercial-name-subscription-user");
         final SubscriptionPlan subscriptionPlan = createSubscriptionPlan(em);
         em.persist(subscriptionPlan);
         company.setCommercialName(null);
