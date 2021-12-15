@@ -4,3 +4,10 @@ export interface SubscriptionStatus {
   description: string;
   price: number;
 }
+
+export interface GeneralStatus {
+  totalSpaces: number;
+  totalProducts: number;
+  totalPhotos: number;
+  totalEmployees: number;
+}
