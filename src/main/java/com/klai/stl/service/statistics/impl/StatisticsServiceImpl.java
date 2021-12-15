@@ -1,6 +1,5 @@
 package com.klai.stl.service.statistics.impl;
 
-import static com.klai.stl.service.statistics.dto.GeneralStatisticsDTO.builder;
 import static com.klai.stl.service.statistics.dto.SubscriptionStatusDTO.from;
 import static java.util.stream.Collectors.toList;
 
@@ -52,7 +51,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         Long employeesCount = statisticsRepository.countEmployeesByCompanyReference(currentUserCompanyReference);
         Long productsCount = statisticsRepository.countProductsByCompanyReference(currentUserCompanyReference);
 
-        return builder()
+        return GeneralStatisticsDTO
+            .builder()
             .totalSpaces(spacesCount)
             .totalPhotos(photosCount)
             .totalEmployees(employeesCount)

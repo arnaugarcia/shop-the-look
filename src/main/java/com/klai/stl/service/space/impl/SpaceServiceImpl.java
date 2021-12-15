@@ -105,14 +105,19 @@ public class SpaceServiceImpl implements SpaceService {
     @Override
     public List<SpaceDTO> findByCriteriaForCompany(SpaceCriteriaDTO spaceCriteriaDTO, String companyReference) {
         checkIfCurrentUserBelongsToSpace(companyReference);
-        final SpaceCriteria spaceCriteria = SpaceCriteria.from(spaceCriteriaDTO).companyReference(companyReference).build();
+        final SpaceCriteria spaceCriteria = SpaceCriteria
+            .builder()
+            .keyword(spaceCriteriaDTO.getKeyword())
+            .companyReference(companyReference)
+            .build();
         return spaceQueryService.findByCriteria(spaceCriteria);
     }
 
     @Override
     public List<SpaceDTO> findByCriteriaForCurrentUser(SpaceCriteriaDTO spaceCriteriaDTO) {
         final SpaceCriteria spaceCriteria = SpaceCriteria
-            .from(spaceCriteriaDTO)
+            .builder()
+            .keyword(spaceCriteriaDTO.getKeyword())
             .companyReference(userService.getCurrentUserCompanyReference())
             .build();
         return spaceQueryService.findByCriteria(spaceCriteria);
