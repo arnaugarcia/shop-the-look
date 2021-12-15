@@ -1,0 +1,43 @@
+<div class="card card-company-table">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Photos</th>
+            <th>Coordinates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr (click)="clickSpace(space)" *ngFor="let space of spaces" style="cursor: pointer">
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="avatar rounded"></div>
+                <div>
+                  <div class="font-weight-bolder">{{ space.name }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <span>{{ space.description }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <span>{{ space.photos }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <span>{{ space.coordinates }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

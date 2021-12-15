@@ -11,3 +11,11 @@ export interface GeneralStatus {
   totalPhotos: number;
   totalEmployees: number;
 }
+
+export interface Space {
+  name: string;
+  description: string;
+  reference: string;
+  photos: number;
+  coordinates: number;
+}
