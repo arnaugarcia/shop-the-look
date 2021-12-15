@@ -15,9 +15,9 @@ export class GeneralStatisticsWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     this.statisticsService.queryGeneralStats().subscribe((response: HttpResponse<GeneralStatus>) => {
-      /*if (response.body) {
+      if (response.body) {
         this.statistics = response.body;
-      }*/
+      }
     });
   }
 }
