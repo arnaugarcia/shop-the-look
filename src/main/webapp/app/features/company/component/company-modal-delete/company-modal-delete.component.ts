@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ICompany } from '../../../features/company/model/company.model';
-import { CompanyService } from '../../../features/company/service/company.service';
+import { ICompany } from '../../model/company.model';
+import { CompanyService } from '../../service/company.service';
 
 @Component({
-  templateUrl: './company-delete-dialog.component.html',
+  templateUrl: './company-modal-delete.component.html',
 })
-export class CompanyDeleteDialogComponent {
+export class CompanyModalDeleteComponent {
   company?: ICompany;
 
   constructor(protected companyService: CompanyService, protected activeModal: NgbActiveModal) {}
