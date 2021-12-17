@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { CompanyDeleteDialogComponent } from '../../entities/company/delete/company-delete-dialog.component';
 import { CompanyListComponent } from './pages/list/company-list.component';
 import { OverviewComponent } from './pages/overview/overview.component';
 import { CompanyComponent } from './pages/company/company.component';
@@ -16,10 +15,10 @@ import { PricingPlanBenefitsComponent } from './component/pricing-plan-benefits/
 import { CheckoutSuccessComponent } from './pages/checkout/checkout-success/checkout-success.component';
 import { CheckoutErrorComponent } from './pages/checkout/checkout-error/checkout-error.component';
 import { CardSnippetModule } from '../../../@core/components/card-snippet/card-snippet.module';
+import { CompanyModalDeleteComponent } from './component/company-modal-delete/company-modal-delete.component';
 
 @NgModule({
   declarations: [
-    CompanyDeleteDialogComponent,
     CompanyListComponent,
     OverviewComponent,
     BillingComponent,
@@ -28,6 +27,7 @@ import { CardSnippetModule } from '../../../@core/components/card-snippet/card-s
     ApiKeyComponent,
     CompanyModalErrorComponent,
     CompanyModalSuccessComponent,
+    CompanyModalDeleteComponent,
     PreferencesComponent,
     PricingPlanComponent,
     PricingPlanBenefitsComponent,

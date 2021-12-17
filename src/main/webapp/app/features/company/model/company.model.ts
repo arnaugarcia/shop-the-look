@@ -1,6 +1,6 @@
-import { CompanyType } from 'app/entities/enumerations/company-type.model';
-import { CompanyIndustry } from 'app/entities/enumerations/company-industry.model';
-import { CompanySize } from 'app/entities/enumerations/company-size.model';
+import { CompanyType } from './enumerations/company-type.model';
+import { CompanyIndustry } from './enumerations/company-industry.model';
+import { CompanySize } from './enumerations/company-size.model';
 
 export interface ICompany {
   name?: string;
