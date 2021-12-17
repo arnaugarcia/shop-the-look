@@ -99,8 +99,11 @@ export class SpacePhotoComponent implements OnInit {
 
   public deletePhoto(photoReference: string): void {
     this.spacePhotoService.removePhoto(this.spaceReference!, photoReference).subscribe(
-      (response: HttpResponse<any>) => this.onUploadSuccess(response),
-      (error: HttpErrorResponse) => this.onUploadError(error)
+      (response: HttpResponse<any>) => {
+        this.onSuccess(response);
+        this.coordinates = [];
+      },
+      (error: HttpErrorResponse) => this.onError(error)
     );
   }
 
@@ -120,17 +123,17 @@ export class SpacePhotoComponent implements OnInit {
     this.spacePhotoService
       .addPhoto(this.spaceReference!, new PhotoRequest(this.fileReader.result.toString().split(',')[1], droopedFile.type))
       .subscribe(
-        (response: HttpResponse<IPhoto>) => this.onUploadSuccess(response),
-        (error: HttpErrorResponse) => this.onUploadError(error)
+        (response: HttpResponse<IPhoto>) => this.onSuccess(response),
+        (error: HttpErrorResponse) => this.onError(error)
       );
   }
 
-  private onUploadSuccess(response: HttpResponse<IPhoto>): void {
+  private onSuccess(response: HttpResponse<IPhoto>): void {
     this.loading = false;
     this.photo = response.body!;
   }
 
-  private onUploadError(error: HttpErrorResponse): void {
+  private onError(error: HttpErrorResponse): void {
     this.alertService.addAlert({
       type: 'danger',
       message: 'Something went wrong with the upload, please try again layer',
