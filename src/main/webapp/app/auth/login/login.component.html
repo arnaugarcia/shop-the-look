@@ -8,16 +8,12 @@
     <!-- Left Text-->
     <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
       <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
-        <img
-          [src]="coreConfig.layout.skin === 'dark' ? '/content/images/pages/login-v2-dark.svg' : '/content/images/pages/login-v2.svg'"
-          alt="Login V2"
-          class="img-fluid"
-        />
+        <img [src]="'/content/images/pages/login-v2.svg'" alt="Login V2" class="img-fluid" />
       </div>
     </div>
     <!-- /Left Text-->
     <!-- Login-->
-    <div [class.dark-bg]="coreConfig.layout.skin == 'dark'" class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+    <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
       <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
         <h2 class="card-title font-weight-bold mb-1">Welcome to Shop the Look! 👋</h2>
         <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>

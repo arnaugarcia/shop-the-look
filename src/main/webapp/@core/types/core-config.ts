@@ -2,7 +2,6 @@
 
 export interface CoreConfig {
   layout: {
-    skin: 'default' | 'dark';
     menu: {
       hidden: boolean;
       collapsed: boolean;
@@ -21,7 +20,6 @@ export interface CoreConfig {
 export class CoreConfig implements CoreConfig {
   constructor() {
     this.layout = {
-      skin: 'default',
       menu: {
         hidden: false,
         collapsed: false,
