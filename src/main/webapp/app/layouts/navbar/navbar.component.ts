@@ -24,8 +24,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public hiddenMenu = false;
 
   public coreConfig: CoreConfig | undefined;
-  public currentSkin = '';
-  public prevSkin: string | null = '';
 
   public languages = LANGUAGES;
   public account: Account | null = null;
@@ -58,7 +56,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe((config: CoreConfig) => {
       this.coreConfig = config;
       this.hiddenMenu = config.layout.menu.hidden;
-      this.currentSkin = config.layout.skin;
     });
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
@@ -86,29 +83,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
    */
   toggleSidebar(key: string): void {
     this.coreSidebarService.getSidebarRegistry(key).toggleOpen();
-  }
-
-  /**
-   * Toggle Dark Skin
-   */
-  toggleDarkSkin(): void {
-    // Get the current skin
-    this.coreConfigService
-      .getConfig()
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(config => {
-        this.currentSkin = config.layout.skin;
-      });
-
-    // Toggle Dark skin with prevSkin skin
-    this.prevSkin = localStorage.getItem('prevSkin');
-
-    if (this.currentSkin === 'dark') {
-      this.coreConfigService.setConfig({ layout: { skin: this.prevSkin ? this.prevSkin : 'default' } }, { emitEvent: true });
-    } else {
-      localStorage.setItem('prevSkin', this.currentSkin);
-      this.coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
-    }
   }
 
   logout(): void {

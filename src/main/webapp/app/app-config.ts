@@ -13,7 +13,6 @@ import { CoreConfig } from '@core/types';
 // prettier-ignore
 export const coreConfig: CoreConfig = {
     layout: {
-        skin: 'default',
         menu: {
             hidden: false,           // Boolean: true, false
             collapsed: false,           // Boolean: true, false
