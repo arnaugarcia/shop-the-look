@@ -10,7 +10,6 @@ import { CoreConfig } from '../../../@core/types';
 import { AccountService } from '../../core/auth/account.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { ProfileService } from '../profiles/profile.service';
-import { LANGUAGES } from '../../config/language.constants';
 import { Account } from 'app/core/auth/account.model';
 import { LoginService } from '../../auth/login/login.service';
 
@@ -25,7 +24,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public coreConfig: CoreConfig | undefined;
 
-  public languages = LANGUAGES;
   public account: Account | null = null;
 
   @HostBinding('class.navbar-static-style-on-scroll')
