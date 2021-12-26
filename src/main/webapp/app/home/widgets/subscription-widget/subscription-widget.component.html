@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="text-center">
-      <p class="card-text m-auto w-75">
+      <p [translateValues]="{ plan: subscriptionStatus.name }" class="card-text m-auto w-75" stlTranslate="home.widget.subscription.title">
         <b>Congratulations!</b> You have the <strong>{{ subscriptionStatus.name }}</strong> subscription!
       </p>
     </div>
@@ -17,8 +17,12 @@
 
 <div *ngIf="!subscriptionStatus" class="card">
   <div class="card-body">
-    <h5 class="mb-75 mt-2">You don't have any active subscription :(</h5>
-    <p class="card-text font-small-3">You're missing some of the great opportunities that offers a subscription</p>
-    <a [routerLink]="['company', 'subscription']" class="btn btn-primary" type="button">See available subscriptions</a>
+    <h5 class="mb-75 mt-2" stlTranslate="home.widget.subscription.nosubscription">You don't have any active subscription :(</h5>
+    <p class="card-text font-small-3" stlTranslate="home.widget.subscription.missing">
+      You're missing some of the great opportunities that offers a subscription
+    </p>
+    <a [routerLink]="['company', 'subscription']" class="btn btn-primary" stlTranslate="home.widget.subscription.see" type="button">
+      See available subscriptions
+    </a>
   </div>
 </div>

@@ -4,10 +4,10 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Photos</th>
-            <th>Coordinates</th>
+            <th stlTranslate="home.widget.spaces.table.name">Name</th>
+            <th stlTranslate="home.widget.spaces.table.description">Description</th>
+            <th stlTranslate="home.widget.spaces.table.photos">Photos</th>
+            <th stlTranslate="home.widget.spaces.table.coordinates">Coordinates</th>
           </tr>
         </thead>
         <tbody>
@@ -49,9 +49,13 @@
       </div>
     </div>
     <div class="text-center mt-2">
-      <h1 class="mb-1">No spaces configured</h1>
-      <p class="card-text m-auto w-75">You can create a new space using our Space Studio!</p>
-      <a [routerLink]="['spaces', 'studio', 'create']" class="btn btn-primary mt-2">Go to space studio!</a>
+      <h1 class="mb-1" stlTranslate="home.widget.spaces.empty.title">No spaces configured</h1>
+      <p class="card-text m-auto w-75" stlTranslate="home.widget.spaces.empty.subtitle">
+        You can create a new space using our Space Studio!
+      </p>
+      <a [routerLink]="['spaces', 'studio', 'create']" class="btn btn-primary mt-2" stlTranslate="home.widget.spaces.empty.button"
+        >Go to space studio!</a
+      >
     </div>
   </div>
 </div>

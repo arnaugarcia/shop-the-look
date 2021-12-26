@@ -1,19 +1,31 @@
 {
   "login": {
-    "title": "Sign in",
     "form": {
-      "password": "Password",
-      "password.placeholder": "Your password",
+      "button": "Sign in",
+      "password": {
+        "label": "Password",
+        "placeholder": "Your password"
+      },
       "rememberme": "Remember me",
-      "button": "Sign in"
+      "username": {
+        "label": "Username",
+        "placeholder": "Your username"
+      }
     },
     "messages": {
       "error": {
         "authentication": "<strong>Failed to sign in!</strong> Please check your credentials and try again."
       }
     },
+    "noaccount": {
+      "create": "Create an account",
+      "label": "New on our platform?"
+    },
     "password": {
       "forgot": "Did you forget your password?"
-    }
+    },
+    "subtitle": "Please sign-in to your account and start the adventure",
+    "title": "Login",
+    "welcome": "Welcome to Shop the Look! 👋"
   }
 }

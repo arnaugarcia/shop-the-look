@@ -15,6 +15,7 @@
                 (onFileDrop)="onFileDropped($event)"
                 [uploader]="uploader"
                 class="py-5 mb-3 text-center font-medium-5 text-uppercase file-drop-zone"
+                stlTranslate="products.import.filedrop.text"
               >
                 Drop CSV / TSV files to upload products
               </div>
@@ -22,9 +23,9 @@
           </div>
           <div class="row">
             <div class="col-lg-3">
-              <h4>Select files</h4>
+              <h4 stlTranslate="products.import.multiple.title">Select files</h4>
               <fieldset class="form-group">
-                <label for="file-upload-multiple">Select CSV/TSV file:</label>
+                <label for="file-upload-multiple" stlTranslate="products.import.multiple.text">Select CSV/TSV file:</label>
                 <div class="custom-file">
                   <input
                     (onFileSelected)="onFileDropped($event)"
@@ -36,30 +37,30 @@
                     id="file-upload-multiple"
                     type="file"
                   />
-                  <label class="custom-file-label">Choose file</label>
+                  <label class="custom-file-label" stlTranslate="products.import.multiple.selector">Choose file</label>
                 </div>
               </fieldset>
             </div>
 
             <div class="col-lg-9 overflow-auto">
               <div class="d-flex justify-content-between mb-1">
-                <h4>Loaded products preview</h4>
-                <p>Loaded products: {{ products.length }}</p>
+                <h4 stlTranslate="products.import.table.title">Loaded products preview</h4>
+                <p><span stlTranslate="products.import.table.loaded">Loaded products:</span> {{ products.length }}</p>
               </div>
               <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">
-                      <span stlTranslate="shopTheLookApp.product.sku">Sku</span>
+                      <span stlTranslate="products.import.table.columns.sku">SKU</span>
                     </th>
                     <th scope="col">
-                      <span stlTranslate="shopTheLookApp.product.name">Name</span>
+                      <span stlTranslate="products.import.table.columns.name">Name</span>
                     </th>
                     <th scope="col">
-                      <span stlTranslate="shopTheLookApp.product.price">Price</span>
+                      <span stlTranslate="products.import.table.columns.price">Price</span>
                     </th>
                     <th scope="col">
-                      <span>Remove</span>
+                      <span stlTranslate="products.import.table.columns.remove">Remove</span>
                     </th>
                   </tr>
                 </thead>
@@ -109,20 +110,21 @@
                   (click)="importProducts()"
                   [disabled]="products.length == 0"
                   class="btn mr-1 btn-primary mb-1 mb-sm-0"
-                  type="button"
                   rippleEffect
+                  type="button"
                 >
                   <span class="mr-25" data-feather="upload"></span>
-                  Upload all
+                  <span stlTranslate="products.import.table.upload">Upload all</span>
                 </button>
                 <button
                   (click)="removeAllFromQueue()"
                   [disabled]="products.length == 0"
                   class="btn btn-outline-danger mb-1 mb-sm-0"
-                  type="button"
                   rippleEffect
+                  type="button"
                 >
-                  <span class="mr-25" data-feather="trash"></span> Remove all
+                  <span class="mr-25" data-feather="trash"></span>
+                  <span stlTranslate="products.import.table.remove">Remove all</span>
                 </button>
               </div>
             </div>

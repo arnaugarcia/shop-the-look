@@ -2,7 +2,7 @@
   <div class="auth-inner row m-0">
     <a class="brand-logo" href="javascript:void(0);">
       <img alt="brand-logo" height="28" src="/content/images/logo/logo.svg" />
-      <h2 class="brand-text text-primary ml-1">Shop The Look</h2>
+      <h2 class="brand-text text-primary ml-1" stlTranslate="global.title">Shop The Look</h2>
     </a>
     <!-- /Brand logo-->
     <!-- Left Text-->
@@ -15,8 +15,8 @@
     <!-- Login-->
     <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
       <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-        <h2 class="card-title font-weight-bold mb-1">Welcome to Shop the Look! 👋</h2>
-        <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
+        <h2 class="card-title font-weight-bold mb-1" stlTranslate="login.welcome">Welcome to Shop the Look! 👋</h2>
+        <p class="card-text mb-2" stlTranslate="login.subtitle">Please sign-in to your account and start the adventure</p>
 
         <ngb-alert *ngIf="authenticationError" [dismissible]="false" [type]="'danger'">
           <div class="alert-body">
@@ -26,7 +26,7 @@
 
         <form (ngSubmit)="login()" [formGroup]="loginForm" class="auth-login-form mt-2">
           <div class="form-group">
-            <label class="form-label" for="username" stlTranslate="global.form.username.label">Email</label>
+            <label class="form-label" for="username" stlTranslate="login.form.username.label">Email</label>
             <input
               #username
               [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
@@ -37,7 +37,7 @@
               formControlName="username"
               id="username"
               name="username"
-              placeholder="{{ 'global.form.username.placeholder' | translate }}"
+              placeholder="{{ 'login.form.username.placeholder' | translate }}"
               tabindex="1"
               type="text"
             />
@@ -48,7 +48,7 @@
           </div>
           <div class="form-group">
             <div class="d-flex justify-content-between">
-              <label for="password" stlTranslate="login.form.password">Password</label>
+              <label for="password" stlTranslate="login.form.password.label">Password</label>
               <a routerLink="/auth/reset/request">
                 <small stlTranslate="login.password.forgot">Forgot Password?</small>
               </a>
@@ -101,14 +101,12 @@
               <label class="custom-control-label" for="rememberMe" stlTranslate="login.form.rememberme">Remember Me</label>
             </div>
           </div>
-          <button [disabled]="loading" class="btn btn-primary btn-block" rippleEffect stlTranslate="login.form.button" tabindex="4">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Sign in
-          </button>
+          <button class="btn btn-primary btn-block" rippleEffect stlTranslate="login.form.button" tabindex="4">Sign in</button>
         </form>
         <p class="text-center mt-2">
-          <span stlTranslate="global.messages.info.register.noaccount">New on our platform?</span>
+          <span stlTranslate="login.noaccount.label">New on our platform?</span>
           <a routerLink="/auth/register">
-            <span>&nbsp;Create an account</span>
+            <span stlTranslate="login.noaccount.create">Create an account</span>
           </a>
         </p>
       </div>

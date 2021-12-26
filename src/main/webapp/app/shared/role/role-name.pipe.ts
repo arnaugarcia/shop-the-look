@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'stlRoleName',
 })
 export class RoleNamePipe implements PipeTransform {
-  private readonly TRANSLATE_KEY = 'global.menu.account.authorities.';
+  private readonly TRANSLATE_KEY = 'menu.account.authorities.';
 
   transform(authorities: string[] | undefined): string {
     if (!authorities) {
