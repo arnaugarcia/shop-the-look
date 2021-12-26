@@ -1,9 +1,9 @@
 <div class="navbar-container d-flex content">
   <div class="bookmark-wrapper d-flex align-items-center">
     <!-- Menu Toggler | Menu icon will be hidden in case of layout without menu -->
-    <ul class="nav navbar-nav d-xl-none" *ngIf="!coreConfig?.layout?.menu?.hidden">
+    <ul *ngIf="!coreConfig?.layout?.menu?.hidden" class="nav navbar-nav d-xl-none">
       <li class="nav-item">
-        <a class="nav-link menu-toggle" (click)="toggleSidebar('menu')">
+        <a (click)="toggleSidebar('menu')" class="nav-link menu-toggle">
           <span [data-feather]="'menu'" [class]="'ficon'"></span>
         </a>
       </li>
@@ -13,13 +13,13 @@
 
   <ul class="nav navbar-nav align-items-center ml-auto">
     <!-- User Dropdown -->
-    <li ngbDropdown class="nav-item dropdown-user">
+    <li class="nav-item dropdown-user" ngbDropdown>
       <a
+        aria-expanded="false"
+        aria-haspopup="true"
+        ngbDropdownToggle
         class="nav-link dropdown-toggle dropdown-user-link"
         id="dropdown-user"
-        ngbDropdownToggle
-        aria-haspopup="true"
-        aria-expanded="false"
       >
         <div class="user-nav d-sm-flex d-none">
           <span class="user-name font-weight-bolder">{{ account?.firstName }} {{ account?.lastName }}</span>
@@ -29,22 +29,25 @@
           <img *ngIf="account?.imageUrl" [src]="account?.imageUrl" alt="avatar" class="round" height="40" width="40" />
           <img
             *ngIf="!account?.imageUrl"
-            src="/content/images/profile/unknown-user.png"
             alt="avatar"
             class="round"
             height="40"
+            src="/content/images/profile/unknown-user.png"
             width="40"
           />
           <span class="avatar-status-online"></span>
         </span>
       </a>
-      <div ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right">
+      <div aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
         <a ngbDropdownItem routerLink="account/settings" routerLinkActive="active">
           <span [data-feather]="'user'" [class]="'mr-50'"></span>
-          <ng-container stlTranslate="global.menu.account.main">Profile</ng-container>
+          <span stlTranslate="menu.account.profile">Profile</span>
         </a>
         <div class="dropdown-divider"></div>
-        <a (click)="logout()" ngbDropdownItem> <span [class]="'mr-50'" [data-feather]="'power'"></span>Logout </a>
+        <a (click)="logout()" ngbDropdownItem>
+          <span [class]="'mr-50'" [data-feather]="'power'"></span>
+          <span stlTranslate="menu.account.logout">Logout</span>
+        </a>
       </div>
     </li>
     <!--/ User Dropdown -->
