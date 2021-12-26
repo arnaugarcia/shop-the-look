@@ -3,8 +3,12 @@
     "title": "Bienvenido a Shop the look!",
     "widget": {
       "statistics": {
-        "spaces": "",
-        "title": ""
+        "employees": "Empleados",
+        "error": "Tenemos problemas para cargar sus estadísticas.  Por favor, inténtelo de nuevo más tarde.",
+        "photos": "Fotos",
+        "products": "Productos",
+        "spaces": "Espacios",
+        "title": "Estadísticas de la empresa"
       },
       "subscription": {
         "missing": "Te estás perdiendo algunas de las grandes oportunidades que ofrece una suscripción",
