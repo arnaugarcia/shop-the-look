@@ -1,26 +1,29 @@
 {
   "reset": {
+    "finish": {
+      "form": {
+        "button": "Validar la nueva contraseña"
+      },
+      "messages": {
+        "error": "Su contraseña no puede ser restablecida. Recuerde que una solicitud de reinicio de contraseña sólo es válida durante 24 horas.",
+        "info": "Elija una contraseña nueva",
+        "keymissing": "Falta la clave de reinicio.",
+        "success": "<strong>Su contraseña ha sido restablecida.</strong> Por favor, "
+      },
+      "title": "Restablecer la contraseña",
+      "welcome": ""
+    },
     "request": {
-      "title": "Restablecer su contraseña",
+      "back": "< Iniciar sesión",
       "form": {
         "button": "Restablecer la contraseña"
       },
       "messages": {
         "info": "Introduzca la dirección de correo electrónico que utilizó para registrarse",
         "success": "Revise su correo electrónico para obtener más información sobre cómo restablecer su contraseña."
-      }
-    },
-    "finish": {
-      "title": "Restablecer la contraseña",
-      "form": {
-        "button": "Validar la nueva contraseña"
       },
-      "messages": {
-        "info": "Elija una contraseña nueva",
-        "success": "<strong>Su contraseña ha sido restablecida.</strong> Por favor, ",
-        "keymissing": "Falta la clave de reinicio.",
-        "error": "Su contraseña no puede ser restablecida. Recuerde que una solicitud de reinicio de contraseña sólo es válida durante 24 horas."
-      }
+      "title": "Restablecer su contraseña",
+      "welcome": "Restablecer contraseña 🔒"
     }
   }
 }
