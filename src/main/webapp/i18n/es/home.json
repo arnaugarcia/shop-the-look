@@ -2,6 +2,19 @@
   "home": {
     "title": "Bienvenido a Shop the look!",
     "widget": {
+      "spaces": {
+        "empty": {
+          "button": "¡Ve al creador de espacios!",
+          "subtitle": "¡Puedes crear un nuevo espacio usando nuestro creador de espacios!",
+          "title": "No se crearon espacios"
+        },
+        "table": {
+          "coordinates": "Coordenadas",
+          "description": "Descripción",
+          "name": "Nombre",
+          "photos": "Fotos"
+        }
+      },
       "statistics": {
         "employees": "Empleados",
         "error": "Tenemos problemas para cargar sus estadísticas.  Por favor, inténtelo de nuevo más tarde.",

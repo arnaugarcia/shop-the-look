@@ -2,6 +2,19 @@
   "home": {
     "title": "Welcome to Shop the look!",
     "widget": {
+      "spaces": {
+        "empty": {
+          "button": "Go to space studio!",
+          "subtitle": "You can create a new space using our Space Studio!",
+          "title": "No spaces created"
+        },
+        "table": {
+          "coordinates": "Coordinates",
+          "description": "Description",
+          "name": "Name",
+          "photos": "Photos"
+        }
+      },
       "statistics": {
         "employees": "Employees",
         "error": "We're having problem loading your statistics.  Please, try again later.",
