@@ -1,40 +1,46 @@
 {
   "register": {
-    "title": "Registration",
+    "account": {
+      "existing": "Already have an account?",
+      "signin": "Sign in instead"
+    },
     "form": {
       "button": "Register"
     },
     "messages": {
+      "error": {
+        "emailexists": "<strong>Email is already in use!</strong> Please choose another one.",
+        "fail": "<strong>Registration failed!</strong> Please try again later.",
+        "nifexists": "<strong>NIF/NIE/CIF is already in use!</strong> Please logon instead.",
+        "userexists": "<strong>Login or email already registered!</strong> Please choose another one."
+      },
+      "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
       "validate": {
         "login": {
-          "required": "Your username is required.",
-          "minlength": "Your username is required to be at least 1 character.",
           "maxlength": "Your username cannot be longer than 50 characters.",
-          "pattern": "Your username is invalid."
+          "minlength": "Your username is required to be at least 1 character.",
+          "pattern": "Your username is invalid.",
+          "required": "Your username is required."
         },
         "name": {
           "required": "The company name is required."
         },
+        "nif": {
+          "pattern": "The NIF/CIF/NIE is invalid",
+          "required": "The NIF/CIF/NIE is required."
+        },
         "phone": {
-          "required": "The phone number is required.",
-          "pattern": "The phone number is invalid."
+          "pattern": "The phone number is invalid.",
+          "required": "The phone number is required."
         },
         "url": {
-          "required": "The URL is required.",
-          "pattern": "The URL is invalid."
-        },
-        "nif": {
-          "required": "The NIF/CIF/NIE is required.",
-          "pattern": "The NIF/CIF/NIE is invalid"
+          "pattern": "The URL is invalid.",
+          "required": "The URL is required."
         }
-      },
-      "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
-      "error": {
-        "fail": "<strong>Registration failed!</strong> Please try again later.",
-        "userexists": "<strong>Login or email already registered!</strong> Please choose another one.",
-        "emailexists": "<strong>Email is already in use!</strong> Please choose another one.",
-        "nifexists": "<strong>NIF/NIE/CIF is already in use!</strong> Please logon instead."
       }
-    }
+    },
+    "subtitle": "Fill our form and let the magic begins!",
+    "title": "Registration",
+    "welcome": "Adventure starts here 🚀"
   }
 }

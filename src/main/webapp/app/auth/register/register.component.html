@@ -2,7 +2,7 @@
   <div class="auth-inner row m-0">
     <!-- Brand logo--><a class="brand-logo" href="javascript:void(0);">
       <img alt="brand-logo" height="28" src="/content/images/logo/logo.svg" />
-      <h2 class="brand-text text-primary ml-1">Shop The Look</h2></a
+      <h2 class="brand-text text-primary ml-1" stlTranslate="global.title">Shop The Look</h2></a
     >
     <!-- /Brand logo-->
     <!-- Left Text-->
@@ -15,8 +15,8 @@
     <!-- Register-->
     <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
       <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-        <h2 class="card-title font-weight-bold mb-1">Adventure starts here 🚀</h2>
-        <p class="card-text mb-2">Make your app management easy and fun!</p>
+        <h2 class="card-title font-weight-bold mb-1" stlTranslate="register.welcome">Adventure starts here 🚀</h2>
+        <p class="card-text mb-2" stlTranslate="register.subtitle">Make your app management easy and fun!</p>
 
         <ngb-alert *ngIf="success" [dismissible]="false" [type]="'success'">
           <div class="alert-body" stlTranslate="register.messages.success">
@@ -368,8 +368,8 @@
           </div>
         </form>
         <p class="text-center mt-2">
-          <span>Already have an account?</span>
-          <a routerLink="/auth/login"><span>&nbsp;Sign in instead</span></a>
+          <span stlTranslate="register.account.existing">Already have an account?</span>
+          <a routerLink="/auth/login"><span stlTranslate="register.account.signin">Sign in instead</span></a>
         </p>
       </div>
     </div>
