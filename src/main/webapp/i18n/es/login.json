@@ -1,11 +1,10 @@
 {
   "login": {
-    "title": "Iniciar la sesión",
     "form": {
+      "button": "Iniciar sesión",
       "password": "Contraseña",
       "password.placeholder": "Su contraseña",
-      "rememberme": "Iniciar la sesión automáticamente",
-      "button": "Iniciar sesión"
+      "rememberme": "Iniciar la sesión automáticamente"
     },
     "messages": {
       "error": {
@@ -14,6 +13,8 @@
     },
     "password": {
       "forgot": "¿Ha olvidado su contraseña?"
-    }
+    },
+    "title": "Iniciar la sesión",
+    "welcome": "¡Bienvenido a Shop the Look! 👋"
   }
 }
