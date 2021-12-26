@@ -1,0 +1,22 @@
+{
+  "products.import.title": "",
+  "products.list.filter.refresh": "Actualizar los productos",
+  "products.list.filter.search": "Buscar...",
+  "products.list.filter.show": "Mostrar",
+  "products.list.import.link": "asistente de importación",
+  "products.list.import.popover.description": "¡Debe especificar la URL del feed de productos antes!",
+  "products.list.import.popover.title": "¡Atención!",
+  "products.list.import.remaining": "Refrescos restantes:",
+  "products.list.import.text": "Puede importar nuevos productos por CSV o TSV utilizando el",
+  "products.list.loaded": "Productos cargados: {{count}}",
+  "products.list.table.company": "Empresa",
+  "products.list.table.link": "Enlace",
+  "products.list.table.name": "Nombre",
+  "products.list.table.pagination.first": "Primero",
+  "products.list.table.pagination.last": "Último",
+  "products.list.table.pagination.next": "Siguiente",
+  "products.list.table.pagination.prev": "Anterior",
+  "products.list.table.price": "Precio",
+  "products.list.table.sku": "SKU",
+  "products.list.title": "Productos"
+}
