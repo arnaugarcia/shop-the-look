@@ -16,7 +16,6 @@ import { CoreConfig } from '../../../@core/types';
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   public coreConfig: CoreConfig = new CoreConfig();
-  public loading = false;
   public submitted = false;
   public passwordTextType = false;
 
