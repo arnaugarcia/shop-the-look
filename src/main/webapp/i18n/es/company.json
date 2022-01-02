@@ -8,14 +8,38 @@
         }
       }
     },
-    "form": {
+    "overview": {
       "commercial-name": {
-        "label": "Commercial Name",
+        "label": "Nombre comercial",
         "placeholder": "Acme"
       },
       "email": {
         "label": "Email",
         "placeholder": "hello@acme.inc"
+      },
+      "industry": {
+        "AUTOMOTIVE": "Automoción",
+        "CHILDCARE": "Cuidado de niños",
+        "CLOTHES_ACCESSORIES": "Ropa y accesorios",
+        "CULTURE": "Cultura",
+        "FOOD_DRINKS": "Alimentos y bebidas",
+        "HOME_GARDEN": "Casa y Jardín",
+        "LEISURE": "Ocio",
+        "OTHER": "Otro",
+        "PETS": "Mascotas",
+        "PHARMACY_COSMETICS": "Farmacia y cosmética",
+        "SPORTS": "Deportes",
+        "TECHNOLOGICAL_ELECTRONIC": "Tecnológico o electrónico",
+        "TOYS_HOBBIES": "Juguetes o pasatiempos",
+        "label": "Industria",
+        "placeholder": "Seleccione una industria"
+      },
+      "logo": {
+        "buttons": {
+          "change": "Subir",
+          "remove": "Eliminar"
+        },
+        "nologo": "Ningún logo cargado"
       },
       "name": {
         "label": "Nombre",
@@ -29,11 +53,21 @@
         "label": "Teléfono",
         "placeholder": "692464639"
       },
+      "size": {
+        "INTERNATIONAL": "Internacional",
+        "LARGE": "Grande",
+        "MEDIUM": "Medio",
+        "SMALL": "Pequeña",
+        "STARTUP": "Startup",
+        "label": "Tamaño de la empresa",
+        "placeholder": "Seleccione el tamaño de la empresa"
+      },
+      "submit": "Guardar cambios",
       "type": {
-        "PRIVATE": "Privada",
-        "SELF_EMPLOYEE": "Autónomo",
         "label": "Tipo de empresa",
-        "placeholder": "Seleccione un tipo"
+        "placeholder": "Seleccione un tipo",
+        "private": "Privada",
+        "self_employee": "Autónomo"
       },
       "url": {
         "label": "URL",

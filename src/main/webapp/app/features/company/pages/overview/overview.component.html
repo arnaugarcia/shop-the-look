@@ -12,20 +12,22 @@
     </div>
     <ng-template #customAvatar>
       <div class="mr-1 ml-0">
-        <div class="rounded p-3">No logo loaded</div>
+        <div class="rounded p-3" stlTranslate="company.overview.logo.nologo">No logo loaded</div>
       </div>
     </ng-template>
     <div class="media-body mt-50">
       <h4>{{ editForm.get('name')?.value }}</h4>
       <div class="col-12 d-flex mt-1 px-0">
         <label class="btn btn-primary mr-75 mb-0 disabled" for="change-picture">
-          <span class="d-none d-sm-block">Change</span>
+          <span class="d-none d-sm-block" stlTranslate="company.overview.logo.buttons.change">Change</span>
           <input accept="image/png, image/jpeg, image/jpg" class="form-control disabled" disabled hidden id="change-picture" type="file" />
           <span class="d-block d-sm-none">
             <i class="mr-0" data-feather="edit"></i>
           </span>
         </label>
-        <button class="btn btn-outline-secondary d-none d-sm-block" disabled rippleEffect>Remove</button>
+        <button class="btn btn-outline-secondary d-none d-sm-block" disabled stlTranslate="company.overview.logo.buttons.remove">
+          Remove
+        </button>
         <button class="btn btn-outline-secondary d-block d-sm-none" disabled>
           <i class="mr-0" data-feather="trash-2"></i>
         </button>
@@ -38,13 +40,13 @@
     <div class="row">
       <div class="col-md-4">
         <div class="form-group">
-          <label for="commercialName">Commercial Name</label>
+          <label for="commercialName" stlTranslate="company.overview.commercial-name.label">Commercial Name</label>
           <input
             class="form-control"
             formControlName="commercialName"
             id="commercialName"
             name="commercialName"
-            placeholder="Acme"
+            placeholder="{{ 'company.overview.commercial-name.placeholder' | translate }}"
             required
             type="text"
           />
@@ -52,7 +54,7 @@
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="name">Name</label>
+          <label for="name" stlTranslate="company.overview.name.label">Name</label>
           <input
             [ngClass]="{
               'is-invalid':
@@ -64,7 +66,7 @@
             formControlName="name"
             id="name"
             name="name"
-            placeholder="Acme Corporation"
+            placeholder="{{ 'company.overview.name.placeholder' | translate }}"
             required
             type="text"
           />
@@ -77,25 +79,49 @@
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="email">E-mail</label>
-          <input class="form-control" formControlName="email" id="email" name="email" placeholder="hello@acme.inc" required type="email" />
+          <label for="email" stlTranslate="company.overview.email.label">E-mail</label>
+          <input
+            class="form-control"
+            formControlName="email"
+            id="email"
+            name="email"
+            placeholder="{{ 'company.overview.email.label' | translate }}"
+            required
+            type="email"
+          />
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="nif">NIF/NIE/DNI</label>
-          <input class="form-control" formControlName="nif" id="nif" name="nif" placeholder="48201148E" required type="text" />
+          <label for="nif" stlTranslate="company.overview.nif.label">NIF/NIE/DNI</label>
+          <input
+            class="form-control"
+            formControlName="nif"
+            id="nif"
+            name="nif"
+            placeholder="{{ 'company.overview.nif.placeholder' | translate }}"
+            required
+            type="text"
+          />
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="vat">VAT</label>
-          <input class="form-control" formControlName="vat" id="vat" name="vat" placeholder="VAT" required type="text" />
+          <label for="vat" stlTranslate="company.overview.vat.label">VAT</label>
+          <input
+            class="form-control"
+            formControlName="vat"
+            id="vat"
+            name="vat"
+            placeholder="{{ 'company.overview.vat.placeholder' | translate }}"
+            required
+            type="text"
+          />
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="url">URL</label>
+          <label for="url" stlTranslate="company.overview.url.label">URL</label>
           <input
             [ngClass]="{
               'is-invalid':
@@ -105,7 +131,7 @@
             formControlName="url"
             id="url"
             name="url"
-            placeholder="https://acme.inc"
+            placeholder="{{ 'company.overview.url.placeholder' | translate }}"
             required
             type="text"
           />
@@ -118,7 +144,7 @@
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label for="phone">Phone</label>
+          <label for="phone" stlTranslate="company.overview.phone.label">Phone</label>
           <input
             [ngClass]="{
               'is-invalid':
@@ -130,7 +156,7 @@
             formControlName="phone"
             id="phone"
             name="phone"
-            placeholder="+34692563938"
+            placeholder="{{ 'company.overview.phone.placeholder' | translate }}"
             required
             type="text"
           />
@@ -143,51 +169,56 @@
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label class="form-control-label" for="field_type" stlTranslate="shopTheLookApp.company.type">Type</label>
+          <label class="form-control-label" for="field_type" stlTranslate="company.overview.type.label">Type</label>
           <select class="form-control" data-cy="type" formControlName="type" id="field_type" name="type">
-            <option [ngValue]="null">{{ 'shopTheLookApp.CompanyType.null' | translate }}</option>
-            <option value="PRIVATE">{{ 'shopTheLookApp.CompanyType.PRIVATE' | translate }}</option>
-            <option value="SELF_EMPLOYEE">{{ 'shopTheLookApp.CompanyType.SELF_EMPLOYEE' | translate }}</option>
+            <option [ngValue]="null">{{ 'company.overview.type.placeholder' | translate }}</option>
+            <option value="PRIVATE">{{ 'company.overview.type.private' | translate }}</option>
+            <option value="SELF_EMPLOYEE">{{ 'company.overview.type.self_employee' | translate }}</option>
           </select>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label class="form-control-label" for="field_industry" stlTranslate="shopTheLookApp.company.industry">Industry</label>
+          <label class="form-control-label" for="field_industry" stlTranslate="company.overview.industry.label">Industry</label>
           <select class="form-control" data-cy="industry" formControlName="industry" id="field_industry" name="industry">
-            <option [ngValue]="null">{{ 'shopTheLookApp.CompanyIndustry.null' | translate }}</option>
-            <option value="AUTOMOTIVE">{{ 'shopTheLookApp.CompanyIndustry.AUTOMOTIVE' | translate }}</option>
-            <option value="PHARMACY_COSMETICS">{{ 'shopTheLookApp.CompanyIndustry.PHARMACY_COSMETICS' | translate }}</option>
-            <option value="TECHNOLOGICAL_ELECTRONIC">{{ 'shopTheLookApp.CompanyIndustry.TECHNOLOGICAL_ELECTRONIC' | translate }}</option>
-            <option value="CLOTHES_ACCESSORIES">{{ 'shopTheLookApp.CompanyIndustry.CLOTHES_ACCESSORIES' | translate }}</option>
-            <option value="SPORTS">{{ 'shopTheLookApp.CompanyIndustry.SPORTS' | translate }}</option>
-            <option value="CHILDCARE">{{ 'shopTheLookApp.CompanyIndustry.CHILDCARE' | translate }}</option>
-            <option value="PETS">{{ 'shopTheLookApp.CompanyIndustry.PETS' | translate }}</option>
-            <option value="HOME_GARDEN">{{ 'shopTheLookApp.CompanyIndustry.HOME_GARDEN' | translate }}</option>
-            <option value="FOOD_DRINKS">{{ 'shopTheLookApp.CompanyIndustry.FOOD_DRINKS' | translate }}</option>
-            <option value="TOYS_HOBBIES">{{ 'shopTheLookApp.CompanyIndustry.TOYS_HOBBIES' | translate }}</option>
-            <option value="LEISURE">{{ 'shopTheLookApp.CompanyIndustry.LEISURE' | translate }}</option>
-            <option value="CULTURE">{{ 'shopTheLookApp.CompanyIndustry.CULTURE' | translate }}</option>
-            <option value="OTHER">{{ 'shopTheLookApp.CompanyIndustry.OTHER' | translate }}</option>
+            <option [ngValue]="null">{{ 'company.overview.industry.placeholder' | translate }}</option>
+            <option value="AUTOMOTIVE">{{ 'company.overview.industry.AUTOMOTIVE' | translate }}</option>
+            <option value="PHARMACY_COSMETICS">{{ 'company.overview.industry.PHARMACY_COSMETICS' | translate }}</option>
+            <option value="TECHNOLOGICAL_ELECTRONIC">{{ 'company.overview.industry.TECHNOLOGICAL_ELECTRONIC' | translate }}</option>
+            <option value="CLOTHES_ACCESSORIES">{{ 'company.overview.industry.CLOTHES_ACCESSORIES' | translate }}</option>
+            <option value="SPORTS">{{ 'company.overview.industry.SPORTS' | translate }}</option>
+            <option value="CHILDCARE">{{ 'company.overview.industry.CHILDCARE' | translate }}</option>
+            <option value="PETS">{{ 'company.overview.industry.PETS' | translate }}</option>
+            <option value="HOME_GARDEN">{{ 'company.overview.industry.HOME_GARDEN' | translate }}</option>
+            <option value="FOOD_DRINKS">{{ 'company.overview.industry.FOOD_DRINKS' | translate }}</option>
+            <option value="TOYS_HOBBIES">{{ 'company.overview.industry.TOYS_HOBBIES' | translate }}</option>
+            <option value="LEISURE">{{ 'company.overview.industry.LEISURE' | translate }}</option>
+            <option value="CULTURE">{{ 'company.overview.industry.CULTURE' | translate }}</option>
+            <option value="OTHER">{{ 'company.overview.industry.OTHER' | translate }}</option>
           </select>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label class="form-control-label" for="field_companySize" stlTranslate="shopTheLookApp.company.companySize">Company Size</label>
+          <label class="form-control-label" for="field_companySize" stlTranslate="company.overview.size.label">Company Size</label>
           <select class="form-control" data-cy="companySize" formControlName="companySize" id="field_companySize" name="companySize">
-            <option [ngValue]="null">{{ 'shopTheLookApp.CompanySize.null' | translate }}</option>
-            <option value="STARTUP">{{ 'shopTheLookApp.CompanySize.STARTUP' | translate }}</option>
-            <option value="SMALL">{{ 'shopTheLookApp.CompanySize.SMALL' | translate }}</option>
-            <option value="MEDIUM">{{ 'shopTheLookApp.CompanySize.MEDIUM' | translate }}</option>
-            <option value="LARGE">{{ 'shopTheLookApp.CompanySize.LARGE' | translate }}</option>
-            <option value="INTERNATIONAL">{{ 'shopTheLookApp.CompanySize.INTERNATIONAL' | translate }}</option>
+            <option [ngValue]="null">{{ 'company.overview.size.placeholder' | translate }}</option>
+            <option value="STARTUP">{{ 'company.overview.size.STARTUP' | translate }}</option>
+            <option value="SMALL">{{ 'company.overview.size.SMALL' | translate }}</option>
+            <option value="MEDIUM">{{ 'company.overview.size.MEDIUM' | translate }}</option>
+            <option value="LARGE">{{ 'company.overview.size.LARGE' | translate }}</option>
+            <option value="INTERNATIONAL">{{ 'company.overview.size.INTERNATIONAL' | translate }}</option>
           </select>
         </div>
       </div>
 
       <div class="col-12 d-flex flex-sm-row flex-column mt-2">
-        <button [disabled]="editForm.invalid" class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">
+        <button
+          [disabled]="editForm.invalid"
+          class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1"
+          stlTranslate="company.overview.submit"
+          type="submit"
+        >
           Save Changes
         </button>
       </div>
