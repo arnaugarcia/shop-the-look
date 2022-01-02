@@ -1,13 +1,5 @@
 {
   "company": {
-    "billing": {
-      "form": {
-        "address": {
-          "label": "Address",
-          "placeholder": "Principal Street 123"
-        }
-      }
-    },
     "overview": {
       "commercial-name": {
         "label": "Nombre comercial",
@@ -77,13 +69,6 @@
         "label": "TINA",
         "placeholder": "ES48112291E"
       }
-    },
-    "tabs": {
-      "api": "Clave API",
-      "billing": "Facturación",
-      "information": "Información",
-      "preferences": "Preferencias",
-      "subscription": "Suscripción"
     }
   }
 }
