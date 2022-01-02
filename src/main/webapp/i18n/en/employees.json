@@ -7,6 +7,10 @@
           "cancel": "Cancel",
           "submit": "Submit"
         },
+        "company": {
+          "label": "Company",
+          "placeholder": "Select a company"
+        },
         "email": {
           "label": "Email",
           "placeholder": "jhondoe@inc.com"
