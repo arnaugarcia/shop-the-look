@@ -5,6 +5,17 @@
         "subtitle": "There is been an error loading the subscription plans.  Please, try again later.",
         "title": "Error"
       },
+      "modal": {
+        "error": {
+          "body": "There is been an error checking out your subscription,  please",
+          "contact": "contact us",
+          "title": "Error :("
+        },
+        "success": {
+          "body": "You have successfully subscribed to {{ subscription.name }}!",
+          "title": "Congratulations!"
+        }
+      },
       "plan": {
         "benefits": {
           "products": {

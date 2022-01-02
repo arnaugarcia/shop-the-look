@@ -5,6 +5,17 @@
         "subtitle": "Se ha producido un error al cargar los planes de suscripción.  Por favor, inténtelo de nuevo más tarde.",
         "title": "Error"
       },
+      "modal": {
+        "error": {
+          "body": "Hubo un error al verificar su suscripción,  por favor",
+          "contact": "contáctenos",
+          "title": "Error :("
+        },
+        "success": {
+          "body": "¡Te has suscrito correctamente a {{ subscription.name }}!",
+          "title": "¡Felicidades!"
+        }
+      },
       "plan": {
         "benefits": {
           "products": {
