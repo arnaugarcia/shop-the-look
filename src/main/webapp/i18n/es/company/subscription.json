@@ -1,0 +1,17 @@
+{
+  "company": {
+    "subscription": {
+      "error": {
+        "subtitle": "Se ha producido un error al cargar los planes de suscripción.  Por favor, inténtelo de nuevo más tarde.",
+        "title": "Error"
+      },
+      "subtitle": "Elija el mejor plan que se adapte a sus necesidades.  Si necesita más funciones, contáctenos.",
+      "title": "Planes de suscripcion",
+      "trial": {
+        "start": "Comience la prueba gratuita de 14 días",
+        "subtitle": "Obtendrá acceso completo a todas las funciones durante 14 días.",
+        "title": "¿Todavía no está convencido?"
+      }
+    }
+  }
+}
