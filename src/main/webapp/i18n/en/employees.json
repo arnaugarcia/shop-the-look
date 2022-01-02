@@ -1,0 +1,65 @@
+{
+  "employees": {
+    "add": {
+      "button": "New Employee",
+      "form": {
+        "buttons": {
+          "cancel": "Cancel",
+          "submit": "Submit"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "jhondoe@inc.com"
+        },
+        "firstname": {
+          "label": "First Name",
+          "placeholder": "Jhon"
+        },
+        "lastname": {
+          "label": "Last Name",
+          "placeholder": "Doe"
+        },
+        "login": {
+          "label": "Login",
+          "placeholder": "jhondoe"
+        },
+        "title": "New Employee"
+      }
+    },
+    "filter": {
+      "role": {
+        "manager": "Manager",
+        "placeholder": "Select a Role",
+        "user": "User"
+      },
+      "search": {
+        "placeholder": "Keyword..."
+      },
+      "title": "Search Filter"
+    },
+    "list": {
+      "table": {
+        "actions": {
+          "edit": "Edit",
+          "manager": "Change role to manager",
+          "remove": "Delete",
+          "user": "Change role to user"
+        },
+        "column": {
+          "actions": "Actions",
+          "company": "Company",
+          "email": "Email",
+          "name": "Name",
+          "role": "Role",
+          "status": "Status"
+        },
+        "filter": {
+          "show": {
+            "entries": "entries",
+            "label": "Show"
+          }
+        }
+      }
+    }
+  }
+}

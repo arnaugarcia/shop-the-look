@@ -1,0 +1,65 @@
+{
+  "employees": {
+    "add": {
+      "button": "Nuevo empleado",
+      "form": {
+        "buttons": {
+          "cancel": "Cancelar",
+          "submit": "Añadir"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "jhondoe@inc.com"
+        },
+        "firstname": {
+          "label": "Nombre",
+          "placeholder": "Jhon"
+        },
+        "lastname": {
+          "label": "Apellido",
+          "placeholder": "Doe"
+        },
+        "login": {
+          "label": "Usuario",
+          "placeholder": "jhondoe"
+        },
+        "title": "Nuevo empleado"
+      }
+    },
+    "filter": {
+      "role": {
+        "manager": "Manager",
+        "placeholder": "Selecciona un rol",
+        "user": "Usuario"
+      },
+      "search": {
+        "placeholder": "Palabra clave..."
+      },
+      "title": "Filtro de búsqueda"
+    },
+    "list": {
+      "table": {
+        "actions": {
+          "edit": "Editar",
+          "manager": "Cambiar rol a manager",
+          "remove": "Borrar",
+          "user": "Cambiar rol a usuario"
+        },
+        "column": {
+          "actions": "Acciones",
+          "company": "Empresa",
+          "email": "Email",
+          "name": "Nombre",
+          "role": "Rol",
+          "status": "Estado"
+        },
+        "filter": {
+          "show": {
+            "entries": "empleados",
+            "label": "Mostrar"
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@
     <section class="users-list-wrapper">
       <!-- users filter start -->
       <div class="card">
-        <h5 class="card-header">Search Filter</h5>
+        <h5 class="card-header" stlTranslate="employees.filter.title">Search Filter</h5>
         <div class="card-body">
           <div class="users-list-filter">
             <form>
@@ -25,9 +25,9 @@
                 <div class="col-12 col-md-4">
                   <fieldset class="form-group">
                     <select class="form-control">
-                      <option value="maintainer">Role</option>
-                      <option value="maintainer">User</option>
-                      <option value="maintainer">Manager</option>
+                      <option stlTranslate="employees.filter.role.placeholder" value="maintainer">Role</option>
+                      <option stlTranslate="employees.filter.role.user" value="maintainer">User</option>
+                      <option stlTranslate="employees.filter.role.manager" value="maintainer">Manager</option>
                     </select>
                   </fieldset>
                 </div>
@@ -38,7 +38,7 @@
                       [(ngModel)]="searchText"
                       class="form-control ml-25"
                       name="searchValue"
-                      placeholder="Search"
+                      placeholder="{{ 'employees.filter.search.placeholder' | translate }}"
                       type="text"
                     />
                   </label>
@@ -70,7 +70,7 @@
             <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
               <button (click)="sidebar.toggleOpen()" class="btn btn-primary ml-1" rippleEffect>
                 <i class="d-sm-none d-inline-block mr-0 mr-sm-1" data-feather="plus"></i
-                ><span class="d-none d-sm-inline-block">Add New User</span>
+                ><span class="d-none d-sm-inline-block" stlTranslate="employees.add.button">Add New User</span>
               </button>
             </div>
           </div>
@@ -80,22 +80,22 @@
             <thead>
               <tr>
                 <th scope="col">
-                  <span>Name</span>
+                  <span stlTranslate="employees.list.table.column.name">Name</span>
                 </th>
                 <th scope="col">
-                  <span>Email</span>
+                  <span stlTranslate="employees.list.table.column.email">Email</span>
                 </th>
                 <th scope="col">
-                  <span>Role</span>
+                  <span stlTranslate="employees.list.table.column.role">Role</span>
                 </th>
                 <th scope="col">
-                  <span>Status</span>
+                  <span stlTranslate="employees.list.table.column.status">Status</span>
                 </th>
                 <th *stlHasAnyAuthority="'ROLE_ADMIN'" scope="col">
-                  <span>Company</span>
+                  <span stlTranslate="employees.list.table.column.company">Company</span>
                 </th>
                 <th scope="col">
-                  <span>Actions</span>
+                  <span stlTranslate="employees.list.table.column.actions">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -161,19 +161,19 @@
                     <div ngbDropdownMenu>
                       <a (click)="toggleManager(employee)" *ngIf="isUser(employee.authorities!)" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'user-plus'" [size]="'16'"></span>
-                        Make company manager
+                        {{ 'employees.list.table.actions.manager' | translate }}
                       </a>
                       <a (click)="toggleManager(employee)" *ngIf="isManager(employee.authorities!)" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'user-minus'" [size]="'16'"></span>
-                        Dismiss as manager
+                        {{ 'employees.list.table.actions.user' | translate }}
                       </a>
                       <a [routerLink]="[employee.login, 'edit']" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'edit'" [size]="'16'"></span>
-                        Edit
+                        {{ 'employees.list.table.actions.edit' | translate }}
                       </a>
                       <a (click)="removeEmployee(employee)" ngbDropdownItem>
                         <span [class]="'mr-50'" [data-feather]="'trash'" [size]="'16'"></span>
-                        Delete
+                        {{ 'employees.list.table.actions.remove' | translate }}
                       </a>
                     </div>
                   </div>
