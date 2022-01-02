@@ -31,6 +31,9 @@
       }
     },
     "filter": {
+      "company": {
+        "placeholder": "Select a company"
+      },
       "role": {
         "manager": "Manager",
         "placeholder": "Select a Role",

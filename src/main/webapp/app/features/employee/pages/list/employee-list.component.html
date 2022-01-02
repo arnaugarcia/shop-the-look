@@ -18,15 +18,16 @@
                       class="form-control"
                       name="companySearch"
                     >
-                      <option *ngFor="let company of companies" [value]="company.reference">{{ company.name }}</option>
+                      <option [ngValue]="undefined" stlTranslate="employees.filter.company.placeholder">Select a company</option>
+                      <option *ngFor="let company of companies" [ngValue]="company.reference">{{ company.name }}</option>
                     </select>
                   </fieldset>
                 </div>
                 <div class="col-12 col-md-4">
                   <fieldset class="form-group">
                     <select class="form-control">
-                      <option stlTranslate="employees.filter.role.placeholder" value="maintainer">Role</option>
-                      <option stlTranslate="employees.filter.role.user" value="maintainer">User</option>
+                      <option stlTranslate="employees.filter.role.placeholder">Role</option>
+                      <option stlTranslate="employees.filter.role.user" value="user">User</option>
                       <option stlTranslate="employees.filter.role.manager" value="maintainer">Manager</option>
                     </select>
                   </fieldset>

@@ -34,7 +34,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public searchText = '';
   public searchTextChanged: Subject<string> = new Subject<string>();
-  public companySearch = '';
+  public companySearch?: string;
   public companySelected: Subject<string> = new Subject<string>();
 
   private subscriptions = new Subscription();
