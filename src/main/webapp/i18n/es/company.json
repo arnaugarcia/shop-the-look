@@ -1,0 +1,17 @@
+{
+  "company": {
+    "form": {
+      "commercial-name": {
+        "label": "Commercial Name"
+      }
+    },
+    "billing": {
+      "form": {
+        "address": {
+          "label": "Address",
+          "placeholder": "Principal Street 123"
+        }
+      }
+    }
+  }
+}
