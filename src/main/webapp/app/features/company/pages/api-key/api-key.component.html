@@ -1,16 +1,18 @@
 <div class="row">
   <div class="col-10">
-    <h2>API Key</h2>
+    <h2 stlTranslate="company.api.title">API Key</h2>
   </div>
   <div class="col-2 text-right">
-    <button type="button" class="btn btn-warning text-right" disabled>Regenerate token</button>
+    <button class="btn btn-warning text-right" disabled stlTranslate="company.api.regenerate" type="button">Regenerate token</button>
   </div>
   <div class="container">
-    <p class="mb-2">This is your api key. You must import this script to your site for enable Spaces in your site.</p>
+    <p class="mb-2" stlTranslate="company.api.subtitle">
+      This is your api key. You must import this script to your site for enable Spaces in your site.
+    </p>
     <core-card-snippet *ngIf="snippetCode && !error" class="text-justify" [snippetCode]="snippetCode"></core-card-snippet>
     <div role="alert" class="alert show alert-danger" *ngIf="error">
-      <h4 class="alert-heading">Error</h4>
-      <div class="alert-body">Error loading company details</div>
+      <h4 class="alert-heading" stlTranslate="company.api.error.title">Error</h4>
+      <div class="alert-body" stlTranslate="company.api.error.subtitle">Error loading company details</div>
     </div>
   </div>
 </div>
