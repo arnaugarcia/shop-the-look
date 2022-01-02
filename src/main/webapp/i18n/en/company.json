@@ -1,10 +1,5 @@
 {
   "company": {
-    "form": {
-      "commercial-name": {
-        "label": "Commercial Name"
-      }
-    },
     "billing": {
       "form": {
         "address": {
@@ -12,6 +7,49 @@
           "placeholder": "Principal Street 123"
         }
       }
+    },
+    "form": {
+      "commercial-name": {
+        "label": "Commercial Name",
+        "placeholder": "Acme"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "hello@acme.inc"
+      },
+      "name": {
+        "label": "Name",
+        "placeholder": "Acme Corporation"
+      },
+      "nif": {
+        "label": "NIF / NIE / DNI",
+        "placeholder": "48112291E"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "692464639"
+      },
+      "type": {
+        "PRIVATE": "Private",
+        "SELF_EMPLOYEE": "Self employee",
+        "label": "Type of company",
+        "placeholder": "Select a type"
+      },
+      "url": {
+        "label": "URL",
+        "placeholder": "https://acme.inc"
+      },
+      "vat": {
+        "label": "VAT",
+        "placeholder": "ES48112291E"
+      }
+    },
+    "tabs": {
+      "api": "API Key",
+      "billing": "Billing",
+      "information": "Information",
+      "preferences": "Preferences",
+      "subscription": "Subscription"
     }
   }
 }

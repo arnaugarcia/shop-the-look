@@ -1,10 +1,5 @@
 {
   "company": {
-    "form": {
-      "commercial-name": {
-        "label": "Commercial Name"
-      }
-    },
     "billing": {
       "form": {
         "address": {
@@ -12,6 +7,49 @@
           "placeholder": "Principal Street 123"
         }
       }
+    },
+    "form": {
+      "commercial-name": {
+        "label": "Commercial Name",
+        "placeholder": "Acme"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "hello@acme.inc"
+      },
+      "name": {
+        "label": "Nombre",
+        "placeholder": "Corporación Acme"
+      },
+      "nif": {
+        "label": "NIF / NIE / DNI",
+        "placeholder": "48112291E"
+      },
+      "phone": {
+        "label": "Teléfono",
+        "placeholder": "692464639"
+      },
+      "type": {
+        "PRIVATE": "Privada",
+        "SELF_EMPLOYEE": "Autónomo",
+        "label": "Tipo de empresa",
+        "placeholder": "Seleccione un tipo"
+      },
+      "url": {
+        "label": "URL",
+        "placeholder": "https://acme.inc"
+      },
+      "vat": {
+        "label": "TINA",
+        "placeholder": "ES48112291E"
+      }
+    },
+    "tabs": {
+      "api": "Clave API",
+      "billing": "Facturación",
+      "information": "Información",
+      "preferences": "Preferencias",
+      "subscription": "Suscripción"
     }
   }
 }
