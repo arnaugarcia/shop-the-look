@@ -5,6 +5,28 @@
         "subtitle": "There is been an error loading the subscription plans.  Please, try again later.",
         "title": "Error"
       },
+      "plan": {
+        "benefits": {
+          "products": {
+            "label": "Products {{ benefits.products }}",
+            "unlimited": "Unlimited products"
+          },
+          "requests": {
+            "label": "Requests {{ benefits.requests }}",
+            "unlimited": "Unlimited API requests"
+          },
+          "spaces": {
+            "label": "Spaces {{ benefits.spaces }}",
+            "unlimited": "Unlimited spaces"
+          }
+        },
+        "contact": "Contact",
+        "currency": "$",
+        "current": "Your current plan",
+        "month": "/month",
+        "popular": "Popular",
+        "switch": "Switch plan"
+      },
       "subtitle": "Choose the best plan to fit your needs. If you need more features please contact us.",
       "title": "Subscription Plans",
       "trial": {
