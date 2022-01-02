@@ -34,7 +34,7 @@ export class EmployeeAddSidebarComponent implements OnInit, AfterViewInit, OnDes
     firstName: ['', [Validators.maxLength(50)]],
     lastName: ['', [Validators.maxLength(50)]],
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
-    company: ['', []],
+    company: [null, []],
   });
 
   public sidebar!: CoreSidebarComponent;
