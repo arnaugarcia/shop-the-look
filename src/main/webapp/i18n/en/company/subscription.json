@@ -1,0 +1,50 @@
+{
+  "company": {
+    "subscription": {
+      "error": {
+        "subtitle": "There is been an error loading the subscription plans.  Please, try again later.",
+        "title": "Error"
+      },
+      "modal": {
+        "error": {
+          "body": "There is been an error checking out your subscription,  please",
+          "contact": "contact us",
+          "title": "Error :("
+        },
+        "success": {
+          "body": "You have successfully subscribed to {{ subscription.name }}!",
+          "title": "Congratulations!"
+        }
+      },
+      "plan": {
+        "benefits": {
+          "products": {
+            "label": "Products {{ benefits.products }}",
+            "unlimited": "Unlimited products"
+          },
+          "requests": {
+            "label": "Requests {{ benefits.requests }}",
+            "unlimited": "Unlimited API requests"
+          },
+          "spaces": {
+            "label": "Spaces {{ benefits.spaces }}",
+            "unlimited": "Unlimited spaces"
+          }
+        },
+        "contact": "Contact",
+        "currency": "$",
+        "current": "Your current plan",
+        "month": "/month",
+        "popular": "Popular",
+        "switch": "Switch plan"
+      },
+      "subtitle": "Choose the best plan to fit your needs. If you need more features please contact us.",
+      "title": "Subscription Plans",
+      "trial": {
+        "start": "Start 14-day FREE trial",
+        "subtitle": "You will get full access to with all the features for 14 days.",
+        "title": "Still not convinced? Start with a 14-day FREE trial!"
+      }
+    }
+  }
+}

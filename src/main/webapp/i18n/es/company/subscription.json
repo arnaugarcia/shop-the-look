@@ -1,0 +1,50 @@
+{
+  "company": {
+    "subscription": {
+      "error": {
+        "subtitle": "Se ha producido un error al cargar los planes de suscripción.  Por favor, inténtelo de nuevo más tarde.",
+        "title": "Error"
+      },
+      "modal": {
+        "error": {
+          "body": "Hubo un error al verificar su suscripción,  por favor",
+          "contact": "contáctenos",
+          "title": "Error :("
+        },
+        "success": {
+          "body": "¡Te has suscrito correctamente a {{ subscription.name }}!",
+          "title": "¡Felicidades!"
+        }
+      },
+      "plan": {
+        "benefits": {
+          "products": {
+            "label": "Productos {{ benefits.products }}",
+            "unlimited": "Productos ilimitados"
+          },
+          "requests": {
+            "label": "Llamadas a la API {{ benefits.requests }}",
+            "unlimited": "Llamadas a la API ilimitadas"
+          },
+          "spaces": {
+            "label": "Espacios {{ benefits.spaces }}",
+            "unlimited": "Espacios ilimitados"
+          }
+        },
+        "contact": "Contactar",
+        "currency": "€",
+        "current": "Subscripción actual",
+        "month": "/mes",
+        "popular": "Popular",
+        "switch": "Cambiar a esta subscripción"
+      },
+      "subtitle": "Elija el mejor plan que se adapte a sus necesidades.  Si necesita más funciones, contáctenos.",
+      "title": "Planes de suscripcion",
+      "trial": {
+        "start": "Comience la prueba gratuita de 14 días",
+        "subtitle": "Obtendrá acceso completo a todas las funciones durante 14 días.",
+        "title": "¿Todavía no está convencido?"
+      }
+    }
+  }
+}

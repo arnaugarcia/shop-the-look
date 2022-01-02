@@ -4,11 +4,11 @@
   <form (ngSubmit)="save()" *ngIf="billingAddress" [formGroup]="billingAddressForm" name="billingAddressForm">
     <div class="row">
       <div class="col-12">
-        <h2>Billing address</h2>
+        <h2 stlTranslate="company.billing.title">Billing address</h2>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="form-group">
-          <label for="address">Address</label>
+          <label for="address" stlTranslate="company.billing.form.address.label">Address</label>
           <input
             [class.error]="
               billingAddressForm.get('address')!.invalid &&
@@ -18,7 +18,7 @@
             formControlName="address"
             id="address"
             name="address"
-            placeholder="Calle Mayor 123"
+            placeholder="{{ 'company.billing.form.address.placeholder' | translate }}"
             type="text"
           />
           <div
@@ -43,7 +43,7 @@
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="form-group">
-          <label for="city">City</label>
+          <label for="city" stlTranslate="company.billing.form.city.label">City</label>
           <input
             [class.error]="
               billingAddressForm.get('city')!.invalid && (billingAddressForm.get('city')!.dirty || billingAddressForm.get('city')!.touched)
@@ -52,7 +52,7 @@
             formControlName="city"
             id="city"
             name="city"
-            placeholder="Torrelles de Llobregat"
+            placeholder="{{ 'company.billing.form.city.placeholder' | translate }}"
             type="text"
           />
           <div
@@ -76,7 +76,7 @@
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="form-group">
-          <label for="city">Postcode</label>
+          <label for="city" stlTranslate="company.billing.form.postcode.label">Postcode</label>
           <input
             [class.error]="
               billingAddressForm.get('zipCode')!.invalid &&
@@ -86,7 +86,7 @@
             formControlName="zipCode"
             id="zipCode"
             name="zipCode"
-            placeholder="08629"
+            placeholder="{{ 'company.billing.form.city.placeholder' | translate }}"
             type="text"
           />
           <div
@@ -111,7 +111,7 @@
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="form-group">
-          <label for="city">Country</label>
+          <label for="city" stlTranslate="company.billing.form.country.label">Country</label>
           <input
             [class.error]="
               billingAddressForm.get('country')!.invalid &&
@@ -121,7 +121,7 @@
             formControlName="country"
             id="country"
             name="country"
-            placeholder="España"
+            placeholder="{{ 'company.billing.form.country.label' | translate }}"
             type="text"
           />
           <div
@@ -146,7 +146,7 @@
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="form-group">
-          <label for="city">Province</label>
+          <label for="city" stlTranslate="company.billing.form.province.label">Province</label>
           <input
             [class.error]="
               billingAddressForm.get('province')!.invalid &&
@@ -156,7 +156,7 @@
             formControlName="province"
             id="province"
             name="province"
-            placeholder="Barcelona"
+            placeholder="{{ 'company.billing.form.province.label' | translate }}"
             type="text"
           />
           <div
@@ -180,7 +180,12 @@
         </div>
       </div>
       <div class="col-12 d-flex flex-sm-row flex-column mt-2">
-        <button [disabled]="billingAddressForm.invalid" class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">
+        <button
+          [disabled]="billingAddressForm.invalid"
+          class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1"
+          stlTranslate="company.billing.form.submit"
+          type="submit"
+        >
           Save Changes
         </button>
       </div>

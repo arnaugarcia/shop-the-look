@@ -1,0 +1,13 @@
+{
+  "company": {
+    "api": {
+      "title": "API Key",
+      "subtitle": "This is your api key. You must import this script to your site for enable Spaces in your site.",
+      "regenerate": "Regenerate token",
+      "error": {
+        "title": "Error",
+        "subtitle": "Error loading company details"
+      }
+    }
+  }
+}

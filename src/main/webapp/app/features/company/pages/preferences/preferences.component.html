@@ -4,7 +4,7 @@
   <form (ngSubmit)="save()" [formGroup]="preferencesForm" class="mb-2" name="preferencesForm">
     <div class="row">
       <div class="col-12">
-        <h2>Preferences</h2>
+        <h2 stlTranslate="company.preferences.title">Preferences</h2>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="form-group">
@@ -14,17 +14,22 @@
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="form-group">
-          <label for="importMethod">Import Method</label>
+          <label for="importMethod" stlTranslate="company.preferences.form.import-method.label">Import Method</label>
           <select class="form-control" data-cy="importMethod" formControlName="importMethod" id="importMethod" name="importMethod">
-            <option [ngValue]="null">Select an option</option>
-            <option value="CSV">CSV</option>
-            <option value="TSV">TSV</option>
-            <option value="FEED">FEED</option>
+            <option [ngValue]="null" stlTranslate="company.preferences.form.import-method.placeholder">Select an option</option>
+            <option stlTranslate="company.preferences.form.import-method.CSV" value="CSV">CSV</option>
+            <option stlTranslate="company.preferences.form.import-method.TSV" value="TSV">TSV</option>
+            <option stlTranslate="company.preferences.form.import-method.FEED" value="FEED">FEED</option>
           </select>
         </div>
       </div>
       <div class="col-12 d-flex flex-sm-row flex-column mt-2">
-        <button [disabled]="preferencesForm.invalid" class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1" rippleEffect type="submit">
+        <button
+          [disabled]="preferencesForm.invalid"
+          class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1"
+          stlTranslate="company.preferences.form.submit"
+          type="submit"
+        >
           Save Changes
         </button>
       </div>
@@ -33,10 +38,10 @@
   <hr />
   <div *ngIf="preferences" class="row mt-2">
     <div class="col-12">
-      <h2>Last import data</h2>
+      <h2 stlTranslate="company.preferences.import-info.title">Last import data</h2>
       <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          <span>Remaining imports</span>
+          <span stlTranslate="company.preferences.import-info.remaning">Remaining imports</span>
           <span
             [class.badge-danger]="preferences.remainingImports! <= 0"
             [class.badge-primary]="preferences.remainingImports! > 0"
@@ -45,11 +50,11 @@
           >
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          <span>Last person to update the products</span>
+          <span stlTranslate="company.preferences.import-info.user">Last person to update the products</span>
           <span class="badge badge-primary badge-pill">{{ preferences.lastImportBy }}</span>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          <span>last time that the products were updated</span>
+          <span stlTranslate="company.preferences.import-info.time">last time that the products were updated</span>
           <span class="badge badge-primary badge-pill">{{ preferences.lastImportTimestamp }}</span>
         </li>
       </ul>

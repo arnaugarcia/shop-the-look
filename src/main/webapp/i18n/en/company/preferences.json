@@ -1,0 +1,39 @@
+{
+  "company": {
+    "preferences": {
+      "form": {
+        "feed": {
+          "label": "Feed URL",
+          "placeholder": "https://acme.inc/feed.xml"
+        },
+        "import-method": {
+          "CSV": "CSV",
+          "FEED": "Feed (XML)",
+          "TSV": "TSV",
+          "label": "Import method",
+          "placeholder": "Select an option"
+        },
+        "submit": "Save changes"
+      },
+      "import-info": {
+        "remaning": "Remaining imports",
+        "time": "Last time that the products were updated",
+        "title": "Import data",
+        "user": "Last user to update the products"
+      },
+      "modal": {
+        "error": {
+          "body": "Something went wrong saving the settings. Please try again later.",
+          "button": "Accept",
+          "title": "Something went wrong :("
+        },
+        "success": {
+          "body": "All the settings were saved successfully!",
+          "button": "Accept",
+          "title": "Yay!"
+        }
+      },
+      "title": "Preferences"
+    }
+  }
+}

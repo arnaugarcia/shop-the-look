@@ -1,0 +1,39 @@
+{
+  "company": {
+    "preferences": {
+      "form": {
+        "feed": {
+          "label": "Feed URL",
+          "placeholder": "https://acme.inc/feed.xml"
+        },
+        "import-method": {
+          "CSV": "CSV",
+          "FEED": "Feed (XML)",
+          "TSV": "TSV",
+          "label": "Método de importación",
+          "placeholder": "Seleccione una opción"
+        },
+        "submit": "Guardar cambios"
+      },
+      "import-info": {
+        "remaning": "Importaciones restantes",
+        "time": "Última vez que se actualizaron los productos",
+        "title": "Datos de importación",
+        "user": "Último usuario en actualizar los productos"
+      },
+      "modal": {
+        "error": {
+          "body": "Se produjo un error al guardar la configuración. Por favor, inténtelo de nuevo más tarde.",
+          "button": "Aceptar",
+          "title": "Algo salió mal :("
+        },
+        "success": {
+          "body": "¡Todos los ajustes se guardaron correctamente!",
+          "button": "Aceptar",
+          "title": "¡Hurra!"
+        }
+      },
+      "title": "Preferencias"
+    }
+  }
+}

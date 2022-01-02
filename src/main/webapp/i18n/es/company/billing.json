@@ -1,0 +1,30 @@
+{
+  "company": {
+    "billing": {
+      "form": {
+        "address": {
+          "label": "Address",
+          "placeholder": "Principal Street 123"
+        },
+        "city": {
+          "label": "Ciudad",
+          "placeholder": "Torrelles de LLobregat"
+        },
+        "country": {
+          "label": "País",
+          "placeholder": "España"
+        },
+        "postcode": {
+          "label": "Código postal",
+          "placeholder": "08629"
+        },
+        "province": {
+          "label": "Provincia",
+          "placeholder": "Barcelona"
+        },
+        "submit": "Guardar cambios"
+      },
+      "title": "Dirección de facturación"
+    }
+  }
+}

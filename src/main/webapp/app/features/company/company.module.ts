@@ -15,7 +15,6 @@ import { PricingPlanBenefitsComponent } from './component/pricing-plan-benefits/
 import { CheckoutSuccessComponent } from './pages/checkout/checkout-success/checkout-success.component';
 import { CheckoutErrorComponent } from './pages/checkout/checkout-error/checkout-error.component';
 import { CardSnippetModule } from '../../../@core/components/card-snippet/card-snippet.module';
-import { CompanyModalDeleteComponent } from './component/company-modal-delete/company-modal-delete.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,6 @@ import { CompanyModalDeleteComponent } from './component/company-modal-delete/co
     ApiKeyComponent,
     CompanyModalErrorComponent,
     CompanyModalSuccessComponent,
-    CompanyModalDeleteComponent,
     PreferencesComponent,
     PricingPlanComponent,
     PricingPlanBenefitsComponent,
