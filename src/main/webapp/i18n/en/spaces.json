@@ -1,0 +1,36 @@
+{
+  "spaces": {
+    "card": {
+      "edit": "Edit"
+    },
+    "nospaces": {
+      "subtitle": "You can create a new space using our Space Studio! Click on \"<b>new space</b>\" to let the magic begins!",
+      "title": "Nothing here :("
+    },
+    "studio": {
+      "navigation": {
+        "finish": "Finish",
+        "next": "Next",
+        "previous": "Previous"
+      },
+      "step1": {
+        "breadcrumb": {
+          "subtitle": "Add or edit the name and the description",
+          "title": "Add / Edit name"
+        },
+        "form": {
+          "description": {
+            "label": "Description",
+            "placeholder": "This space is amazing!"
+          },
+          "name": {
+            "label": "Name",
+            "placeholder": "My awesome space"
+          }
+        },
+        "subtitle": "Add a name and description for the space. Be meaningful as you can!",
+        "title": "Add a name and description"
+      }
+    }
+  }
+}

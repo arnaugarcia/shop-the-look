@@ -1,0 +1,36 @@
+{
+  "spaces": {
+    "card": {
+      "edit": "Editar"
+    },
+    "nospaces": {
+      "subtitle": "¡Puedes crear un nuevo espacio usando nuestro studio! Haga clic en \"<b>nuevo espacio</b>\" para que comience la magia.",
+      "title": "Nada por aquí :("
+    },
+    "studio": {
+      "navigation": {
+        "finish": "Terminar",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      },
+      "step1": {
+        "breadcrumb": {
+          "subtitle": "Agregue o edite el nombre y la descripción",
+          "title": "Añadir / Editar nombre"
+        },
+        "form": {
+          "description": {
+            "label": "Descripción",
+            "placeholder": "¡Este espacio es genial!"
+          },
+          "name": {
+            "label": "Nombre",
+            "placeholder": "Mi espacio ideal"
+          }
+        },
+        "subtitle": "Agrega un nombre y una descripción para el espacio. ¡Sea lo más imaginativo posible!",
+        "title": "Agrega un nombre y una descripción"
+      }
+    }
+  }
+}
