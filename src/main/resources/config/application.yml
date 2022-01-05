@@ -164,10 +164,10 @@ jhipster:
     description: ShopTheLook API documentation
     version: 0.0.27-SNAPSHOT
     terms-of-service-url:
-    contact-name:
-    contact-url:
-    contact-email:
-    license: unlicensed
+    contact-name: Arnau Garcia
+    contact-url: arnaugarcia.com
+    contact-email: arnau.garcia.gallego@gmail.com
+    license: GNU GPLv3
     license-url:
   security:
     content-security-policy: "frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:"
