@@ -1,7 +1,18 @@
 {
   "spaces": {
     "card": {
+      "delete": "Borrar",
       "edit": "Editar"
+    },
+    "modal": {
+      "delete": {
+        "body": "¿Está seguro de que desea eliminar el espacio {{reference }}? Esta acción no se puede deshacer.",
+        "buttons": {
+          "cancel": "Cancelar",
+          "delete": "Borrar"
+        },
+        "title": "¿Está usted seguro de eso?"
+      }
     },
     "nospaces": {
       "subtitle": "¡Puedes crear un nuevo espacio usando nuestro studio! Haga clic en \"<b>nuevo espacio</b>\" para que comience la magia.",

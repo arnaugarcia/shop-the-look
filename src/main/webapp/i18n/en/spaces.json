@@ -1,7 +1,18 @@
 {
   "spaces": {
     "card": {
+      "delete": "Delete",
       "edit": "Edit"
+    },
+    "modal": {
+      "delete": {
+        "body": "Are you sure you want to remove the space {{reference }}? This action cannot be undone.",
+        "buttons": {
+          "cancel": "Cancel",
+          "delete": "Delete"
+        },
+        "title": "Are you sure about that?"
+      }
     },
     "nospaces": {
       "subtitle": "You can create a new space using our Space Studio! Click on \"<b>new space</b>\" to let the magic begins!",
