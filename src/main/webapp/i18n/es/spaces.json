@@ -1,0 +1,90 @@
+{
+  "spaces": {
+    "card": {
+      "delete": "Borrar",
+      "edit": "Editar"
+    },
+    "modal": {
+      "delete": {
+        "body": "¿Está seguro de que desea eliminar el espacio {{reference }}? Esta acción no se puede deshacer.",
+        "buttons": {
+          "cancel": "Cancelar",
+          "delete": "Borrar"
+        },
+        "title": "¿Está usted seguro de eso?"
+      }
+    },
+    "nospaces": {
+      "subtitle": "¡Puedes crear un nuevo espacio usando nuestro studio! Haga clic en \"<b>nuevo espacio</b>\" para que comience la magia.",
+      "title": "Nada por aquí :("
+    },
+    "studio": {
+      "navigation": {
+        "finish": "Terminar",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      },
+      "step1": {
+        "breadcrumb": {
+          "subtitle": "Agregue o edite el nombre y la descripción",
+          "title": "Añadir / Editar nombre"
+        },
+        "form": {
+          "description": {
+            "label": "Descripción",
+            "placeholder": "¡Este espacio es genial!"
+          },
+          "name": {
+            "label": "Nombre",
+            "placeholder": "Mi espacio ideal"
+          }
+        },
+        "subtitle": "Agrega un nombre y una descripción para el espacio. ¡Sea lo más imaginativo posible!",
+        "title": "Agrega un nombre y una descripción"
+      },
+      "step2": {
+        "breadcrumb": {
+          "subtitle": "Seleccione una hermosa plantilla",
+          "title": "Selecciona una plantilla"
+        },
+        "subtitle": "Si desea un espacio personalizado, <a href=\"mailto:shopthelook@weareklai.com\">contáctenos</a>.",
+        "templates": {
+          "custom": {
+            "subtitle": "¿Quieres un diseño personalizado? ¡Contáctenos!",
+            "title": "Espacio personalizado"
+          },
+          "template1": {
+            "subtitle": "Un espacio con un título,  una descripción,  una foto y un botón personalizados",
+            "title": "Una foto"
+          },
+          "template2": {
+            "subtitle": "Un espacio con dos fotos",
+            "title": "Dos Fotos"
+          }
+        },
+        "title": "Seleccione una de nuestras plantillas"
+      },
+      "step3": {
+        "breadcrumb": {
+          "subtitle": "Personaliza tu espacio",
+          "title": "Personalización"
+        },
+        "subtitle": "",
+        "templates": {
+          "one_photo": {
+            "title": "Espacio con una foto"
+          }
+        },
+        "title": ""
+      },
+      "step4": {
+        "breadcrumb": {
+          "subtitle": "Agrégalo a tu sitio",
+          "title": "¡Disfruta!"
+        },
+        "subtitle": "¡Copie y pegue el código a continuación en su sitio y deje que comience la magia!",
+        "title": "¡Tu espacio está listo!"
+      }
+    }
+  }
+}

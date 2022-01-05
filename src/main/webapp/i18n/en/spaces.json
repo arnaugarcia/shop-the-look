@@ -1,0 +1,90 @@
+{
+  "spaces": {
+    "card": {
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "modal": {
+      "delete": {
+        "body": "Are you sure you want to remove the space {{reference }}? This action cannot be undone.",
+        "buttons": {
+          "cancel": "Cancel",
+          "delete": "Delete"
+        },
+        "title": "Are you sure about that?"
+      }
+    },
+    "nospaces": {
+      "subtitle": "You can create a new space using our Space Studio! Click on \"<b>new space</b>\" to let the magic begins!",
+      "title": "Nothing here :("
+    },
+    "studio": {
+      "navigation": {
+        "finish": "Finish",
+        "next": "Next",
+        "previous": "Previous"
+      },
+      "step1": {
+        "breadcrumb": {
+          "subtitle": "Add or edit the name and the description",
+          "title": "Add / Edit name"
+        },
+        "form": {
+          "description": {
+            "label": "Description",
+            "placeholder": "This space is amazing!"
+          },
+          "name": {
+            "label": "Name",
+            "placeholder": "My awesome space"
+          }
+        },
+        "subtitle": "Add a name and description for the space. Be meaningful as you can!",
+        "title": "Add a name and description"
+      },
+      "step2": {
+        "breadcrumb": {
+          "subtitle": "Select a beautiful template",
+          "title": "Select a template"
+        },
+        "subtitle": "If you want a customized space, <a href=\"mailto:shopthelook@weareklai.com\">contact us</a>",
+        "templates": {
+          "custom": {
+            "subtitle": "Want custom layout? Contact us!",
+            "title": "Custom space"
+          },
+          "template1": {
+            "subtitle": "An space with a custom title,  description,  photo and button",
+            "title": "One Photo"
+          },
+          "template2": {
+            "subtitle": "A layout for two photos",
+            "title": "Two Photos"
+          }
+        },
+        "title": "Select one of our templates"
+      },
+      "step3": {
+        "breadcrumb": {
+          "subtitle": "Customize your space",
+          "title": "Customization"
+        },
+        "subtitle": "",
+        "templates": {
+          "one_photo": {
+            "title": "Space with one photo"
+          }
+        },
+        "title": ""
+      },
+      "step4": {
+        "breadcrumb": {
+          "subtitle": "Add it to your site",
+          "title": "Enjoy!"
+        },
+        "subtitle": "Copy and paste the code below on your site and let the magic begins!",
+        "title": "Your space is ready!"
+      }
+    }
+  }
+}

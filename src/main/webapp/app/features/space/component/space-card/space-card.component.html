@@ -28,11 +28,11 @@
   <div class="item-options text-center">
     <a (click)="editClick.emit(space)" class="btn btn-light btn-wishlist">
       <i [data-feather]="'edit'" class="mr-25"></i>
-      <span>Edit</span>
+      <span stlTranslate="spaces.card.edit">Edit</span>
     </a>
     <a (click)="removeClick.emit(space)" class="btn btn-danger btn-cart">
       <i [data-feather]="'trash'" class="mr-25"></i>
-      <span class="add-to-cart">Delete</span>
+      <span class="add-to-cart" stlTranslate="spaces.card.delete">Delete</span>
     </a>
   </div>
 </div>
