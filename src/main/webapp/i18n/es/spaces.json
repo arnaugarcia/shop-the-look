@@ -59,6 +59,11 @@
           "title": "Personalización"
         },
         "subtitle": "",
+        "templates": {
+          "one_photo": {
+            "title": "Espacio con una foto"
+          }
+        },
         "title": ""
       },
       "step4": {
@@ -66,8 +71,8 @@
           "subtitle": "Agrégalo a tu sitio",
           "title": "¡Disfruta!"
         },
-        "subtitle": "",
-        "title": ""
+        "subtitle": "¡Copie y pegue el código a continuación en su sitio y deje que comience la magia!",
+        "title": "¡Tu espacio está listo!"
       }
     }
   }

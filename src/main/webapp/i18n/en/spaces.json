@@ -59,6 +59,11 @@
           "title": "Customization"
         },
         "subtitle": "",
+        "templates": {
+          "one_photo": {
+            "title": "Space with one photo"
+          }
+        },
         "title": ""
       },
       "step4": {
@@ -66,8 +71,8 @@
           "subtitle": "Add it to your site",
           "title": "Enjoy!"
         },
-        "subtitle": "",
-        "title": ""
+        "subtitle": "Copy and paste the code below on your site and let the magic begins!",
+        "title": "Your space is ready!"
       }
     }
   }
