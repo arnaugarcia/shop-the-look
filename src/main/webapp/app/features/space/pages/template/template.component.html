@@ -3,9 +3,11 @@
     <div class="col-12">
       <div class="card knowledge-base-bg text-center" style="background-image: url('/content/images/banner/banner.png')">
         <div class="card-body">
-          <h2 class="text-primary">Select one of our templates</h2>
+          <h2 class="text-primary" stlTranslate="spaces.studio.step2.title">Select one of our templates</h2>
           <p class="card-text mb-2">
-            <span>If you want a customized space for you, <a href="mailto:shopthelook@weareklai.com">contact us</a></span>
+            <span [innerHTML]="'spaces.studio.step2.subtitle' | translate"
+              >If you want a customized space for you, <a href="mailto:shopthelook@weareklai.com">contact us</a></span
+            >
           </p>
         </div>
       </div>
@@ -21,8 +23,10 @@
             <img src="/content/images/spaces/space1.svg" class="card-img-top" alt="knowledge-base-image" />
           </div>
           <div class="card-body text-center">
-            <h4>One Photo</h4>
-            <p class="text-body mt-1 mb-0">A layout with a custom title, description, photo and button</p>
+            <h4 stlTranslate="spaces.studio.step2.templates.template1.title">One Photo</h4>
+            <p class="text-body mt-1 mb-0" stlTranslate="spaces.studio.step2.templates.template1.subtitle">
+              A layout with a custom title, description, photo and button
+            </p>
           </div>
         </a>
       </div>
@@ -34,8 +38,10 @@
             <img src="/content/images/spaces/space2.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
           </div>
           <div class="card-body text-center">
-            <h4>Two Photos</h4>
-            <p class="text-body mt-1 mb-0">A layout for two photos</p>
+            <h4 stlTranslate="spaces.studio.step2.templates.template2.title">One Photo</h4>
+            <p class="text-body mt-1 mb-0" stlTranslate="spaces.studio.step2.templates.template2.subtitle">
+              A layout with a custom title, description, photo and button
+            </p>
           </div>
         </a>
       </div>
@@ -47,8 +53,10 @@
             <img [height]="300" alt="knowledge-base-image" class="card-img-top" src="/content/images/spaces/custom.svg" />
           </div>
           <div class="card-body text-center">
-            <h4>Custom space</h4>
-            <p class="text-body mt-1 mb-0">Want custom layout? Contact us!</p>
+            <h4 stlTranslate="spaces.studio.step2.templates.custom.title">One Photo</h4>
+            <p class="text-body mt-1 mb-0" stlTranslate="spaces.studio.step2.templates.custom.subtitle">
+              A layout with a custom title, description, photo and button
+            </p>
           </div>
         </a>
       </div>

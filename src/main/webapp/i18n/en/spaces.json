@@ -30,6 +30,44 @@
         },
         "subtitle": "Add a name and description for the space. Be meaningful as you can!",
         "title": "Add a name and description"
+      },
+      "step2": {
+        "breadcrumb": {
+          "subtitle": "Select a beautiful template",
+          "title": "Select a template"
+        },
+        "subtitle": "If you want a customized space, <a href=\"mailto:shopthelook@weareklai.com\">contact us</a>",
+        "templates": {
+          "custom": {
+            "subtitle": "Want custom layout? Contact us!",
+            "title": "Custom space"
+          },
+          "template1": {
+            "subtitle": "An space with a custom title,  description,  photo and button",
+            "title": "One Photo"
+          },
+          "template2": {
+            "subtitle": "A layout for two photos",
+            "title": "Two Photos"
+          }
+        },
+        "title": "Select one of our templates"
+      },
+      "step3": {
+        "breadcrumb": {
+          "subtitle": "",
+          "title": ""
+        },
+        "subtitle": "",
+        "title": ""
+      },
+      "step4": {
+        "breadcrumb": {
+          "subtitle": "",
+          "title": ""
+        },
+        "subtitle": "",
+        "title": ""
       }
     }
   }
