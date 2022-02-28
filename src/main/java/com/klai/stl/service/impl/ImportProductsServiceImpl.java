@@ -51,7 +51,7 @@ public class ImportProductsServiceImpl implements ImportProductsService {
 
     @Override
     @Transactional
-    public List<ProductDTO> importProductsForCurrentUser(List<NewProductRequest> products, String companyReference) {
+    public List<ProductDTO> importProductsForCurrentUserCompany(List<NewProductRequest> products, String companyReference) {
         Company company = findCurrentUserCompany(companyReference);
         return importProducts(products, company);
     }
