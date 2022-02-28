@@ -246,6 +246,10 @@ public class Product implements Serializable {
         return this;
     }
 
+    public Set<Coordinate> coordinates() {
+        return this.coordinates;
+    }
+
     public Product addCoordinate(Coordinate coordinate) {
         this.coordinates.add(coordinate);
         coordinate.setProduct(this);
