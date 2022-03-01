@@ -733,4 +733,51 @@ class ProductImportResourceIT {
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
         assertThat(result.getPrice()).isEqualTo(String.valueOf(productRequest.getPrice()));
     }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user-product-import-delete-coordinate")
+    public void importDeletingProductWithCoordinatesAttached() throws Exception {
+        User user = createUser(em, "user-product-import-delete-coordinate");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
+        Product product = createProductForCompany(em, company);
+        Space space = createSpace(em, company);
+        Photo photo = createPhoto(em, space);
+
+        Coordinate coordinate = createCoordinate(em, photo, product);
+        company.addProduct(product);
+        space.addPhoto(photo);
+        photo.addCoordinate(coordinate);
+        product.addCoordinate(coordinate);
+
+        em.persist(space);
+        em.persist(photo);
+        em.persist(coordinate);
+        em.persist(product);
+        em.persist(company);
+
+        final ProductRequest productRequest = buildRequest();
+
+        restProductMockMvc
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
+            .andExpect(status().isCreated());
+
+        final Optional<Product> importedProduct = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
+        assertThat(importedProduct).isPresent();
+
+        final Product result = importedProduct.get();
+        assertThat(result.coordinates().size()).isEqualTo(0);
+        assertThat(result.getReference()).isNotNull();
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
+        assertThat(result.getLink()).isEqualTo(productRequest.getLink());
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+        assertThat(result.getPrice()).isEqualTo(String.valueOf(productRequest.getPrice()));
+
+        assertThat(productRepository.findByReference(product.getReference())).isNotPresent();
+    }
 }
