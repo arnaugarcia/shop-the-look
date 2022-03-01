@@ -4,7 +4,7 @@ import com.klai.stl.domain.Product;
 import com.klai.stl.service.dto.ProductDTO;
 import com.klai.stl.service.dto.feed.FeedProduct;
 import com.klai.stl.service.dto.feed.Item;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -17,14 +17,14 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     @Mapping(source = "company.reference", target = "companyReference")
     ProductDTO toDto(Product s);
 
-    Product toEntity(NewProductRequest product);
+    Product toEntity(ProductRequest product);
 
     @Mapping(source = "id", target = "sku")
     FeedProduct toEntity(Item item);
 
     @Mapping(source = "price", target = "price", qualifiedByName = "feedPrice")
     @Mapping(source = "title", target = "name")
-    NewProductRequest toRequest(FeedProduct feedProduct);
+    ProductRequest toRequest(FeedProduct feedProduct);
 
     @Named("feedPrice")
     default Float googleFeedProduct(String price) {

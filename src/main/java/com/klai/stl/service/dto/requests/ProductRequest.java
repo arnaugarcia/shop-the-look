@@ -6,7 +6,7 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 @Value
-public class NewProductRequest {
+public class ProductRequest {
 
     @NotBlank
     String name;
@@ -24,7 +24,7 @@ public class NewProductRequest {
 
     @Builder
     @Jacksonized
-    public NewProductRequest(String name, String link, String description, String sku, float price) {
+    public ProductRequest(String name, String link, String description, String sku, float price) {
         this.name = name;
         this.link = link;
         this.description = description;

@@ -2,7 +2,7 @@ package com.klai.stl.service;
 
 import com.klai.stl.domain.Product;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 
 /**
  * Service Interface for managing {@link com.klai.stl.domain.Product}.
@@ -14,7 +14,7 @@ public interface ProductService {
      * @param productRequest the entity to save.
      * @return the persisted entity.
      */
-    ProductDTO update(NewProductRequest productRequest);
+    ProductDTO update(ProductRequest productRequest);
 
     /**
      * Get the "reference" product.
