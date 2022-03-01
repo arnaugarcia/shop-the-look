@@ -724,5 +724,13 @@ class ProductImportResourceIT {
 
         final Product result = importedProduct.get();
         assertThat(result.coordinates().size()).isEqualTo(1);
+        assertThat(result.getReference()).isEqualTo(product.getReference());
+        assertThat(result.getSku()).isEqualTo(product.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
+        assertThat(result.getLink()).isEqualTo(productRequest.getLink());
+        assertThat(result.getReference()).isEqualTo(product.getReference());
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+        assertThat(result.getPrice()).isEqualTo(String.valueOf(productRequest.getPrice()));
     }
 }
