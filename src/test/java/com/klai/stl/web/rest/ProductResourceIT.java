@@ -18,7 +18,7 @@ import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
 import com.klai.stl.domain.User;
 import com.klai.stl.domain.enumeration.ProductAvailability;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.web.rest.api.ProductResource;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +76,7 @@ class ProductResourceIT {
     @Autowired
     private MockMvc restProductMockMvc;
 
-    private NewProductRequest newProductRequest;
+    private ProductRequest productRequest;
     private Product product;
 
     /**
@@ -113,12 +113,12 @@ class ProductResourceIT {
 
     @BeforeEach
     public void initTest() {
-        newProductRequest = buildRequest();
+        productRequest = buildRequest();
         product = createProduct(em);
     }
 
-    private NewProductRequest buildRequest() {
-        return NewProductRequest
+    private ProductRequest buildRequest() {
+        return ProductRequest
             .builder()
             .name(DEFAULT_NAME + randomAlphabetic(5).toLowerCase(ROOT))
             .price(DEFAULT_PRICE)

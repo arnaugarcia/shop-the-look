@@ -7,7 +7,7 @@ import static java.util.stream.Collectors.toList;
 import com.klai.stl.service.*;
 import com.klai.stl.service.dto.PreferencesDTO;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.exception.NoRemainingImports;
 import com.klai.stl.service.exception.URLParseFeedException;
 import com.klai.stl.service.mapper.ProductMapper;
@@ -60,7 +60,7 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
             setImportMethodAsFeedFor(companyReference);
         }
 
-        final List<NewProductRequest> feedProducts = getProductsFrom(feedUrl);
+        final List<ProductRequest> feedProducts = getProductsFrom(feedUrl);
         return importProductsService.importProducts(feedProducts, companyReference);
     }
 
@@ -76,7 +76,7 @@ public class FeedProductImportServiceImpl implements FeedProductImportService {
         }
     }
 
-    private List<NewProductRequest> getProductsFrom(URI feedUrl) {
+    private List<ProductRequest> getProductsFrom(URI feedUrl) {
         return feedService.queryProducts(feedUrl).stream().map(productMapper::toRequest).collect(toList());
     }
 }

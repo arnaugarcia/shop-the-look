@@ -13,7 +13,7 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.ImportProductsService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.dto.wrapper.ProductWrapper;
 import com.klai.stl.service.exception.CompanyReferenceNotFound;
 import com.klai.stl.service.mapper.ProductMapper;
@@ -44,26 +44,19 @@ public class ImportProductsServiceImpl implements ImportProductsService {
 
     @Override
     @Transactional
-    public List<ProductDTO> importProducts(List<NewProductRequest> products, String companyReference) {
+    public List<ProductDTO> importProducts(List<ProductRequest> products, String companyReference) {
         Company company = companyService.findByReference(companyReference);
         return importProducts(products, company);
     }
 
     @Override
     @Transactional
-    public List<ProductDTO> importProductsForCurrentUserCompany(List<NewProductRequest> products, String companyReference) {
+    public List<ProductDTO> importProductsForCurrentUserCompany(List<ProductRequest> products, String companyReference) {
         Company company = findCurrentUserCompany(companyReference);
         return importProducts(products, company);
     }
 
-    private static Product updateProductFields(Product original, Product result) {
-        result.setId(original.getId());
-        result.setReference(original.getReference());
-        result.setSku(original.getSku());
-        return result;
-    }
-
-    private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company) {
+    private List<ProductDTO> importProducts(List<ProductRequest> importProducts, Company company) {
         List<Product> result = new ArrayList<>();
 
         List<ProductWrapper> currentCompanyProducts = productRepository

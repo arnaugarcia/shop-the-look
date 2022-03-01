@@ -2,7 +2,7 @@ package com.klai.stl.web.rest.api;
 
 import com.klai.stl.service.ImportProductsService;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ProductImportResource {
      */
     @PutMapping("/import")
     public ResponseEntity<List<ProductDTO>> importProducts(
-        @Valid @RequestBody List<NewProductRequest> productRequests,
+        @Valid @RequestBody List<ProductRequest> productRequests,
         @RequestParam(required = false) String companyReference
     ) throws URISyntaxException {
         log.debug("REST request to import products with size {}", productRequests.size());
