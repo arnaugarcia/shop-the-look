@@ -42,6 +42,14 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         this.productMapper = productMapper;
     }
 
+    private static Product updateProductFields(Product original, Product newProduct) {
+        original.setPrice(newProduct.getPrice());
+        original.setName(newProduct.getName());
+        original.setLink(newProduct.getLink());
+        original.setDescription(newProduct.getDescription());
+        return original;
+    }
+
     @Override
     @Transactional
     public List<ProductDTO> importProducts(List<ProductRequest> products, String companyReference) {
@@ -70,7 +78,8 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         for (ProductWrapper newProduct : newProducts) {
             final Product product;
             if (currentCompanyProducts.contains(newProduct)) {
-                product = updateProduct(currentCompanyProducts, newProduct);
+                final ProductWrapper currentProduct = currentCompanyProducts.get(currentCompanyProducts.indexOf(newProduct));
+                product = updateProductFields(currentProduct.unwrap(), newProduct.unwrap());
             } else {
                 product = newProduct.unwrap();
                 product.setReference(generateNewProductReference());
@@ -109,10 +118,5 @@ public class ImportProductsServiceImpl implements ImportProductsService {
 
     private List<ProductDTO> saveAndTransform(List<Product> products) {
         return productRepository.saveAll(products).stream().map(productMapper::toDto).collect(toList());
-    }
-
-    private Product updateProduct(List<ProductWrapper> currentCompanyProducts, ProductWrapper newProduct) {
-        final Product originalProduct = currentCompanyProducts.get(currentCompanyProducts.indexOf(newProduct)).unwrap();
-        return updateProductFields(originalProduct, newProduct.unwrap());
     }
 }
