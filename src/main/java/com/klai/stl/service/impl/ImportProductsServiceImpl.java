@@ -13,7 +13,7 @@ import com.klai.stl.service.CompanyService;
 import com.klai.stl.service.ImportProductsService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.dto.wrapper.ProductWrapper;
 import com.klai.stl.service.exception.CompanyReferenceNotFound;
 import com.klai.stl.service.mapper.ProductMapper;
@@ -42,28 +42,29 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         this.productMapper = productMapper;
     }
 
+    private static Product updateProductFields(Product original, Product newProduct) {
+        original.setPrice(newProduct.getPrice());
+        original.setName(newProduct.getName());
+        original.setLink(newProduct.getLink());
+        original.setDescription(newProduct.getDescription());
+        return original;
+    }
+
     @Override
     @Transactional
-    public List<ProductDTO> importProducts(List<NewProductRequest> products, String companyReference) {
+    public List<ProductDTO> importProducts(List<ProductRequest> products, String companyReference) {
         Company company = companyService.findByReference(companyReference);
         return importProducts(products, company);
     }
 
     @Override
     @Transactional
-    public List<ProductDTO> importProductsForCurrentUser(List<NewProductRequest> products, String companyReference) {
+    public List<ProductDTO> importProductsForCurrentUserCompany(List<ProductRequest> products, String companyReference) {
         Company company = findCurrentUserCompany(companyReference);
         return importProducts(products, company);
     }
 
-    private static Product updateProductFields(Product original, Product result) {
-        result.setId(original.getId());
-        result.setReference(original.getReference());
-        result.setSku(original.getSku());
-        return result;
-    }
-
-    private List<ProductDTO> importProducts(List<NewProductRequest> importProducts, Company company) {
+    private List<ProductDTO> importProducts(List<ProductRequest> importProducts, Company company) {
         List<Product> result = new ArrayList<>();
 
         List<ProductWrapper> currentCompanyProducts = productRepository
@@ -77,7 +78,8 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         for (ProductWrapper newProduct : newProducts) {
             final Product product;
             if (currentCompanyProducts.contains(newProduct)) {
-                product = updateProduct(currentCompanyProducts, newProduct);
+                final ProductWrapper currentProduct = currentCompanyProducts.get(currentCompanyProducts.indexOf(newProduct));
+                product = updateProductFields(currentProduct.unwrap(), newProduct.unwrap());
             } else {
                 product = newProduct.unwrap();
                 product.setReference(generateNewProductReference());
@@ -116,10 +118,5 @@ public class ImportProductsServiceImpl implements ImportProductsService {
 
     private List<ProductDTO> saveAndTransform(List<Product> products) {
         return productRepository.saveAll(products).stream().map(productMapper::toDto).collect(toList());
-    }
-
-    private Product updateProduct(List<ProductWrapper> currentCompanyProducts, ProductWrapper newProduct) {
-        final Product originalProduct = currentCompanyProducts.get(currentCompanyProducts.indexOf(newProduct)).unwrap();
-        return updateProductFields(originalProduct, newProduct.unwrap());
     }
 }

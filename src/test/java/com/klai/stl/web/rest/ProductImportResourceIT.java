@@ -3,8 +3,11 @@ package com.klai.stl.web.rest;
 import static com.klai.stl.security.AuthoritiesConstants.ADMIN;
 import static com.klai.stl.security.AuthoritiesConstants.MANAGER;
 import static com.klai.stl.web.rest.CompanyResourceIT.createBasicCompany;
+import static com.klai.stl.web.rest.SpaceCoordinateResourceIT.createCoordinate;
+import static com.klai.stl.web.rest.SpacePhotoResourceIT.createPhoto;
+import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static com.klai.stl.web.rest.TestUtil.convertObjectToJsonBytes;
-import static com.klai.stl.web.rest.TestUtil.findAll;
+import static com.klai.stl.web.rest.UserResourceIT.createUser;
 import static java.lang.String.valueOf;
 import static java.util.List.of;
 import static java.util.Locale.ROOT;
@@ -15,12 +18,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.klai.stl.IntegrationTest;
-import com.klai.stl.domain.Company;
-import com.klai.stl.domain.Product;
-import com.klai.stl.domain.User;
+import com.klai.stl.domain.*;
 import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.repository.ProductRepository;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.mapper.ProductMapper;
 import com.klai.stl.web.rest.api.ProductResource;
 import java.util.List;
@@ -87,45 +88,10 @@ class ProductImportResourceIT {
     @Autowired
     private MockMvc restProductMockMvc;
 
-    private Product product;
-
     private Company company;
 
-    private User user;
-
-    private NewProductRequest newProductRequest;
-    private NewProductRequest productUpdateRequest;
-
-    /**
-     * Create an entity for this test.
-     * <p>
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Product createProduct(EntityManager em) {
-        Product product = new Product()
-            .sku(DEFAULT_SKU + randomAlphabetic(5).toUpperCase(ROOT))
-            .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
-            .link(DEFAULT_LINK)
-            .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
-            .imageLink(DEFAULT_IMAGE_LINK)
-            .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
-            .availability(DEFAULT_AVAILABILITY)
-            .price("DEFAULT_PRICE")
-            .category(DEFAULT_CATEGORY);
-        // Add required entity
-        Company company;
-        if (findAll(em, Company.class).isEmpty()) {
-            company = CompanyResourceIT.createEntity(em);
-            em.persist(company);
-            em.flush();
-        } else {
-            company = findAll(em, Company.class).get(0);
-        }
-        product.setCompany(company);
-        return product;
-    }
+    private ProductRequest productRequest;
+    private ProductRequest productUpdateRequest;
 
     public static Product createProductForCompany(EntityManager em, Company company) {
         Product product = new Product()
@@ -146,9 +112,9 @@ class ProductImportResourceIT {
 
     @BeforeEach
     public void initTest() {
-        newProductRequest = buildRequest();
-        productUpdateRequest = buildUpdateRequest(newProductRequest.getSku());
-        user = UserResourceIT.createUser(em, PRODUCT_USER_LOGIN);
+        productRequest = buildRequest();
+        productUpdateRequest = buildUpdateRequest(productRequest.getSku());
+        User user = createUser(em, PRODUCT_USER_LOGIN);
         em.persist(user);
         company = createBasicCompany(em);
         company.addUser(user);
@@ -156,8 +122,8 @@ class ProductImportResourceIT {
         em.flush();
     }
 
-    private NewProductRequest buildUpdateRequest(String sku) {
-        return NewProductRequest
+    private ProductRequest buildUpdateRequest(String sku) {
+        return ProductRequest
             .builder()
             .name(UPDATED_NAME + randomAlphabetic(5).toLowerCase(ROOT))
             .price(UPDATED_PRICE)
@@ -166,8 +132,8 @@ class ProductImportResourceIT {
             .build();
     }
 
-    private NewProductRequest buildRequest() {
-        return NewProductRequest
+    private ProductRequest buildRequest() {
+        return ProductRequest
             .builder()
             .name(DEFAULT_NAME + randomAlphabetic(5).toLowerCase(ROOT))
             .price(DEFAULT_PRICE)
@@ -186,7 +152,7 @@ class ProductImportResourceIT {
             .perform(
                 put(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(productRequest))
             )
             .andExpect(status().isCreated());
 
@@ -198,9 +164,9 @@ class ProductImportResourceIT {
 
         Product result = productOptional.get();
 
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -210,14 +176,14 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-multiple-login2")
     public void importSingleProductAsManager() throws Exception {
-        User user = UserResourceIT.createUser(em, "manager-multiple-login2");
+        User user = createUser(em, "manager-multiple-login2");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -228,9 +194,9 @@ class ProductImportResourceIT {
 
         Product result = productOptional.get();
 
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -240,14 +206,14 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-single-login")
     public void importSingleProductAsUser() throws Exception {
-        User user = UserResourceIT.createUser(em, "user-single-login");
+        User user = createUser(em, "user-single-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -258,9 +224,9 @@ class ProductImportResourceIT {
 
         Product result = productOptional.get();
 
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -270,14 +236,14 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-import-login")
     public void importUpdatingProductAsUser() throws Exception {
-        User user = UserResourceIT.createUser(em, "user-import-login");
+        User user = createUser(em, "user-import-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -306,7 +272,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "admin-import-login", authorities = ADMIN)
     public void importUpdatingProductOfOtherCompanyAsAdmin() throws Exception {
-        User user = UserResourceIT.createUser(em, "admin-import-login");
+        User user = createUser(em, "admin-import-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -319,7 +285,7 @@ class ProductImportResourceIT {
             .perform(
                 put(ENTITY_API_URL + "?companyReference={reference}", otherCompany.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(productRequest))
             )
             .andExpect(status().isCreated());
 
@@ -354,14 +320,14 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-multiple-login")
     public void importMultipleProductsAsUser() throws Exception {
-        User user = UserResourceIT.createUser(em, "user-multiple-login");
+        User user = createUser(em, "user-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
         int companyProductsBeforeCreate = productRepository.findByCompanyReference(company.getReference()).size();
 
-        List<NewProductRequest> products = of(buildRequest(), buildRequest());
+        List<ProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
             .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
@@ -378,12 +344,12 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "manager-import-multiple-login", authorities = MANAGER)
     public void updateMultipleProductsAsManager() throws Exception {
-        User user = UserResourceIT.createUser(em, "manager-import-multiple-login");
+        User user = createUser(em, "manager-import-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
 
-        List<NewProductRequest> products = of(buildRequest(), buildRequest());
+        List<ProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
             .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
@@ -407,12 +373,12 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "admin-import-multiple-login", authorities = ADMIN)
     public void updateMultipleProductsAsAdmin() throws Exception {
-        User user = UserResourceIT.createUser(em, "admin-import-multiple-login");
+        User user = createUser(em, "admin-import-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
 
-        List<NewProductRequest> products = of(buildRequest(), buildRequest());
+        List<ProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
             .perform(
@@ -442,7 +408,7 @@ class ProductImportResourceIT {
     public void importMultipleProductsAsAdmin() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
-        List<NewProductRequest> products = of(buildRequest(), buildRequest());
+        List<ProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
             .perform(
@@ -462,7 +428,7 @@ class ProductImportResourceIT {
     public void importMultipleProductsAsManager() throws Exception {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
-        List<NewProductRequest> products = of(buildRequest(), buildRequest());
+        List<ProductRequest> products = of(buildRequest(), buildRequest());
 
         restProductMockMvc
             .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(products)))
@@ -485,7 +451,7 @@ class ProductImportResourceIT {
             .perform(
                 put(ENTITY_API_URL + "?companyReference=" + company.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(productRequest))
             )
             .andExpect(status().isCreated());
 
@@ -497,9 +463,9 @@ class ProductImportResourceIT {
 
         Product result = productOptional.get();
 
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -509,7 +475,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-import-company-login")
     public void importASingleProductForOtherCompanyAsManager() throws Exception {
-        User user = UserResourceIT.createUser(em, "manager-import-company-login");
+        User user = createUser(em, "manager-import-company-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -520,7 +486,7 @@ class ProductImportResourceIT {
             .perform(
                 put(ENTITY_API_URL + "?companyReference=notExisting")
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(productRequest))
             )
             .andExpect(status().isCreated());
 
@@ -533,13 +499,13 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "update-manager-login")
     public void updateProductAsManager() throws Exception {
-        User user = UserResourceIT.createUser(em, "update-manager-login");
+        User user = createUser(em, "update-manager-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
 
         restProductMockMvc
-            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
             .andExpect(status().isCreated());
         restProductMockMvc
             .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productUpdateRequest)))
@@ -568,7 +534,7 @@ class ProductImportResourceIT {
             .perform(
                 put(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(productRequest))
             )
             .andExpect(status().isCreated());
 
@@ -580,9 +546,9 @@ class ProductImportResourceIT {
 
         Product result = productOptional.get();
 
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -592,14 +558,14 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-multiple-login")
     public void createSingleProductAsManager() throws Exception {
-        User user = UserResourceIT.createUser(em, "manager-multiple-login");
+        User user = createUser(em, "manager-multiple-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -610,9 +576,9 @@ class ProductImportResourceIT {
 
         Product result = productOptional.get();
 
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -622,14 +588,14 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(username = "user-single-login2")
     public void createSingleProductAsUser() throws Exception {
-        User user = UserResourceIT.createUser(em, "user-single-login2");
+        User user = createUser(em, "user-single-login2");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         restProductMockMvc
-            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(newProductRequest)))
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
             .andExpect(status().isCreated());
 
         int databaseSizeAfterCreate = productRepository.findAll().size();
@@ -640,9 +606,9 @@ class ProductImportResourceIT {
 
         Product result = productOptional.get();
 
-        assertThat(result.getName()).isEqualTo(newProductRequest.getName());
-        assertThat(result.getPrice()).isEqualTo(valueOf(newProductRequest.getPrice()));
-        assertThat(result.getSku()).isEqualTo(newProductRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getPrice()).isEqualTo(valueOf(productRequest.getPrice()));
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getCompany()).isNotNull();
         assertThat(result.getCompany().getReference()).isNotBlank();
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -652,7 +618,7 @@ class ProductImportResourceIT {
     @Transactional
     @WithMockUser(authorities = MANAGER, username = "manager-import-other-company-login")
     public void updateOtherProductCompanyAsManager() throws Exception {
-        User user = UserResourceIT.createUser(em, "manager-import-other-company-login");
+        User user = createUser(em, "manager-import-other-company-login");
         em.persist(user);
         company.addUser(user);
         em.persist(company);
@@ -663,7 +629,7 @@ class ProductImportResourceIT {
             .perform(
                 put(ENTITY_API_URL + "?companyReference=notExisting")
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(productRequest))
             )
             .andExpect(status().isCreated());
 
@@ -682,7 +648,7 @@ class ProductImportResourceIT {
             .perform(
                 put(ENTITY_API_URL + "?companyReference={reference}", company.getReference())
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJsonBytes(newProductRequest))
+                    .content(convertObjectToJsonBytes(productRequest))
             )
             .andExpect(status().isCreated());
 
@@ -718,5 +684,100 @@ class ProductImportResourceIT {
                     .content(convertObjectToJsonBytes(productUpdateRequest))
             )
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user-product-import-coordinate")
+    public void importUpdatingProductWithCoordinatesAttached() throws Exception {
+        User user = createUser(em, "user-product-import-coordinate");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
+        Product product = createProductForCompany(em, company);
+
+        Space space = createSpace(em, company);
+
+        Photo photo = createPhoto(em, space);
+
+        Coordinate coordinate = createCoordinate(em, photo, product);
+        company.addProduct(product);
+        space.addPhoto(photo);
+        photo.addCoordinate(coordinate);
+        product.addCoordinate(coordinate);
+
+        em.persist(space);
+        em.persist(photo);
+        em.persist(coordinate);
+        em.persist(product);
+        em.persist(company);
+
+        final ProductRequest productRequest = buildUpdateRequest(product.getSku());
+
+        restProductMockMvc
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
+            .andExpect(status().isCreated());
+
+        final Optional<Product> importedProduct = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
+        assertThat(importedProduct).isPresent();
+
+        final Product result = importedProduct.get();
+        assertThat(result.coordinates().size()).isEqualTo(1);
+        assertThat(result.getReference()).isEqualTo(product.getReference());
+        assertThat(result.getSku()).isEqualTo(product.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
+        assertThat(result.getLink()).isEqualTo(productRequest.getLink());
+        assertThat(result.getReference()).isEqualTo(product.getReference());
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+        assertThat(result.getPrice()).isEqualTo(String.valueOf(productRequest.getPrice()));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "user-product-import-delete-coordinate")
+    public void importDeletingProductWithCoordinatesAttached() throws Exception {
+        User user = createUser(em, "user-product-import-delete-coordinate");
+        em.persist(user);
+        company.addUser(user);
+        em.persist(company);
+
+        Product product = createProductForCompany(em, company);
+        Space space = createSpace(em, company);
+        Photo photo = createPhoto(em, space);
+
+        Coordinate coordinate = createCoordinate(em, photo, product);
+        company.addProduct(product);
+        space.addPhoto(photo);
+        photo.addCoordinate(coordinate);
+        product.addCoordinate(coordinate);
+
+        em.persist(space);
+        em.persist(photo);
+        em.persist(coordinate);
+        em.persist(product);
+        em.persist(company);
+
+        final ProductRequest productRequest = buildRequest();
+
+        restProductMockMvc
+            .perform(put(ENTITY_API_URL).contentType(APPLICATION_JSON).content(convertObjectToJsonBytes(productRequest)))
+            .andExpect(status().isCreated());
+
+        final Optional<Product> importedProduct = productRepository.findByCompanyReference(company.getReference()).stream().findFirst();
+        assertThat(importedProduct).isPresent();
+
+        final Product result = importedProduct.get();
+        assertThat(result.coordinates().size()).isEqualTo(0);
+        assertThat(result.getReference()).isNotNull();
+        assertThat(result.getSku()).isEqualTo(productRequest.getSku());
+        assertThat(result.getName()).isEqualTo(productRequest.getName());
+        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
+        assertThat(result.getLink()).isEqualTo(productRequest.getLink());
+        assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
+        assertThat(result.getPrice()).isEqualTo(String.valueOf(productRequest.getPrice()));
+
+        assertThat(productRepository.findByReference(product.getReference())).isNotPresent();
     }
 }

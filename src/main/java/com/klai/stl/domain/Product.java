@@ -69,7 +69,7 @@ public class Product implements Serializable {
     )
     private Company company;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "photo", "product" }, allowSetters = true)
     private Set<Coordinate> coordinates = new HashSet<>();
@@ -244,6 +244,10 @@ public class Product implements Serializable {
     public Product coordinates(Set<Coordinate> coordinates) {
         this.setCoordinates(coordinates);
         return this;
+    }
+
+    public Set<Coordinate> coordinates() {
+        return this.coordinates;
     }
 
     public Product addCoordinate(Coordinate coordinate) {

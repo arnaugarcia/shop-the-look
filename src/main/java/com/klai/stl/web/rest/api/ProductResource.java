@@ -8,7 +8,7 @@ import com.klai.stl.service.FeedService;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.criteria.ProductCriteria;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.impl.ProductQueryService;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,13 +40,10 @@ public class ProductResource {
 
     private final ProductService productService;
 
-    private final FeedService feedService;
-
     private final ProductQueryService productQueryService;
 
-    public ProductResource(ProductService productService, FeedService feedService, ProductQueryService productQueryService) {
+    public ProductResource(ProductService productService, ProductQueryService productQueryService) {
         this.productService = productService;
-        this.feedService = feedService;
         this.productQueryService = productQueryService;
     }
 
@@ -58,7 +55,7 @@ public class ProductResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/products")
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody NewProductRequest productRequest) throws URISyntaxException {
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductRequest productRequest) throws URISyntaxException {
         log.debug("REST request to save product {}", productRequest);
         ProductDTO result = productService.update(productRequest);
         return ResponseEntity.created(new URI("/api/products")).body(result);

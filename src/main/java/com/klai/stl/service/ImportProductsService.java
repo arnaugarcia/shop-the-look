@@ -1,7 +1,7 @@
 package com.klai.stl.service;
 
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +14,8 @@ public interface ImportProductsService {
      *                                                          set or the companyReference does not belong to the current user
      */
     @Transactional
-    List<ProductDTO> importProducts(List<NewProductRequest> productRequests, String companyReference);
+    List<ProductDTO> importProducts(List<ProductRequest> productRequests, String companyReference);
 
     @Transactional
-    List<ProductDTO> importProductsForCurrentUser(List<NewProductRequest> products, String companyReference);
+    List<ProductDTO> importProductsForCurrentUserCompany(List<ProductRequest> products, String companyReference);
 }

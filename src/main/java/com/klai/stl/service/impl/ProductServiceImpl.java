@@ -8,7 +8,7 @@ import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.ProductService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.dto.ProductDTO;
-import com.klai.stl.service.dto.requests.NewProductRequest;
+import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.exception.ProductNotFound;
 import com.klai.stl.service.mapper.ProductMapper;
 import java.util.function.Predicate;
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO update(NewProductRequest productRequest) {
+    public ProductDTO update(ProductRequest productRequest) {
         log.debug("Request to save Product : {}", productRequest);
         return null;
     }
