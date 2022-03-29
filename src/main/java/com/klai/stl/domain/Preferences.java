@@ -1,5 +1,6 @@
 package com.klai.stl.domain;
 
+import static com.klai.stl.config.Constants.DEFAULT_REMAINING_IMPORTS;
 import static com.klai.stl.domain.enumeration.ImportMethod.FEED;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,7 +33,7 @@ public class Preferences implements Serializable {
     private String feedUrl;
 
     @Column(name = "remaining_imports")
-    private Integer remainingImports = 0;
+    private Integer remainingImports = DEFAULT_REMAINING_IMPORTS;
 
     @Column(name = "last_import_by")
     private String lastImportBy;

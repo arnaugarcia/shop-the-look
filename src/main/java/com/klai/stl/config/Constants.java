@@ -15,5 +15,7 @@ public final class Constants {
     public static final String STRIPE_CHECKOUT_PARAM_COMPANY_KEY = "company_reference";
     public static final String STRIPE_CHECKOUT_PARAM_SUBSCRIPTION_KEY = "subscription_reference";
 
+    public static final Integer DEFAULT_REMAINING_IMPORTS = 10;
+
     private Constants() {}
 }
