@@ -1,5 +1,6 @@
 package com.klai.stl.tasks;
 
+import static com.klai.stl.config.Constants.DEFAULT_REMAINING_IMPORTS;
 import static com.klai.stl.config.Constants.SYSTEM;
 import static java.time.ZonedDateTime.now;
 
@@ -26,8 +27,6 @@ public class ProductFeedTask {
     private final FeedProductImportService feedProductImportService;
 
     private final MailService mailService;
-
-    private final Integer DEFAULT_REFRESH_COUNTER = 10;
 
     public ProductFeedTask(
         CompanyRepository companyRepository,
@@ -60,7 +59,7 @@ public class ProductFeedTask {
     }
 
     private void resetRemainingImportsFor(Company company) {
-        company.getPreferences().setRemainingImports(DEFAULT_REFRESH_COUNTER);
+        company.getPreferences().setRemainingImports(DEFAULT_REMAINING_IMPORTS);
         company.getPreferences().setLastImportBy(SYSTEM);
         company.getPreferences().setLastImportTimestamp(now());
         companyRepository.save(company);
