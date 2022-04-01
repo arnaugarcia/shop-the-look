@@ -1,19 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="CompanyHeading">
     <span stlTranslate="shopTheLookApp.company.home.title">Companies</span>
-
-    <div class="d-flex justify-content-end">
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-company"
-        [routerLink]="['/company/new']"
-        disabled
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span stlTranslate="shopTheLookApp.company.home.createLabel"> Create a new Company </span>
-      </button>
-    </div>
   </h2>
 
   <stl-alert-error></stl-alert-error>
