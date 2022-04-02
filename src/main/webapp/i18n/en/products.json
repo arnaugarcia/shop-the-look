@@ -9,6 +9,7 @@
   "products.import.table.columns.remove": "Remove",
   "products.import.table.columns.sku": "SKU",
   "products.import.table.loaded": "Loaded products:",
+  "products.import.table.loading": "Loading...",
   "products.import.table.remove": "Remove all",
   "products.import.table.title": "Loaded products preview",
   "products.import.table.upload": "Upload all",
