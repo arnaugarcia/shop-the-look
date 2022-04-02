@@ -84,13 +84,18 @@ export class ProductImportComponent {
       return;
     }
     const options: ParseConfig = {
-      worker: true,
-      complete: (results: ParseResult) => {
-        this.loading = false;
-        this.products = results.data.map(
-          (rawProduct: any) => new RawProduct(rawProduct[2], rawProduct[3], rawProduct[8], rawProduct[35], rawProduct[23])
+      header: true,
+      skipEmptyLines: 'greedy',
+      transformHeader: (header: string) => header.toUpperCase(),
+      chunk: (results: ParseResult) => {
+        const products = results.data.map(
+          (rawProduct: any) => new RawProduct(rawProduct.SKU, rawProduct.NAME, rawProduct.DESCRIPTION, rawProduct.LINK, rawProduct.PRICE)
         );
-        this.products.shift();
+        this.products.push(...products);
+      },
+      complete: () => {
+        this.progressBar = 100;
+        this.loading = false;
       },
       error: () => {
         this.error = true;
