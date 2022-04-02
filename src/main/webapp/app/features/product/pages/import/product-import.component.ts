@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 import { Papa, ParseConfig, ParseResult } from 'ngx-papaparse';
-import { IProduct, RawProduct } from '../../models/product.model';
+import { IProduct, ProductImport } from '../../models/product.model';
 import { FileUploader } from 'ng2-file-upload';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImportModalSuccessComponent } from '../../components/import-modal-success/import-modal-success.component';
@@ -90,7 +90,7 @@ export class ProductImportComponent {
       complete: (results: ParseResult) => {
         this.progressBar = 100;
         this.products = results.data.map(
-          (rawProduct: any) => new RawProduct(rawProduct.SKU, rawProduct.NAME, rawProduct.DESCRIPTION, rawProduct.LINK, rawProduct.PRICE)
+          (rawProduct: any) => new ProductImport(rawProduct.SKU, rawProduct.NAME, rawProduct.DESCRIPTION, rawProduct.URL, rawProduct.PRICE)
         );
         this.loading = false;
       },
