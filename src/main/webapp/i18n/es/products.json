@@ -8,7 +8,7 @@
   "products.import.table.columns.price": "Precio",
   "products.import.table.columns.remove": "Eliminar",
   "products.import.table.columns.sku": "SKU",
-  "products.import.table.loaded": "Productos cargados:",
+  "products.import.table.loaded": "Productos leídos:",
   "products.import.table.loading": "Cargando...",
   "products.import.table.remove": "Eliminar todo",
   "products.import.table.title": "Vista previa de productos cargados",
