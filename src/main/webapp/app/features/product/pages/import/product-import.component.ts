@@ -9,6 +9,7 @@ import { ImportModalErrorComponent } from '../../components/import-modal-error/i
 import { ImportProduct } from '../../models/product-import.model';
 import { AccountService } from '../../../../core/auth/account.service';
 import { ProductImportService } from '../../services/product-import.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'stl-product-import',
@@ -78,6 +79,7 @@ export class ProductImportComponent {
   onFileDropped($event: any): void {
     this.loading = true;
     this.error = false;
+    this.progressBar = 0;
     const droopedFile = $event[0];
     if (droopedFile.type !== 'text/csv') {
       this.error = true;
@@ -88,7 +90,6 @@ export class ProductImportComponent {
       skipEmptyLines: 'greedy',
       transformHeader: (header: string) => header.toUpperCase(),
       complete: (results: ParseResult) => {
-        this.progressBar = 100;
         this.products = results.data.map(
           (rawProduct: any) => new ProductImport(rawProduct.SKU, rawProduct.NAME, rawProduct.DESCRIPTION, rawProduct.URL, rawProduct.PRICE)
         );
@@ -113,10 +114,11 @@ export class ProductImportComponent {
           windowClass: 'modal modal-success',
         });
       },
-      () => {
+      (error: HttpErrorResponse) => {
         this.loading = false;
         this.error = true;
-        this.progressBar = 100;
+        this.progressBar = 0;
+        console.error(error);
         this.modalService.open(ImportModalErrorComponent, {
           centered: true,
           windowClass: 'modal modal-danger',
