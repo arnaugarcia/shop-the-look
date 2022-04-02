@@ -13,6 +13,7 @@
   "products.import.table.remove": "Eliminar todo",
   "products.import.table.title": "Vista previa de productos cargados",
   "products.import.table.upload": "Cargar todos",
+  "products.import.table.upload-process": "Proceso de carga:",
   "products.import.title": "Asistente de importador de productos",
   "products.list.filter.refresh": "Actualizar los productos",
   "products.list.filter.search": "Buscar...",

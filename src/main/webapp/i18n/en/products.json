@@ -13,6 +13,7 @@
   "products.import.table.remove": "Remove all",
   "products.import.table.title": "Loaded products preview",
   "products.import.table.upload": "Upload all",
+  "products.import.table.upload-process": "Upload process:",
   "products.import.title": "Product importer wizard",
   "products.list.filter.refresh": "Refresh products feed",
   "products.list.filter.search": "Search...",
