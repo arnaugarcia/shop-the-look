@@ -11,7 +11,7 @@
   "products.import.table.loaded": "Productos leídos:",
   "products.import.table.loading": "Cargando...",
   "products.import.table.remove": "Eliminar todo",
-  "products.import.table.title": "Vista previa de productos cargados",
+  "products.import.table.title": "Vista previa de los productos a importar",
   "products.import.table.upload": "Cargar todos",
   "products.import.table.upload-process": "Proceso de carga:",
   "products.import.title": "Asistente de importador de productos",

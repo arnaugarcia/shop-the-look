@@ -11,7 +11,7 @@
   "products.import.table.loaded": "Loaded products:",
   "products.import.table.loading": "Loading...",
   "products.import.table.remove": "Remove all",
-  "products.import.table.title": "Loaded products preview",
+  "products.import.table.title": "Preview of the products",
   "products.import.table.upload": "Upload all",
   "products.import.table.upload-process": "Upload process:",
   "products.import.title": "Product importer wizard",
