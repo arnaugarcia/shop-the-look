@@ -28,6 +28,6 @@ export class Product implements IProduct {
   ) {}
 }
 
-export class RawProduct implements IProduct {
+export class ProductImport implements IProduct {
   constructor(public sku: string, public name: string, public description: string, public link: string, public price: string) {}
 }
