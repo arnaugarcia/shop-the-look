@@ -87,14 +87,11 @@ export class ProductImportComponent {
       header: true,
       skipEmptyLines: 'greedy',
       transformHeader: (header: string) => header.toUpperCase(),
-      chunk: (results: ParseResult) => {
-        const products = results.data.map(
+      complete: (results: ParseResult) => {
+        this.progressBar = 100;
+        this.products = results.data.map(
           (rawProduct: any) => new RawProduct(rawProduct.SKU, rawProduct.NAME, rawProduct.DESCRIPTION, rawProduct.LINK, rawProduct.PRICE)
         );
-        this.products.push(...products);
-      },
-      complete: () => {
-        this.progressBar = 100;
         this.loading = false;
       },
       error: () => {
