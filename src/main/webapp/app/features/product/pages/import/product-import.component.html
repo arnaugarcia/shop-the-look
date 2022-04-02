@@ -66,7 +66,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let product of products | paginate: config">
-                    <td>{{ product.sku }}</td>
+                    <td>
+                      <a [href]="product.link" target="_blank">{{ product.sku }}</a>
+                    </td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
                     <td nowrap>
