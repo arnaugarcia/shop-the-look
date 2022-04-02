@@ -65,9 +65,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let product of products | paginate: config">
+                  <tr *ngFor="let product of products | paginate: config" [class.table-danger]="!product.isValid()">
                     <td>
-                      <a [href]="product.link" target="_blank">{{ product.sku }}</a>
+                      <a *ngIf="product.link" [href]="product.link" target="_blank">{{ product.sku }}</a>
+                      <span *ngIf="!product.link">{{ product.sku }}</span>
                     </td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>

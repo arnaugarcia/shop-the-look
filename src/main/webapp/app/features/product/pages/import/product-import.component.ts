@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 import { Papa, ParseConfig, ParseResult } from 'ngx-papaparse';
-import { IProduct, ProductImport } from '../../models/product.model';
+import { ProductImport } from '../../models/product.model';
 import { FileUploader } from 'ng2-file-upload';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImportModalSuccessComponent } from '../../components/import-modal-success/import-modal-success.component';
@@ -22,7 +22,7 @@ export class ProductImportComponent {
   public uploader: FileUploader = new FileUploader({
     isHTML5: true,
   });
-  public products: IProduct[] = [];
+  public products: ProductImport[] = [];
   public config: any;
   public error = false;
   public loading = false;
@@ -118,11 +118,7 @@ export class ProductImportComponent {
         this.loading = false;
         this.error = true;
         this.progressBar = 0;
-        console.error(error);
-        this.modalService.open(ImportModalErrorComponent, {
-          centered: true,
-          windowClass: 'modal modal-danger',
-        });
+        this.handleAndShowErrorModal(error);
         this.removeAllFromQueue();
       }
     );
@@ -133,10 +129,19 @@ export class ProductImportComponent {
     this.progressBar = 0;
   }
 
-  removeProduct(product: IProduct): void {
+  removeProduct(product: ProductImport): void {
     const index = this.products.indexOf(product);
     if (index > -1) {
       this.products.splice(index, 1);
+    }
+  }
+
+  private handleAndShowErrorModal(error: HttpErrorResponse): void {
+    if (error.error.detail.contains('RequestTooBigException')) {
+      this.modalService.open(ImportModalErrorComponent, {
+        centered: true,
+        windowClass: 'modal modal-danger',
+      });
     }
   }
 }
