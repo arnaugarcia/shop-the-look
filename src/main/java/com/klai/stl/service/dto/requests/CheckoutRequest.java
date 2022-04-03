@@ -10,5 +10,5 @@ public class CheckoutRequest {
     String companyReference;
     String subscriptionReference;
     String itemReference;
-    String trialPeriodDays;
+    Boolean trialPeriod;
 }

@@ -14,6 +14,7 @@
             <env name="APPLICATION_STRIPE_APIKEY"
                  value="sk_test_51JiETxLQttstmIiWRhGKAZ5UQqjSUcxwzA0ssiRxyNLKKmGUr9l4ngEhBxTkWGspig5atTNi8LfUmEJPboL2i6od00kQGYkqJs"/>
             <env name="application.stripe.webhook-secret" value="whsec_1gZ7oPsQitY3vSOe4lAlYerPG6hYbLLS"/>
+            <env name="application.stripe.taxRate" value="txr_1KkBVwLQttstmIiWZpWAC6Ue"/>
         </envs>
         <method v="2">
             <option name="Make" enabled="true"/>

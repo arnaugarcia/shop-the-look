@@ -37,19 +37,19 @@ public class SubscriptionCheckoutServiceImpl implements SubscriptionCheckoutServ
 
     private CheckoutResponseDTO buildCheckoutDataForSubscriptionPlanAndCompany(String subscriptionPlanReference, String companyReference) {
         final SubscriptionPlan subscription = subscriptionService.findSubscriptionByReference(subscriptionPlanReference);
+        final Company company = companyService.findByReference(companyReference);
 
-        final CheckoutRequest.CheckoutRequestBuilder checkoutRequestBuilder = CheckoutRequest
+        final boolean notHaveASubscription = isNull(company.getSubscriptionPlan());
+
+        final CheckoutRequest checkoutRequest = CheckoutRequest
             .builder()
             .itemReference(subscription.getPaymentGatewayItemReference())
             .companyReference(companyReference)
-            .subscriptionReference(subscription.getReference());
+            .trialPeriod(notHaveASubscription)
+            .subscriptionReference(subscription.getReference())
+            .build();
 
-        final Company company = companyService.findByReference(companyReference);
-        if (isNull(company.getSubscriptionPlan())) {
-            checkoutRequestBuilder.trialPeriodDays("30");
-        }
-
-        final CheckoutData checkout = checkoutService.checkout(checkoutRequestBuilder.build());
+        final CheckoutData checkout = checkoutService.checkout(checkoutRequest);
 
         return CheckoutResponseDTO.builder().checkoutUrl(checkout.getCheckoutUrl().toString()).build();
     }
