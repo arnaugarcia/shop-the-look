@@ -68,7 +68,6 @@
                   <tr
                     (remove)="removeProduct($event)"
                     *ngFor="let product of products | paginate: config"
-                    [class.table-danger]="!product.isValid()"
                     [loading]="loading"
                     [product]="product"
                     stl-product-import-list-item

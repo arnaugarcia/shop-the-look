@@ -15,4 +15,8 @@ export class ProductImportListItemComponent {
 
   @Output()
   public remove: EventEmitter<ProductImport> = new EventEmitter();
+
+  public isEmpty(productAttribute: string): boolean {
+    return productAttribute === '' || productAttribute === ' ';
+  }
 }
