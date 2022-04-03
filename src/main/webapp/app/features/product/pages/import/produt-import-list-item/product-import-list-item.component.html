@@ -10,6 +10,7 @@
     <span *ngIf="!product.link">{{ product.sku }}</span>
   </td>
   <td
+    [class.bg-danger]="isEmpty(product.name)"
     [disableTooltip]="!isEmpty(product.name)"
     [ngbTooltip]="'products.import.table.row.error.name' | translate"
     container="body"
@@ -18,6 +19,7 @@
     {{ product.name }}
   </td>
   <td
+    [class.bg-danger]="isEmpty(product.price)"
     [disableTooltip]="!isEmpty(product.price)"
     [ngbTooltip]="'products.import.table.row.error.price' | translate"
     container="body"
