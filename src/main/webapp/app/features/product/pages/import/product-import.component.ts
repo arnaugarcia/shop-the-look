@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContentHeader } from '../../../../layouts/content-header/content-header.component';
 import { Papa, ParseConfig, ParseResult } from 'ngx-papaparse';
-import { IProduct, RawProduct } from '../../models/product.model';
+import { ProductImport } from '../../models/product.model';
 import { FileUploader } from 'ng2-file-upload';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImportModalSuccessComponent } from '../../components/import-modal-success/import-modal-success.component';
@@ -9,6 +9,7 @@ import { ImportModalErrorComponent } from '../../components/import-modal-error/i
 import { ImportProduct } from '../../models/product-import.model';
 import { AccountService } from '../../../../core/auth/account.service';
 import { ProductImportService } from '../../services/product-import.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'stl-product-import',
@@ -21,7 +22,7 @@ export class ProductImportComponent {
   public uploader: FileUploader = new FileUploader({
     isHTML5: true,
   });
-  public products: IProduct[] = [];
+  public products: ProductImport[] = [];
   public config: any;
   public error = false;
   public loading = false;
@@ -78,19 +79,27 @@ export class ProductImportComponent {
   onFileDropped($event: any): void {
     this.loading = true;
     this.error = false;
+    this.progressBar = 0;
     const droopedFile = $event[0];
     if (droopedFile.type !== 'text/csv') {
       this.error = true;
       return;
     }
     const options: ParseConfig = {
-      worker: true,
+      header: true,
+      skipEmptyLines: 'greedy',
+      transformHeader: (header: string) => header.toUpperCase(),
       complete: (results: ParseResult) => {
+        if (!results.data.length) {
+          this.error = true;
+        }
+        this.products = results.data
+          .map(
+            (rawProduct: any) =>
+              new ProductImport(rawProduct.SKU, rawProduct.NAME, rawProduct.DESCRIPTION, rawProduct.URL, rawProduct.PRICE)
+          )
+          .sort((product1: ProductImport) => (product1.isValid() ? 1 : -1));
         this.loading = false;
-        this.products = results.data.map(
-          (rawProduct: any) => new RawProduct(rawProduct[2], rawProduct[3], rawProduct[8], rawProduct[35], rawProduct[23])
-        );
-        this.products.shift();
       },
       error: () => {
         this.error = true;
@@ -111,14 +120,10 @@ export class ProductImportComponent {
           windowClass: 'modal modal-success',
         });
       },
-      () => {
+      (error: HttpErrorResponse) => {
         this.loading = false;
-        this.error = true;
-        this.progressBar = 100;
-        this.modalService.open(ImportModalErrorComponent, {
-          centered: true,
-          windowClass: 'modal modal-danger',
-        });
+        this.progressBar = 0;
+        this.handleAndShowErrorModal(error);
         this.removeAllFromQueue();
       }
     );
@@ -129,10 +134,19 @@ export class ProductImportComponent {
     this.progressBar = 0;
   }
 
-  removeProduct(product: IProduct): void {
+  removeProduct(product: ProductImport): void {
     const index = this.products.indexOf(product);
     if (index > -1) {
       this.products.splice(index, 1);
+    }
+  }
+
+  private handleAndShowErrorModal(error: HttpErrorResponse): void {
+    if (error.error.detail.contains('RequestTooBigException')) {
+      this.modalService.open(ImportModalErrorComponent, {
+        centered: true,
+        windowClass: 'modal modal-danger',
+      });
     }
   }
 }

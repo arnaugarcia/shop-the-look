@@ -9,6 +9,7 @@ public final class ErrorConstants {
     public static final String PROBLEM_BASE_URL = "https://www.jhipster.tech/problem";
     public static final URI DEFAULT_TYPE = URI.create(PROBLEM_BASE_URL + "/problem-with-message");
     public static final URI BAD_REQUEST = URI.create(PROBLEM_BASE_URL + "/400");
+    public static final URI BAD_GATEWAY = URI.create(PROBLEM_BASE_URL + "/502");
     public static final URI TOO_MANY_REQUESTS = URI.create(PROBLEM_BASE_URL + "/429");
     public static final URI NOT_FOUND = URI.create(PROBLEM_BASE_URL + "/404");
     public static final URI FORBIDDEN = URI.create(PROBLEM_BASE_URL + "/403");

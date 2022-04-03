@@ -8,6 +8,13 @@
   </div>
   <!--/ title text and switch button -->
 
+  <div *ngIf="!subscriptions.length" class="text-center">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Error</h4>
+      <div class="alert-body">There is been an error loading the subscription plans. Please, try again later.</div>
+    </div>
+  </div>
+
   <!-- pricing plan cards -->
   <div class="row pricing-card" *ngIf="subscriptions.length">
     <div class="col-12 col-sm-offset-2 col-sm-10 col-md-12 col-lg-offset-2 col-lg-10 mx-auto">
@@ -24,13 +31,6 @@
     </div>
   </div>
   <!--/ pricing plan cards -->
-
-  <div class="text-center" *ngIf="!subscriptions.length">
-    <div role="alert" class="alert alert-danger">
-      <h4 class="alert-heading">Error</h4>
-      <div class="alert-body">There is been an error loading the subscription plans. Please, try again later.</div>
-    </div>
-  </div>
 
   <!-- pricing free trial -->
   <div class="pricing-free-trial">

@@ -32,37 +32,43 @@ export class SubscriptionComponent implements OnInit {
 
   selectedPlan(selectedPlan: ISubscriptionPlan): void {
     if (this.accountService.isAdmin()) {
-      this.subscriptionService.updateForCompany(this.companyReference!, selectedPlan.reference).subscribe(() => {
-        this.loadAll();
-      }, this.onError());
+      this.subscriptionService.updateForCompany(this.companyReference!, selectedPlan.reference).subscribe(
+        () => this.loadAll(),
+        (error: HttpErrorResponse) => this.onError(error)
+      );
     } else {
       if (selectedPlan.custom) {
         window.open('mailto:contact@weareklai.com?subject=[Shop The Look] - Custom pricing', '_blank');
       } else {
-        this.subscriptionService.checkoutSubscription(selectedPlan.reference).subscribe((response: HttpResponse<ICheckoutData>) => {
-          this.document.location.href = response.body!.checkoutUrl;
-        }, this.onError());
+        this.subscriptionService.checkoutSubscription(selectedPlan.reference).subscribe(
+          (response: HttpResponse<ICheckoutData>) => {
+            this.document.location.href = response.body!.checkoutUrl;
+          },
+          (error: HttpErrorResponse) => this.onError(error)
+        );
       }
     }
   }
   private loadAll(): void {
     if (this.companyReference) {
-      this.subscriptionService.queryForCompany(this.companyReference).subscribe(this.onSuccess(), this.onError());
+      this.subscriptionService.queryForCompany(this.companyReference).subscribe(
+        (response: HttpResponse<ISubscriptionPlan[]>) => this.onSuccess(response),
+        (error: HttpErrorResponse) => this.onError(error)
+      );
     } else {
-      this.subscriptionService.queryForOwnCompany().subscribe(this.onSuccess(), this.onError());
+      this.subscriptionService.queryForOwnCompany().subscribe(
+        (response: HttpResponse<ISubscriptionPlan[]>) => this.onSuccess(response),
+        (error: HttpErrorResponse) => this.onError(error)
+      );
     }
   }
 
-  private onError() {
-    return (error: HttpErrorResponse) => {
-      this.subscriptions = [];
-      console.error(error);
-    };
+  private onError(error: HttpErrorResponse): void {
+    this.subscriptions = [];
+    console.error(error);
   }
 
-  private onSuccess() {
-    return (response: HttpResponse<ISubscriptionPlan[]>) => {
-      this.subscriptions = response.body!;
-    };
+  private onSuccess(response: HttpResponse<ISubscriptionPlan[]>): void {
+    this.subscriptions = response.body!;
   }
 }

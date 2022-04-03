@@ -17,6 +17,12 @@ public class StripeClientProperties {
     private String webhookSecret;
 
     @NotNull
+    private String taxRate;
+
+    @NotNull
+    private String trialPeriodDays;
+
+    @NotNull
     private String successUrl;
 
     @NotNull
