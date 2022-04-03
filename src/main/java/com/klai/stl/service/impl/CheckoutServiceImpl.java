@@ -2,6 +2,7 @@ package com.klai.stl.service.impl;
 
 import static com.klai.stl.config.Constants.STRIPE_CHECKOUT_PARAM_COMPANY_KEY;
 import static com.klai.stl.config.Constants.STRIPE_CHECKOUT_PARAM_SUBSCRIPTION_KEY;
+import static java.util.Objects.isNull;
 
 import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.config.StripeClientProperties;
@@ -47,6 +48,9 @@ public class CheckoutServiceImpl implements CheckoutService {
         Map<String, Object> lineItem1 = new HashMap<>();
         lineItem1.put("price", checkoutRequest.getItemReference());
         lineItem1.put("quantity", 1);
+        List<String> taxRates = new ArrayList<>();
+        taxRates.add("txr_1KkBVwLQttstmIiWZpWAC6Ue");
+        lineItem1.put("tax_rates", taxRates);
         lineItems.add(lineItem1);
 
         Map<String, String> metadata = new HashMap<>();
@@ -58,7 +62,15 @@ public class CheckoutServiceImpl implements CheckoutService {
         params.put("cancel_url", stripeClientProperties.getCancelUrl());
         params.put("payment_method_types", paymentMethodTypes);
         params.put("line_items", lineItems);
+
+        if (!isNull(checkoutRequest.getTrialPeriodDays())) {
+            Map<String, Object> subscriptionData = new HashMap<>();
+            subscriptionData.put("trial_period_days", checkoutRequest.getTrialPeriodDays());
+            params.put("subscription_data", subscriptionData);
+        }
+
         params.put("mode", "subscription");
+        params.put("allow_promotion_codes", "true");
         params.put("client_reference_id", checkoutRequest.getCompanyReference());
         params.put("metadata", metadata);
         return params;
