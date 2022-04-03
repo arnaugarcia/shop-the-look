@@ -1,0 +1,13 @@
+<ng-container *ngIf="product">
+  <td>
+    <a *ngIf="product.link" [href]="product.link" target="_blank">{{ product.sku }}</a>
+    <span *ngIf="!product.link">{{ product.sku }}</span>
+  </td>
+  <td>{{ product.name }}</td>
+  <td>{{ product.price }}</td>
+  <td nowrap>
+    <button (click)="remove.emit(product)" [disabled]="loading" class="btn btn-raised btn-outline-danger btn-sm" type="button">
+      <i [data-feather]="'trash'"></i>
+    </button>
+  </td>
+</ng-container>

@@ -9,9 +9,17 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ImportModalSuccessComponent } from './components/import-modal-success/import-modal-success.component';
 import { ImportModalErrorComponent } from './components/import-modal-error/import-modal-error.component';
+import { ProductImportListItemComponent } from './pages/import/produt-import-list-item/product-import-list-item.component';
 
 @NgModule({
-  declarations: [ProductComponent, ProductImportComponent, DragAndDropDirective, ImportModalSuccessComponent, ImportModalErrorComponent],
+  declarations: [
+    ProductComponent,
+    ProductImportComponent,
+    DragAndDropDirective,
+    ImportModalSuccessComponent,
+    ImportModalErrorComponent,
+    ProductImportListItemComponent,
+  ],
   imports: [SharedModule, ProductRoutingModule, NgxPaginationModule, ContentHeaderModule, FileUploadModule],
 })
 export class ProductModule {}
