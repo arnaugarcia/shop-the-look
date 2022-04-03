@@ -16,10 +16,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CheckoutServiceImpl implements CheckoutService {
+
+    private static final Logger log = LoggerFactory.getLogger(CheckoutServiceImpl.class);
 
     private final StripeClientProperties stripeClientProperties;
 
@@ -31,6 +35,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     public CheckoutData checkout(CheckoutRequest checkoutRequest) {
         try {
             Map<String, Object> params = buildCheckoutSessionParams(checkoutRequest);
+            log.info("Created a session with params: {}", params);
             Session session = Session.create(params);
             return CheckoutData.builder().checkoutUrl(new URL(session.getUrl())).build();
         } catch (StripeException | MalformedURLException e) {
