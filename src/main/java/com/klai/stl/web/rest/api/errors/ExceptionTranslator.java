@@ -453,6 +453,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(ex, problem, request);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleStripeCheckoutException(
+        com.klai.stl.service.exception.StripeCheckoutException ex,
+        NativeWebRequest request
+    ) {
+        BadGatewayAlertException problem = new BadGatewayAlertException(BAD_GATEWAY, ex.getMessage(), "stripe", "checkouterror");
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
     @Override
     public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
