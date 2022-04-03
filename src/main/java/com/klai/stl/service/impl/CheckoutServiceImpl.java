@@ -7,6 +7,7 @@ import com.klai.stl.config.ApplicationProperties;
 import com.klai.stl.config.StripeClientProperties;
 import com.klai.stl.service.CheckoutService;
 import com.klai.stl.service.dto.requests.CheckoutRequest;
+import com.klai.stl.service.exception.StripeCheckoutException;
 import com.klai.stl.service.reponse.CheckoutData;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -40,7 +41,7 @@ public class CheckoutServiceImpl implements CheckoutService {
             return CheckoutData.builder().checkoutUrl(new URL(session.getUrl())).build();
         } catch (StripeException | MalformedURLException e) {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new StripeCheckoutException();
         }
     }
 
