@@ -47,6 +47,9 @@
                 <h4 stlTranslate="products.import.table.title">Loaded products preview</h4>
                 <p><span stlTranslate="products.import.table.loaded">Loaded products:</span> {{ products.length }}</p>
               </div>
+              <ngb-alert *ngIf="error" [dismissible]="false" [type]="'danger'">
+                <div [innerHTML]="'products.import.error' | translate" class="alert-body"></div>
+              </ngb-alert>
               <table class="table table-hover table-hover-animation">
                 <thead>
                   <tr>

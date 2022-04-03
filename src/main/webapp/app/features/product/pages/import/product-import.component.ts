@@ -90,6 +90,9 @@ export class ProductImportComponent {
       skipEmptyLines: 'greedy',
       transformHeader: (header: string) => header.toUpperCase(),
       complete: (results: ParseResult) => {
+        if (!results.data.length) {
+          this.error = true;
+        }
         this.products = results.data
           .map(
             (rawProduct: any) =>
@@ -119,7 +122,6 @@ export class ProductImportComponent {
       },
       (error: HttpErrorResponse) => {
         this.loading = false;
-        this.error = true;
         this.progressBar = 0;
         this.handleAndShowErrorModal(error);
         this.removeAllFromQueue();
