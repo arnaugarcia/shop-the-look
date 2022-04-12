@@ -72,7 +72,6 @@ class ProductResourceIT {
     @Autowired
     private MockMvc restProductMockMvc;
 
-    private ProductRequest productRequest;
     private Product product;
 
     /**
@@ -85,7 +84,6 @@ class ProductResourceIT {
         Product product = new Product()
             .sku(DEFAULT_SKU + randomAlphabetic(5).toUpperCase(ROOT))
             .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
             .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
             .price("DEFAULT_PRICE");
@@ -105,7 +103,6 @@ class ProductResourceIT {
 
     @BeforeEach
     public void initTest() {
-        productRequest = buildRequest();
         product = createProduct(em);
     }
 
@@ -202,23 +199,20 @@ class ProductResourceIT {
     @WithMockUser(authorities = ADMIN)
     public void filterProductsAsAdmin() throws Exception {
         Company company1 = createBasicCompany(em);
-        Company company2 = createBasicCompany(em);
 
         Product product1 = createProduct(em);
         product1.setName("product");
+
         Product product2 = createProduct(em);
         product2.setSku("product");
-        Product product3 = createProduct(em);
-        product3.setDescription("product");
 
+        Product product3 = createProduct(em);
         Product product4 = createProduct(em);
-        Product product5 = createProduct(em);
 
         company1.addProduct(product1);
         company1.addProduct(product2);
+        company1.addProduct(product3);
         company1.addProduct(product4);
-        company1.addProduct(product5);
-        company2.addProduct(product3);
 
         em.persist(product1);
         em.persist(product2);
@@ -245,14 +239,12 @@ class ProductResourceIT {
         product1.setName("product");
         Product product2 = createProduct(em);
         product2.setSku("product");
+
         Product product3 = createProduct(em);
-        product3.setDescription("product");
-        Product product4 = createProduct(em);
 
         company1.addProduct(product1);
         company1.addProduct(product2);
-        company1.addProduct(product4);
-        company2.addProduct(product3);
+        company1.addProduct(product3);
 
         em.persist(product1);
         em.persist(product2);
@@ -280,12 +272,9 @@ class ProductResourceIT {
         Product product2 = createProduct(em);
         product2.setSku("product");
         Product product3 = createProduct(em);
-        product3.setDescription("product");
-        Product product4 = createProduct(em);
 
         company1.addProduct(product1);
         company1.addProduct(product2);
-        company1.addProduct(product4);
         company2.addProduct(product3);
 
         em.persist(product1);

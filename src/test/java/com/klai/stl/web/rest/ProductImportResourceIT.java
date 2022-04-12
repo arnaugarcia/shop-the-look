@@ -93,7 +93,6 @@ class ProductImportResourceIT {
         Product product = new Product()
             .sku(DEFAULT_SKU + randomAlphabetic(5).toUpperCase(ROOT))
             .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
             .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
             .price("DEFAULT_PRICE")
@@ -719,7 +718,6 @@ class ProductImportResourceIT {
         assertThat(result.getReference()).isEqualTo(product.getReference());
         assertThat(result.getSku()).isEqualTo(product.getSku());
         assertThat(result.getName()).isEqualTo(productRequest.getName());
-        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
         assertThat(result.getLink()).isEqualTo(productRequest.getLink());
         assertThat(result.getReference()).isEqualTo(product.getReference());
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -765,7 +763,6 @@ class ProductImportResourceIT {
         assertThat(result.getReference()).isNotNull();
         assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getName()).isEqualTo(productRequest.getName());
-        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
         assertThat(result.getLink()).isEqualTo(productRequest.getLink());
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
         assertThat(result.getPrice()).isEqualTo(String.valueOf(productRequest.getPrice()));
