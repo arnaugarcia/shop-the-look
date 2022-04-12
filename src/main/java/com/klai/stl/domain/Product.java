@@ -1,7 +1,6 @@
 package com.klai.stl.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.klai.stl.domain.enumeration.ProductAvailability;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,22 +43,9 @@ public class Product implements Serializable {
     @Column(name = "reference", nullable = false)
     private String reference;
 
-    @Column(name = "image_link")
-    private String imageLink;
-
-    @Column(name = "additional_image_link")
-    private String additionalImageLink;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "availability")
-    private ProductAvailability availability;
-
     @NotNull
     @Column(name = "price", nullable = false)
     private String price;
-
-    @Column(name = "category")
-    private String category;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -153,45 +139,6 @@ public class Product implements Serializable {
         this.reference = reference;
     }
 
-    public String getImageLink() {
-        return this.imageLink;
-    }
-
-    public Product imageLink(String imageLink) {
-        this.imageLink = imageLink;
-        return this;
-    }
-
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
-    }
-
-    public String getAdditionalImageLink() {
-        return this.additionalImageLink;
-    }
-
-    public Product additionalImageLink(String additionalImageLink) {
-        this.additionalImageLink = additionalImageLink;
-        return this;
-    }
-
-    public void setAdditionalImageLink(String additionalImageLink) {
-        this.additionalImageLink = additionalImageLink;
-    }
-
-    public ProductAvailability getAvailability() {
-        return this.availability;
-    }
-
-    public Product availability(ProductAvailability availability) {
-        this.availability = availability;
-        return this;
-    }
-
-    public void setAvailability(ProductAvailability availability) {
-        this.availability = availability;
-    }
-
     public String getPrice() {
         return this.price;
     }
@@ -203,19 +150,6 @@ public class Product implements Serializable {
 
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    public String getCategory() {
-        return this.category;
-    }
-
-    public Product category(String category) {
-        this.category = category;
-        return this;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public Company getCompany() {
@@ -291,11 +225,7 @@ public class Product implements Serializable {
             ", reference='" + getReference() + "'" +
             ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
-            ", imageLink='" + getImageLink() + "'" +
-            ", additionalImageLink='" + getAdditionalImageLink() + "'" +
-            ", availability='" + getAvailability() + "'" +
             ", price='" + getPrice() + "'" +
-            ", category='" + getCategory() + "'" +
             "}";
     }
 }
