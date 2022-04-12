@@ -46,7 +46,6 @@ public class ImportProductsServiceImpl implements ImportProductsService {
         original.setPrice(newProduct.getPrice());
         original.setName(newProduct.getName());
         original.setLink(newProduct.getLink());
-        original.setDescription(newProduct.getDescription());
         return original;
     }
 
