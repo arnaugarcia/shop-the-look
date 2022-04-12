@@ -94,10 +94,7 @@ export class ProductImportComponent {
           this.error = true;
         }
         this.products = results.data
-          .map(
-            (rawProduct: any) =>
-              new ProductImport(rawProduct.SKU, rawProduct.NAME, rawProduct.DESCRIPTION, rawProduct.URL, rawProduct.PRICE)
-          )
+          .map((rawProduct: any) => new ProductImport(rawProduct.SKU, rawProduct.NAME, rawProduct.URL, rawProduct.PRICE))
           .sort((product1: ProductImport) => (product1.isValid() ? 1 : -1));
         this.loading = false;
       },
