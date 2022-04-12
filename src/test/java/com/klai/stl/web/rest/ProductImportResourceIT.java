@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
-import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.mapper.ProductMapper;
@@ -61,9 +60,6 @@ class ProductImportResourceIT {
     private static final String DEFAULT_ADDITIONAL_IMAGE_LINK = "AAAAAAAAAA";
     private static final String UPDATED_ADDITIONAL_IMAGE_LINK = "BBBBBBBBBB";
 
-    private static final ProductAvailability DEFAULT_AVAILABILITY = ProductAvailability.IN_STOCK;
-    private static final ProductAvailability UPDATED_AVAILABILITY = ProductAvailability.OUT_OF_STOCK;
-
     private static final float DEFAULT_PRICE = 15.80f;
     private static final float UPDATED_PRICE = 10.80f;
 
@@ -100,11 +96,7 @@ class ProductImportResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
             .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
-            .imageLink(DEFAULT_IMAGE_LINK)
-            .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
-            .availability(DEFAULT_AVAILABILITY)
             .price("DEFAULT_PRICE")
-            .category(DEFAULT_CATEGORY)
             .company(company);
         em.persist(product);
         return product;
