@@ -35,17 +35,7 @@
     "clientTheme": "none",
     "clientThemeVariant": "",
     "applicationIndex": 0,
-    "entities": [
-      "Company",
-      "Space",
-      "SpaceTemplate",
-      "Photo",
-      "SubscriptionPlan",
-      "Product",
-      "Coordinate",
-      "BillingAddress",
-      "Preferences"
-    ],
+    "entities": ["Company", "Space", "Photo", "SubscriptionPlan", "Product", "Coordinate", "BillingAddress", "Preferences"],
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
     "blueprints": [],

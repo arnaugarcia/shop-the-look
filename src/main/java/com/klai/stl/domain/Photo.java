@@ -70,10 +70,6 @@ public class Photo implements Serializable {
     @JsonIgnoreProperties(value = { "photos", "company" }, allowSetters = true)
     private Space space;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "photos" }, allowSetters = true)
-    private SpaceTemplate spaceTemplate;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -260,19 +256,6 @@ public class Photo implements Serializable {
 
     public void setSpace(Space space) {
         this.space = space;
-    }
-
-    public SpaceTemplate getSpaceTemplate() {
-        return this.spaceTemplate;
-    }
-
-    public Photo spaceTemplate(SpaceTemplate spaceTemplate) {
-        this.setSpaceTemplate(spaceTemplate);
-        return this;
-    }
-
-    public void setSpaceTemplate(SpaceTemplate spaceTemplate) {
-        this.spaceTemplate = spaceTemplate;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

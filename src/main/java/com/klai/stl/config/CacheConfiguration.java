@@ -59,8 +59,6 @@ public class CacheConfiguration {
             createCache(cm, com.klai.stl.domain.Company.class.getName() + ".users");
             createCache(cm, com.klai.stl.domain.Space.class.getName());
             createCache(cm, com.klai.stl.domain.Space.class.getName() + ".photos");
-            createCache(cm, com.klai.stl.domain.SpaceTemplate.class.getName());
-            createCache(cm, com.klai.stl.domain.SpaceTemplate.class.getName() + ".photos");
             createCache(cm, com.klai.stl.domain.Photo.class.getName());
             createCache(cm, com.klai.stl.domain.Photo.class.getName() + ".coordinates");
             createCache(cm, com.klai.stl.domain.SubscriptionPlan.class.getName());

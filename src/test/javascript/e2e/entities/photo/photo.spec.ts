@@ -52,7 +52,6 @@ describe('Photo e2e test', () => {
       photoUpdatePage.orientationSelectLastOption(),
       photoUpdatePage.getDemoInput().click(),
       photoUpdatePage.spaceSelectLastOption(),
-      photoUpdatePage.spaceTemplateSelectLastOption(),
     ]);
 
     await photoUpdatePage.save();

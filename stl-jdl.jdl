@@ -73,14 +73,6 @@ entity Space {
     visible Boolean
 }
 
-entity SpaceTemplate {
-	name String required,
-    description String,
-    maxProducts Integer required,
-    maxPhotos Integer required,
-    active Boolean
-}
-
 entity Photo {
 	name String,
     description String,
@@ -135,8 +127,6 @@ relationship OneToMany {
     Company{space(reference)} to Space{company(nif) required},
 
     Space{photo(name) required} to Photo{space(reference)},
-
-    SpaceTemplate{photo(name) required} to Photo{spaceTemplate},
 
     Photo{coordinate} to Coordinate{photo required},
 

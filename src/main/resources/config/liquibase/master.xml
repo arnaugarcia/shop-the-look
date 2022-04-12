@@ -34,4 +34,5 @@
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
     <include file="config/liquibase/changelog/20220412134927_removed_product_columns.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220412151216_company_preferences_constraint_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220412163435_removed_entity_SpaceTemplate.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

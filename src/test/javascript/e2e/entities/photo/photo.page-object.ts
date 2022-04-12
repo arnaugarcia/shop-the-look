@@ -1,4 +1,4 @@
-import { element, by, ElementFinder } from 'protractor';
+import { by, element, ElementFinder } from 'protractor';
 
 export class PhotoComponentsPage {
   createButton = element(by.id('jh-create-entity'));
@@ -40,7 +40,6 @@ export class PhotoUpdatePage {
   demoInput = element(by.id('field_demo'));
 
   spaceSelect = element(by.id('field_space'));
-  spaceTemplateSelect = element(by.id('field_spaceTemplate'));
 
   async getPageTitle(): Promise<string> {
     return this.pageTitle.getAttribute('stlTranslate');
@@ -132,22 +131,6 @@ export class PhotoUpdatePage {
 
   async getSpaceSelectedOption(): Promise<string> {
     return await this.spaceSelect.element(by.css('option:checked')).getText();
-  }
-
-  async spaceTemplateSelectLastOption(): Promise<void> {
-    await this.spaceTemplateSelect.all(by.tagName('option')).last().click();
-  }
-
-  async spaceTemplateSelectOption(option: string): Promise<void> {
-    await this.spaceTemplateSelect.sendKeys(option);
-  }
-
-  getSpaceTemplateSelect(): ElementFinder {
-    return this.spaceTemplateSelect;
-  }
-
-  async getSpaceTemplateSelectedOption(): Promise<string> {
-    return await this.spaceTemplateSelect.element(by.css('option:checked')).getText();
   }
 
   async save(): Promise<void> {
