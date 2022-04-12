@@ -84,7 +84,7 @@ public class Company implements Serializable {
 
     @JsonIgnoreProperties(value = { "company" }, allowSetters = true)
     @OneToOne(cascade = ALL)
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, nullable = false)
     private Preferences preferences = new Preferences();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true)

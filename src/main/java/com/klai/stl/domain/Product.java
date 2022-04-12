@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Product.
  */
 @Entity
-@Table(name = "product")
+@Table(name = "product", uniqueConstraints = { @UniqueConstraint(columnNames = { "sku", "company_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Product implements Serializable {
 
@@ -36,7 +36,7 @@ public class Product implements Serializable {
     private String link;
 
     @NotNull
-    @Column(name = "reference", nullable = false)
+    @Column(name = "reference", nullable = false, unique = true)
     private String reference;
 
     @NotNull

@@ -35,7 +35,7 @@ public class Photo implements Serializable {
     private String link;
 
     @NotNull
-    @Column(name = "reference", nullable = false)
+    @Column(name = "reference", nullable = false, unique = true)
     private String reference;
 
     @NotNull

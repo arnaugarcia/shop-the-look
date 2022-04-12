@@ -36,7 +36,7 @@ public class Coordinate implements Serializable {
     private Double y;
 
     @NotNull
-    @Column(name = "reference", nullable = false)
+    @Column(name = "reference", nullable = false, unique = true)
     private String reference;
 
     @ManyToOne(optional = false)

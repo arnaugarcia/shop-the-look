@@ -32,7 +32,7 @@ public class Preferences implements Serializable {
     @Column(name = "feed_url")
     private String feedUrl;
 
-    @Column(name = "remaining_imports")
+    @Column(name = "remaining_imports", columnDefinition = "integer default 10", nullable = false)
     private Integer remainingImports = DEFAULT_REMAINING_IMPORTS;
 
     @Column(name = "last_import_by")
