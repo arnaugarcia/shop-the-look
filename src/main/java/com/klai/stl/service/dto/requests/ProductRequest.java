@@ -18,11 +18,11 @@ public class ProductRequest {
     String sku;
 
     @NotBlank
-    float price;
+    String price;
 
     @Builder
     @Jacksonized
-    public ProductRequest(String name, String link, String sku, float price) {
+    public ProductRequest(String name, String link, String sku, String price) {
         this.name = name;
         this.link = link;
         this.sku = sku;
