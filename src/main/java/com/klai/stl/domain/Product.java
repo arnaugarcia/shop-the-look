@@ -31,10 +31,6 @@ public class Product implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Column(name = "description")
-    private String description;
-
     @NotNull
     @Column(name = "link", nullable = false)
     private String link;
@@ -98,19 +94,6 @@ public class Product implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public Product description(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getLink() {
@@ -223,7 +206,6 @@ public class Product implements Serializable {
             ", sku='" + getSku() + "'" +
             ", name='" + getName() + "'" +
             ", reference='" + getReference() + "'" +
-            ", description='" + getDescription() + "'" +
             ", link='" + getLink() + "'" +
             ", price='" + getPrice() + "'" +
             "}";
