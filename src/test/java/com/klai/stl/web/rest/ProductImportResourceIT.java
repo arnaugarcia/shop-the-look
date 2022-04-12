@@ -47,24 +47,11 @@ class ProductImportResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
-    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
-
     private static final String DEFAULT_LINK = "AAAAAAAAAA";
     private static final String UPDATED_LINK = "BBBBBBBBBB";
 
-    private static final String DEFAULT_IMAGE_LINK = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE_LINK = "BBBBBBBBBB";
-
-    private static final String DEFAULT_ADDITIONAL_IMAGE_LINK = "AAAAAAAAAA";
-    private static final String UPDATED_ADDITIONAL_IMAGE_LINK = "BBBBBBBBBB";
-
-    private static final float DEFAULT_PRICE = 15.80f;
-    private static final float UPDATED_PRICE = 10.80f;
-
-    private static final String DEFAULT_CATEGORY = "AAAAAAAAAA";
-    private static final String UPDATED_CATEGORY = "BBBBBBBBBB";
+    private static final String DEFAULT_PRICE = "15.80";
+    private static final String UPDATED_PRICE = "10.80";
 
     private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
 

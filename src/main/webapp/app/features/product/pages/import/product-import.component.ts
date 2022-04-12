@@ -120,7 +120,7 @@ export class ProductImportComponent {
       (error: HttpErrorResponse) => {
         this.loading = false;
         this.progressBar = 0;
-        this.handleAndShowErrorModal(error);
+        this.showErrorModal();
         this.removeAllFromQueue();
       }
     );
@@ -138,12 +138,10 @@ export class ProductImportComponent {
     }
   }
 
-  private handleAndShowErrorModal(error: HttpErrorResponse): void {
-    if (error.error.detail.contains('RequestTooBigException')) {
-      this.modalService.open(ImportModalErrorComponent, {
-        centered: true,
-        windowClass: 'modal modal-danger',
-      });
-    }
+  private showErrorModal(): void {
+    this.modalService.open(ImportModalErrorComponent, {
+      centered: true,
+      windowClass: 'modal modal-danger',
+    });
   }
 }

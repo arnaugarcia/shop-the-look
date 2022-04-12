@@ -1,6 +1,8 @@
 {
   "products.import.error": "It seems that has been an error loading the products of the file. Please, <a href='https://shopthelook.es/product-import-guidelines/' target='_blank'>check our guidelines</a> or <a href='mailto:contact@weareklai.com'>contact us.</a>",
   "products.import.filedrop.text": "DROP CSV / TSV FILES TO UPLOAD PRODUCTS",
+  "products.import.modal.error.description": "Something went wrong with the import process. Please try again and if the problem persists. Contact us.",
+  "products.import.modal.error.title": "Something went wrong :(",
   "products.import.multiple.selector": "Select file",
   "products.import.multiple.text": "Select CSV/TSV file:",
   "products.import.multiple.title": "Select files",

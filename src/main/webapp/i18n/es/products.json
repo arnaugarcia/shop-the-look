@@ -1,6 +1,8 @@
 {
   "products.import.error": "Parece que ha habido un error al cargar los productos del archivo.  Por favor,  consulte nuestra <a href='https://shopthelook.es/product-import-guidelines/' target='_blank'> guía para importar productos </a> o <a href='mailto:contact@weareklai.com'>póngase en contacto con nosotros.</a>",
   "products.import.filedrop.text": "SOLTAR ARCHIVOS CSV / TSV PARA CARGAR PRODUCTOS",
+  "products.import.modal.error.description": "Algo salió mal con el proceso de importación.  Vuelva a intentarlo y si el problema persiste,  contáctenos.",
+  "products.import.modal.error.title": "Algo salió mal :(",
   "products.import.multiple.selector": "Seleccionar archivo",
   "products.import.multiple.text": "Seleccione archivos CSV / TSV:",
   "products.import.multiple.title": "Seleccionar archivo",
