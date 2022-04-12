@@ -17,7 +17,6 @@ import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.Company;
 import com.klai.stl.domain.Product;
 import com.klai.stl.domain.User;
-import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.web.rest.api.ProductResource;
 import javax.persistence.EntityManager;
@@ -55,9 +54,6 @@ class ProductResourceIT {
     private static final String DEFAULT_ADDITIONAL_IMAGE_LINK = "AAAAAAAAAA";
     private static final String UPDATED_ADDITIONAL_IMAGE_LINK = "BBBBBBBBBB";
 
-    private static final ProductAvailability DEFAULT_AVAILABILITY = ProductAvailability.IN_STOCK;
-    private static final ProductAvailability UPDATED_AVAILABILITY = ProductAvailability.OUT_OF_STOCK;
-
     private static final float DEFAULT_PRICE = 15.80f;
     private static final float UPDATED_PRICE = 10.80f;
 
@@ -76,7 +72,6 @@ class ProductResourceIT {
     @Autowired
     private MockMvc restProductMockMvc;
 
-    private ProductRequest productRequest;
     private Product product;
 
     /**
@@ -89,14 +84,9 @@ class ProductResourceIT {
         Product product = new Product()
             .sku(DEFAULT_SKU + randomAlphabetic(5).toUpperCase(ROOT))
             .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
             .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
-            .imageLink(DEFAULT_IMAGE_LINK)
-            .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
-            .availability(DEFAULT_AVAILABILITY)
-            .price("DEFAULT_PRICE")
-            .category(DEFAULT_CATEGORY);
+            .price("DEFAULT_PRICE");
         // Add required entity
         Company company;
         if (findAll(em, Company.class).isEmpty()) {
@@ -113,7 +103,6 @@ class ProductResourceIT {
 
     @BeforeEach
     public void initTest() {
-        productRequest = buildRequest();
         product = createProduct(em);
     }
 
@@ -210,23 +199,18 @@ class ProductResourceIT {
     @WithMockUser(authorities = ADMIN)
     public void filterProductsAsAdmin() throws Exception {
         Company company1 = createBasicCompany(em);
-        Company company2 = createBasicCompany(em);
 
         Product product1 = createProduct(em);
         product1.setName("product");
+
         Product product2 = createProduct(em);
         product2.setSku("product");
-        Product product3 = createProduct(em);
-        product3.setDescription("product");
 
-        Product product4 = createProduct(em);
-        Product product5 = createProduct(em);
+        Product product3 = createProduct(em);
 
         company1.addProduct(product1);
         company1.addProduct(product2);
-        company1.addProduct(product4);
-        company1.addProduct(product5);
-        company2.addProduct(product3);
+        company1.addProduct(product3);
 
         em.persist(product1);
         em.persist(product2);
@@ -235,7 +219,7 @@ class ProductResourceIT {
         restProductMockMvc
             .perform(get(ENTITY_API_URL + "?keyword=product").contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(3)));
+            .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
@@ -253,14 +237,12 @@ class ProductResourceIT {
         product1.setName("product");
         Product product2 = createProduct(em);
         product2.setSku("product");
+
         Product product3 = createProduct(em);
-        product3.setDescription("product");
-        Product product4 = createProduct(em);
 
         company1.addProduct(product1);
         company1.addProduct(product2);
-        company1.addProduct(product4);
-        company2.addProduct(product3);
+        company1.addProduct(product3);
 
         em.persist(product1);
         em.persist(product2);
@@ -288,12 +270,9 @@ class ProductResourceIT {
         Product product2 = createProduct(em);
         product2.setSku("product");
         Product product3 = createProduct(em);
-        product3.setDescription("product");
-        Product product4 = createProduct(em);
 
         company1.addProduct(product1);
         company1.addProduct(product2);
-        company1.addProduct(product4);
         company2.addProduct(product3);
 
         em.persist(product1);

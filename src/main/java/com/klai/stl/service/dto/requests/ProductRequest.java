@@ -14,8 +14,6 @@ public class ProductRequest {
     @NotBlank
     String link;
 
-    String description;
-
     @NotBlank
     String sku;
 
@@ -24,10 +22,9 @@ public class ProductRequest {
 
     @Builder
     @Jacksonized
-    public ProductRequest(String name, String link, String description, String sku, float price) {
+    public ProductRequest(String name, String link, String sku, float price) {
         this.name = name;
         this.link = link;
-        this.description = description;
         this.sku = sku;
         this.price = price;
     }

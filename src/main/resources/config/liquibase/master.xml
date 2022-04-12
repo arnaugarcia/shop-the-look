@@ -32,4 +32,6 @@
     <include file="config/liquibase/changelog/20210630191350_added_entity_constraints_Coordinate.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20220412134927_removed_product_columns.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220412151216_company_preferences_constraint_changelog.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

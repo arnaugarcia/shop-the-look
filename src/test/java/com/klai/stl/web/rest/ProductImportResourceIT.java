@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
-import com.klai.stl.domain.enumeration.ProductAvailability;
 import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.service.dto.requests.ProductRequest;
 import com.klai.stl.service.mapper.ProductMapper;
@@ -61,9 +60,6 @@ class ProductImportResourceIT {
     private static final String DEFAULT_ADDITIONAL_IMAGE_LINK = "AAAAAAAAAA";
     private static final String UPDATED_ADDITIONAL_IMAGE_LINK = "BBBBBBBBBB";
 
-    private static final ProductAvailability DEFAULT_AVAILABILITY = ProductAvailability.IN_STOCK;
-    private static final ProductAvailability UPDATED_AVAILABILITY = ProductAvailability.OUT_OF_STOCK;
-
     private static final float DEFAULT_PRICE = 15.80f;
     private static final float UPDATED_PRICE = 10.80f;
 
@@ -97,14 +93,9 @@ class ProductImportResourceIT {
         Product product = new Product()
             .sku(DEFAULT_SKU + randomAlphabetic(5).toUpperCase(ROOT))
             .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
             .link(DEFAULT_LINK)
             .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
-            .imageLink(DEFAULT_IMAGE_LINK)
-            .additionalImageLink(DEFAULT_ADDITIONAL_IMAGE_LINK)
-            .availability(DEFAULT_AVAILABILITY)
             .price("DEFAULT_PRICE")
-            .category(DEFAULT_CATEGORY)
             .company(company);
         em.persist(product);
         return product;
@@ -727,7 +718,6 @@ class ProductImportResourceIT {
         assertThat(result.getReference()).isEqualTo(product.getReference());
         assertThat(result.getSku()).isEqualTo(product.getSku());
         assertThat(result.getName()).isEqualTo(productRequest.getName());
-        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
         assertThat(result.getLink()).isEqualTo(productRequest.getLink());
         assertThat(result.getReference()).isEqualTo(product.getReference());
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
@@ -773,7 +763,6 @@ class ProductImportResourceIT {
         assertThat(result.getReference()).isNotNull();
         assertThat(result.getSku()).isEqualTo(productRequest.getSku());
         assertThat(result.getName()).isEqualTo(productRequest.getName());
-        assertThat(result.getDescription()).isEqualTo(productRequest.getDescription());
         assertThat(result.getLink()).isEqualTo(productRequest.getLink());
         assertThat(result.getCompany().getReference()).isEqualTo(company.getReference());
         assertThat(result.getPrice()).isEqualTo(String.valueOf(productRequest.getPrice()));
