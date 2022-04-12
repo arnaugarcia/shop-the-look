@@ -3,13 +3,9 @@ import { ICompany } from '../../company/model/company.model';
 export interface IProduct {
   sku?: string;
   name?: string;
-  description?: string;
   reference?: string;
   link?: string;
-  imageLink?: string;
-  additionalImageLink?: string | null;
   price?: string;
-  category?: string | null;
   companyReference?: string;
 }
 
