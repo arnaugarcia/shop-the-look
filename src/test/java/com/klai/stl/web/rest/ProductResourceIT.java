@@ -207,12 +207,10 @@ class ProductResourceIT {
         product2.setSku("product");
 
         Product product3 = createProduct(em);
-        Product product4 = createProduct(em);
 
         company1.addProduct(product1);
         company1.addProduct(product2);
         company1.addProduct(product3);
-        company1.addProduct(product4);
 
         em.persist(product1);
         em.persist(product2);
@@ -221,7 +219,7 @@ class ProductResourceIT {
         restProductMockMvc
             .perform(get(ENTITY_API_URL + "?keyword=product").contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(3)));
+            .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
