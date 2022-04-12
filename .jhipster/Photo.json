@@ -52,12 +52,6 @@
       "otherEntityRelationshipName": "photo",
       "relationshipName": "space",
       "otherEntityField": "reference"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "spaceTemplate",
-      "otherEntityRelationshipName": "photo",
-      "relationshipName": "spaceTemplate"
     }
   ],
   "entityTableName": "photo",

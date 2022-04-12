@@ -46,7 +46,7 @@ public class Coordinate implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "coordinates", "space", "spaceTemplate" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "coordinates", "space" }, allowSetters = true)
     private Photo photo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
