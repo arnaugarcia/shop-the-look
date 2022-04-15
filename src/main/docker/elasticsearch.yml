@@ -1,12 +1,7 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 version: '3.8'
 services:
-  shopthelook-app:
-    image: shop-the-look
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod,api-docs
-      - SPRING_ELASTICSEARCH_URIS=http://stl-elasticsearch:9200
-  stl-elasticsearch:
+  test-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
     # volumes:
     #   - ~/volumes/jhipster/test/elasticsearch/:/usr/share/elasticsearch/data/
@@ -16,5 +11,16 @@ services:
       - 127.0.0.1:9200:9200
       - 127.0.0.1:9300:9300
     environment:
-      - 'ES_JAVA_OPTS=-Xms1024m -Xmx1024m'
+      - 'xpack.security.enabled=false'
       - 'discovery.type=single-node'
+      - 'bootstrap.memory_lock=true'
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
