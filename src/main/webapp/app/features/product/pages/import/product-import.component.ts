@@ -9,7 +9,6 @@ import { ImportModalErrorComponent } from '../../components/import-modal-error/i
 import { ImportProduct } from '../../models/product-import.model';
 import { AccountService } from '../../../../core/auth/account.service';
 import { ProductImportService } from '../../services/product-import.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'stl-product-import',
@@ -117,7 +116,7 @@ export class ProductImportComponent {
           windowClass: 'modal modal-success',
         });
       },
-      (error: HttpErrorResponse) => {
+      () => {
         this.loading = false;
         this.progressBar = 0;
         this.showErrorModal();
