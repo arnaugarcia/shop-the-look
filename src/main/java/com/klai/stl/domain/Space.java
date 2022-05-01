@@ -41,18 +41,18 @@ public class Space implements Serializable {
     private String reference;
 
     @Enumerated(STRING)
-    @Column(name = "template", nullable = false)
+    @Column(name = "template")
     private SpaceTemplateOption template;
 
     @Column(name = "description")
     private String description;
 
     @CreationTimestamp
-    @Column(name = "createdAt", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updatedAt", nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "space", orphanRemoval = true)

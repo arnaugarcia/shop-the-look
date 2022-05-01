@@ -18,7 +18,4 @@
     <changeSet author="arnaugarcia97" id="1651401867371-4">
         <dropColumn columnName="visible" tableName="space"/>
     </changeSet>
-    <changeSet author="arnaugarcia97" id="1651401867371-5">
-        <addNotNullConstraint tableName="space" columnName="template" columnDataType="varchar(255)" validate="true"/>
-    </changeSet>
 </databaseChangeLog>
