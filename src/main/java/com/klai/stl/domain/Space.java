@@ -41,21 +41,18 @@ public class Space implements Serializable {
     private String reference;
 
     @Enumerated(STRING)
-    @Column(name = "template", nullable = false, unique = true)
+    @Column(name = "template", nullable = false)
     private SpaceTemplateOption template;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "visible")
-    private Boolean visible;
-
     @CreationTimestamp
-    @Column(name = "createdAt")
+    @Column(name = "createdAt", nullable = false, updatable = false)
     private Instant createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updatedAt")
+    @Column(name = "updatedAt", nullable = false)
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "space", orphanRemoval = true)
@@ -148,19 +145,6 @@ public class Space implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Boolean getVisible() {
-        return this.visible;
-    }
-
-    public Space visible(Boolean visible) {
-        this.visible = visible;
-        return this;
-    }
-
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
     }
 
     public Instant getUpdatedAt() {
@@ -262,7 +246,6 @@ public class Space implements Serializable {
             ", reference='" + getReference() + "'" +
             ", template='" + getTemplate() + "'" +
             ", description='" + getDescription() + "'" +
-            ", visible='" + getVisible() + "'" +
             "}";
     }
 }
