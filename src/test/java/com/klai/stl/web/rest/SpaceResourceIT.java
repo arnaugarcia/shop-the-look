@@ -130,6 +130,8 @@ class SpaceResourceIT {
         assertThat(result.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(result.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(result.getActive()).isFalse();
+        assertThat(result.getCreatedAt()).isNotNull();
+        assertThat(result.getUpdatedAt()).isNotNull();
     }
 
     @Test
@@ -166,6 +168,8 @@ class SpaceResourceIT {
         assertThat(result.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(result.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(result.getActive()).isFalse();
+        assertThat(result.getCreatedAt()).isNotNull();
+        assertThat(result.getUpdatedAt()).isNotNull();
     }
 
     @Ignore
