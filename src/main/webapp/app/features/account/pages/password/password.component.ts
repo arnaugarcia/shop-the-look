@@ -8,10 +8,6 @@ import { PasswordService } from '../../services/password.service';
   styleUrls: ['./password.component.scss'],
 })
 export class PasswordComponent {
-  public passwordTextTypeOld = false;
-  public passwordTextTypeNew = false;
-  public passwordTextTypeRetype = false;
-
   public doNotMatch = false;
   public error = false;
   public success = false;
@@ -37,30 +33,5 @@ export class PasswordComponent {
         () => (this.error = true)
       );
     }
-  }
-
-  /**
-   * Toggle Password Text Type Old
-   */
-  togglePasswordTextTypeOld(): void {
-    this.passwordTextTypeOld = !this.passwordTextTypeOld;
-  }
-
-  /**
-   * Toggle Password Text Type New
-   */
-  togglePasswordTextTypeNew(): void {
-    this.passwordTextTypeNew = !this.passwordTextTypeNew;
-  }
-
-  /**
-   * Toggle Password Text Type Retype
-   */
-  togglePasswordTextTypeRetype(): void {
-    this.passwordTextTypeRetype = !this.passwordTextTypeRetype;
-  }
-
-  updatePassword(): void {
-    console.error('updatePassword');
   }
 }
