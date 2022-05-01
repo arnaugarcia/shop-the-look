@@ -12,8 +12,8 @@ import { FormatMediumDatePipe } from './date/format-medium-date.pipe';
 import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
-import { PasswordStrengthBarComponent } from '../auth/password/password-strength-bar/password-strength-bar.component';
 import { RoleNamePipe } from './role/role-name.pipe';
+import { PasswordStrengthBarComponent } from './password-strength-bar/password-strength-bar.component';
 
 @NgModule({
   imports: [SharedLibsModule],
