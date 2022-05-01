@@ -5,12 +5,15 @@ import static javax.persistence.EnumType.STRING;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.klai.stl.domain.enumeration.SpaceTemplateOption;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A Space.
@@ -38,17 +41,19 @@ public class Space implements Serializable {
     private String reference;
 
     @Enumerated(STRING)
-    @Column(name = "template", nullable = false, unique = true)
+    @Column(name = "template")
     private SpaceTemplateOption template;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "max_photos")
-    private Integer maxPhotos;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
 
-    @Column(name = "visible")
-    private Boolean visible;
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
 
     @OneToMany(mappedBy = "space", orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -142,30 +147,30 @@ public class Space implements Serializable {
         this.description = description;
     }
 
-    public Integer getMaxPhotos() {
-        return this.maxPhotos;
+    public Instant getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public Space maxPhotos(Integer maxPhotos) {
-        this.maxPhotos = maxPhotos;
+    public Space updatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
         return this;
     }
 
-    public void setMaxPhotos(Integer maxPhotos) {
-        this.maxPhotos = maxPhotos;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Boolean getVisible() {
-        return this.visible;
+    public Instant getCreatedAt() {
+        return this.createdAt;
     }
 
-    public Space visible(Boolean visible) {
-        this.visible = visible;
+    public Space createdAt(Instant createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Set<Photo> getPhotos() {
@@ -241,8 +246,6 @@ public class Space implements Serializable {
             ", reference='" + getReference() + "'" +
             ", template='" + getTemplate() + "'" +
             ", description='" + getDescription() + "'" +
-            ", maxPhotos=" + getMaxPhotos() +
-            ", visible='" + getVisible() + "'" +
             "}";
     }
 }

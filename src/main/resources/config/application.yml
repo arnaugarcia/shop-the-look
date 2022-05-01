@@ -162,7 +162,7 @@ jhipster:
     management-include-pattern: ${server.servlet.context-path:}/management/.*
     title: Shop the look API
     description: ShopTheLook API documentation
-    version: 0.0.30-SNAPSHOT
+    version: 0.0.31-SNAPSHOT
     terms-of-service-url:
     contact-name: Arnau Garcia
     contact-url: arnaugarcia.com
