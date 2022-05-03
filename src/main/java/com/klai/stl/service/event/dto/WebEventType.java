@@ -1,9 +1,13 @@
 package com.klai.stl.service.event.dto;
 
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.convert.ReadingConverter;
+import org.springframework.data.convert.WritingConverter;
+
 public enum WebEventType {
-    SPACE_CLICK("space.click"),
-    SPACE_VIEW("space.view"),
-    PRODUCT_CLICK("product.click");
+    SPACE_CLICK("space_click"),
+    SPACE_VIEW("space_view"),
+    PRODUCT_CLICK("product_click");
 
     private final String type;
 
@@ -13,5 +17,30 @@ public enum WebEventType {
 
     public String getType() {
         return type;
+    }
+
+    @WritingConverter
+    public enum WebEventTypeToStringConverter implements Converter<WebEventType, String> {
+        INSTANCE;
+
+        @Override
+        public String convert(WebEventType source) {
+            return source.getType();
+        }
+    }
+
+    @ReadingConverter
+    public enum StringToWebEventTypeConverter implements Converter<String, WebEventType> {
+        INSTANCE;
+
+        @Override
+        public WebEventType convert(String source) {
+            for (WebEventType event : WebEventType.values()) {
+                if (event.getType().equals(source)) {
+                    return event;
+                }
+            }
+            throw new IllegalArgumentException("No matching type for " + source);
+        }
     }
 }
