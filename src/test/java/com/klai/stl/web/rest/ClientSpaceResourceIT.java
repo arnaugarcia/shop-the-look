@@ -42,13 +42,20 @@ class ClientSpaceResourceIT {
 
     private Space space;
 
+    private Product product;
+
+    private Photo photo;
+
+    private Coordinate coordinate;
+
     @BeforeEach
     public void initTest() {
         company = createBasicCompany(em);
         space = createSpace(em, company);
-        Photo photo = createPhoto(em, space);
-        Product product = createProductForCompany(em, company);
-        Coordinate coordinate = createCoordinate(em, product, photo);
+        photo = createPhoto(em, space);
+        space.addPhoto(photo);
+        product = createProductForCompany(em, company);
+        coordinate = createCoordinate(em, product, photo);
         photo.addCoordinate(coordinate);
         em.persist(photo);
     }
@@ -69,7 +76,20 @@ class ClientSpaceResourceIT {
     public void findSpaceForCompany() throws Exception {
         restSubscriptionMockMvc
             .perform(get(API_URL, space.getReference()).header(TOKEN_HEADER_KEY, company.getToken()).contentType(APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.name").value(space.getName()))
+            .andExpect(jsonPath("$.description").value(space.getDescription()))
+            .andExpect(jsonPath("$.template").value(space.getTemplate().name()))
+            .andExpect(jsonPath("$.photos[0].link").value(photo.getLink()))
+            .andExpect(jsonPath("$.photos[0].height").value(photo.getHeight()))
+            .andExpect(jsonPath("$.photos[0].width").value(photo.getWidth()))
+            .andExpect(jsonPath("$.photos[0].order").value(photo.getOrder()))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].x").value(coordinate.getX()))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].y").value(coordinate.getY()))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].product.price").value(product.getPrice()))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].product.name").value(product.getName()))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].product.link").value(product.getLink()));
     }
 
     @Test
