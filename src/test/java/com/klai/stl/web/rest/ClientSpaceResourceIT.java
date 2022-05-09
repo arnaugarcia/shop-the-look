@@ -7,7 +7,7 @@ import static com.klai.stl.web.rest.SpaceResourceIT.createSpace;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.klai.stl.IntegrationTest;
 import com.klai.stl.domain.*;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,5 +110,25 @@ class ClientSpaceResourceIT {
         restSubscriptionMockMvc
             .perform(get(API_URL, "INVALID_REFERENCE").header(TOKEN_HEADER_KEY, company.getReference()).contentType(APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @Transactional
+    public void findSpaceWithBadTypePrice() throws Exception {
+        Space space = createSpace(em, company);
+        Photo photo = createPhoto(em, space);
+        space.addPhoto(photo);
+        Product product = createProductForCompany(em, company);
+        product.setPrice("BAD_PRICE");
+        em.persist(product);
+        Coordinate coordinate = createCoordinate(em, product, photo);
+        photo.addCoordinate(coordinate);
+        em.persist(photo);
+
+        restSubscriptionMockMvc
+            .perform(get(API_URL, space.getReference()).header(TOKEN_HEADER_KEY, company.getToken()).contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].product.price").value("BAD_PRICE"));
     }
 }
