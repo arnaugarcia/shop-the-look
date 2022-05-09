@@ -82,7 +82,7 @@ class ProductImportResourceIT {
             .name(DEFAULT_NAME)
             .link(DEFAULT_LINK)
             .reference(DEFAULT_REFERENCE + randomAlphabetic(5).toUpperCase(ROOT))
-            .price("DEFAULT_PRICE")
+            .price(DEFAULT_PRICE)
             .company(company);
         em.persist(product);
         return product;
