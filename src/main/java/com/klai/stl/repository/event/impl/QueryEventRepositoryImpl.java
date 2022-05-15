@@ -1,5 +1,7 @@
 package com.klai.stl.repository.event.impl;
 
+import static com.klai.stl.domain.event.Event.*;
+import static com.klai.stl.service.event.dto.WebEventType.SPACE_VIEW;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
@@ -24,12 +26,14 @@ public class QueryEventRepositoryImpl implements QueryEventRepository {
     @Override
     public SearchHits<Event> findSpaceViewsByCompany(String companyReference) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(termQuery("company.keyword", companyReference)).filter(termQuery("type.keyword", "space_view")))
-            .addAggregation(terms("space.keyword").field("space.keyword"))
+            .withQuery(
+                boolQuery().filter(termQuery(COMPANY_KEYWORD, companyReference)).filter(termQuery(TYPE_KEYWORD, SPACE_VIEW.getType()))
+            )
+            .addAggregation(terms(SPACE_KEYWORD).field(SPACE_KEYWORD))
             .build();
 
         final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
-        final Terms terms = search.getAggregations().get("space.keyword");
+        final Terms terms = search.getAggregations().get(SPACE_KEYWORD);
         final List<? extends Terms.Bucket> buckets = terms.getBuckets();
         return search;
     }
