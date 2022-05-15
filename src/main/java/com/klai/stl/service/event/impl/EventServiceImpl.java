@@ -1,10 +1,9 @@
 package com.klai.stl.service.event.impl;
 
-import com.klai.stl.domain.event.Event;
 import com.klai.stl.repository.event.EventRepository;
+import com.klai.stl.repository.event.dto.EventValue;
 import com.klai.stl.service.event.EventService;
 import com.klai.stl.service.event.criteria.EventCriteria;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +17,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> query(EventCriteria criteria) {
-        eventRepository.findSpaceViewsByCompany(criteria.getCompany());
-        return new ArrayList<>();
+    public List<EventValue> query(EventCriteria criteria) {
+        return eventRepository.findSpaceViewsByCompany(criteria.getCompany());
     }
 }
