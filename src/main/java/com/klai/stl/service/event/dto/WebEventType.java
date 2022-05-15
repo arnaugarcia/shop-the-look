@@ -6,7 +6,10 @@ import org.springframework.data.convert.WritingConverter;
 
 public enum WebEventType {
     SPACE_CLICK("space_click"),
+    SPACE_LOAD("space_load"),
+    SPACE_HOVER("space_hover"),
     SPACE_VIEW("space_view"),
+    PRODUCT_HOVER("product_hover"),
     PRODUCT_CLICK("product_click");
 
     private final String type;
