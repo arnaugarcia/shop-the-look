@@ -26,11 +26,11 @@ public interface QueryEventOperations {
     }
 
     default RangeQueryBuilder byTimestampBetween(String greaterThan, String lessThan) {
-        return byDateRange(TIMESTAMP_KEYWORD, greaterThan, lessThan);
+        return byDateRange(TIMESTAMP, greaterThan, lessThan);
     }
 
     private RangeQueryBuilder byDateRange(String field, String greaterThan, String lessThan) {
-        return rangeQuery(RANGE_KEY).gte(greaterThan).lt(lessThan);
+        return rangeQuery(field).gte(greaterThan).lt(lessThan);
     }
 
     default TermQueryBuilder byCompany(String companyReference) {
