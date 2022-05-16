@@ -18,6 +18,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventTimeline> query(EventCriteria criteria) {
-        return eventRepository.findSpaceViewsByCompanyAndDateRange(criteria.getCompany(), "now-1y/y", "now");
+        return eventRepository.findSpaceViewsByCompanyAndTimestampRange(criteria.getCompany(), "now-1y/y", "now");
     }
 }

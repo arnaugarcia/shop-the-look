@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface QueryEventRepository {
     List<EventValue> findSpaceViewsByCompany(String companyReference);
-    List<EventTimeline> findSpaceViewsByCompanyAndDateRange(String companyReference, String startDate, String endDate);
+    List<EventTimeline> findSpaceViewsByCompanyAndTimestampRange(String companyReference, String startDate, String endDate);
 }
