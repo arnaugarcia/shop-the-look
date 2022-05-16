@@ -1,7 +1,7 @@
 package com.klai.stl.service.event.impl;
 
 import com.klai.stl.repository.event.EventRepository;
-import com.klai.stl.repository.event.dto.EventValue;
+import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.service.event.EventService;
 import com.klai.stl.service.event.criteria.EventCriteria;
 import java.util.List;
@@ -17,7 +17,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventValue> query(EventCriteria criteria) {
-        return eventRepository.findSpaceViewsByCompany(criteria.getCompany());
+    public List<EventTimeline> query(EventCriteria criteria) {
+        return eventRepository.findSpaceViewsByCompanyAndDateRange(criteria.getCompany(), "now-1y/y", "now");
     }
 }

@@ -2,7 +2,7 @@ package com.klai.stl.web.rest.api;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.klai.stl.repository.event.dto.EventValue;
+import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.service.event.EventService;
 import com.klai.stl.service.event.criteria.EventCriteria;
 import java.util.List;
@@ -22,7 +22,7 @@ public class EventResource {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<EventValue>> getEventsByCriteria(EventCriteria criteria) {
+    public ResponseEntity<List<EventTimeline>> getEventsByCriteria(EventCriteria criteria) {
         return ok(eventService.query(criteria));
     }
 }
