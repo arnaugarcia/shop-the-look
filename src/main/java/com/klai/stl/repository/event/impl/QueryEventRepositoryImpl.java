@@ -40,9 +40,7 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .addAggregation(groupBySpace())
             .build();
 
-        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
-        final Terms terms = getAggregationsOf(search).get(SPACE_KEYWORD);
-        return buildEventValueFrom(terms);
+        return queryAndTransform(query, SPACE_KEYWORD);
     }
 
     @Override
@@ -73,9 +71,7 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .addAggregation(groupByProduct())
             .build();
 
-        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
-        final Terms terms = getAggregationsOf(search).get(PRODUCT_KEYWORD);
-        return buildEventValueFrom(terms);
+        return queryAndTransform(query, PRODUCT_KEYWORD);
     }
 
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {
@@ -84,6 +80,12 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .stream()
             .map(term -> new EventTimeline((String) term.getKey(), term.getAggregations().get("space_timeline")))
             .collect(toList());
+    }
+
+    private List<EventValue> queryAndTransform(Query query, String aggregationName) {
+        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
+        final Terms terms = getAggregationsOf(search).get(aggregationName);
+        return buildEventValueFrom(terms);
     }
 
     private List<EventValue> buildEventValueFrom(Terms terms) {
