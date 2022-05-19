@@ -6,7 +6,8 @@ import static java.lang.String.valueOf;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.search.aggregations.AggregationBuilders.dateHistogram;
+import static org.elasticsearch.search.aggregations.AggregationBuilders.*;
+import static org.elasticsearch.search.aggregations.PipelineAggregatorBuilders.bucketScript;
 import static org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval.DAY;
 
 import com.klai.stl.domain.event.Event;
@@ -15,8 +16,11 @@ import com.klai.stl.repository.event.QueryEventRepository;
 import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.repository.event.dto.EventValue;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.validation.constraints.NotNull;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -81,6 +85,27 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .build();
 
         return queryAndTransform(query, PRODUCT_KEYWORD);
+    }
+
+    @Override
+    public List<EventValue> findSpaceViewProductClicksRelationByCompany(String companyReference) {
+        final HashMap<String, String> bucketsPath = new HashMap<>();
+        bucketsPath.put("clicks", "product_click");
+        bucketsPath.put("views", "space_view");
+        final Script script = new Script("doc['product_click'].size() / doc['space_view'].size()");
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery().filter(byCompany(companyReference)))
+            .addAggregation(
+                terms(SPACE_KEYWORD)
+                    .subAggregation(filter("space_view", boolQuery().filter(byType(SPACE_VIEW))).subAggregation(count(TYPE_KEYWORD)))
+                    .subAggregation(filter("product_click", boolQuery().filter(byType(PRODUCT_CLICK))).subAggregation(count(TYPE_KEYWORD)))
+                    .subAggregation(bucketScript("buckets_path", bucketsPath, script))
+            )
+            .build();
+
+        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
+        final Terms terms = getAggregationsOf(search).get(SPACE_KEYWORD);
+        return new ArrayList<>();
     }
 
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {

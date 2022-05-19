@@ -13,4 +13,6 @@ public interface QueryEventRepository {
     List<EventValue> findProductClicksByCompany(String companyReference);
 
     List<EventValue> findProductHoverByCompany(String companyReference);
+
+    List<EventValue> findSpaceViewProductClicksRelationByCompany(String companyReference);
 }
