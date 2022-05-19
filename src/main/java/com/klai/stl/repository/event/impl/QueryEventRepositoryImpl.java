@@ -1,8 +1,7 @@
 package com.klai.stl.repository.event.impl;
 
 import static com.klai.stl.domain.event.Event.*;
-import static com.klai.stl.service.event.dto.WebEventType.PRODUCT_CLICK;
-import static com.klai.stl.service.event.dto.WebEventType.SPACE_VIEW;
+import static com.klai.stl.service.event.dto.WebEventType.*;
 import static java.lang.String.valueOf;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -68,6 +67,16 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     public List<EventValue> findProductClicksByCompany(String companyReference) {
         Query query = new NativeSearchQueryBuilder()
             .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_CLICK)))
+            .addAggregation(groupByProduct())
+            .build();
+
+        return queryAndTransform(query, PRODUCT_KEYWORD);
+    }
+
+    @Override
+    public List<EventValue> findProductHoverByCompany(String companyReference) {
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_HOVER)))
             .addAggregation(groupByProduct())
             .build();
 

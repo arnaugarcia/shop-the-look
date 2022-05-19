@@ -18,6 +18,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventValue> query(EventCriteria criteria) {
-        return eventRepository.findProductClicksByCompany(criteria.getCompany());
+        return eventRepository.findProductHoverByCompany(criteria.getCompany());
     }
 }

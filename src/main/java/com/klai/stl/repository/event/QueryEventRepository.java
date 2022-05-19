@@ -11,4 +11,6 @@ public interface QueryEventRepository {
     List<EventTimeline> findSpaceViewsByCompanyAndTimestampRange(String companyReference, ZonedDateTime startDate, ZonedDateTime endDate);
 
     List<EventValue> findProductClicksByCompany(String companyReference);
+
+    List<EventValue> findProductHoverByCompany(String companyReference);
 }
