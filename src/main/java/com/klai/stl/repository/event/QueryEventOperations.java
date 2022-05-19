@@ -17,6 +17,10 @@ public interface QueryEventOperations {
         return groupBy(SPACE_KEYWORD);
     }
 
+    default TermsAggregationBuilder groupByProduct() {
+        return groupBy(PRODUCT_KEYWORD);
+    }
+
     private TermsAggregationBuilder groupBy(String field) {
         return terms(field).field(field);
     }
