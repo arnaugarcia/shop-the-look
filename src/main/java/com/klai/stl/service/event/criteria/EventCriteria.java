@@ -1,7 +1,6 @@
 package com.klai.stl.service.event.criteria;
 
 import com.klai.stl.service.event.dto.WebEventType;
-import java.time.ZonedDateTime;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.Value;
@@ -17,9 +16,9 @@ public class EventCriteria {
     @NotNull
     WebEventType type;
 
-    ZonedDateTime startDate;
+    Long startTimeEpochMillis;
 
-    ZonedDateTime endDate;
+    Long endTimeEpochMillis;
 
     Map<String, String> sort;
 }
