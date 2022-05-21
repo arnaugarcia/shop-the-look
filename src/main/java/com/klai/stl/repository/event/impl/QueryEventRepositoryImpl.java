@@ -119,6 +119,16 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .collect(toList());
     }
 
+    @Override
+    public List<EventValue> findSpaceClicksByCompany(String companyReference) {
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_CLICK)))
+            .addAggregation(groupBySpace())
+            .build();
+
+        return queryAndTransform(query, SPACE_KEYWORD);
+    }
+
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {
         return terms
             .getBuckets()
