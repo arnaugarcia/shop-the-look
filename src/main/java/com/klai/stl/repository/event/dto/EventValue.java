@@ -7,10 +7,15 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 public class EventValue {
 
     String key;
-    Long value;
+    String value;
+
+    public EventValue(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
 
     public EventValue(Bucket bucket) {
         this.key = bucket.getKeyAsString();
-        this.value = bucket.getDocCount();
+        this.value = String.valueOf(bucket.getDocCount());
     }
 }

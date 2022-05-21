@@ -16,13 +16,13 @@ import com.klai.stl.repository.event.QueryEventRepository;
 import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.repository.event.dto.EventValue;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -111,7 +111,16 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
 
         final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
         final Terms terms = getAggregationsOf(search).get(SPACE_KEYWORD);
-        return new ArrayList<>();
+        return terms
+            .getBuckets()
+            .stream()
+            .map(
+                bucket -> {
+                    final NumericMetricsAggregation.SingleValue aggregation = bucket.getAggregations().get("space_view_click");
+                    return new EventValue(bucket.getKeyAsString(), aggregation.getValueAsString());
+                }
+            )
+            .collect(toList());
     }
 
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {
