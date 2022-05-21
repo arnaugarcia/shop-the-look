@@ -93,20 +93,15 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
         bucketsPath.put("clicks", "product_click.count");
         bucketsPath.put("views", "space_view.count");
         final Script script = new Script("(params.clicks / params.views) * 100");
-        final String bucketScriptName = "space_view_click";
+        final String bucketScriptAggregationName = "space_view_click";
         Query query = new NativeSearchQueryBuilder()
             .withQuery(boolQuery().filter(byCompany(companyReference)))
             .addAggregation(
                 terms(SPACE_KEYWORD)
                     .field(SPACE_KEYWORD)
-                    .subAggregation(
-                        filter("space_view", boolQuery().filter(byType(SPACE_VIEW)))
-                            .subAggregation(countSpaceViews())
-                            .subAggregation(
-                                filter("product_click", boolQuery().filter(byType(PRODUCT_CLICK))).subAggregation(countProductClicks())
-                            )
-                    )
-                    .subAggregation(bucketScript(bucketScriptName, bucketsPath, script))
+                    .subAggregation(filter("space_view", boolQuery().filter(byType(SPACE_VIEW))).subAggregation(countSpaces()))
+                    .subAggregation(filter("product_click", boolQuery().filter(byType(PRODUCT_CLICK))).subAggregation(countProducts()))
+                    .subAggregation(bucketScript(bucketScriptAggregationName, bucketsPath, script))
             )
             .build();
 
@@ -117,7 +112,7 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .stream()
             .map(
                 bucket -> {
-                    final NumericMetricsAggregation.SingleValue aggregation = bucket.getAggregations().get(bucketScriptName);
+                    final NumericMetricsAggregation.SingleValue aggregation = bucket.getAggregations().get(bucketScriptAggregationName);
                     return new EventValue(bucket.getKeyAsString(), aggregation.getValueAsString());
                 }
             )
