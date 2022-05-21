@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface EventService {
     List<EventValue> query(EventCriteria criteria);
+
+    EventValue count(EventCriteria criteria);
 }

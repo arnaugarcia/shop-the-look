@@ -32,15 +32,11 @@ public interface QueryEventOperations {
     }
 
     default ValueCountAggregationBuilder countSpaces() {
-        return countByField(SPACE_KEYWORD);
+        return count(SPACE + "_count").field(SPACE_KEYWORD);
     }
 
     default ValueCountAggregationBuilder countProducts() {
-        return countByField(PRODUCT_KEYWORD);
-    }
-
-    private ValueCountAggregationBuilder countByField(String field) {
-        return count("count").field(field);
+        return count(PRODUCT + "_count").field(PRODUCT_KEYWORD);
     }
 
     default RangeQueryBuilder byTimestampBetween(String greaterThan, String lessThan) {

@@ -25,4 +25,9 @@ public class EventResource {
     public ResponseEntity<List<EventValue>> getEventsByCriteria(EventCriteria criteria) {
         return ok(eventService.query(criteria));
     }
+
+    @GetMapping("/events/count")
+    public ResponseEntity<EventValue> countEventsByCriteria(EventCriteria criteria) {
+        return ok(eventService.count(criteria));
+    }
 }

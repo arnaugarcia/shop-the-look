@@ -90,8 +90,8 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     @Override
     public List<EventValue> findSpaceViewProductClicksRelationByCompany(String companyReference) {
         final HashMap<String, String> bucketsPath = new HashMap<>();
-        bucketsPath.put("clicks", "product_click.count");
-        bucketsPath.put("views", "space_view.count");
+        bucketsPath.put("clicks", "product_click." + countProducts().getName());
+        bucketsPath.put("views", "space_view." + countSpaces().getName());
         final Script script = new Script("(params.clicks / params.views) * 100");
         final String bucketScriptAggregationName = "space_view_click";
         Query query = new NativeSearchQueryBuilder()
@@ -127,6 +127,18 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .build();
 
         return queryAndTransform(query, SPACE_KEYWORD);
+    }
+
+    @Override
+    public EventValue countProductClicksByCompany(String companyReference) {
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_CLICK)))
+            .addAggregation(countSpaces())
+            .build();
+
+        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
+        final NumericMetricsAggregation.SingleValue terms = getAggregationsOf(search).get(countSpaces().getName());
+        return new EventValue(terms);
     }
 
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {
