@@ -142,7 +142,19 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventValue> findTotalSpaceTimeByCompany(String companyReference) {
+    public EventValue findTotalSpacesTimeByCompany(String companyReference) {
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(SPACE_VIEW)))
+            .addAggregation(sumTime())
+            .build();
+
+        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
+        final NumericMetricsAggregation.SingleValue terms = getAggregationsOf(search).get(sumTime().getName());
+        return new EventValue(terms);
+    }
+
+    @Override
+    public List<EventValue> findTotalSpaceTimeOfSpacesByCompany(String companyReference) {
         Query query = new NativeSearchQueryBuilder()
             .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(SPACE_VIEW)))
             .addAggregation(groupBySpace().subAggregation(sumTime()))
