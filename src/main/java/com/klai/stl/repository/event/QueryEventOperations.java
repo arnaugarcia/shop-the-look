@@ -3,12 +3,14 @@ package com.klai.stl.repository.event;
 import static com.klai.stl.domain.event.Event.*;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.search.aggregations.AggregationBuilders.count;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 
 import com.klai.stl.service.event.dto.WebEventType;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.ValueCountAggregationBuilder;
 
 public interface QueryEventOperations {
     String RANGE_KEY = "range";
@@ -27,6 +29,18 @@ public interface QueryEventOperations {
 
     default TermQueryBuilder byType(WebEventType type) {
         return termQuery(TYPE_KEYWORD, type.getType());
+    }
+
+    default ValueCountAggregationBuilder countSpaceViews() {
+        return countByField(SPACE_KEYWORD);
+    }
+
+    default ValueCountAggregationBuilder countProductClicks() {
+        return countByField(PRODUCT_KEYWORD);
+    }
+
+    private ValueCountAggregationBuilder countByField(String field) {
+        return count("count").field(field);
     }
 
     default RangeQueryBuilder byTimestampBetween(String greaterThan, String lessThan) {
