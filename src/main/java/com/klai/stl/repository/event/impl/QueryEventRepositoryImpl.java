@@ -141,6 +141,27 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
         return new EventValue(terms);
     }
 
+    @Override
+    public List<EventValue> findTotalSpaceTimeByCompany(String companyReference) {
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(SPACE_VIEW)))
+            .addAggregation(groupBySpace().subAggregation(sumTime()))
+            .build();
+
+        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
+        final Terms terms = getAggregationsOf(search).get(groupBySpace().getName());
+        return terms
+            .getBuckets()
+            .stream()
+            .map(
+                bucket -> {
+                    final NumericMetricsAggregation.SingleValue aggregation = bucket.getAggregations().get(sumTime().getName());
+                    return new EventValue(bucket.getKeyAsString(), aggregation.getValueAsString());
+                }
+            )
+            .collect(toList());
+    }
+
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {
         return terms
             .getBuckets()

@@ -18,7 +18,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventValue> query(EventCriteria criteria) {
-        return eventRepository.findSpaceViewProductClicksRelationByCompany(criteria.getCompany());
+        return eventRepository.findTotalSpaceTimeByCompany(criteria.getCompany());
     }
 
     @Override

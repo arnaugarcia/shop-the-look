@@ -19,4 +19,6 @@ public interface QueryEventRepository {
     List<EventValue> findSpaceClicksByCompany(String companyReference);
 
     EventValue countProductClicksByCompany(String companyReference);
+
+    List<EventValue> findTotalSpaceTimeByCompany(String companyReference);
 }
