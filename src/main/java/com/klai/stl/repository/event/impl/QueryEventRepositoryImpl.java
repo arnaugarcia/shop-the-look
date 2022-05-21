@@ -90,16 +90,22 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     @Override
     public List<EventValue> findSpaceViewProductClicksRelationByCompany(String companyReference) {
         final HashMap<String, String> bucketsPath = new HashMap<>();
-        bucketsPath.put("clicks", "product_click");
-        bucketsPath.put("views", "space_view");
-        final Script script = new Script("doc['product_click'].size() / doc['space_view'].size()");
+        bucketsPath.put("clicks", "product_click.count");
+        bucketsPath.put("views", "space_view.count");
+        final Script script = new Script("(params.clicks / params.views) * 100");
         Query query = new NativeSearchQueryBuilder()
             .withQuery(boolQuery().filter(byCompany(companyReference)))
             .addAggregation(
                 terms(SPACE_KEYWORD)
-                    .subAggregation(filter("space_view", boolQuery().filter(byType(SPACE_VIEW))).subAggregation(count(TYPE_KEYWORD)))
-                    .subAggregation(filter("product_click", boolQuery().filter(byType(PRODUCT_CLICK))).subAggregation(count(TYPE_KEYWORD)))
-                    .subAggregation(bucketScript("buckets_path", bucketsPath, script))
+                    .field(SPACE_KEYWORD)
+                    .subAggregation(
+                        filter("space_view", boolQuery().filter(byType(SPACE_VIEW))).subAggregation(count("count").field(SPACE_KEYWORD))
+                    )
+                    .subAggregation(
+                        filter("product_click", boolQuery().filter(byType(PRODUCT_CLICK)))
+                            .subAggregation(count("count").field(PRODUCT_KEYWORD))
+                    )
+                    .subAggregation(bucketScript("space_view_click", bucketsPath, script))
             )
             .build();
 
