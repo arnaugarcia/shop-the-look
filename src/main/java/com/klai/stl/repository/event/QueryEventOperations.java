@@ -31,11 +31,11 @@ public interface QueryEventOperations {
         return termQuery(TYPE_KEYWORD, type.getType());
     }
 
-    default ValueCountAggregationBuilder countSpaceViews() {
+    default ValueCountAggregationBuilder countSpaces() {
         return countByField(SPACE_KEYWORD);
     }
 
-    default ValueCountAggregationBuilder countProductClicks() {
+    default ValueCountAggregationBuilder countProducts() {
         return countByField(PRODUCT_KEYWORD);
     }
 
