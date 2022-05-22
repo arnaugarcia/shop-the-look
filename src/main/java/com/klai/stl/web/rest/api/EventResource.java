@@ -4,7 +4,6 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.klai.stl.repository.event.dto.EventValue;
 import com.klai.stl.service.event.EventService;
-import com.klai.stl.service.event.criteria.EventCriteria;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +21,12 @@ public class EventResource {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<EventValue>> getEventsByCriteria(EventCriteria criteria) {
-        return ok(eventService.query(criteria));
+    public ResponseEntity<List<EventValue>> getEvents() {
+        return ok(eventService.query());
     }
 
     @GetMapping("/events/count")
-    public ResponseEntity<EventValue> countEventsByCriteria(EventCriteria criteria) {
-        return ok(eventService.count(criteria));
+    public ResponseEntity<EventValue> countEvents() {
+        return ok(eventService.count());
     }
 }

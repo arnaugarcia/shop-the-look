@@ -8,7 +8,7 @@ import java.util.List;
 public interface QueryEventRepository {
     List<EventValue> findSpaceViewsByCompany(String companyReference);
 
-    List<EventTimeline> findSpaceViewsByCompanyAndTimestampRange(String companyReference, ZonedDateTime startDate, ZonedDateTime endDate);
+    List<EventTimeline> findSpaceViewsTimelineByCompany(String companyReference, ZonedDateTime startDate, ZonedDateTime endDate);
 
     List<EventValue> findProductClicksByCompany(String companyReference);
 

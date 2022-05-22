@@ -8,6 +8,7 @@ import static org.elasticsearch.search.aggregations.AggregationBuilders.*;
 import com.klai.stl.service.event.dto.WebEventType;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.ValueCountAggregationBuilder;
@@ -41,6 +42,14 @@ public interface QueryEventOperations {
 
     default SumAggregationBuilder sumTime() {
         return sum("total_" + TIME).field(TIME);
+    }
+
+    default BucketOrder sortAsc() {
+        return BucketOrder.count(true);
+    }
+
+    default BucketOrder sortDesc() {
+        return BucketOrder.count(false);
     }
 
     default RangeQueryBuilder byTimestampBetween(String greaterThan, String lessThan) {

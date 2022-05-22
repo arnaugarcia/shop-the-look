@@ -3,7 +3,6 @@ package com.klai.stl.service.event.impl;
 import com.klai.stl.repository.event.EventRepository;
 import com.klai.stl.repository.event.dto.EventValue;
 import com.klai.stl.service.event.EventService;
-import com.klai.stl.service.event.criteria.EventCriteria;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +16,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventValue> query(EventCriteria criteria) {
-        return eventRepository.findTotalSpaceTimeOfSpacesByCompany(criteria.getCompany());
+    public List<EventValue> query() {
+        return eventRepository.findTotalSpaceTimeOfSpacesByCompany("g61ycrLjpr");
     }
 
     @Override
-    public EventValue count(EventCriteria criteria) {
-        return eventRepository.findTotalSpacesTimeByCompany(criteria.getCompany());
+    public EventValue count() {
+        return eventRepository.findTotalSpacesTimeByCompany("g61ycrLjpr");
     }
 }

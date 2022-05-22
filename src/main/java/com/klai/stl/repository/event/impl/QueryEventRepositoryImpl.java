@@ -47,11 +47,7 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventTimeline> findSpaceViewsByCompanyAndTimestampRange(
-        String companyReference,
-        ZonedDateTime startDate,
-        ZonedDateTime endDate
-    ) {
+    public List<EventTimeline> findSpaceViewsTimelineByCompany(String companyReference, ZonedDateTime startDate, ZonedDateTime endDate) {
         Query query = new NativeSearchQueryBuilder()
             .withQuery(
                 boolQuery()
@@ -157,7 +153,7 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     public List<EventValue> findTotalSpaceTimeOfSpacesByCompany(String companyReference) {
         Query query = new NativeSearchQueryBuilder()
             .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(SPACE_VIEW)))
-            .addAggregation(groupBySpace().subAggregation(sumTime()))
+            .addAggregation(groupBySpace().order(sortAsc()).subAggregation(sumTime()))
             .build();
 
         final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
