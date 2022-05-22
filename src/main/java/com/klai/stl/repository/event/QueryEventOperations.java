@@ -5,7 +5,7 @@ import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.*;
 
-import com.klai.stl.service.event.dto.WebEventType;
+import com.klai.stl.domain.event.EventType;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
@@ -25,7 +25,7 @@ public interface QueryEventOperations {
         return terms(field).field(field);
     }
 
-    default TermQueryBuilder byType(WebEventType type) {
+    default TermQueryBuilder byType(EventType type) {
         return termQuery(TYPE_KEYWORD, type.getType());
     }
 

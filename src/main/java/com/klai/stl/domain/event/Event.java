@@ -2,7 +2,6 @@ package com.klai.stl.domain.event;
 
 import static javax.persistence.EnumType.STRING;
 
-import com.klai.stl.service.event.dto.WebEventType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
@@ -18,7 +17,7 @@ public class Event {
     String id;
 
     @Enumerated(STRING)
-    WebEventType type;
+    EventType type;
 
     String company;
 

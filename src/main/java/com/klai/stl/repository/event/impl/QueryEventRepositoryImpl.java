@@ -1,7 +1,7 @@
 package com.klai.stl.repository.event.impl;
 
 import static com.klai.stl.domain.event.Event.*;
-import static com.klai.stl.service.event.dto.WebEventType.*;
+import static com.klai.stl.domain.event.EventType.*;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;

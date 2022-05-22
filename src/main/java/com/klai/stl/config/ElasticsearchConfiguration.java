@@ -1,6 +1,6 @@
 package com.klai.stl.config;
 
-import com.klai.stl.service.event.dto.WebEventType;
+import com.klai.stl.domain.event.EventType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -28,8 +28,8 @@ public class ElasticsearchConfiguration extends ElasticsearchConfigurationSuppor
                 new InstantReadingConverter(),
                 new LocalDateWritingConverter(),
                 new LocalDateReadingConverter(),
-                WebEventType.StringToWebEventTypeConverter.INSTANCE,
-                WebEventType.WebEventTypeToStringConverter.INSTANCE
+                EventType.StringToWebEventTypeConverter.INSTANCE,
+                EventType.WebEventTypeToStringConverter.INSTANCE
             )
         );
     }
