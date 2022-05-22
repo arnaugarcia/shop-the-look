@@ -1,6 +1,7 @@
 package com.klai.stl.service.event.impl;
 
 import com.klai.stl.repository.event.EventRepository;
+import com.klai.stl.repository.event.criteria.EventCriteria;
 import com.klai.stl.repository.event.dto.EventValue;
 import com.klai.stl.service.event.EventService;
 import java.util.List;
@@ -17,11 +18,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventValue> query() {
-        return eventRepository.findTotalSpaceTimeOfSpacesByCompany("g61ycrLjpr");
+        return eventRepository.findTotalSpaceTimeOfSpacesByCompany(EventCriteria.builder("g61ycrLjpr").sortAsc().build());
     }
 
     @Override
     public EventValue count() {
-        return eventRepository.findTotalSpacesTimeByCompany("g61ycrLjpr");
+        return eventRepository.findTotalSpacesTimeByCompany(EventCriteria.builder("g61ycrLjpr").build());
     }
 }

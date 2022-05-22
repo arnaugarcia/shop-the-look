@@ -2,7 +2,6 @@ package com.klai.stl.repository.event.impl;
 
 import static com.klai.stl.domain.event.Event.*;
 import static com.klai.stl.service.event.dto.WebEventType.*;
-import static java.lang.String.valueOf;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -13,12 +12,11 @@ import static org.elasticsearch.search.aggregations.bucket.histogram.DateHistogr
 import com.klai.stl.domain.event.Event;
 import com.klai.stl.repository.event.QueryEventOperations;
 import com.klai.stl.repository.event.QueryEventRepository;
+import com.klai.stl.repository.event.criteria.EventCriteria;
 import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.repository.event.dto.EventValue;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -37,9 +35,9 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventValue> findSpaceViewsByCompany(@NotNull String companyReference) {
+    public List<EventValue> findSpaceViewsByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(SPACE_VIEW)))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(SPACE_VIEW)))
             .addAggregation(groupBySpace())
             .build();
 
@@ -47,13 +45,13 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventTimeline> findSpaceViewsTimelineByCompany(String companyReference, ZonedDateTime startDate, ZonedDateTime endDate) {
+    public List<EventTimeline> findSpaceViewsTimelineByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
             .withQuery(
                 boolQuery()
-                    .filter(byCompany(companyReference))
+                    .filter(byCompany(criteria.getCompany()))
                     .filter(byType(SPACE_VIEW))
-                    .filter(byTimestampBetween(valueOf(startDate.toEpochSecond() * 100), valueOf(endDate.toEpochSecond() * 100)))
+                    .filter(byTimestampBetween(criteria.getStartDate(), criteria.getEndDate()))
             )
             .addAggregation(groupBySpace().subAggregation(dateHistogram("space_timeline").field(TIMESTAMP).fixedInterval(DAY)))
             .build();
@@ -64,9 +62,9 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventValue> findProductClicksByCompany(String companyReference) {
+    public List<EventValue> findProductClicksByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_CLICK)))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_CLICK)))
             .addAggregation(groupByProduct())
             .build();
 
@@ -74,9 +72,9 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventValue> findProductHoverByCompany(String companyReference) {
+    public List<EventValue> findProductHoverByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_HOVER)))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_HOVER)))
             .addAggregation(groupByProduct())
             .build();
 
@@ -84,14 +82,14 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventValue> findSpaceViewProductClicksRelationByCompany(String companyReference) {
+    public List<EventValue> findSpaceViewProductClicksRelationByCompany(EventCriteria criteria) {
         final HashMap<String, String> bucketsPath = new HashMap<>();
         bucketsPath.put("clicks", "product_click." + countProducts().getName());
         bucketsPath.put("views", "space_view." + countSpaces().getName());
         final Script script = new Script("(params.clicks / params.views) * 100");
         final String bucketScriptAggregationName = "space_view_click";
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())))
             .addAggregation(
                 terms(SPACE_KEYWORD)
                     .field(SPACE_KEYWORD)
@@ -116,9 +114,9 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventValue> findSpaceClicksByCompany(String companyReference) {
+    public List<EventValue> findSpaceClicksByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_CLICK)))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_CLICK)))
             .addAggregation(groupBySpace())
             .build();
 
@@ -126,9 +124,9 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public EventValue countProductClicksByCompany(String companyReference) {
+    public EventValue countProductClicksByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(PRODUCT_CLICK)))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_CLICK)))
             .addAggregation(countSpaces())
             .build();
 
@@ -138,9 +136,9 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public EventValue findTotalSpacesTimeByCompany(String companyReference) {
+    public EventValue findTotalSpacesTimeByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(SPACE_VIEW)))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(SPACE_VIEW)))
             .addAggregation(sumTime())
             .build();
 
@@ -150,10 +148,10 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public List<EventValue> findTotalSpaceTimeOfSpacesByCompany(String companyReference) {
+    public List<EventValue> findTotalSpaceTimeOfSpacesByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(companyReference)).filter(byType(SPACE_VIEW)))
-            .addAggregation(groupBySpace().order(sortAsc()).subAggregation(sumTime()))
+            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(SPACE_VIEW)))
+            .addAggregation(groupBySpace().order(criteria.bucketOrder()).subAggregation(sumTime()))
             .build();
 
         final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);

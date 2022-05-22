@@ -1,26 +1,26 @@
 package com.klai.stl.repository.event;
 
+import com.klai.stl.repository.event.criteria.EventCriteria;
 import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.repository.event.dto.EventValue;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface QueryEventRepository {
-    List<EventValue> findSpaceViewsByCompany(String companyReference);
+    List<EventValue> findSpaceViewsByCompany(EventCriteria criteria);
 
-    List<EventTimeline> findSpaceViewsTimelineByCompany(String companyReference, ZonedDateTime startDate, ZonedDateTime endDate);
+    List<EventTimeline> findSpaceViewsTimelineByCompany(EventCriteria criteria);
 
-    List<EventValue> findProductClicksByCompany(String companyReference);
+    List<EventValue> findProductClicksByCompany(EventCriteria criteria);
 
-    List<EventValue> findProductHoverByCompany(String companyReference);
+    List<EventValue> findProductHoverByCompany(EventCriteria criteria);
 
-    List<EventValue> findSpaceViewProductClicksRelationByCompany(String companyReference);
+    List<EventValue> findSpaceViewProductClicksRelationByCompany(EventCriteria criteria);
 
-    List<EventValue> findSpaceClicksByCompany(String companyReference);
+    List<EventValue> findSpaceClicksByCompany(EventCriteria criteria);
 
-    EventValue countProductClicksByCompany(String companyReference);
+    EventValue countProductClicksByCompany(EventCriteria criteria);
 
-    EventValue findTotalSpacesTimeByCompany(String companyReference);
+    EventValue findTotalSpacesTimeByCompany(EventCriteria criteria);
 
-    List<EventValue> findTotalSpaceTimeOfSpacesByCompany(String companyReference);
+    List<EventValue> findTotalSpaceTimeOfSpacesByCompany(EventCriteria criteria);
 }
