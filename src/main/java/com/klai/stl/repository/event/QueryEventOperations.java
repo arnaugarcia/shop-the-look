@@ -14,8 +14,6 @@ import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.ValueCountAggregationBuilder;
 
 public interface QueryEventOperations {
-    String RANGE_KEY = "range";
-
     default TermsAggregationBuilder groupBySpace() {
         return groupBy(SPACE_KEYWORD);
     }
