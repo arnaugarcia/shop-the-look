@@ -1,7 +1,15 @@
 package com.klai.stl.web.rest.api;
 
+import static org.springframework.http.ResponseEntity.ok;
+
+import com.klai.stl.config.LiquibaseConfiguration;
 import com.klai.stl.service.analytics.AnalyticsService;
+import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
+import com.klai.stl.service.analytics.dto.ProductReport;
+import java.util.List;
 import org.hibernate.cfg.NotYetImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/analytics")
 public class AnalyticsResource {
+
+    private final Logger log = LoggerFactory.getLogger(LiquibaseConfiguration.class);
 
     private final AnalyticsService analyticsService;
 
@@ -48,8 +58,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/products/clicks")
-    public ResponseEntity<Void> findSpaceProductsClicks() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<ProductReport>> findProductsClicks(AnalyticsCriteria criteria) {
+        log.debug("REST request to find products clicks");
+        return ok(analyticsService.findProductClicks(criteria));
     }
 
     @GetMapping("/products/hovers")

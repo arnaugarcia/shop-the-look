@@ -1,3 +1,9 @@
 package com.klai.stl.service.analytics;
 
-public interface AnalyticsService {}
+import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
+import com.klai.stl.service.analytics.dto.ProductReport;
+import java.util.List;
+
+public interface AnalyticsService {
+    List<ProductReport> findProductClicks(AnalyticsCriteria criteria);
+}
