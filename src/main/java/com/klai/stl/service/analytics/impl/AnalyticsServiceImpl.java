@@ -39,7 +39,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
     @Override
     public List<ProductReport> findProductClicks(AnalyticsCriteria criteria) {
-        final String companyReference = "g61ycrLjpr";
+        final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
         final List<EventValue> productClicksByCompany = eventRepository.findProductClicksByCompany(eventCriteria);
         return productClicksByCompany
