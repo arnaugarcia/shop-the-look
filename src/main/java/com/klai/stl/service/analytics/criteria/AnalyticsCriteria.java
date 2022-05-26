@@ -7,5 +7,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class AnalyticsCriteria {
 
+    Integer limit;
     SortCriteria sort;
 }
