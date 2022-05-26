@@ -41,23 +41,14 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public List<ProductReport> findProductClicks(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
+
         final List<EventValue> productClicksByCompany = eventRepository.findProductClicksByCompany(eventCriteria);
-        return productClicksByCompany
-            .stream()
-            .map(
-                eventValue -> {
-                    final Product product = productService.findByReference(eventValue.getKey());
-                    return ProductReport
-                        .builder()
-                        .name(product.getName())
-                        .price(product.getPrice())
-                        .sku(product.getSku())
-                        .link(product.getLink())
-                        .reference(product.getReference())
-                        .count(eventValue.getValue())
-                        .build();
-                }
-            )
-            .collect(toList());
+
+        return productClicksByCompany.stream().map(this::findAndBuildProductReportBy).collect(toList());
+    }
+
+    private ProductReport findAndBuildProductReportBy(EventValue eventValue) {
+        final Product product = productService.findByReference(eventValue.getKey());
+        return ProductReport.from(eventValue, product);
     }
 }
