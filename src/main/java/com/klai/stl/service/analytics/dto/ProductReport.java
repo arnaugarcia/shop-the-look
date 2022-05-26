@@ -14,12 +14,16 @@ public class ProductReport {
     String reference;
     String count;
 
-    public ProductReport(EventValue event, Product product) {
+    private ProductReport(EventValue event, Product product) {
         this.name = product.getName();
         this.price = product.getPrice();
         this.sku = product.getSku();
         this.link = product.getLink();
         this.reference = product.getReference();
         this.count = event.getValue();
+    }
+
+    public static ProductReport from(EventValue event, Product product) {
+        return new ProductReport(event, product);
     }
 }
