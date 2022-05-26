@@ -7,7 +7,6 @@ import lombok.Value;
 public class ProductClientDTO implements Serializable {
 
     String name;
-    String description;
     String reference;
     String sku;
     String link;
