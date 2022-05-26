@@ -23,7 +23,20 @@ public class ProductReport {
         this.count = event.getValue();
     }
 
+    private ProductReport(EventValue event) {
+        this.name = null;
+        this.price = null;
+        this.sku = null;
+        this.link = null;
+        this.reference = null;
+        this.count = event.getValue();
+    }
+
     public static ProductReport from(EventValue event, Product product) {
         return new ProductReport(event, product);
+    }
+
+    public static ProductReport from(EventValue event) {
+        return new ProductReport(event);
     }
 }

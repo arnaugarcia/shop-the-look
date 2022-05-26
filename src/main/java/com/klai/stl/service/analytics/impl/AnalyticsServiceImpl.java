@@ -2,16 +2,14 @@ package com.klai.stl.service.analytics.impl;
 
 import static java.util.stream.Collectors.toList;
 
-import com.klai.stl.domain.Product;
+import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.repository.event.EventRepository;
 import com.klai.stl.repository.event.criteria.EventCriteria;
 import com.klai.stl.repository.event.dto.EventValue;
-import com.klai.stl.service.ProductService;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.dto.ProductReport;
-import com.klai.stl.service.space.SpaceService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +17,14 @@ import org.springframework.stereotype.Service;
 public class AnalyticsServiceImpl implements AnalyticsService {
 
     private final UserService userService;
-    private final SpaceService spaceService;
 
-    private final ProductService productService;
+    private final ProductRepository productRepository;
 
     private final EventRepository eventRepository;
 
-    public AnalyticsServiceImpl(
-        UserService userService,
-        SpaceService spaceService,
-        ProductService productService,
-        EventRepository eventRepository
-    ) {
+    public AnalyticsServiceImpl(UserService userService, ProductRepository productRepository, EventRepository eventRepository) {
         this.userService = userService;
-        this.spaceService = spaceService;
-        this.productService = productService;
+        this.productRepository = productRepository;
         this.eventRepository = eventRepository;
     }
 
@@ -48,7 +39,9 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     }
 
     private ProductReport findAndBuildProductReportBy(EventValue eventValue) {
-        final Product product = productService.findByReference(eventValue.getKey());
-        return ProductReport.from(eventValue, product);
+        return productRepository
+            .findByReference(eventValue.getKey())
+            .map(product -> ProductReport.from(eventValue, product))
+            .orElseGet(() -> ProductReport.from(eventValue));
     }
 }
