@@ -8,6 +8,8 @@ public class ProductClientDTO implements Serializable {
 
     String name;
     String description;
+    String reference;
+    String sku;
     String link;
     Double price;
 }
