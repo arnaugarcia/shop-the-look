@@ -1,10 +1,10 @@
 package com.klai.stl.service.analytics.dto;
 
-import lombok.Builder;
+import com.klai.stl.domain.Product;
+import com.klai.stl.repository.event.dto.EventValue;
 import lombok.Value;
 
 @Value
-@Builder
 public class ProductReport {
 
     String name;
@@ -13,4 +13,13 @@ public class ProductReport {
     String link;
     String reference;
     String count;
+
+    public ProductReport(EventValue event, Product product) {
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.sku = product.getSku();
+        this.link = product.getLink();
+        this.reference = product.getReference();
+        this.count = event.getValue();
+    }
 }
