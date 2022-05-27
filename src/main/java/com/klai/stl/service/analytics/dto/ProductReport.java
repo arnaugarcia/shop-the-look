@@ -1,5 +1,7 @@
 package com.klai.stl.service.analytics.dto;
 
+import static java.lang.Integer.parseInt;
+
 import com.klai.stl.domain.Product;
 import com.klai.stl.repository.event.dto.EventValue;
 import lombok.Value;
@@ -12,7 +14,7 @@ public class ProductReport {
     String sku;
     String link;
     String reference;
-    String count;
+    Integer count;
 
     private ProductReport(EventValue event, Product product) {
         this.name = product.getName();
@@ -20,7 +22,7 @@ public class ProductReport {
         this.sku = product.getSku();
         this.link = product.getLink();
         this.reference = product.getReference();
-        this.count = event.getValue();
+        this.count = parseInt(event.getValue());
     }
 
     private ProductReport(EventValue event) {
@@ -29,7 +31,7 @@ public class ProductReport {
         this.sku = null;
         this.link = null;
         this.reference = null;
-        this.count = event.getValue();
+        this.count = parseInt(event.getValue());
     }
 
     public static ProductReport from(EventValue event, Product product) {
