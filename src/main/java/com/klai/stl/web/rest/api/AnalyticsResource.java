@@ -6,6 +6,7 @@ import com.klai.stl.config.LiquibaseConfiguration;
 import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.dto.ProductReport;
+import com.klai.stl.service.analytics.dto.SpaceReport;
 import java.util.List;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
@@ -28,8 +29,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/views")
-    public ResponseEntity<Void> findSpaceViews() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<SpaceReport>> findSpaceViews(AnalyticsCriteria criteria) {
+        log.debug("REST request to find space views grouped by space");
+        return ok(analyticsService.findSpaceViews(criteria));
     }
 
     @GetMapping("/spaces/views/timeline")
@@ -64,12 +66,12 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/products/hovers")
-    public ResponseEntity<Void> findSpaceProductsHovers() {
+    public ResponseEntity<Void> findProductsHovers() {
         throw new NotYetImplementedException();
     }
 
     @GetMapping("/products/clicks/count")
-    public ResponseEntity<Void> findSpaceProductsClicksCount() {
+    public ResponseEntity<Void> findTotalProductsClicksCount() {
         throw new NotYetImplementedException();
     }
 }
