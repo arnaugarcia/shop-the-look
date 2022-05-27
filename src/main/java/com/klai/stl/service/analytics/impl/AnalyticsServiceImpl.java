@@ -6,12 +6,14 @@ import com.klai.stl.repository.ProductRepository;
 import com.klai.stl.repository.SpaceRepository;
 import com.klai.stl.repository.event.EventRepository;
 import com.klai.stl.repository.event.criteria.EventCriteria;
+import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.repository.event.dto.EventValue;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.dto.ProductReport;
 import com.klai.stl.service.analytics.dto.SpaceReport;
+import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,23 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         List<EventValue> spaceViewsByCompany = eventRepository.findSpaceViewsByCompany(eventCriteria);
 
         return spaceViewsByCompany.stream().map(this::findSpaceAndBuildReport).collect(toList());
+    }
+
+    @Override
+    public List<SpaceReportTimeline> findSpaceViewsByTimeline(AnalyticsCriteria criteria) {
+        final String companyReference = userService.getCurrentUserCompanyReference();
+        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
+
+        List<EventTimeline> spaceViewsTimelineByCompany = eventRepository.findSpaceViewsTimelineByCompany(eventCriteria);
+
+        return spaceViewsTimelineByCompany.stream().map(this::findSpaceAndBuildReportTimeline).collect(toList());
+    }
+
+    private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {
+        return spaceRepository
+            .findByReference(eventTimeline.getKey())
+            .map(space -> new SpaceReportTimeline(space, eventTimeline))
+            .orElseGet(() -> new SpaceReportTimeline(eventTimeline));
     }
 
     private SpaceReport findSpaceAndBuildReport(EventValue eventValue) {

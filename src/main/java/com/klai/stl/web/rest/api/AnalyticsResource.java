@@ -7,6 +7,7 @@ import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.dto.ProductReport;
 import com.klai.stl.service.analytics.dto.SpaceReport;
+import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
 import java.util.List;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
@@ -35,8 +36,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/views/timeline")
-    public ResponseEntity<Void> findSpaceViewsTimeline() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<SpaceReportTimeline>> findSpaceViewsTimeline(AnalyticsCriteria criteria) {
+        log.debug("REST request to find space views timeline");
+        return ok(analyticsService.findSpaceViewsByTimeline(criteria));
     }
 
     @GetMapping("/spaces/views/relation")
