@@ -35,10 +35,10 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
         final List<EventValue> productClicksByCompany = eventRepository.findProductClicksByCompany(eventCriteria);
 
-        return productClicksByCompany.stream().map(this::findAndBuildProductReportBy).collect(toList());
+        return productClicksByCompany.stream().map(this::findProductAndBuildReport).collect(toList());
     }
 
-    private ProductReport findAndBuildProductReportBy(EventValue eventValue) {
+    private ProductReport findProductAndBuildReport(EventValue eventValue) {
         return productRepository
             .findByReference(eventValue.getKey())
             .map(product -> ProductReport.from(eventValue, product))
