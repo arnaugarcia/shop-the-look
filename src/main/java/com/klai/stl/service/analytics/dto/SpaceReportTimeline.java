@@ -33,7 +33,7 @@ public class SpaceReportTimeline {
         Long count;
 
         public SpaceReportTimelineItem(EventTimeline.EventTimelineItem eventTimelineItem) {
-            this.date = eventTimelineItem.getDate().toEpochSecond();
+            this.date = eventTimelineItem.getDate().toInstant().toEpochMilli();
             this.count = eventTimelineItem.getValue();
         }
     }
