@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.event.dto.EventTimeline;
 import java.util.List;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
@@ -27,14 +28,14 @@ public class SpaceReportTimeline {
     }
 
     @Value
-    private static class SpaceReportTimelineItem {
+    @EqualsAndHashCode(callSuper = true)
+    private static class SpaceReportTimelineItem extends Report<Long> {
 
         Long date;
-        Long count;
 
         public SpaceReportTimelineItem(EventTimeline.EventTimelineItem eventTimelineItem) {
+            super(eventTimelineItem.getValue());
             this.date = eventTimelineItem.getDate().toInstant().toEpochMilli();
-            this.count = eventTimelineItem.getValue();
         }
     }
 }

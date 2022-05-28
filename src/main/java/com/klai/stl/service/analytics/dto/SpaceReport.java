@@ -4,24 +4,25 @@ import static java.lang.Integer.parseInt;
 
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.event.dto.EventValue;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-public class SpaceReport {
+@EqualsAndHashCode(callSuper = true)
+public class SpaceReport extends Report<Integer> {
 
     String name;
     String reference;
-    Integer count;
 
     public SpaceReport(EventValue event, Space space) {
+        super(parseInt(event.getValue()));
         this.name = space.getName();
         this.reference = space.getReference();
-        this.count = parseInt(event.getValue());
     }
 
     public SpaceReport(EventValue event) {
+        super(parseInt(event.getValue()));
         this.name = null;
         this.reference = null;
-        this.count = parseInt(event.getValue());
     }
 }
