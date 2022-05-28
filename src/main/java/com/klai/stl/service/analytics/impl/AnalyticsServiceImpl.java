@@ -85,6 +85,16 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         return productHoversByCompany.stream().map(this::findProductAndBuildReport).collect(toList());
     }
 
+    @Override
+    public List<SpaceReport> findSpaceViewsRelation(AnalyticsCriteria criteria) {
+        final String companyReference = userService.getCurrentUserCompanyReference();
+        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).sort(Sort.from(criteria.getSort())).build();
+
+        List<EventValue> spaceViewsRelationByCompany = eventRepository.findSpaceViewProductClicksRelationByCompany(eventCriteria);
+
+        return spaceViewsRelationByCompany.stream().map(this::findSpaceAndBuildReport).collect(toList());
+    }
+
     private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {
         return spaceRepository
             .findByReference(eventTimeline.getKey())

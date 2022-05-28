@@ -43,8 +43,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/views/relation")
-    public ResponseEntity<Void> findSpaceViewsRelation() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<SpaceReport>> findSpaceViewsRelation(AnalyticsCriteria criteria) {
+        log.debug("REST request to find space views relation");
+        return ok(analyticsService.findSpaceViewsRelation(criteria));
     }
 
     @GetMapping("/spaces/clicks")

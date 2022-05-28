@@ -15,4 +15,6 @@ public interface AnalyticsService {
     List<SpaceReportTimeline> findSpaceViewsByTimeline(AnalyticsTimelineCriteria criteria);
 
     List<ProductReport> findProductHovers(AnalyticsCriteria criteria);
+
+    List<SpaceReport> findSpaceViewsRelation(AnalyticsCriteria criteria);
 }
