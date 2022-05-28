@@ -7,9 +7,9 @@ public enum Sort {
     DESC;
 
     public static EventCriteria.CriteriaSort from(Sort sort) {
-        if (sort == null || sort == DESC) {
-            return EventCriteria.CriteriaSort.DESC;
+        if (sort == null || sort == ASC) {
+            return EventCriteria.CriteriaSort.ASC;
         }
-        return EventCriteria.CriteriaSort.ASC;
+        return EventCriteria.CriteriaSort.DESC;
     }
 }
