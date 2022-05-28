@@ -69,8 +69,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/products/hovers")
-    public ResponseEntity<Void> findProductsHovers() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<ProductReport>> findProductsHovers(AnalyticsCriteria criteria) {
+        log.debug("REST request to find products hovers");
+        return ok(analyticsService.findProductHovers(criteria));
     }
 
     @GetMapping("/products/clicks/count")
