@@ -4,6 +4,7 @@ import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.dto.ProductReport;
 import com.klai.stl.service.analytics.dto.SpaceReport;
+import com.klai.stl.service.analytics.dto.SpaceReportRelation;
 import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface AnalyticsService {
 
     List<ProductReport> findProductHovers(AnalyticsCriteria criteria);
 
-    List<SpaceReport> findSpaceViewsRelation(AnalyticsCriteria criteria);
+    List<SpaceReportRelation> findSpaceViewsRelation(AnalyticsCriteria criteria);
 }

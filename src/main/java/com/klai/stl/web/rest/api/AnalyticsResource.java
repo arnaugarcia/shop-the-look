@@ -8,6 +8,7 @@ import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.dto.ProductReport;
 import com.klai.stl.service.analytics.dto.SpaceReport;
+import com.klai.stl.service.analytics.dto.SpaceReportRelation;
 import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
 import java.util.List;
 import org.hibernate.cfg.NotYetImplementedException;
@@ -43,7 +44,7 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/views/relation")
-    public ResponseEntity<List<SpaceReport>> findSpaceViewsRelation(AnalyticsCriteria criteria) {
+    public ResponseEntity<List<SpaceReportRelation>> findSpaceViewsRelation(AnalyticsCriteria criteria) {
         log.debug("REST request to find space views relation");
         return ok(analyticsService.findSpaceViewsRelation(criteria));
     }

@@ -15,6 +15,7 @@ import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.criteria.Sort;
 import com.klai.stl.service.analytics.dto.ProductReport;
 import com.klai.stl.service.analytics.dto.SpaceReport;
+import com.klai.stl.service.analytics.dto.SpaceReportRelation;
 import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -86,13 +87,13 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     }
 
     @Override
-    public List<SpaceReport> findSpaceViewsRelation(AnalyticsCriteria criteria) {
+    public List<SpaceReportRelation> findSpaceViewsRelation(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria.builder(companyReference).sort(Sort.from(criteria.getSort())).build();
 
         List<EventValue> spaceViewsRelationByCompany = eventRepository.findSpaceViewProductClicksRelationByCompany(eventCriteria);
 
-        return spaceViewsRelationByCompany.stream().map(this::findSpaceAndBuildReport).collect(toList());
+        return spaceViewsRelationByCompany.stream().map(this::findSpaceAndBuildReportRelation).collect(toList());
     }
 
     private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {
@@ -100,6 +101,13 @@ public class AnalyticsServiceImpl implements AnalyticsService {
             .findByReference(eventTimeline.getKey())
             .map(space -> new SpaceReportTimeline(space, eventTimeline))
             .orElseGet(() -> new SpaceReportTimeline(eventTimeline));
+    }
+
+    private SpaceReportRelation findSpaceAndBuildReportRelation(EventValue eventValue) {
+        return spaceRepository
+            .findByReference(eventValue.getKey())
+            .map(space -> new SpaceReportRelation(eventValue, space))
+            .orElseGet(() -> new SpaceReportRelation(eventValue));
     }
 
     private SpaceReport findSpaceAndBuildReport(EventValue eventValue) {
