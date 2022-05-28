@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toList;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.*;
 import static org.elasticsearch.search.aggregations.PipelineAggregatorBuilders.bucketScript;
+import static org.elasticsearch.search.aggregations.PipelineAggregatorBuilders.bucketSort;
 import static org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval.DAY;
 
 import com.klai.stl.domain.event.Event;
@@ -15,12 +16,14 @@ import com.klai.stl.repository.event.QueryEventRepository;
 import com.klai.stl.repository.event.criteria.EventCriteria;
 import com.klai.stl.repository.event.dto.EventTimeline;
 import com.klai.stl.repository.event.dto.EventValue;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -88,14 +91,24 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
         bucketsPath.put("views", "space_view." + countSpaces().getName());
         final Script script = new Script("(params.clicks / params.views) * 100");
         final String bucketScriptAggregationName = "space_view_click";
+
+        FieldSortBuilder sort = new FieldSortBuilder(bucketScriptAggregationName).order(criteria.sortOrder());
+        List<FieldSortBuilder> sortList = new ArrayList<>();
+        sortList.add(sort);
+
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())))
+            .withQuery(
+                boolQuery()
+                    .filter(byCompany(criteria.getCompany()))
+                    .filter(byTimestampBetween(criteria.getStartDate(), criteria.getEndDate()))
+            )
             .addAggregation(
                 terms(SPACE_KEYWORD)
                     .field(SPACE_KEYWORD)
                     .subAggregation(filter("space_view", boolQuery().filter(byType(SPACE_VIEW))).subAggregation(countSpaces()))
                     .subAggregation(filter("product_click", boolQuery().filter(byType(PRODUCT_CLICK))).subAggregation(countProducts()))
                     .subAggregation(bucketScript(bucketScriptAggregationName, bucketsPath, script))
+                    .subAggregation(bucketSort("bucket_sort", sortList))
             )
             .build();
 
