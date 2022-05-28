@@ -11,6 +11,7 @@ import com.klai.stl.repository.event.dto.EventValue;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
+import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.dto.ProductReport;
 import com.klai.stl.service.analytics.dto.SpaceReport;
 import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
@@ -59,7 +60,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     }
 
     @Override
-    public List<SpaceReportTimeline> findSpaceViewsByTimeline(AnalyticsCriteria criteria) {
+    public List<SpaceReportTimeline> findSpaceViewsByTimeline(AnalyticsTimelineCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
 
