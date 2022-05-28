@@ -2,7 +2,6 @@ package com.klai.stl.repository.event.criteria;
 
 import static com.klai.stl.repository.event.constants.EventCriteriaConstants.DEFAULT_QUERY_LIMIT;
 import static com.klai.stl.repository.event.constants.EventCriteriaConstants.DEFAULT_QUERY_SORT;
-import static com.klai.stl.repository.event.criteria.EventCriteria.CriteriaSort.ASC;
 import static com.klai.stl.repository.event.criteria.EventCriteria.CriteriaSort.DESC;
 import static java.time.Instant.now;
 import static java.util.Objects.requireNonNull;
@@ -14,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.sort.SortOrder;
 
 @Value
 public class EventCriteria {
@@ -43,7 +43,7 @@ public class EventCriteria {
     public static class EventCriteriaBuilder {
 
         public EventCriteriaBuilder sortAsc() {
-            return this.sort(ASC);
+            return this.sort(CriteriaSort.ASC);
         }
 
         public EventCriteriaBuilder sortDesc() {
@@ -57,6 +57,10 @@ public class EventCriteria {
     }
 
     public BucketOrder bucketOrder() {
-        return sort == ASC ? key(true) : key(false);
+        return sort == CriteriaSort.ASC ? key(true) : key(false);
+    }
+
+    public SortOrder sortOrder() {
+        return sort == CriteriaSort.ASC ? SortOrder.DESC : SortOrder.ASC;
     }
 }
