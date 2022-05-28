@@ -8,6 +8,8 @@ import static java.time.Instant.now;
 import static java.util.Objects.requireNonNull;
 import static org.elasticsearch.search.aggregations.BucketOrder.key;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
@@ -26,7 +28,7 @@ public class EventCriteria {
     private EventCriteria(@NotNull String company, CriteriaSort sort, Integer limit, Long startDate, Long endDate) {
         this.company = requireNonNull(company);
         this.sort = sort == null ? DEFAULT_QUERY_SORT : sort;
-        this.startDate = startDate;
+        this.startDate = startDate == null ? LocalDateTime.now().minusMonths(1).toInstant(ZoneOffset.UTC).toEpochMilli() : startDate;
         this.limit = limit == null ? DEFAULT_QUERY_LIMIT : limit;
         this.endDate = endDate == null ? now().toEpochMilli() : endDate;
         if (startDate != null && endDate != null && startDate > endDate) {
