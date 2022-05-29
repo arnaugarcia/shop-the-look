@@ -9,20 +9,17 @@ import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class SpaceReport extends Report<Integer> {
+public class SpaceReport extends SpaceReportBase {
 
-    String name;
-    String reference;
+    Integer value;
 
     public SpaceReport(EventValue event, Space space) {
-        super(parseInt(event.getValue()));
-        this.name = space.getName();
-        this.reference = space.getReference();
+        super(space);
+        this.value = parseInt(event.getValue());
     }
 
     public SpaceReport(EventValue event) {
-        super(parseInt(event.getValue()));
-        this.name = null;
-        this.reference = null;
+        super();
+        this.value = parseInt(event.getValue());
     }
 }

@@ -4,25 +4,28 @@ import static java.lang.Double.parseDouble;
 
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.event.dto.EventValue;
+import java.text.DecimalFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class SpaceReportRelation extends Report<Double> {
+public class SpaceReportRelation extends SpaceReportBase {
 
-    String name;
-    String reference;
+    Double value;
+    static DecimalFormat DEFAULT_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     public SpaceReportRelation(EventValue event, Space space) {
-        super(parseDouble(event.getValue()));
-        this.name = space.getName();
-        this.reference = space.getReference();
+        super(space);
+        this.value = parseValue(event);
     }
 
     public SpaceReportRelation(EventValue event) {
-        super(parseDouble(event.getValue()));
-        this.name = null;
-        this.reference = null;
+        super();
+        this.value = parseValue(event);
+    }
+
+    private double parseValue(EventValue event) {
+        return parseDouble(DEFAULT_DECIMAL_FORMAT.format(Double.parseDouble(event.getValue())));
     }
 }

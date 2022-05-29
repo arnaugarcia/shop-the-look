@@ -4,12 +4,10 @@ import static java.lang.Integer.parseInt;
 
 import com.klai.stl.domain.Product;
 import com.klai.stl.repository.event.dto.EventValue;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-@EqualsAndHashCode(callSuper = true)
-public class ProductReport extends Report<Integer> {
+public class ProductReport {
 
     String name;
     String price;
@@ -17,22 +15,24 @@ public class ProductReport extends Report<Integer> {
     String link;
     String reference;
 
+    Integer value;
+
     private ProductReport(EventValue event, Product product) {
-        super(parseInt(event.getValue()));
         this.name = product.getName();
         this.price = product.getPrice();
         this.sku = product.getSku();
         this.link = product.getLink();
         this.reference = product.getReference();
+        this.value = parseInt(event.getValue());
     }
 
     private ProductReport(EventValue event) {
-        super(parseInt(event.getValue()));
         this.name = null;
         this.price = null;
         this.sku = null;
         this.link = null;
         this.reference = null;
+        this.value = parseInt(event.getValue());
     }
 
     public static ProductReport from(EventValue event, Product product) {

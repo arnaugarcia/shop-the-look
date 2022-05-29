@@ -9,33 +9,30 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-public class SpaceReportTimeline {
+@EqualsAndHashCode(callSuper = true)
+public class SpaceReportTimeline extends SpaceReportBase {
 
-    String reference;
-    String name;
     List<SpaceReportTimelineItem> timeline;
 
     public SpaceReportTimeline(Space space, EventTimeline eventTimeline) {
-        this.reference = space.getReference();
-        this.name = space.getName();
+        super(space);
         this.timeline = eventTimeline.getItems().stream().map(SpaceReportTimelineItem::new).collect(toList());
     }
 
     public SpaceReportTimeline(EventTimeline eventTimeline) {
-        this.reference = null;
-        this.name = null;
+        super();
         this.timeline = eventTimeline.getItems().stream().map(SpaceReportTimelineItem::new).collect(toList());
     }
 
     @Value
-    @EqualsAndHashCode(callSuper = true)
-    private static class SpaceReportTimelineItem extends Report<Long> {
+    private static class SpaceReportTimelineItem {
 
         Long date;
+        Long value;
 
         public SpaceReportTimelineItem(EventTimeline.EventTimelineItem eventTimelineItem) {
-            super(eventTimelineItem.getValue());
             this.date = eventTimelineItem.getDate().toInstant().toEpochMilli();
+            this.value = eventTimelineItem.getValue();
         }
     }
 }
