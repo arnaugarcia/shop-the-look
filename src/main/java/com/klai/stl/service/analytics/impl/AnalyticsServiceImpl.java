@@ -120,13 +120,23 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     }
 
     @Override
-    public CountReport totalProductClicksByCompany() {
+    public CountReport totalProductClicks() {
         final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
 
         final EventValue productClicksByCompany = eventRepository.totalProductClicksByCompany(eventCriteria);
 
         return new CountReport(productClicksByCompany);
+    }
+
+    @Override
+    public CountReport totalSpacesTime() {
+        final String companyReference = userService.getCurrentUserCompanyReference();
+        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
+
+        final EventValue spacesTimeByCompany = eventRepository.findTotalSpacesTimeByCompany(eventCriteria);
+
+        return new CountReport(spacesTimeByCompany);
     }
 
     private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {

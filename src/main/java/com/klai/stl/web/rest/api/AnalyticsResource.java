@@ -58,8 +58,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/time/count")
-    public ResponseEntity<Void> findSpaceTimeCount() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<CountReport> findSpaceTimeCount() {
+        log.debug("REST request to find total spaces time count");
+        return ok(analyticsService.totalSpacesTime());
     }
 
     @GetMapping("/products/clicks")
