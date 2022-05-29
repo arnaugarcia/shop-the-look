@@ -171,9 +171,13 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
 
     @Override
     public List<EventValue> findTotalSpaceTimeOfSpacesByCompany(EventCriteria criteria) {
+        FieldSortBuilder sort = new FieldSortBuilder(sumTime().getName()).order(criteria.sortOrder());
+        List<FieldSortBuilder> sortList = new ArrayList<>();
+        sortList.add(sort);
+
         Query query = new NativeSearchQueryBuilder()
             .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(SPACE_VIEW)))
-            .addAggregation(groupBySpace().order(criteria.bucketOrder()).subAggregation(sumTime()))
+            .addAggregation(groupBySpace().subAggregation(sumTime()).subAggregation(bucketSort("bucket_sort", sortList)))
             .build();
 
         final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
