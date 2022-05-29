@@ -18,4 +18,6 @@ public interface AnalyticsService {
     List<ProductReport> findProductHovers(AnalyticsCriteria criteria);
 
     List<SpaceReportRelation> findSpaceViewsRelation(AnalyticsCriteria criteria);
+
+    List<SpaceReport> findSpaceClicks(AnalyticsCriteria criteria);
 }

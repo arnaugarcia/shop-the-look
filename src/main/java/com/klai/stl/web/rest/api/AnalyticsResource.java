@@ -50,8 +50,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/clicks")
-    public ResponseEntity<Void> findSpaceClicks() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<SpaceReport>> findSpaceClicks(AnalyticsCriteria criteria) {
+        log.debug("REST request to find clicks grouped by space");
+        return ok(analyticsService.findSpaceClicks(criteria));
     }
 
     @GetMapping("/spaces/time")

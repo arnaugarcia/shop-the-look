@@ -44,7 +44,11 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public List<ProductReport> findProductClicks(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
-        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).sort(Sort.from(criteria.getSort())).build();
+        final EventCriteria eventCriteria = EventCriteria
+            .builder(companyReference)
+            .sort(Sort.from(criteria.getSort()))
+            .limit(criteria.getLimit())
+            .build();
 
         final List<EventValue> productClicksByCompany = eventRepository.findProductClicksByCompany(eventCriteria);
 
@@ -79,7 +83,11 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public List<ProductReport> findProductHovers(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
-        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).sort(Sort.from(criteria.getSort())).build();
+        final EventCriteria eventCriteria = EventCriteria
+            .builder(companyReference)
+            .sort(Sort.from(criteria.getSort()))
+            .limit(criteria.getLimit())
+            .build();
 
         final List<EventValue> productHoversByCompany = eventRepository.findProductHoverByCompany(eventCriteria);
 
@@ -89,11 +97,29 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public List<SpaceReportRelation> findSpaceViewsRelation(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
-        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).sort(Sort.from(criteria.getSort())).build();
+        final EventCriteria eventCriteria = EventCriteria
+            .builder(companyReference)
+            .sort(Sort.from(criteria.getSort()))
+            .limit(criteria.getLimit())
+            .build();
 
         List<EventValue> spaceViewsRelationByCompany = eventRepository.findSpaceViewProductClicksRelationByCompany(eventCriteria);
 
         return spaceViewsRelationByCompany.stream().map(this::findSpaceAndBuildReportRelation).collect(toList());
+    }
+
+    @Override
+    public List<SpaceReport> findSpaceClicks(AnalyticsCriteria criteria) {
+        final String companyReference = userService.getCurrentUserCompanyReference();
+        final EventCriteria eventCriteria = EventCriteria
+            .builder(companyReference)
+            .sort(Sort.from(criteria.getSort()))
+            .limit(criteria.getLimit())
+            .build();
+
+        List<EventValue> spaceClicksByCompany = eventRepository.findSpaceClicksByCompany(eventCriteria);
+
+        return spaceClicksByCompany.stream().map(this::findSpaceAndBuildReport).collect(toList());
     }
 
     private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {

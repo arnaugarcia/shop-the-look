@@ -128,9 +128,18 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
 
     @Override
     public List<EventValue> findSpaceClicksByCompany(EventCriteria criteria) {
+        FieldSortBuilder sort = new FieldSortBuilder(countProducts().getName()).order(criteria.sortOrder());
+        List<FieldSortBuilder> sortList = new ArrayList<>();
+        sortList.add(sort);
+
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_CLICK)))
-            .addAggregation(groupBySpace())
+            .withQuery(
+                boolQuery()
+                    .filter(byCompany(criteria.getCompany()))
+                    .filter(byType(PRODUCT_CLICK))
+                    .filter(byTimestampBetween(criteria.getStartDate(), criteria.getEndDate()))
+            )
+            .addAggregation(groupBySpace().subAggregation(countProducts()).subAggregation(bucketSort("bucket_sort", sortList)))
             .build();
 
         return queryAndTransform(query, SPACE_KEYWORD);
