@@ -139,6 +139,20 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         return new CountReport(spacesTimeByCompany);
     }
 
+    @Override
+    public List<SpaceReport> findSpacesTime(AnalyticsCriteria criteria) {
+        final String companyReference = userService.getCurrentUserCompanyReference();
+        final EventCriteria eventCriteria = EventCriteria
+            .builder(companyReference)
+            .sort(Sort.from(criteria.getSort()))
+            .limit(criteria.getLimit())
+            .build();
+
+        List<EventValue> spacesTimeByCompany = eventRepository.findTotalSpaceTimeOfSpacesByCompany(eventCriteria);
+
+        return spacesTimeByCompany.stream().map(this::findSpaceAndBuildReport).collect(toList());
+    }
+
     private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {
         return spaceRepository
             .findByReference(eventTimeline.getKey())

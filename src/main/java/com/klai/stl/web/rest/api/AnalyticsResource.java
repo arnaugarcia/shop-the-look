@@ -8,7 +8,6 @@ import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.dto.*;
 import java.util.List;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +52,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/time")
-    public ResponseEntity<Void> findSpaceTime() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<SpaceReport>> findSpaceTime(AnalyticsCriteria criteria) {
+        log.debug("REST request to find spaces time grouped by space");
+        return ok(analyticsService.findSpacesTime(criteria));
     }
 
     @GetMapping("/spaces/time/count")
