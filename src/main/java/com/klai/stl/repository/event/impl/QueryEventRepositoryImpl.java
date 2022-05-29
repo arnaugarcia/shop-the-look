@@ -146,7 +146,7 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     }
 
     @Override
-    public EventValue countProductClicksByCompany(EventCriteria criteria) {
+    public EventValue totalProductClicksByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
             .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_CLICK)))
             .addAggregation(countSpaces())

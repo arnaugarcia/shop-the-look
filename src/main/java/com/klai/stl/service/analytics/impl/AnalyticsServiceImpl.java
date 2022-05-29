@@ -13,10 +13,7 @@ import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.criteria.Sort;
-import com.klai.stl.service.analytics.dto.ProductReport;
-import com.klai.stl.service.analytics.dto.SpaceReport;
-import com.klai.stl.service.analytics.dto.SpaceReportRelation;
-import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
+import com.klai.stl.service.analytics.dto.*;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -120,6 +117,16 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         List<EventValue> spaceClicksByCompany = eventRepository.findSpaceClicksByCompany(eventCriteria);
 
         return spaceClicksByCompany.stream().map(this::findSpaceAndBuildReport).collect(toList());
+    }
+
+    @Override
+    public CountReport totalProductClicksByCompany() {
+        final String companyReference = userService.getCurrentUserCompanyReference();
+        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
+
+        final EventValue productClicksByCompany = eventRepository.totalProductClicksByCompany(eventCriteria);
+
+        return new CountReport(productClicksByCompany);
     }
 
     private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {

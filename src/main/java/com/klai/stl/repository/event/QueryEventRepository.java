@@ -18,7 +18,7 @@ public interface QueryEventRepository {
 
     List<EventValue> findSpaceClicksByCompany(EventCriteria criteria);
 
-    EventValue countProductClicksByCompany(EventCriteria criteria);
+    EventValue totalProductClicksByCompany(EventCriteria criteria);
 
     EventValue findTotalSpacesTimeByCompany(EventCriteria criteria);
 

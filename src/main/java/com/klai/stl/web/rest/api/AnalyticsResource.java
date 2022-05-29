@@ -6,10 +6,7 @@ import com.klai.stl.config.LiquibaseConfiguration;
 import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
-import com.klai.stl.service.analytics.dto.ProductReport;
-import com.klai.stl.service.analytics.dto.SpaceReport;
-import com.klai.stl.service.analytics.dto.SpaceReportRelation;
-import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
+import com.klai.stl.service.analytics.dto.*;
 import java.util.List;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
@@ -78,7 +75,8 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/products/clicks/count")
-    public ResponseEntity<Void> findTotalProductsClicksCount() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<CountReport> findTotalProductsClicksCount() {
+        log.debug("REST request to find total products clicks");
+        return ok(analyticsService.totalProductClicksByCompany());
     }
 }

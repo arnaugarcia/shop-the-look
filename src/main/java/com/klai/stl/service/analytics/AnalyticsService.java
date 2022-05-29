@@ -2,10 +2,7 @@ package com.klai.stl.service.analytics;
 
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
 import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
-import com.klai.stl.service.analytics.dto.ProductReport;
-import com.klai.stl.service.analytics.dto.SpaceReport;
-import com.klai.stl.service.analytics.dto.SpaceReportRelation;
-import com.klai.stl.service.analytics.dto.SpaceReportTimeline;
+import com.klai.stl.service.analytics.dto.*;
 import java.util.List;
 
 public interface AnalyticsService {
@@ -20,4 +17,6 @@ public interface AnalyticsService {
     List<SpaceReportRelation> findSpaceViewsRelation(AnalyticsCriteria criteria);
 
     List<SpaceReport> findSpaceClicks(AnalyticsCriteria criteria);
+
+    CountReport totalProductClicksByCompany();
 }
