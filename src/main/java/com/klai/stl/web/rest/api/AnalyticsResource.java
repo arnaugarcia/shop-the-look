@@ -77,6 +77,6 @@ public class AnalyticsResource {
     @GetMapping("/products/clicks/count")
     public ResponseEntity<CountReport> findTotalProductsClicksCount() {
         log.debug("REST request to find total products clicks");
-        return ok(analyticsService.totalProductClicksByCompany());
+        return ok(analyticsService.totalProductClicks());
     }
 }
