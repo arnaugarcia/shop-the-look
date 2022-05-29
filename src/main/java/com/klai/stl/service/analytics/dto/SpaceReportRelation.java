@@ -1,10 +1,10 @@
 package com.klai.stl.service.analytics.dto;
 
+import static com.klai.stl.service.analytics.constants.AnalyticsConstants.DEFAULT_DECIMAL_FORMAT;
 import static java.lang.Double.parseDouble;
 
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.event.dto.EventValue;
-import java.text.DecimalFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -13,7 +13,6 @@ import lombok.Value;
 public class SpaceReportRelation extends SpaceReportBase {
 
     Double value;
-    static DecimalFormat DEFAULT_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     public SpaceReportRelation(EventValue event, Space space) {
         super(space);
@@ -26,6 +25,6 @@ public class SpaceReportRelation extends SpaceReportBase {
     }
 
     private double parseValue(EventValue event) {
-        return parseDouble(DEFAULT_DECIMAL_FORMAT.format(Double.parseDouble(event.getValue())));
+        return parseDouble(DEFAULT_DECIMAL_FORMAT.format(parseDouble(event.getValue())));
     }
 }
