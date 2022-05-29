@@ -1,6 +1,6 @@
 package com.klai.stl.service.analytics.dto;
 
-import static java.lang.Integer.parseInt;
+import static java.lang.Double.parseDouble;
 
 import com.klai.stl.domain.Space;
 import com.klai.stl.repository.event.dto.EventValue;
@@ -15,11 +15,11 @@ public class SpaceReport extends SpaceReportBase {
 
     public SpaceReport(EventValue event, Space space) {
         super(space);
-        this.value = parseInt(event.getValue());
+        this.value = (int) parseDouble(event.getValue());
     }
 
     public SpaceReport(EventValue event) {
         super();
-        this.value = parseInt(event.getValue());
+        this.value = (int) parseDouble(event.getValue());
     }
 }
