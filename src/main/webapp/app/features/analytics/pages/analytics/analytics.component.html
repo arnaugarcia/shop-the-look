@@ -1,0 +1,52 @@
+<stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+
+<core-card (events)="emittedEvents($event)" [actions]="['collapse', 'expand', 'reload', 'close']" [reloadTime]="1000">
+  <h4 class="card-title">Card Actions</h4>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Icon</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Collapse</td>
+                <td class="text-center">
+                  <i class="feather icon-chevron-down"></i>
+                </td>
+                <td>Collapse card content using collapse action.</td>
+              </tr>
+              <tr>
+                <td>Expand Card</td>
+                <td class="text-center">
+                  <i class="feather icon-maximize"></i>
+                </td>
+                <td>Maximize your card using expand action</td>
+              </tr>
+              <tr>
+                <td>Refresh Content</td>
+                <td class="text-center">
+                  <i class="feather icon-rotate-cw"></i>
+                </td>
+                <td>Refresh your card content using refresh action.</td>
+              </tr>
+              <tr>
+                <td>Remove Card</td>
+                <td class="text-center">
+                  <i class="feather icon-x"></i>
+                </td>
+                <td>Remove card from page using remove card action</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</core-card>
