@@ -82,13 +82,13 @@ export class AnalyticsComponent implements OnInit {
     fill: {
       opacity: 1,
     },
-    /*tooltip: {
+    tooltip: {
       y: {
-        formatter: function(val: string) {
-          return "$ " + val + " thousands";
-        }
-      }
-    }*/
+        formatter: function (val: string) {
+          return '$ ' + val + ' thousands';
+        },
+      },
+    },
   };
 
   public contentHeader: ContentHeader = analyticsBreadcrumb;
