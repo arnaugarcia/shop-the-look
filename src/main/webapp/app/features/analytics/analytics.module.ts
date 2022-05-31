@@ -4,9 +4,10 @@ import { ContentHeaderModule } from '../../layouts/content-header/content-header
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { AnalyticsRoutingModule } from './analytics-routing.module.route';
 import { CoreCardModule } from '../../../@core/components/core-card/core-card.module';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [AnalyticsComponent],
-  imports: [SharedModule, CoreCardModule, ContentHeaderModule, AnalyticsRoutingModule],
+  imports: [SharedModule, CoreCardModule, ContentHeaderModule, AnalyticsRoutingModule, NgApexchartsModule],
 })
 export class AnalyticsModule {}
