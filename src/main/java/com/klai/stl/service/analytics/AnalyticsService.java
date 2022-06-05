@@ -23,4 +23,6 @@ public interface AnalyticsService {
     CountReport totalSpacesTime();
 
     List<SpaceReport> findSpacesTime(AnalyticsCriteria criteria);
+
+    List<SpaceReportTimeline> findSpaceClicksByTimeline(AnalyticsTimelineCriteria criteria);
 }

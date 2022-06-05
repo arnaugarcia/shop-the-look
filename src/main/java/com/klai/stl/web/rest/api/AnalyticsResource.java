@@ -51,6 +51,12 @@ public class AnalyticsResource {
         return ok(analyticsService.findSpaceClicks(criteria));
     }
 
+    @GetMapping("/spaces/clicks/timeline")
+    public ResponseEntity<List<SpaceReportTimeline>> findSpaceClicksTimeline(AnalyticsTimelineCriteria criteria) {
+        log.debug("REST request to find clicks timeline");
+        return ok(analyticsService.findSpaceClicksByTimeline(criteria));
+    }
+
     @GetMapping("/spaces/time")
     public ResponseEntity<List<SpaceReport>> findSpaceTime(AnalyticsCriteria criteria) {
         log.debug("REST request to find spaces time grouped by space");

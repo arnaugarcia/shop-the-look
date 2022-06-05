@@ -194,6 +194,32 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
             .collect(toList());
     }
 
+    @Override
+    public List<EventTimeline> findSpaceClicksTimelineByCompany(EventCriteria criteria) {
+        FieldSortBuilder sort = new FieldSortBuilder(countProducts().getName()).order(criteria.sortOrder());
+        List<FieldSortBuilder> sortList = new ArrayList<>();
+        sortList.add(sort);
+
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(
+                boolQuery()
+                    .filter(byCompany(criteria.getCompany()))
+                    .filter(byType(PRODUCT_CLICK))
+                    .filter(byTimestampBetween(criteria.getStartDate(), criteria.getEndDate()))
+            )
+            .addAggregation(
+                groupBySpace()
+                    .subAggregation(countProducts())
+                    .subAggregation(bucketSort("bucket_sort", sortList))
+                    .subAggregation(dateHistogram("space_timeline").field(TIMESTAMP).fixedInterval(DAY))
+            )
+            .build();
+
+        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
+        final Terms terms = getAggregationsOf(search).get(SPACE_KEYWORD);
+        return buildEventTimelineFrom(terms);
+    }
+
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {
         return terms
             .getBuckets()

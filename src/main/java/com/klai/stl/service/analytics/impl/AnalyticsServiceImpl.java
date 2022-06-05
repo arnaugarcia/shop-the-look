@@ -153,6 +153,21 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         return spacesTimeByCompany.stream().map(this::findSpaceAndBuildReport).collect(toList());
     }
 
+    @Override
+    public List<SpaceReportTimeline> findSpaceClicksByTimeline(AnalyticsTimelineCriteria criteria) {
+        final String companyReference = userService.getCurrentUserCompanyReference();
+        final EventCriteria eventCriteria = EventCriteria
+            .builder(companyReference)
+            .sort(Sort.from(criteria.getSort()))
+            .startDate(criteria.getFrom())
+            .endDate(criteria.getTo())
+            .build();
+
+        List<EventTimeline> spaceClicksTimelineByCompany = eventRepository.findSpaceClicksTimelineByCompany(eventCriteria);
+
+        return spaceClicksTimelineByCompany.stream().map(this::findSpaceAndBuildReportTimeline).collect(toList());
+    }
+
     private SpaceReportTimeline findSpaceAndBuildReportTimeline(EventTimeline eventTimeline) {
         return spaceRepository
             .findByReference(eventTimeline.getKey())
