@@ -5,7 +5,6 @@ import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 
 public enum EventType {
-    SPACE_CLICK("space_click"),
     SPACE_LOAD("space_load"),
     SPACE_HOVER("space_hover"),
     SPACE_VIEW("space_view"),
