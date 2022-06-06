@@ -15,6 +15,7 @@ export class AnalyticsService {
   findSpaceViews(): Observable<HttpResponse<ISpaceReport[]>> {
     return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/views`, { observe: 'response' });
   }
+
   findSpaceClicks(): Observable<HttpResponse<ISpaceReport[]>> {
     return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/clicks`, { observe: 'response' });
   }

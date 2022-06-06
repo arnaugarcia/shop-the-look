@@ -6,9 +6,10 @@ import { AnalyticsRoutingModule } from './analytics-routing.module.route';
 import { CoreCardModule } from '../../../@core/components/core-card/core-card.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { SpacesViewClicksComponent } from './pages/analytics/widgets/spaces-view-clicks/spaces-view-clicks.component';
+import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 
 @NgModule({
   declarations: [AnalyticsComponent, SpacesViewClicksComponent],
-  imports: [SharedModule, CoreCardModule, ContentHeaderModule, AnalyticsRoutingModule, NgApexchartsModule],
+  imports: [SharedModule, CoreCardModule, ContentHeaderModule, AnalyticsRoutingModule, NgApexchartsModule, Ng2FlatpickrModule],
 })
 export class AnalyticsModule {}
