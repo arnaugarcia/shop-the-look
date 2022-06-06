@@ -56,7 +56,7 @@ export class SpacesViewClicksComponent implements OnInit {
       colors: ['transparent'],
     },
     xaxis: {
-      type: 'category',
+      categories: [],
     },
     fill: {
       opacity: 1,
@@ -68,14 +68,26 @@ export class SpacesViewClicksComponent implements OnInit {
   ngOnInit(): void {
     this.analyticsService.findSpaceViews().subscribe((response: HttpResponse<ISpaceReport[]>) => {
       if (response.body) {
-        this.chart?.updateSeries([
-          {
-            data: response.body.map(spaceReport => ({
-              x: spaceReport.reference ? spaceReport.reference : 'Deleted space',
-              y: spaceReport.value,
-            })),
-          },
-        ]);
+        const serie: ApexAxisChartSeries | any = {
+          name: 'Views',
+          data: response.body.map((report: ISpaceReport) => ({
+            x: report.reference ? report.reference : 'N/A',
+            y: report.value,
+          })),
+        };
+        this.chart?.appendSeries(serie, true);
+      }
+    });
+    this.analyticsService.findSpaceClicks().subscribe((response: HttpResponse<ISpaceReport[]>) => {
+      if (response.body) {
+        const serie: ApexAxisChartSeries | any = {
+          name: 'Clicks',
+          data: response.body.map((report: ISpaceReport) => ({
+            x: report.reference ? report.reference : 'N/A',
+            y: report.value,
+          })),
+        };
+        this.chart?.appendSeries(serie, true);
       }
     });
   }
