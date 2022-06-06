@@ -1,19 +1,18 @@
-<core-card (events)="emittedEvents($event)" [actions]="['collapse', 'expand', 'reload', 'close']" [reloadTime]="1000">
+<core-card [actions]="['collapse', 'expand', 'reload', 'close']" [reloadTime]="1000">
   <h4 class="card-title">Space views / clicks</h4>
   <div class="card-body">
-    <div id="chart">
-      <apx-chart
-        [series]="chartOptions.series"
-        [chart]="chartOptions.chart"
-        [dataLabels]="chartOptions.dataLabels"
-        [plotOptions]="chartOptions.plotOptions"
-        [yaxis]="chartOptions.yaxis"
-        [legend]="chartOptions.legend"
-        [fill]="chartOptions.fill"
-        [stroke]="chartOptions.stroke"
-        [tooltip]="chartOptions.tooltip"
-        [xaxis]="chartOptions.xaxis"
-      ></apx-chart>
-    </div>
+    <apx-chart
+      #chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [yaxis]="chartOptions.yaxis"
+      [legend]="chartOptions.legend"
+      [fill]="chartOptions.fill"
+      [stroke]="chartOptions.stroke"
+      [tooltip]="chartOptions.tooltip"
+      [xaxis]="chartOptions.xaxis"
+    ></apx-chart>
   </div>
 </core-card>
