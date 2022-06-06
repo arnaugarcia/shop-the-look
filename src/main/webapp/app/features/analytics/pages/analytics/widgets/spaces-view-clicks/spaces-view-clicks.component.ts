@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { ISpaceReport } from '../../../../models/space-report.model';
 import { AnalyticsService } from '../../../../services/analytics.service';
 import {
   ApexAxisChartSeries,
@@ -16,6 +14,7 @@ import {
   ChartComponent,
 } from 'ng-apexcharts';
 import { FlatpickrOptions } from 'ng2-flatpickr';
+import { ISpaceReport } from '../../../../models/space-report.model';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -89,30 +88,45 @@ export class SpacesViewClicksComponent implements OnInit {
   }
 
   private loadAll(): void {
-    this.analyticsService.findSpaceViews().subscribe((response: HttpResponse<ISpaceReport[]>) => {
-      if (response.body) {
+    const spaceViews = this.analyticsService.findSpaceViews().toPromise();
+    const spaceClicks = this.analyticsService.findSpaceClicks().toPromise();
+
+    Promise.all([spaceViews, spaceClicks])
+      .then(([views, clicks]) => [views.body ? views.body : [], clicks.body ? clicks.body : []])
+      .then(([views, clicks]) => {
+        const series = [];
+        const viewsSerie: ApexAxisChartSeries | any = {
+          name: 'Views',
+          data: views.map((report: ISpaceReport) => ({
+            x: report.reference ? report.reference : 'N/A',
+            y: report.value,
+          })),
+        };
+        series.push(viewsSerie);
+        const clicksSerie: ApexAxisChartSeries | any = {
+          name: 'Clicks',
+          data: clicks.map((report: ISpaceReport) => ({
+            x: report.reference ? report.reference : 'N/A',
+            y: report.value,
+          })),
+        };
+        series.push(clicksSerie);
+        this.chart?.updateSeries(series, true);
+      });
+  }
+
+  /*
+  if (response.body) {
         const serie: ApexAxisChartSeries | any = {
           name: 'Views',
           data: response.body.map((report: ISpaceReport) => ({
             x: report.reference ? report.reference : 'N/A',
-            y: report.value,
-          })),
-        };
-      }
-    });
-    this.analyticsService.findSpaceClicks().subscribe((response: HttpResponse<ISpaceReport[]>) => {
-      if (response.body) {
-        const serie: ApexAxisChartSeries | any = {
-          name: 'Clicks',
-          data: response.body.map((report: ISpaceReport) => ({
-            x: report.reference ? report.reference : 'N/A',
-            y: report.value,
-          })),
+            y: report.value
+          }))
         };
         this.chart?.appendSeries(serie, true);
       }
-    });
-  }
+   */
 
   private filterByDateRange(fromDate: Date, toDate: Date): void {
     console.error('filterByDateRange', fromDate, toDate);
