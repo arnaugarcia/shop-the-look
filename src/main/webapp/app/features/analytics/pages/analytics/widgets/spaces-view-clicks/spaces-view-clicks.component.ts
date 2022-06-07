@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AnalyticsService } from '../../../../services/analytics.service';
 import { FlatpickrOptions } from 'ng2-flatpickr';
 import { ISpaceReport } from '../../../../models/space-report.model';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
 @Component({
   selector: 'stl-spaces-view-clicks',
@@ -10,7 +11,33 @@ import { ISpaceReport } from '../../../../models/space-report.model';
   encapsulation: ViewEncapsulation.None,
 })
 export class SpacesViewClicksComponent implements OnInit {
-  @ViewChild('chart') chart: any | undefined;
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 10,
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+      },
+    },
+  };
+  public barChartType: ChartType = 'bar';
+
+  public barChartData: ChartData<'bar'> | any = {
+    datasets: [
+      {
+        data: [
+          { x: '<a href="#"> jtththth</a>', y: 1500 },
+          { x: 'Purchases', y: 500 },
+        ],
+      },
+    ],
+  };
 
   public dateRangeOptions: FlatpickrOptions | any = {
     altInput: true,
@@ -56,7 +83,6 @@ export class SpacesViewClicksComponent implements OnInit {
           })),
         };
         series.push(clicksSerie);
-        this.chart?.updateSeries(series, true);
       });
   }
 

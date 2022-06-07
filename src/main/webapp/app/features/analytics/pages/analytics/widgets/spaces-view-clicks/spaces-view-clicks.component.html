@@ -9,5 +9,9 @@
       <ng2-flatpickr [config]="dateRangeOptions"></ng2-flatpickr>
     </div>
   </div>
-  <div class="card-body"></div>
+  <div class="card-body">
+    <div id="chartjs-bar-chart">
+      <canvas baseChart height="100" [data]="barChartData" [options]="barChartOptions" [type]="barChartType"> </canvas>
+    </div>
+  </div>
 </div>
