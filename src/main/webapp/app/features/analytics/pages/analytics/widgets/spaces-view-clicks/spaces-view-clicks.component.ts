@@ -47,20 +47,12 @@ export class SpacesViewClicksComponent implements OnInit {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '55%',
+        columnWidth: '50%',
         borderRadius: 2,
       },
     },
     dataLabels: {
       enabled: false,
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ['transparent'],
-    },
-    xaxis: {
-      categories: [],
     },
     fill: {
       opacity: 1,
@@ -114,19 +106,6 @@ export class SpacesViewClicksComponent implements OnInit {
         this.chart?.updateSeries(series, true);
       });
   }
-
-  /*
-  if (response.body) {
-        const serie: ApexAxisChartSeries | any = {
-          name: 'Views',
-          data: response.body.map((report: ISpaceReport) => ({
-            x: report.reference ? report.reference : 'N/A',
-            y: report.value
-          }))
-        };
-        this.chart?.appendSeries(serie, true);
-      }
-   */
 
   private filterByDateRange(fromDate: Date, toDate: Date): void {
     console.error('filterByDateRange', fromDate, toDate);
