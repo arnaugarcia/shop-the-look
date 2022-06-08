@@ -11,7 +11,6 @@ import com.klai.stl.repository.event.dto.EventValue;
 import com.klai.stl.service.UserService;
 import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
-import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.criteria.Sort;
 import com.klai.stl.service.analytics.dto.*;
 import java.util.List;
@@ -63,7 +62,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     }
 
     @Override
-    public List<SpaceReportTimeline> findSpaceViewsByTimeline(AnalyticsTimelineCriteria criteria) {
+    public List<SpaceReportTimeline> findSpaceViewsByTimeline(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria
             .builder(companyReference)
@@ -154,7 +153,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     }
 
     @Override
-    public List<SpaceReportTimeline> findSpaceClicksByTimeline(AnalyticsTimelineCriteria criteria) {
+    public List<SpaceReportTimeline> findSpaceClicksByTimeline(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria
             .builder(companyReference)

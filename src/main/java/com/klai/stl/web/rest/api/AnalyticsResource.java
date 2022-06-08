@@ -5,7 +5,6 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.klai.stl.config.LiquibaseConfiguration;
 import com.klai.stl.service.analytics.AnalyticsService;
 import com.klai.stl.service.analytics.criteria.AnalyticsCriteria;
-import com.klai.stl.service.analytics.criteria.AnalyticsTimelineCriteria;
 import com.klai.stl.service.analytics.dto.*;
 import java.util.List;
 import org.slf4j.Logger;
@@ -34,7 +33,7 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/views/timeline")
-    public ResponseEntity<List<SpaceReportTimeline>> findSpaceViewsTimeline(AnalyticsTimelineCriteria criteria) {
+    public ResponseEntity<List<SpaceReportTimeline>> findSpaceViewsTimeline(AnalyticsCriteria criteria) {
         log.debug("REST request to find space views timeline");
         return ok(analyticsService.findSpaceViewsByTimeline(criteria));
     }
@@ -52,7 +51,7 @@ public class AnalyticsResource {
     }
 
     @GetMapping("/spaces/clicks/timeline")
-    public ResponseEntity<List<SpaceReportTimeline>> findSpaceClicksTimeline(AnalyticsTimelineCriteria criteria) {
+    public ResponseEntity<List<SpaceReportTimeline>> findSpaceClicksTimeline(AnalyticsCriteria criteria) {
         log.debug("REST request to find clicks timeline");
         return ok(analyticsService.findSpaceClicksByTimeline(criteria));
     }

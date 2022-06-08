@@ -1,12 +1,12 @@
 package com.klai.stl.service.analytics.criteria;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Value;
 
-@Data
-@EqualsAndHashCode
+@Value
 public class AnalyticsCriteria {
 
     Integer limit;
     Sort sort;
+    Long to;
+    Long from;
 }
