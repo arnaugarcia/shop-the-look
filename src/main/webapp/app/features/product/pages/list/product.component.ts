@@ -88,26 +88,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     return item.reference!;
   }
 
-  loadAll(): void {
-    this.isLoading = true;
-
-    this.productService
-      .query({
-        size: this.itemsPerPage,
-        sort: this.sort(),
-        keyword: this.searchText,
-      })
-      .subscribe(
-        (response: HttpResponse<IProduct[]>) => {
-          this.onSuccess(response.body, response.headers, 1, true);
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
-  }
-
   refreshProducts(): void {
     if (!this.canImportWithFeed()) {
       return;
