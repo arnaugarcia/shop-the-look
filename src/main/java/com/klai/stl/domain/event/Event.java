@@ -3,9 +3,9 @@ package com.klai.stl.domain.event;
 import static javax.persistence.EnumType.STRING;
 
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Value
