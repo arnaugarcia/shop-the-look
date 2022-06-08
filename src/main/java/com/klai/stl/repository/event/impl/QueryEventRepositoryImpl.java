@@ -40,8 +40,13 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     @Override
     public List<EventValue> findSpaceViewsByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(SPACE_VIEW)))
-            .addAggregation(groupBySpace())
+            .withQuery(
+                boolQuery()
+                    .filter(byCompany(criteria.getCompany()))
+                    .filter(byType(SPACE_VIEW))
+                    .filter(byTimestampBetween(criteria.getStartDate(), criteria.getEndDate()))
+            )
+            .addAggregation(groupBySpace().order(criteria.bucketOrder()))
             .build();
 
         return queryAndTransform(query, SPACE_KEYWORD);

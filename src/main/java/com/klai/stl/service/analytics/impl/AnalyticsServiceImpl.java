@@ -54,7 +54,12 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public List<SpaceReport> findSpaceViews(AnalyticsCriteria criteria) {
         final String companyReference = userService.getCurrentUserCompanyReference();
-        final EventCriteria eventCriteria = EventCriteria.builder(companyReference).build();
+        final EventCriteria eventCriteria = EventCriteria
+            .builder(companyReference)
+            .endDate(criteria.getTo())
+            .startDate(criteria.getFrom())
+            .sort(Sort.from(criteria.getSort()))
+            .build();
 
         List<EventValue> spaceViewsByCompany = eventRepository.findSpaceViewsByCompany(eventCriteria);
 
