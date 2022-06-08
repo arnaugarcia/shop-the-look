@@ -5,6 +5,7 @@ import { AnalyticsService } from '../../../../services/analytics.service';
 import { ChartOptions } from '../spaces-view-clicks/spaces-view-clicks.component';
 import { HttpResponse } from '@angular/common/http';
 import { IProductReport } from '../../../../models/product-report.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'stl-product-clicks',
@@ -14,11 +15,26 @@ import { IProductReport } from '../../../../models/product-report.model';
 export class ProductClicksComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent | undefined;
 
+  public products: IProductReport[] = [];
+
   public chartOptions: Partial<ChartOptions> | any = {
     series: [],
     chart: {
       type: 'bar',
       height: 350,
+      /* events: {
+        click: (event: any, chartContext: any, config: any) => {
+          if (config.dataPointIndex >= 0) {
+            this.router.navigate(['/products'], { queryParams: { keyword: chartContext.data.twoDSeriesX[config.dataPointIndex] } });
+          }
+        }
+      } */
+    },
+    noData: {
+      text: 'No data available',
+      style: {
+        fontSize: '20px',
+      },
     },
     plotOptions: {
       bar: {
@@ -44,7 +60,7 @@ export class ProductClicksComponent implements OnInit {
     altFormat: 'Y-m-d',
   };
 
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadAll();
@@ -53,14 +69,14 @@ export class ProductClicksComponent implements OnInit {
   private loadAll(): void {
     this.analyticsService.findProductClicks().subscribe((response: HttpResponse<IProductReport[]>) => {
       if (response.body) {
+        this.products = response.body;
         const clicksSerie: ApexAxisChartSeries | any = {
           name: 'Clicks',
           data: response.body.map((report: IProductReport) => ({
-            x: report.reference ? report.reference : 'N/A',
+            x: report.name ? report.name : 'N/A',
             y: report.value,
           })),
         };
-        console.error(this.chart);
         this.chart?.appendSeries(clicksSerie, true);
       }
     });

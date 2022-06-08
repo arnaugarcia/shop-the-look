@@ -54,6 +54,12 @@ export class SpacesViewClicksComponent implements OnInit {
     dataLabels: {
       enabled: false,
     },
+    noData: {
+      text: 'No data available',
+      style: {
+        fontSize: '20px',
+      },
+    },
     fill: {
       opacity: 1,
     },
@@ -90,7 +96,7 @@ export class SpacesViewClicksComponent implements OnInit {
         const viewsSerie: ApexAxisChartSeries | any = {
           name: 'Views',
           data: views.map((report: ISpaceReport) => ({
-            x: report.reference ? report.reference : 'N/A',
+            x: report.name ? report.name : 'N/A',
             y: report.value,
           })),
         };
