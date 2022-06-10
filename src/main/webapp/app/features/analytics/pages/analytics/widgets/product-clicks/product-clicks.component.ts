@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
 import { AnalyticsService } from '../../../../services/analytics.service';
 import { ChartOptions } from '../spaces-view-clicks/spaces-view-clicks.component';
@@ -11,6 +11,7 @@ import { IAnalyticsCriteria } from '../../../../models/analytics-criteria.model'
   selector: 'stl-product-clicks',
   templateUrl: './product-clicks.component.html',
   styleUrls: ['./product-clicks.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ProductClicksComponent extends AnalyticsWidgetComponent {
   @ViewChild('chart') chart: ChartComponent | undefined;
@@ -63,7 +64,7 @@ export class ProductClicksComponent extends AnalyticsWidgetComponent {
             y: report.value,
           })),
         };
-        this.chart?.updateSeries(serie, true);
+        this.chart?.updateSeries([serie], true);
       }
     });
   }
