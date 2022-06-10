@@ -15,6 +15,7 @@ import {
 } from 'ng-apexcharts';
 import { FlatpickrOptions } from 'ng2-flatpickr';
 import { ISpaceReport } from '../../../../models/space-report.model';
+import { IAnalyticsCriteria } from '../../../../models/analytics-criteria.model';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -85,9 +86,9 @@ export class SpacesViewClicksComponent implements OnInit {
     this.loadAll();
   }
 
-  private loadAll(): void {
-    const spaceViews = this.analyticsService.findSpaceViews().toPromise();
-    const spaceClicks = this.analyticsService.findSpaceClicks().toPromise();
+  private loadAll(criteria?: IAnalyticsCriteria): void {
+    const spaceViews = this.analyticsService.findSpaceViews(criteria).toPromise();
+    const spaceClicks = this.analyticsService.findSpaceClicks(criteria).toPromise();
 
     Promise.all([spaceViews, spaceClicks])
       .then(([views, clicks]) => [views.body ? views.body : [], clicks.body ? clicks.body : []])
@@ -114,7 +115,7 @@ export class SpacesViewClicksComponent implements OnInit {
   }
 
   private filterByDateRange(fromDate: Date, toDate: Date): void {
-    console.error('filterByDateRange', fromDate, toDate);
-    this.loadAll();
+    console.error('filterByDateRange', fromDate.getTime(), toDate.getTime());
+    this.loadAll({ from: fromDate.getTime(), to: toDate.getTime() });
   }
 }

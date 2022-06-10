@@ -4,6 +4,8 @@ import { ApplicationConfigService } from '../../../core/config/application-confi
 import { Observable } from 'rxjs';
 import { ISpaceReport } from '../models/space-report.model';
 import { IProductReport } from '../models/product-report.model';
+import { IAnalyticsCriteria } from '../models/analytics-criteria.model';
+import { createRequestOption } from '../../../core/request/request-util';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +15,18 @@ export class AnalyticsService {
 
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
-  findSpaceViews(): Observable<HttpResponse<ISpaceReport[]>> {
+  findSpaceViews(criteria?: IAnalyticsCriteria): Observable<HttpResponse<ISpaceReport[]>> {
+    const options = createRequestOption(criteria);
     return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/views`, { observe: 'response' });
   }
 
-  findSpaceClicks(): Observable<HttpResponse<ISpaceReport[]>> {
+  findSpaceClicks(criteria?: IAnalyticsCriteria): Observable<HttpResponse<ISpaceReport[]>> {
+    const options = createRequestOption(criteria);
     return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/clicks`, { observe: 'response' });
   }
 
-  findProductClicks(): Observable<HttpResponse<IProductReport[]>> {
+  findProductClicks(criteria?: IAnalyticsCriteria): Observable<HttpResponse<IProductReport[]>> {
+    const options = createRequestOption(criteria);
     return this.http.get<IProductReport[]>(`${this.resourceUrl}/products/clicks`, { observe: 'response' });
   }
 }
