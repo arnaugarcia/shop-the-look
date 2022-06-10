@@ -115,6 +115,8 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         final EventCriteria eventCriteria = EventCriteria
             .builder(companyReference)
             .sort(Sort.from(criteria.getSort()))
+            .endDate(criteria.getTo())
+            .startDate(criteria.getFrom())
             .limit(criteria.getLimit())
             .build();
 
