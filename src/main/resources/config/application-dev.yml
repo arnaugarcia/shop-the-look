@@ -50,7 +50,8 @@ spring:
         useServerPrepStmts: true
   jpa:
   elasticsearch:
-    uris: http://localhost:9200
+    rest:
+      uris: http://localhost:9200
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev
