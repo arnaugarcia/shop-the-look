@@ -17,16 +17,16 @@ export class AnalyticsService {
 
   findSpaceViews(criteria?: IAnalyticsCriteria): Observable<HttpResponse<ISpaceReport[]>> {
     const options = createRequestOption(criteria);
-    return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/views`, { observe: 'response' });
+    return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/views`, { observe: 'response', params: options });
   }
 
   findSpaceClicks(criteria?: IAnalyticsCriteria): Observable<HttpResponse<ISpaceReport[]>> {
     const options = createRequestOption(criteria);
-    return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/clicks`, { observe: 'response' });
+    return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/clicks`, { observe: 'response', params: options });
   }
 
   findProductClicks(criteria?: IAnalyticsCriteria): Observable<HttpResponse<IProductReport[]>> {
     const options = createRequestOption(criteria);
-    return this.http.get<IProductReport[]>(`${this.resourceUrl}/products/clicks`, { observe: 'response' });
+    return this.http.get<IProductReport[]>(`${this.resourceUrl}/products/clicks`, { observe: 'response', params: options });
   }
 }
