@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AnalyticsService } from '../../../../services/analytics.service';
 import {
   ApexAxisChartSeries,
@@ -16,6 +16,7 @@ import {
 import { FlatpickrOptions } from 'ng2-flatpickr';
 import { ISpaceReport } from '../../../../models/space-report.model';
 import { IAnalyticsCriteria } from '../../../../models/analytics-criteria.model';
+import { AnalyticsWidget } from '../widget';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -36,7 +37,7 @@ export type ChartOptions = {
   styleUrls: ['./spaces-view-clicks.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SpacesViewClicksComponent implements OnInit {
+export class SpacesViewClicksComponent implements AnalyticsWidget {
   @ViewChild('chart') chart: ChartComponent | undefined;
 
   public chartOptions: Partial<ChartOptions> | any = {
@@ -86,7 +87,7 @@ export class SpacesViewClicksComponent implements OnInit {
     this.loadAll();
   }
 
-  private loadAll(criteria?: IAnalyticsCriteria): void {
+  public loadAll(criteria?: IAnalyticsCriteria): void {
     const spaceViews = this.analyticsService.findSpaceViews(criteria).toPromise();
     const spaceClicks = this.analyticsService.findSpaceClicks(criteria).toPromise();
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
 import { FlatpickrOptions } from 'ng2-flatpickr';
 import { AnalyticsService } from '../../../../services/analytics.service';
@@ -6,13 +6,14 @@ import { ChartOptions } from '../spaces-view-clicks/spaces-view-clicks.component
 import { HttpResponse } from '@angular/common/http';
 import { IProductReport } from '../../../../models/product-report.model';
 import { Router } from '@angular/router';
+import { AnalyticsWidget } from '../widget';
 
 @Component({
   selector: 'stl-product-clicks',
   templateUrl: './product-clicks.component.html',
   styleUrls: ['./product-clicks.component.scss'],
 })
-export class ProductClicksComponent implements OnInit {
+export class ProductClicksComponent implements AnalyticsWidget {
   @ViewChild('chart') chart: ChartComponent | undefined;
 
   public products: IProductReport[] = [];
@@ -66,7 +67,7 @@ export class ProductClicksComponent implements OnInit {
     this.loadAll();
   }
 
-  private loadAll(): void {
+  public loadAll(): void {
     this.analyticsService.findProductClicks().subscribe((response: HttpResponse<IProductReport[]>) => {
       if (response.body) {
         this.products = response.body;
