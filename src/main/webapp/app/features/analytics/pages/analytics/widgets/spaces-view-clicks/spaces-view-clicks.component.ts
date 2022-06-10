@@ -13,10 +13,9 @@ import {
   ApexYAxis,
   ChartComponent,
 } from 'ng-apexcharts';
-import { FlatpickrOptions } from 'ng2-flatpickr';
 import { ISpaceReport } from '../../../../models/space-report.model';
 import { IAnalyticsCriteria } from '../../../../models/analytics-criteria.model';
-import { AnalyticsWidget } from '../widget';
+import { AnalyticsWidgetComponent } from '../widget';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -37,7 +36,7 @@ export type ChartOptions = {
   styleUrls: ['./spaces-view-clicks.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SpacesViewClicksComponent implements AnalyticsWidget {
+export class SpacesViewClicksComponent extends AnalyticsWidgetComponent {
   @ViewChild('chart') chart: ChartComponent | undefined;
 
   public chartOptions: Partial<ChartOptions> | any = {
@@ -67,27 +66,11 @@ export class SpacesViewClicksComponent implements AnalyticsWidget {
     },
   };
 
-  public dateRangeOptions: FlatpickrOptions | any = {
-    altInput: true,
-    mode: 'range',
-    altInputClass: 'form-control flat-picker bg-transparent border-0 shadow-none flatpickr-input',
-    defaultDate: [new Date().setMonth(new Date().getMonth() - 1), new Date()],
-    maxDate: new Date(),
-    altFormat: 'Y-m-d',
-    onChange: (selectedDates: Date[]) => {
-      if (selectedDates.length === 2) {
-        this.filterByDateRange(selectedDates[0], selectedDates[1]);
-      }
-    },
-  };
-
-  constructor(private analyticsService: AnalyticsService) {}
-
-  ngOnInit(): void {
-    this.loadAll();
+  constructor(analyticsService: AnalyticsService) {
+    super(analyticsService);
   }
 
-  public loadAll(criteria?: IAnalyticsCriteria): void {
+  loadAll(criteria?: IAnalyticsCriteria): void {
     const spaceViews = this.analyticsService.findSpaceViews(criteria).toPromise();
     const spaceClicks = this.analyticsService.findSpaceClicks(criteria).toPromise();
 
@@ -113,10 +96,5 @@ export class SpacesViewClicksComponent implements AnalyticsWidget {
         series.push(clicksSerie);
         this.chart?.updateSeries(series, true);
       });
-  }
-
-  private filterByDateRange(fromDate: Date, toDate: Date): void {
-    console.error('filterByDateRange', fromDate.getTime(), toDate.getTime());
-    this.loadAll({ from: fromDate.getTime(), to: toDate.getTime() });
   }
 }

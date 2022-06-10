@@ -1,22 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
-import { FlatpickrOptions } from 'ng2-flatpickr';
 import { AnalyticsService } from '../../../../services/analytics.service';
 import { ChartOptions } from '../spaces-view-clicks/spaces-view-clicks.component';
 import { HttpResponse } from '@angular/common/http';
 import { IProductReport } from '../../../../models/product-report.model';
-import { Router } from '@angular/router';
-import { AnalyticsWidget } from '../widget';
+import { AnalyticsWidgetComponent } from '../widget';
+import { IAnalyticsCriteria } from '../../../../models/analytics-criteria.model';
 
 @Component({
   selector: 'stl-product-clicks',
   templateUrl: './product-clicks.component.html',
   styleUrls: ['./product-clicks.component.scss'],
 })
-export class ProductClicksComponent implements AnalyticsWidget {
+export class ProductClicksComponent extends AnalyticsWidgetComponent {
   @ViewChild('chart') chart: ChartComponent | undefined;
-
-  public products: IProductReport[] = [];
 
   public chartOptions: Partial<ChartOptions> | any = {
     series: [],
@@ -52,33 +49,21 @@ export class ProductClicksComponent implements AnalyticsWidget {
     },
   };
 
-  public dateRangeOptions: FlatpickrOptions | any = {
-    altInput: true,
-    mode: 'range',
-    altInputClass: 'form-control flat-picker bg-transparent border-0 shadow-none flatpickr-input',
-    defaultDate: [new Date().setMonth(new Date().getMonth() - 1), new Date()],
-    maxDate: new Date(),
-    altFormat: 'Y-m-d',
-  };
-
-  constructor(private analyticsService: AnalyticsService, private router: Router) {}
-
-  ngOnInit(): void {
-    this.loadAll();
+  constructor(analyticsService: AnalyticsService) {
+    super(analyticsService);
   }
 
-  public loadAll(): void {
-    this.analyticsService.findProductClicks().subscribe((response: HttpResponse<IProductReport[]>) => {
+  public loadAll(criteria: IAnalyticsCriteria): void {
+    this.analyticsService.findProductClicks(criteria).subscribe((response: HttpResponse<IProductReport[]>) => {
       if (response.body) {
-        this.products = response.body;
-        const clicksSerie: ApexAxisChartSeries | any = {
+        const serie: ApexAxisChartSeries | any = {
           name: 'Clicks',
           data: response.body.map((report: IProductReport) => ({
             x: report.name ? report.name : 'N/A',
             y: report.value,
           })),
         };
-        this.chart?.appendSeries(clicksSerie, true);
+        this.chart?.updateSeries(serie, true);
       }
     });
   }
