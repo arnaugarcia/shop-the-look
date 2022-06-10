@@ -72,7 +72,12 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     @Override
     public List<EventValue> findProductClicksByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_CLICK)))
+            .withQuery(
+                boolQuery()
+                    .filter(byCompany(criteria.getCompany()))
+                    .filter(byType(PRODUCT_CLICK))
+                    .filter(byTimestampBetween(criteria.getStartDate(), criteria.getEndDate()))
+            )
             .addAggregation(groupByProduct().order(criteria.bucketOrder()))
             .build();
 
