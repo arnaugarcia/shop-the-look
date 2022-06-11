@@ -29,4 +29,9 @@ export class AnalyticsService {
     const options = createRequestOption(criteria);
     return this.http.get<IProductReport[]>(`${this.resourceUrl}/products/clicks`, { observe: 'response', params: options });
   }
+
+  findProductHovers(criteria?: IAnalyticsCriteria): Observable<HttpResponse<IProductReport[]>> {
+    const options = createRequestOption(criteria);
+    return this.http.get<IProductReport[]>(`${this.resourceUrl}/products/hovers`, { observe: 'response', params: options });
+  }
 }
