@@ -9,7 +9,6 @@ import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
 @Component({
   selector: 'stl-product-hovers',
   templateUrl: './product-hovers.component.html',
-  styleUrls: ['./product-hovers.component.scss'],
 })
 export class ProductHoversComponent extends AnalyticsWidgetComponent {
   @ViewChild('chartElement') chartElement: ChartComponent | undefined;

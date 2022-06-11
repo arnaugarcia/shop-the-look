@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
 import { AnalyticsService } from '../../../../services/analytics.service';
 import { HttpResponse } from '@angular/common/http';
@@ -9,8 +9,6 @@ import { IAnalyticsCriteria } from '../../../../models/analytics-criteria.model'
 @Component({
   selector: 'stl-product-clicks',
   templateUrl: './product-clicks.component.html',
-  styleUrls: ['./product-clicks.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ProductClicksComponent extends AnalyticsWidgetComponent {
   @ViewChild('chartElement') chartElement: ChartComponent | undefined;

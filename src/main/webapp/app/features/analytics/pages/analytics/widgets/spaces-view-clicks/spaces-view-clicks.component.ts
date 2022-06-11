@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AnalyticsService } from '../../../../services/analytics.service';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
 import { ISpaceReport } from '../../../../models/space-report.model';
@@ -8,8 +8,6 @@ import { AnalyticsWidgetComponent } from '../widget';
 @Component({
   selector: 'stl-spaces-view-clicks',
   templateUrl: './spaces-view-clicks.component.html',
-  styleUrls: ['./spaces-view-clicks.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class SpacesViewClicksComponent extends AnalyticsWidgetComponent {
   @ViewChild('chartElement') chartElement?: ChartComponent;
