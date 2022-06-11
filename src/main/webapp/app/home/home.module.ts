@@ -9,6 +9,7 @@ import { GeneralStatisticsWidgetComponent } from './widgets/general-statistics-w
 import { SpacesWidgetComponent } from './widgets/spaces-widget/spaces-widget.component';
 import { TotalSpaceViewsComponent } from './widgets/total-space-views/total-space-views.component';
 import { TotalProductClicksComponent } from './widgets/total-product-clicks/total-product-clicks.component';
+import { NumberThousandPipe } from './pipes/number-thousand.pipe';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
@@ -19,6 +20,7 @@ import { TotalProductClicksComponent } from './widgets/total-product-clicks/tota
     SpacesWidgetComponent,
     TotalSpaceViewsComponent,
     TotalProductClicksComponent,
+    NumberThousandPipe,
   ],
 })
 export class HomeModule {}

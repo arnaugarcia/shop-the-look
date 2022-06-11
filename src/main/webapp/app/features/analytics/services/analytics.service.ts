@@ -39,4 +39,8 @@ export class AnalyticsService {
     const options = createRequestOption(criteria);
     return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/views/relation`, { observe: 'response', params: options });
   }
+
+  countTotalProductClicks(): Observable<HttpResponse<IProductReport>> {
+    return this.http.get<IProductReport>(`${this.resourceUrl}/products/clicks/count`, { observe: 'response' });
+  }
 }
