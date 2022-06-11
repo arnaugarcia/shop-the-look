@@ -25,4 +25,6 @@ public interface QueryEventRepository {
     List<EventValue> findTotalSpaceTimeOfSpacesByCompany(EventCriteria criteria);
 
     List<EventTimeline> findSpaceClicksTimelineByCompany(EventCriteria eventCriteria);
+
+    EventValue findTotalSpacesViewsByCompany(EventCriteria eventCriteria);
 }

@@ -32,6 +32,12 @@ public class AnalyticsResource {
         return ok(analyticsService.findSpaceViews(criteria));
     }
 
+    @GetMapping("/spaces/views/count")
+    public ResponseEntity<CountReport> findSpaceViews() {
+        log.debug("REST request to find total space views");
+        return ok(analyticsService.totalSpacesViews());
+    }
+
     @GetMapping("/spaces/views/timeline")
     public ResponseEntity<List<SpaceReportTimeline>> findSpaceViewsTimeline(AnalyticsCriteria criteria) {
         log.debug("REST request to find space views timeline");

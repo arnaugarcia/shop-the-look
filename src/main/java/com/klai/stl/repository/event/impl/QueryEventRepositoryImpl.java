@@ -235,6 +235,18 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
         return buildEventTimelineFrom(terms);
     }
 
+    @Override
+    public EventValue findTotalSpacesViewsByCompany(EventCriteria eventCriteria) {
+        Query query = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery().filter(byCompany(eventCriteria.getCompany())).filter(byType(SPACE_VIEW)))
+            .addAggregation(countSpaces())
+            .build();
+
+        final SearchHits<Event> search = elasticsearchOperations.search(query, Event.class);
+        final NumericMetricsAggregation.SingleValue terms = getAggregationsOf(search).get(countSpaces().getName());
+        return new EventValue(terms);
+    }
+
     private List<EventTimeline> buildEventTimelineFrom(Terms terms) {
         return terms
             .getBuckets()
