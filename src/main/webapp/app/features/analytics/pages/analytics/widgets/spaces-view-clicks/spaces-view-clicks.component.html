@@ -11,18 +11,13 @@
   </div>
   <div class="card-body">
     <apx-chart
-      #chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [dataLabels]="chartOptions.dataLabels"
-      [plotOptions]="chartOptions.plotOptions"
-      [yaxis]="chartOptions.yaxis"
-      [legend]="chartOptions.legend"
-      [fill]="chartOptions.fill"
-      [stroke]="chartOptions.stroke"
-      [tooltip]="chartOptions.tooltip"
-      [xaxis]="chartOptions.xaxis"
-      [noData]="chartOptions.noData"
+      #chartElement
+      [series]="series"
+      [chart]="chart"
+      [dataLabels]="dataLabels"
+      [plotOptions]="plotOptions"
+      [fill]="fill"
+      [noData]="noData"
     ></apx-chart>
   </div>
 </div>

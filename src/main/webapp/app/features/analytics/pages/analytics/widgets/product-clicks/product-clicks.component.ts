@@ -1,7 +1,6 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
 import { AnalyticsService } from '../../../../services/analytics.service';
-import { ChartOptions } from '../spaces-view-clicks/spaces-view-clicks.component';
 import { HttpResponse } from '@angular/common/http';
 import { IProductReport } from '../../../../models/product-report.model';
 import { AnalyticsWidgetComponent } from '../widget';
@@ -14,41 +13,7 @@ import { IAnalyticsCriteria } from '../../../../models/analytics-criteria.model'
   encapsulation: ViewEncapsulation.None,
 })
 export class ProductClicksComponent extends AnalyticsWidgetComponent {
-  @ViewChild('chart') chart: ChartComponent | undefined;
-
-  public chartOptions: Partial<ChartOptions> | any = {
-    series: [],
-    chart: {
-      type: 'bar',
-      height: 350,
-      /* events: {
-        click: (event: any, chartContext: any, config: any) => {
-          if (config.dataPointIndex >= 0) {
-            this.router.navigate(['/products'], { queryParams: { keyword: chartContext.data.twoDSeriesX[config.dataPointIndex] } });
-          }
-        }
-      } */
-    },
-    noData: {
-      text: 'No data available',
-      style: {
-        fontSize: '20px',
-      },
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: '50%',
-        borderRadius: 2,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    fill: {
-      opacity: 1,
-    },
-  };
+  @ViewChild('chartElement') chartElement: ChartComponent | undefined;
 
   constructor(analyticsService: AnalyticsService) {
     super(analyticsService);
@@ -64,7 +29,7 @@ export class ProductClicksComponent extends AnalyticsWidgetComponent {
             y: report.value,
           })),
         };
-        this.chart?.updateSeries([serie], true);
+        this.chartElement?.updateSeries([serie], true);
       }
     });
   }

@@ -2,11 +2,42 @@ import { IAnalyticsCriteria } from '../../../models/analytics-criteria.model';
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from '../../../services/analytics.service';
 import { FlatpickrOptions } from 'ng2-flatpickr';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexNoData, ApexPlotOptions } from 'ng-apexcharts';
 
 @Component({
   template: '',
 })
 export abstract class AnalyticsWidgetComponent implements OnInit {
+  public series: ApexAxisChartSeries = [];
+
+  public chart: ApexChart = {
+    type: 'bar',
+    height: 350,
+  };
+
+  public plotOptions: ApexPlotOptions = {
+    bar: {
+      horizontal: false,
+      columnWidth: '50%',
+      borderRadius: 2,
+    },
+  };
+
+  public dataLabels: ApexDataLabels = {
+    enabled: false,
+  };
+
+  public noData: ApexNoData = {
+    text: 'No data available',
+    style: {
+      fontSize: '20px',
+    },
+  };
+
+  public fill: ApexFill = {
+    opacity: 1,
+  };
+
   public dateRangeOptions: FlatpickrOptions | any = {
     altInput: true,
     mode: 'range',
