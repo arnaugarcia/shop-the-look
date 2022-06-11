@@ -6,7 +6,6 @@ import { IProductReport } from '../../../features/analytics/models/product-repor
 @Component({
   selector: 'stl-top-product',
   templateUrl: './top-product.component.html',
-  styleUrls: ['./top-product.component.scss'],
 })
 export class TopProductComponent implements OnInit {
   public product?: IProductReport;
