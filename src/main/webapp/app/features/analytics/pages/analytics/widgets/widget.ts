@@ -1,13 +1,14 @@
 import { IAnalyticsCriteria } from '../../../models/analytics-criteria.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AnalyticsService } from '../../../services/analytics.service';
 import { FlatpickrOptions } from 'ng2-flatpickr';
-import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexNoData, ApexPlotOptions } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexNoData, ApexPlotOptions, ChartComponent } from 'ng-apexcharts';
 
 @Component({
   template: '',
 })
 export abstract class AnalyticsWidgetComponent implements OnInit {
+  @ViewChild('chartElement') abstract chartElement?: ChartComponent;
   public series: ApexAxisChartSeries = [];
 
   public chart: ApexChart = {

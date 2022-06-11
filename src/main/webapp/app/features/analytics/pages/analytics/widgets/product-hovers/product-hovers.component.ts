@@ -11,7 +11,7 @@ import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
   templateUrl: './product-hovers.component.html',
 })
 export class ProductHoversComponent extends AnalyticsWidgetComponent {
-  @ViewChild('chartElement') chartElement: ChartComponent | undefined;
+  @ViewChild('chartElement') chartElement?: ChartComponent;
 
   constructor(analyticsService: AnalyticsService) {
     super(analyticsService);
