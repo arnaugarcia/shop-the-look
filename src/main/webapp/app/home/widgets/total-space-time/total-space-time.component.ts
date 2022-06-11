@@ -4,18 +4,18 @@ import { HttpResponse } from '@angular/common/http';
 import { CountReport } from '../../../features/analytics/models/count-report.model';
 
 @Component({
-  selector: 'stl-total-space-views',
-  templateUrl: './total-space-views.component.html',
+  selector: 'stl-total-space-time',
+  templateUrl: './total-space-time.component.html',
 })
-export class TotalSpaceViewsComponent implements OnInit {
-  public totalViews = 0;
+export class TotalSpaceTimeComponent implements OnInit {
+  public totalTime = 0;
 
   constructor(private analyticsService: AnalyticsService) {}
 
   ngOnInit(): void {
-    this.analyticsService.countTotalSpaceViews().subscribe((response: HttpResponse<CountReport>) => {
+    this.analyticsService.countTotalSpaceTime().subscribe((response: HttpResponse<CountReport>) => {
       if (response.body) {
-        this.totalViews = response.body.value;
+        this.totalTime = response.body.value;
       }
     });
   }

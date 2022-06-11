@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from '../../../features/analytics/services/analytics.service';
 import { HttpResponse } from '@angular/common/http';
-import { IProductReport } from '../../../features/analytics/models/product-report.model';
+import { CountReport } from '../../../features/analytics/models/count-report.model';
 
 @Component({
   selector: 'stl-total-product-clicks',
@@ -13,7 +13,7 @@ export class TotalProductClicksComponent implements OnInit {
   constructor(private analyticsService: AnalyticsService) {}
 
   ngOnInit(): void {
-    this.analyticsService.countTotalProductClicks().subscribe((response: HttpResponse<IProductReport>) => {
+    this.analyticsService.countTotalProductClicks().subscribe((response: HttpResponse<CountReport>) => {
       if (response.body) {
         this.totalClicks = response.body.value;
       }

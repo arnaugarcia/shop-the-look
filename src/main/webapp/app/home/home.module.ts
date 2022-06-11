@@ -7,9 +7,10 @@ import { HomeComponent } from './home.component';
 import { SubscriptionWidgetComponent } from './widgets/subscription-widget/subscription-widget.component';
 import { GeneralStatisticsWidgetComponent } from './widgets/general-statistics-widget/general-statistics-widget.component';
 import { SpacesWidgetComponent } from './widgets/spaces-widget/spaces-widget.component';
-import { TotalSpaceViewsComponent } from './widgets/total-space-views/total-space-views.component';
 import { TotalProductClicksComponent } from './widgets/total-product-clicks/total-product-clicks.component';
 import { NumberThousandPipe } from './pipes/number-thousand.pipe';
+import { TotalSpaceTimeComponent } from './widgets/total-space-time/total-space-time.component';
+import { TotalSpaceViewsComponent } from './widgets/total-space-views/total-space-views.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
@@ -18,6 +19,7 @@ import { NumberThousandPipe } from './pipes/number-thousand.pipe';
     SubscriptionWidgetComponent,
     GeneralStatisticsWidgetComponent,
     SpacesWidgetComponent,
+    TotalSpaceTimeComponent,
     TotalSpaceViewsComponent,
     TotalProductClicksComponent,
     NumberThousandPipe,

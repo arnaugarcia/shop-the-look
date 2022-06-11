@@ -6,6 +6,7 @@ import { ISpaceReport } from '../models/space-report.model';
 import { IProductReport } from '../models/product-report.model';
 import { IAnalyticsCriteria } from '../models/analytics-criteria.model';
 import { createRequestOption } from '../../../core/request/request-util';
+import { CountReport } from '../models/count-report.model';
 
 @Injectable({
   providedIn: 'root',
@@ -40,11 +41,15 @@ export class AnalyticsService {
     return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/views/relation`, { observe: 'response', params: options });
   }
 
-  countTotalProductClicks(): Observable<HttpResponse<IProductReport>> {
-    return this.http.get<IProductReport>(`${this.resourceUrl}/products/clicks/count`, { observe: 'response' });
+  countTotalProductClicks(): Observable<HttpResponse<CountReport>> {
+    return this.http.get<CountReport>(`${this.resourceUrl}/products/clicks/count`, { observe: 'response' });
   }
 
-  countTotalSpaceViews(): Observable<HttpResponse<ISpaceReport>> {
-    return this.http.get<ISpaceReport>(`${this.resourceUrl}/spaces/views/count`, { observe: 'response' });
+  countTotalSpaceViews(): Observable<HttpResponse<CountReport>> {
+    return this.http.get<CountReport>(`${this.resourceUrl}/spaces/views/count`, { observe: 'response' });
+  }
+
+  countTotalSpaceTime(): Observable<HttpResponse<CountReport>> {
+    return this.http.get<CountReport>(`${this.resourceUrl}/spaces/time/count`, { observe: 'response' });
   }
 }
