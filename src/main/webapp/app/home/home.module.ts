@@ -11,6 +11,8 @@ import { TotalProductClicksComponent } from './widgets/total-product-clicks/tota
 import { NumberThousandPipe } from './pipes/number-thousand.pipe';
 import { TotalSpaceTimeComponent } from './widgets/total-space-time/total-space-time.component';
 import { TotalSpaceViewsComponent } from './widgets/total-space-views/total-space-views.component';
+import { TimeScalePipe } from './pipes/time-scale.pipe';
+import { TopProductComponent } from './widgets/top-product/top-product.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
@@ -23,6 +25,8 @@ import { TotalSpaceViewsComponent } from './widgets/total-space-views/total-spac
     TotalSpaceViewsComponent,
     TotalProductClicksComponent,
     NumberThousandPipe,
+    TimeScalePipe,
+    TopProductComponent,
   ],
 })
 export class HomeModule {}
