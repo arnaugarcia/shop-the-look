@@ -88,6 +88,8 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         final String companyReference = userService.getCurrentUserCompanyReference();
         final EventCriteria eventCriteria = EventCriteria
             .builder(companyReference)
+            .startDate(criteria.getFrom())
+            .endDate(criteria.getTo())
             .sort(Sort.from(criteria.getSort()))
             .limit(criteria.getLimit())
             .build();

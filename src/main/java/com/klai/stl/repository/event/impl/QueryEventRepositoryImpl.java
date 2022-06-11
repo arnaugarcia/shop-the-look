@@ -87,7 +87,12 @@ public class QueryEventRepositoryImpl implements QueryEventRepository, QueryEven
     @Override
     public List<EventValue> findProductHoverByCompany(EventCriteria criteria) {
         Query query = new NativeSearchQueryBuilder()
-            .withQuery(boolQuery().filter(byCompany(criteria.getCompany())).filter(byType(PRODUCT_HOVER)))
+            .withQuery(
+                boolQuery()
+                    .filter(byCompany(criteria.getCompany()))
+                    .filter(byType(PRODUCT_HOVER))
+                    .filter(byTimestampBetween(criteria.getStartDate(), criteria.getEndDate()))
+            )
             .addAggregation(groupByProduct())
             .build();
 
