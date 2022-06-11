@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'stl-spaces-widget',
   templateUrl: './spaces-widget.component.html',
-  styleUrls: ['./spaces-widget.component.scss'],
 })
 export class SpacesWidgetComponent implements OnInit {
   public spaces: Space[] = [];

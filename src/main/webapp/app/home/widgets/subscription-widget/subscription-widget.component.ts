@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'stl-subscription-widget',
   templateUrl: './subscription-widget.component.html',
-  styleUrls: ['./subscription-widget.component.scss'],
 })
 export class SubscriptionWidgetComponent implements OnInit {
   @Input()
