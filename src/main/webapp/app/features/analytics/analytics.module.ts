@@ -8,9 +8,10 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { SpacesViewClicksComponent } from './pages/analytics/widgets/spaces-view-clicks/spaces-view-clicks.component';
 import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 import { ProductClicksComponent } from './pages/analytics/widgets/product-clicks/product-clicks.component';
+import { ProductHoversComponent } from './pages/analytics/widgets/product-hovers/product-hovers.component';
 
 @NgModule({
-  declarations: [AnalyticsComponent, SpacesViewClicksComponent, ProductClicksComponent],
+  declarations: [AnalyticsComponent, SpacesViewClicksComponent, ProductClicksComponent, ProductHoversComponent],
   imports: [SharedModule, CoreCardModule, ContentHeaderModule, AnalyticsRoutingModule, NgApexchartsModule, Ng2FlatpickrModule],
 })
 export class AnalyticsModule {}
