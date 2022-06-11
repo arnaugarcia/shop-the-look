@@ -8,7 +8,7 @@ import { IProductReport } from '../../../features/analytics/models/product-repor
   templateUrl: './total-product-clicks.component.html',
 })
 export class TotalProductClicksComponent implements OnInit {
-  public totalClicks = 22600000;
+  public totalClicks = 0;
 
   constructor(private analyticsService: AnalyticsService) {}
 

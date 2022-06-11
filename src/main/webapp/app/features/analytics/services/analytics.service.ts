@@ -43,4 +43,8 @@ export class AnalyticsService {
   countTotalProductClicks(): Observable<HttpResponse<IProductReport>> {
     return this.http.get<IProductReport>(`${this.resourceUrl}/products/clicks/count`, { observe: 'response' });
   }
+
+  countTotalSpaceViews(): Observable<HttpResponse<ISpaceReport>> {
+    return this.http.get<ISpaceReport>(`${this.resourceUrl}/spaces/views/count`, { observe: 'response' });
+  }
 }
