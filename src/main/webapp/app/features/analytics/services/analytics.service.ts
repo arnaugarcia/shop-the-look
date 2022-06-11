@@ -34,4 +34,9 @@ export class AnalyticsService {
     const options = createRequestOption(criteria);
     return this.http.get<IProductReport[]>(`${this.resourceUrl}/products/hovers`, { observe: 'response', params: options });
   }
+
+  findSpaceViewRelation(criteria?: IAnalyticsCriteria): Observable<HttpResponse<ISpaceReport[]>> {
+    const options = createRequestOption(criteria);
+    return this.http.get<ISpaceReport[]>(`${this.resourceUrl}/spaces/view/relation`, { observe: 'response', params: options });
+  }
 }
