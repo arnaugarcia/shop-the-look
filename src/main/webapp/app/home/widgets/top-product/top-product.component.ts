@@ -106,7 +106,7 @@ export class TopProductComponent implements OnInit {
 
     Promise.all([topClickedProduct, totalClickedProducts]).then(([product, total]) => {
       this.product = product;
-      this.earningChartOptions.series = [product.value, total?.value ?? 0];
+      this.earningChartOptions.series = [product.value, (total?.value ?? 0) - product.value];
     });
   }
 }

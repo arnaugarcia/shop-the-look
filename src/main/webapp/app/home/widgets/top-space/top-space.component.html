@@ -1,16 +1,36 @@
-<div class="card">
-  <div class="card-header">
-    <div class="row" *ngIf="space">
-      <div class="col-lg-10">
-        <h2 class="font-weight-bolder mb-0">Top Space Clicks</h2>
-        <p class="card-text">{{ space.name ?? 'N/A' }}</p>
-        <p class="card-text">{{ space.createdAt ?? 'N/A' }}</p>
+<div class="card earnings-card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h4 class="card-title mb-1">Most viewed space</h4>
+        <h5 class="mb-1">
+          <a [routerLink]="['spaces', 'studio', space?.reference, 'edit']">{{ space?.name }}</a>
+        </h5>
+        <p class="card-text text-muted font-small-2">
+          <span class="font-weight-bolder">Since: {{ space?.createdAt | date }}</span>
+        </p>
       </div>
-      <div class="col-lg-2">
-        <div class="avatar p-50 pr-50 bg-light-primary" style="background-color: rgba(115, 103, 240, 0.12) !important">
-          <div class="avatar-content">
-            <h2 class="mb-0" style="color: #7367f0 !important">{{ space.value | numberThousand }}</h2>
-          </div>
+      <div class="col-6">
+        <div id="earnings-donut-chart" #earningChartOptionsRef>
+          <!-- Apexchart component-->
+          <apx-chart
+            [chart]="{
+              type: 'donut',
+              height: 120,
+              width: earningChartOptionsRef.offsetWidth,
+              toolbar: {
+                show: false
+              }
+            }"
+            [dataLabels]="earningChartOptions.dataLabels"
+            [series]="earningChartOptions.series"
+            [legend]="earningChartOptions.legend"
+            [labels]="earningChartOptions.labels"
+            [grid]="earningChartOptions.grid"
+            [plotOptions]="earningChartOptions.plotOptions"
+          >
+          </apx-chart>
+          <!-- / Apexchart component-->
         </div>
       </div>
     </div>
