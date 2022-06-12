@@ -14,9 +14,10 @@ import { TotalSpaceViewsComponent } from './widgets/total-space-views/total-spac
 import { TimeScalePipe } from './pipes/time-scale.pipe';
 import { TopProductComponent } from './widgets/top-product/top-product.component';
 import { TopSpaceComponent } from './widgets/top-space/top-space.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
+  imports: [SharedModule, RouterModule.forChild([HOME_ROUTE]), NgApexchartsModule],
   declarations: [
     HomeComponent,
     SubscriptionWidgetComponent,

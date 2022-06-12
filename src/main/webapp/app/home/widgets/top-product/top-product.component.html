@@ -1,16 +1,31 @@
-<div class="card">
-  <div class="card-header">
-    <div class="row" *ngIf="product">
-      <div class="col-lg-10">
-        <h2 class="font-weight-bolder mb-0">Top product Clicks</h2>
-        <p class="card-text">{{ product.name }}</p>
-        <p class="card-text">{{ product.price }}</p>
+<div class="card earnings-card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h4 class="card-title mb-1">Most clicked product</h4>
+        <h5 class="mb-1">{{ product?.name }}</h5>
       </div>
-      <div class="col-lg-2">
-        <div class="avatar p-50 pr-50 bg-light-primary" style="background-color: rgba(115, 103, 240, 0.12) !important">
-          <div class="avatar-content">
-            <h2 class="mb-0" style="color: #7367f0 !important">{{ product.value | numberThousand }}</h2>
-          </div>
+      <div class="col-6">
+        <div id="earnings-donut-chart" #earningChartOptionsRef>
+          <!-- Apexchart component-->
+          <apx-chart
+            [chart]="{
+              type: 'donut',
+              height: 120,
+              width: earningChartOptionsRef.offsetWidth,
+              toolbar: {
+                show: false
+              }
+            }"
+            [dataLabels]="earningChartOptions.dataLabels"
+            [series]="earningChartOptions.series"
+            [legend]="earningChartOptions.legend"
+            [labels]="earningChartOptions.labels"
+            [grid]="earningChartOptions.grid"
+            [plotOptions]="earningChartOptions.plotOptions"
+          >
+          </apx-chart>
+          <!-- / Apexchart component-->
         </div>
       </div>
     </div>
