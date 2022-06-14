@@ -100,7 +100,7 @@ export class TopSpaceComponent implements OnInit {
 
   ngOnInit(): void {
     const mostViewedSpace = this.analyticsService
-      .findSpaceViews({ limit: 1 })
+      .findSpaceViews({ limit: 1, from: 0 })
       .toPromise()
       .then((response: HttpResponse<ISpaceReport[]>) => response.body ?? []);
 

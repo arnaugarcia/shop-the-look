@@ -100,7 +100,7 @@ export class TopProductComponent implements OnInit {
 
   ngOnInit(): void {
     const topClickedProduct = this.analyticsService
-      .findProductClicks({ limit: 1 })
+      .findProductClicks({ limit: 1, from: 0 })
       .toPromise()
       .then((response: HttpResponse<IProductReport[]>) => response.body ?? []);
 
