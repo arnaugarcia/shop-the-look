@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AnalyticsService } from '../../../features/analytics/services/analytics.service';
 import { HttpResponse } from '@angular/common/http';
 import { IProductReport } from '../../../features/analytics/models/product-report.model';
 import { CountReport } from '../../../features/analytics/models/count-report.model';
+import { ChartComponent } from 'ng-apexcharts';
 
 @Component({
   selector: 'stl-top-product',
   templateUrl: './top-product.component.html',
 })
 export class TopProductComponent implements OnInit {
+  @ViewChild('chartElement') chartElement?: ChartComponent;
+
   public product?: IProductReport;
 
-  public earningChartOptions = {
-    series: [1, 12],
+  public chartOptions = {
+    series: [],
     chart: {
       type: 'donut',
       height: 120,
@@ -53,6 +56,9 @@ export class TopProductComponent implements OnInit {
           },
         },
       },
+    },
+    noData: {
+      text: 'No data to display',
     },
     responsive: [
       {
@@ -96,17 +102,18 @@ export class TopProductComponent implements OnInit {
     const topClickedProduct = this.analyticsService
       .findProductClicks({ limit: 1 })
       .toPromise()
-      .then((response: HttpResponse<IProductReport[]>) => response.body ?? [])
-      .then((reports: IProductReport[]) => reports[0]);
+      .then((response: HttpResponse<IProductReport[]>) => response.body ?? []);
 
     const totalClickedProducts = this.analyticsService
       .countTotalProductClicks()
       .toPromise()
       .then((response: HttpResponse<CountReport>) => response.body);
 
-    Promise.all([topClickedProduct, totalClickedProducts]).then(([product, total]) => {
-      this.product = product;
-      this.earningChartOptions.series = [product.value, (total?.value ?? 0) - product.value];
+    Promise.all([topClickedProduct, totalClickedProducts]).then(([products, total]) => {
+      if (products.length) {
+        this.product = products[0];
+        this.chartElement?.updateSeries([this.product.value, (total?.value ?? 0) - this.product.value]);
+      }
     });
   }
 }
