@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AnalyticsService } from '../../../features/analytics/services/analytics.service';
 import { HttpResponse } from '@angular/common/http';
 import { ISpaceReport } from '../../../features/analytics/models/space-report.model';
 import { CountReport } from '../../../features/analytics/models/count-report.model';
+import { ChartComponent } from 'ng-apexcharts';
 
 @Component({
   selector: 'stl-top-space',
   templateUrl: './top-space.component.html',
 })
 export class TopSpaceComponent implements OnInit {
+  @ViewChild('chartElement') chartElement?: ChartComponent;
+
   public space?: ISpaceReport;
 
-  public earningChartOptions = {
-    series: [1, 12],
+  public chartOptions = {
+    series: [],
     chart: {
       type: 'donut',
       height: 120,
@@ -88,6 +91,9 @@ export class TopSpaceComponent implements OnInit {
         },
       },
     ],
+    noData: {
+      text: 'No data to display',
+    },
   };
 
   constructor(private analyticsService: AnalyticsService) {}
@@ -106,7 +112,7 @@ export class TopSpaceComponent implements OnInit {
 
     Promise.all([mostViewedSpace, totalSpaceViews]).then(([space, total]) => {
       this.space = space;
-      this.earningChartOptions.series = [space.value, total.value - space.value];
+      this.chartElement?.updateSeries([space.value, total.value - space.value]);
     });
   }
 }

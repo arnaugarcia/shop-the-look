@@ -4,16 +4,19 @@
       <div class="col-6">
         <h4 class="card-title mb-1">Most viewed space</h4>
         <h5 class="mb-1">
-          <a [routerLink]="['spaces', 'studio', space?.reference, 'edit']">{{ space?.name }}</a>
+          <a *ngIf="space?.reference && space?.name" [routerLink]="['spaces', 'studio', space?.reference, 'edit']">{{ space?.name }}</a>
+          <p *ngIf="!space?.reference">No data</p>
         </h5>
         <p class="card-text text-muted font-small-2">
-          <span class="font-weight-bolder">Since: {{ space?.createdAt | date }}</span>
+          <span class="font-weight-bolder" *ngIf="space?.createdAt">Since: {{ space?.createdAt | date }}</span>
+          <span class="font-weight-bolder" *ngIf="!space?.createdAt">No data</span>
         </p>
       </div>
       <div class="col-6">
         <div id="earnings-donut-chart" #earningChartOptionsRef>
           <!-- Apexchart component-->
           <apx-chart
+            #chartElement
             [chart]="{
               type: 'donut',
               height: 120,
@@ -22,12 +25,13 @@
                 show: false
               }
             }"
-            [dataLabels]="earningChartOptions.dataLabels"
-            [series]="earningChartOptions.series"
-            [legend]="earningChartOptions.legend"
-            [labels]="earningChartOptions.labels"
-            [grid]="earningChartOptions.grid"
-            [plotOptions]="earningChartOptions.plotOptions"
+            [dataLabels]="chartOptions.dataLabels"
+            [series]="chartOptions.series"
+            [legend]="chartOptions.legend"
+            [labels]="chartOptions.labels"
+            [grid]="chartOptions.grid"
+            [noData]="chartOptions.noData"
+            [plotOptions]="chartOptions.plotOptions"
           >
           </apx-chart>
           <!-- / Apexchart component-->
