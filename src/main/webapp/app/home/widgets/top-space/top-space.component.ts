@@ -102,17 +102,18 @@ export class TopSpaceComponent implements OnInit {
     const mostViewedSpace = this.analyticsService
       .findSpaceViews({ limit: 1 })
       .toPromise()
-      .then((response: HttpResponse<ISpaceReport[]>) => response.body ?? [])
-      .then((reports: ISpaceReport[]) => reports[0]);
+      .then((response: HttpResponse<ISpaceReport[]>) => response.body ?? []);
 
     const totalSpaceViews = this.analyticsService
       .countTotalSpaceViews()
       .toPromise()
       .then((response: HttpResponse<CountReport>) => response.body ?? { value: 0 });
 
-    Promise.all([mostViewedSpace, totalSpaceViews]).then(([space, total]) => {
-      this.space = space;
-      this.chartElement?.updateSeries([space.value, total.value - space.value]);
+    Promise.all([mostViewedSpace, totalSpaceViews]).then(([spaces, total]) => {
+      if (spaces.length) {
+        this.space = spaces[0];
+        this.chartElement?.updateSeries([this.space.value, total.value - this.space.value]);
+      }
     });
   }
 }
