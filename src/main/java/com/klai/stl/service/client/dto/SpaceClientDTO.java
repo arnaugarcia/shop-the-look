@@ -15,5 +15,7 @@ public class SpaceClientDTO implements Serializable {
 
     String template;
 
+    String company;
+
     List<PhotoClientDTO> photos;
 }
