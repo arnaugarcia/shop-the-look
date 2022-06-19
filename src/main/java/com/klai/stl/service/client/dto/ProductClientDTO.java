@@ -10,5 +10,5 @@ public class ProductClientDTO implements Serializable {
     String reference;
     String sku;
     String link;
-    Double price;
+    String price;
 }
