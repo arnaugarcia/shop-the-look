@@ -35,6 +35,10 @@ import { RouterModule } from '@angular/router';
         // data: { pageTitle: 'shopTheLookApp.photo.home.product' },
         loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
       },
+      {
+        path: 'analytics',
+        loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsModule),
+      },
     ]),
   ],
 })

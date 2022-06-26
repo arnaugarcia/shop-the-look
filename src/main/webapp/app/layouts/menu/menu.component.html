@@ -84,6 +84,12 @@
         <span class="menu-title text-truncate" stlTranslate="menu.spaces">Spaces</span>
       </a>
     </li>
+    <li [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/analytics'" class="d-flex align-items-center">
+        <span [data-feather]="'activity'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.analytics">Analytics</span>
+      </a>
+    </li>
     <li
       *stlHasAnyAuthority="'ROLE_ADMIN'"
       [class.open]="!adminMenuCollapsed"

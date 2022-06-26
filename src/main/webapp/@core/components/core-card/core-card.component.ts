@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, HostListener, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { BlockUIService } from 'ng-block-ui';
 
@@ -32,7 +32,7 @@ export class CoreCardComponent implements OnInit {
     close: false,
   };
 
-  @Input() actions: string[];
+  @Input() actions: string[] = [];
   @Input() isReload = false;
   @Input() reloadTime: number = 2500;
   @Output() events: EventEmitter<any>;
@@ -44,8 +44,8 @@ export class CoreCardComponent implements OnInit {
   }
 
   // private
-  @ViewChild('coreCard') private coreCard: ElementRef;
-  @ViewChild('cardHeader') private cardHeader: ElementRef;
+  @ViewChild('coreCard') private coreCard: ElementRef | undefined;
+  @ViewChild('cardHeader') private cardHeader: ElementRef | undefined;
 
   /**
    * Constructor
@@ -107,7 +107,7 @@ export class CoreCardComponent implements OnInit {
    */
   collapse() {
     this.events.emit('collapse');
-    const cardHeaderEl = this.cardHeader.nativeElement;
+    const cardHeaderEl = this.cardHeader!.nativeElement;
     this.onclickEvent.collapseStatus = !this.onclickEvent.collapseStatus;
     if (this.onclickEvent.collapseStatus) {
       setTimeout(() => {
@@ -131,7 +131,7 @@ export class CoreCardComponent implements OnInit {
    */
   close() {
     this.events.emit('close');
-    this.coreCard.nativeElement.remove();
+    this.coreCard!.nativeElement.remove();
   }
 
   /**

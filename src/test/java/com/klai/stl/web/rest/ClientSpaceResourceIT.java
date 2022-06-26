@@ -81,6 +81,8 @@ class ClientSpaceResourceIT {
             .andExpect(jsonPath("$.name").value(space.getName()))
             .andExpect(jsonPath("$.description").value(space.getDescription()))
             .andExpect(jsonPath("$.template").value(space.getTemplate().name()))
+            .andExpect(jsonPath("$.reference").value(space.getReference()))
+            .andExpect(jsonPath("$.company").value(space.getCompany().getReference()))
             .andExpect(jsonPath("$.photos[0].link").value(photo.getLink()))
             .andExpect(jsonPath("$.photos[0].height").value(photo.getHeight()))
             .andExpect(jsonPath("$.photos[0].width").value(photo.getWidth()))
@@ -89,6 +91,8 @@ class ClientSpaceResourceIT {
             .andExpect(jsonPath("$.photos[0].coordinates[0].y").value(coordinate.getY()))
             .andExpect(jsonPath("$.photos[0].coordinates[0].product.price").value(product.getPrice()))
             .andExpect(jsonPath("$.photos[0].coordinates[0].product.name").value(product.getName()))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].product.sku").value(product.getSku()))
+            .andExpect(jsonPath("$.photos[0].coordinates[0].product.reference").value(product.getReference()))
             .andExpect(jsonPath("$.photos[0].coordinates[0].product.link").value(product.getLink()));
     }
 
