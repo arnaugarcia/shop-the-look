@@ -1,0 +1,39 @@
+@import '@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
+@import '@core/scss/base/components/include'; // Components includes
+
+// To open dd on right
+.dropdown-menu-right {
+  right: 0 !important;
+  left: auto !important;
+}
+
+// Cart Touchspin
+.touchspin-cart {
+  .touchspin-wrapper {
+    width: 6.4rem;
+  }
+  &:focus-within {
+    box-shadow: none !important;
+  }
+}
+
+app-navbar-bookmark {
+  display: flex;
+}
+
+// Dark Layout
+.dark-layout {
+  .navbar-container {
+    .search-input {
+      .search-list {
+        li {
+          &.auto-suggestion {
+            &:hover {
+              background-color: $theme-dark-body-bg;
+            }
+          }
+        }
+      }
+    }
+  }
+}

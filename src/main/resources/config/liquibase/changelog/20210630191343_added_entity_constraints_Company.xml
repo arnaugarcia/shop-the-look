@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity Company.
+    -->
+    <changeSet id="20210630191343-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="billing_address_id"
+                                 baseTableName="company"
+                                 constraintName="fk_company__billing_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="billing_address"/>
+
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="stl_user"
+                                 constraintName="fk_user_company"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="subscription_plan_id"
+                                 baseTableName="company"
+                                 constraintName="fk_company__subscription_plan_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="subscription_plan"/>
+
+        <addForeignKeyConstraint baseColumnNames="preferences_id"
+                                 baseTableName="company"
+                                 constraintName="fk_company__preferences_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="preferences"/>
+    </changeSet>
+</databaseChangeLog>

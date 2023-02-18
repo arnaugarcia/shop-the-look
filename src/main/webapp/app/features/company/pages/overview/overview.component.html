@@ -1,0 +1,228 @@
+<div class="tab-pane">
+  <!-- users edit media object start -->
+  <div class="media mb-2">
+    <div *ngIf="editForm.get('logo')?.value; else customAvatar">
+      <img
+        class="user-avatar users-avatar-shadow rounded mr-2 my-25 cursor-pointer"
+        [src]="editForm.get('logo')?.value"
+        height="90"
+        width="90"
+        alt="User avatar"
+      />
+    </div>
+    <ng-template #customAvatar>
+      <div class="mr-1 ml-0">
+        <div class="rounded p-3" stlTranslate="company.overview.logo.nologo">No logo loaded</div>
+      </div>
+    </ng-template>
+    <div class="media-body mt-50">
+      <h4>{{ editForm.get('name')?.value }}</h4>
+      <div class="col-12 d-flex mt-1 px-0">
+        <label class="btn btn-primary mr-75 mb-0 disabled" for="change-picture">
+          <span class="d-none d-sm-block" stlTranslate="company.overview.logo.buttons.change">Change</span>
+          <input accept="image/png, image/jpeg, image/jpg" class="form-control disabled" disabled hidden id="change-picture" type="file" />
+          <span class="d-block d-sm-none">
+            <i class="mr-0" data-feather="edit"></i>
+          </span>
+        </label>
+        <button class="btn btn-outline-secondary d-none d-sm-block" disabled stlTranslate="company.overview.logo.buttons.remove">
+          Remove
+        </button>
+        <button class="btn btn-outline-secondary d-block d-sm-none" disabled>
+          <i class="mr-0" data-feather="trash-2"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- users edit media object ends -->
+  <!-- users edit account form start -->
+  <form (ngSubmit)="save()" [formGroup]="editForm" class="form-validate" novalidate>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="commercialName" stlTranslate="company.overview.commercial-name.label">Commercial Name</label>
+          <input
+            class="form-control"
+            formControlName="commercialName"
+            id="commercialName"
+            name="commercialName"
+            placeholder="{{ 'company.overview.commercial-name.placeholder' | translate }}"
+            required
+            type="text"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="name" stlTranslate="company.overview.name.label">Name</label>
+          <input
+            [ngClass]="{
+              'is-invalid':
+                editForm.get('name')!.invalid &&
+                (editForm.get('name')!.dirty || editForm.get('name')!.touched) &&
+                editForm.get('name')!.errors
+            }"
+            class="form-control"
+            formControlName="name"
+            id="name"
+            name="name"
+            placeholder="{{ 'company.overview.name.placeholder' | translate }}"
+            required
+            type="text"
+          />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small *ngIf="editForm.get('name')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="email" stlTranslate="company.overview.email.label">E-mail</label>
+          <input
+            class="form-control"
+            formControlName="email"
+            id="email"
+            name="email"
+            placeholder="{{ 'company.overview.email.label' | translate }}"
+            required
+            type="email"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="nif" stlTranslate="company.overview.nif.label">NIF/NIE/DNI</label>
+          <input
+            class="form-control"
+            formControlName="nif"
+            id="nif"
+            name="nif"
+            placeholder="{{ 'company.overview.nif.placeholder' | translate }}"
+            required
+            type="text"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="vat" stlTranslate="company.overview.vat.label">VAT</label>
+          <input
+            class="form-control"
+            formControlName="vat"
+            id="vat"
+            name="vat"
+            placeholder="{{ 'company.overview.vat.placeholder' | translate }}"
+            required
+            type="text"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="url" stlTranslate="company.overview.url.label">URL</label>
+          <input
+            [ngClass]="{
+              'is-invalid':
+                editForm.get('url')!.invalid && (editForm.get('url')!.dirty || editForm.get('url')!.touched) && editForm.get('url')!.errors
+            }"
+            class="form-control"
+            formControlName="url"
+            id="url"
+            name="url"
+            placeholder="{{ 'company.overview.url.placeholder' | translate }}"
+            required
+            type="text"
+          />
+          <div *ngIf="editForm.get('url')!.invalid && (editForm.get('url')!.dirty || editForm.get('url')!.touched)">
+            <small *ngIf="editForm.get('url')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="phone" stlTranslate="company.overview.phone.label">Phone</label>
+          <input
+            [ngClass]="{
+              'is-invalid':
+                editForm.get('phone')!.invalid &&
+                (editForm.get('phone')!.dirty || editForm.get('phone')!.touched) &&
+                editForm.get('phone')!.errors
+            }"
+            class="form-control"
+            formControlName="phone"
+            id="phone"
+            name="phone"
+            placeholder="{{ 'company.overview.phone.placeholder' | translate }}"
+            required
+            type="text"
+          />
+          <div *ngIf="editForm.get('phone')!.invalid && (editForm.get('phone')!.dirty || editForm.get('phone')!.touched)">
+            <small *ngIf="editForm.get('phone')?.errors?.required" class="form-text text-danger" stlTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-control-label" for="field_type" stlTranslate="company.overview.type.label">Type</label>
+          <select class="form-control" data-cy="type" formControlName="type" id="field_type" name="type">
+            <option [ngValue]="null">{{ 'company.overview.type.placeholder' | translate }}</option>
+            <option value="PRIVATE">{{ 'company.overview.type.private' | translate }}</option>
+            <option value="SELF_EMPLOYEE">{{ 'company.overview.type.self_employee' | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-control-label" for="field_industry" stlTranslate="company.overview.industry.label">Industry</label>
+          <select class="form-control" data-cy="industry" formControlName="industry" id="field_industry" name="industry">
+            <option [ngValue]="null">{{ 'company.overview.industry.placeholder' | translate }}</option>
+            <option value="AUTOMOTIVE">{{ 'company.overview.industry.AUTOMOTIVE' | translate }}</option>
+            <option value="PHARMACY_COSMETICS">{{ 'company.overview.industry.PHARMACY_COSMETICS' | translate }}</option>
+            <option value="TECHNOLOGICAL_ELECTRONIC">{{ 'company.overview.industry.TECHNOLOGICAL_ELECTRONIC' | translate }}</option>
+            <option value="CLOTHES_ACCESSORIES">{{ 'company.overview.industry.CLOTHES_ACCESSORIES' | translate }}</option>
+            <option value="SPORTS">{{ 'company.overview.industry.SPORTS' | translate }}</option>
+            <option value="CHILDCARE">{{ 'company.overview.industry.CHILDCARE' | translate }}</option>
+            <option value="PETS">{{ 'company.overview.industry.PETS' | translate }}</option>
+            <option value="HOME_GARDEN">{{ 'company.overview.industry.HOME_GARDEN' | translate }}</option>
+            <option value="FOOD_DRINKS">{{ 'company.overview.industry.FOOD_DRINKS' | translate }}</option>
+            <option value="TOYS_HOBBIES">{{ 'company.overview.industry.TOYS_HOBBIES' | translate }}</option>
+            <option value="LEISURE">{{ 'company.overview.industry.LEISURE' | translate }}</option>
+            <option value="CULTURE">{{ 'company.overview.industry.CULTURE' | translate }}</option>
+            <option value="OTHER">{{ 'company.overview.industry.OTHER' | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-control-label" for="field_companySize" stlTranslate="company.overview.size.label">Company Size</label>
+          <select class="form-control" data-cy="companySize" formControlName="companySize" id="field_companySize" name="companySize">
+            <option [ngValue]="null">{{ 'company.overview.size.placeholder' | translate }}</option>
+            <option value="STARTUP">{{ 'company.overview.size.STARTUP' | translate }}</option>
+            <option value="SMALL">{{ 'company.overview.size.SMALL' | translate }}</option>
+            <option value="MEDIUM">{{ 'company.overview.size.MEDIUM' | translate }}</option>
+            <option value="LARGE">{{ 'company.overview.size.LARGE' | translate }}</option>
+            <option value="INTERNATIONAL">{{ 'company.overview.size.INTERNATIONAL' | translate }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+        <button
+          [disabled]="editForm.invalid"
+          class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1"
+          stlTranslate="company.overview.submit"
+          type="submit"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </form>
+  <!-- users edit account form ends -->
+</div>

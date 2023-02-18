@@ -1,0 +1,27 @@
+<div class="row">
+  <!-- Congratulations Card -->
+  <div class="col-12 col-md-12 col-lg-12">
+    <div class="card card-congratulations">
+      <div class="card-body text-center">
+        <img alt="card-img-left" class="congratulations-img-left" src="/content/images/elements/decore-left.png" />
+        <img alt="card-img-right" class="congratulations-img-right" src="/content/images/elements/decore-right.png" />
+        <div class="avatar avatar-xl bg-primary shadow">
+          <div class="avatar-content">
+            <i [data-feather]="'award'" class="font-large-1"></i>
+          </div>
+        </div>
+        <div class="text-center">
+          <h1 class="mb-1 text-white" stlTranslate="company.subscription.modal.success.title">Congratulations!</h1>
+          <p
+            *ngIf="subscription"
+            [translateValues]="{ subscription: { name: subscription.name } }"
+            class="card-text m-auto"
+            stlTranslate="company.subscription.modal.success.body"
+          >
+            You have successfully subscribed to {{ subscription.name }}!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

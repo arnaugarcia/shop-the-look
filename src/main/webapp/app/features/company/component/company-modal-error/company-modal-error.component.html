@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h5 class="modal-title" stlTranslate="company.preferences.modal.error.title">Something went wrong :(</h5>
+  <button (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" stlTranslate="company.preferences.modal.error.body" tabindex="0">
+  Something went wrong saving the settings. Please try again later.
+</div>
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close('Accept click')"
+    class="btn btn-danger"
+    ngbAutofocus
+    rippleEffect
+    stlTranslate="company.preferences.modal.error.button"
+    type="button"
+  >
+    Accept
+  </button>
+</div>

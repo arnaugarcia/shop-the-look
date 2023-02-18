@@ -1,0 +1,34 @@
+<div
+  *ngIf="!photo && !loading"
+  ng2FileDrop
+  [ngClass]="{ 'file-drop-over': hasBaseDropZoneOver }"
+  (fileOver)="fileOverBase($event)"
+  (onFileDrop)="onFileDropped($event)"
+  [uploader]="uploader"
+  [class.error]="error"
+  class="py-5 text-center font-medium-5 text-uppercase file-drop-zone"
+></div>
+
+<div *ngIf="loading" class="uploading-image">
+  <div class="loading">
+    <div class="effect-1 effects"></div>
+    <div class="effect-2 effects"></div>
+    <div class="effect-3 effects"></div>
+  </div>
+</div>
+
+<ng-container *ngIf="photo && !loading">
+  <a (click)="deletePhoto(photo.reference)">
+    <span class="notify-badge">
+      <i [data-feather]="'trash'"></i>
+    </span>
+  </a>
+  <img #photoElement (click)="addCoordinate($event)" [alt]="photo.reference" [src]="photo.link" class="loaded-image" />
+  <ng-container *ngIf="coordinates && coordinates.length > 0">
+    <stl-product-coordinate
+      *ngFor="let coordinate of coordinates"
+      [coordinate]="coordinate"
+      (click)="removeCoordinate(coordinate)"
+    ></stl-product-coordinate>
+  </ng-container>
+</ng-container>

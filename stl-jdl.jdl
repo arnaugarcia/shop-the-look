@@ -1,0 +1,155 @@
+application {
+  config {
+    baseName ShopTheLook,
+    applicationType monolith,
+    packageName com.klai.stl,
+    databaseType sql,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+    devDatabaseType mysql,
+    clientFramework angularX,
+    jhiPrefix stl,
+    languages [en, es, ca],
+    nativeLanguage en,
+    testFrameworks [protractor, cucumber, gatling]
+  }
+  entities *
+}
+
+entity Company {
+	name String required,
+	commercialName String,
+    nif String required unique,
+    logo String,
+    vat String,
+    url String required,
+    phone String required,
+    email String required,
+    type CompanyType,
+    token String required unique,
+    reference String required unique,
+    industry CompanyIndustry,
+    companySize CompanySize
+}
+
+entity BillingAddress {
+    address String required,
+    city String required,
+    province String required,
+    zipCode String required,
+    country String required
+}
+
+entity Preferences {
+    importMethod ImportMethod,
+    feedUrl String,
+    remainingImports Integer,
+    lastImportBy String,
+    lastImportTimestamp ZonedDateTime
+}
+
+enum ImportMethod {
+	CSV, TSV, FEED
+}
+
+enum CompanyType {
+    PRIVATE, SELF_EMPLOYEE
+}
+
+enum CompanySize {
+	STARTUP, SMALL, MEDIUM, LARGE, INTERNATIONAL
+}
+
+enum CompanyIndustry {
+	AUTOMOTIVE, PHARMACY_COSMETICS, TECHNOLOGICAL_ELECTRONIC, CLOTHES_ACCESSORIES, SPORTS, CHILDCARE, PETS, HOME_GARDEN, FOOD_DRINKS, TOYS_HOBBIES, LEISURE, CULTURE, OTHER
+}
+
+entity Space {
+	name String required,
+    active Boolean,
+    reference String required unique,
+    description String,
+	maxPhotos Integer,
+    visible Boolean
+}
+
+entity Photo {
+	name String,
+    description String,
+    link String required,
+    reference String required,
+  	order Integer required,
+    height Integer required,
+    width Integer required,
+    orientation PhotoOrientation,
+    demo Boolean
+}
+
+entity SubscriptionPlan {
+	name String required,
+    description String,
+    category SubscriptionCategory required,
+    maxProducts Integer required,
+    maxSpaces Integer required,
+    maxRequests Integer required
+}
+
+enum PhotoOrientation {
+	VERTICAL, HORIZONTAL
+}
+
+enum SubscriptionCategory {
+	BRONZE, SILVER, GOLD
+}
+
+entity Product {
+	sku String required,
+    name String required,
+    description TextBlob required,
+    link String required,
+    reference String required,
+    imageLink String required,
+    additionalImageLink String,
+    price String required,
+    category String
+}
+
+entity Coordinate {
+	x Double,
+    y Double,
+    reference String required unique
+}
+
+
+relationship OneToMany {
+    Company{product(sku) required} to Product{company(nif) required},
+
+    Company{space(reference)} to Space{company(nif) required},
+
+    Space{photo(name) required} to Photo{space(reference)},
+
+    Photo{coordinate} to Coordinate{photo required},
+
+    SubscriptionPlan{company(nif) required} to Company{subscriptionPlan(name)},
+
+    Product{coordinate} to Coordinate{product(sku) required}
+}
+
+relationship OneToOne {
+    Company to BillingAddress,
+    Company to Preferences
+}
+
+relationship ManyToMany {
+	Company{user(login) required} to User
+}
+
+dto * with mapstruct
+
+service * with serviceImpl except Coordinate, Preferences
+
+filter Product, Space, Photo
+
+paginate Product, Space with pagination
+
+#title: stl-jdl

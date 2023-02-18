@@ -1,0 +1,11 @@
+{
+  "company": {
+    "tabs": {
+      "api": "Clave API",
+      "billing": "Facturación",
+      "information": "Información",
+      "preferences": "Preferencias",
+      "subscription": "Suscripción"
+    }
+  }
+}

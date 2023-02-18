@@ -1,0 +1,38 @@
+<ul class="list-group list-group-circle text-left">
+  <li
+    *ngIf="!customPlan"
+    [translateValues]="{ benefits: { products: benefits.products } }"
+    class="list-group-item"
+    stlTranslate="company.subscription.plan.benefits.products.label"
+  >
+    Products {{ benefits.products }}
+  </li>
+
+  <li *ngIf="customPlan" class="list-group-item" stlTranslate="company.subscription.plan.benefits.products.unlimited">
+    Unlimited products
+  </li>
+
+  <li
+    *ngIf="!customPlan"
+    [translateValues]="{ benefits: { requests: benefits.requests } }"
+    class="list-group-item"
+    stlTranslate="company.subscription.plan.benefits.requests.label"
+  >
+    Requests {{ benefits.requests }}
+  </li>
+
+  <li *ngIf="customPlan" class="list-group-item" stlTranslate="company.subscription.plan.benefits.requests.unlimited">
+    Unlimited requests
+  </li>
+
+  <li
+    *ngIf="!customPlan"
+    [translateValues]="{ benefits: { spaces: benefits.spaces } }"
+    class="list-group-item"
+    stlTranslate="company.subscription.plan.benefits.spaces.label"
+  >
+    Spaces {{ benefits.spaces }}
+  </li>
+
+  <li *ngIf="customPlan" class="list-group-item" stlTranslate="company.subscription.plan.benefits.spaces.unlimited">Unlimited spaces</li>
+</ul>

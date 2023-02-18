@@ -1,0 +1,63 @@
+<div class="tab-pane">
+  <stl-alert></stl-alert>
+  <stl-alert-error></stl-alert-error>
+  <form (ngSubmit)="save()" [formGroup]="preferencesForm" class="mb-2" name="preferencesForm">
+    <div class="row">
+      <div class="col-12">
+        <h2 stlTranslate="company.preferences.title">Preferences</h2>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="form-group">
+          <label for="url">Feed URL</label>
+          <input class="form-control" formControlName="url" id="url" name="url" placeholder="https://feed.acme.inc/feed.php" type="text" />
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="form-group">
+          <label for="importMethod" stlTranslate="company.preferences.form.import-method.label">Import Method</label>
+          <select class="form-control" data-cy="importMethod" formControlName="importMethod" id="importMethod" name="importMethod">
+            <option [ngValue]="null" stlTranslate="company.preferences.form.import-method.placeholder">Select an option</option>
+            <option stlTranslate="company.preferences.form.import-method.CSV" value="CSV">CSV</option>
+            <option stlTranslate="company.preferences.form.import-method.TSV" value="TSV">TSV</option>
+            <option stlTranslate="company.preferences.form.import-method.FEED" value="FEED">FEED</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+        <button
+          [disabled]="preferencesForm.invalid"
+          class="btn btn-primary mb-1 mb-sm-0 mr-0 mr-sm-1"
+          stlTranslate="company.preferences.form.submit"
+          type="submit"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </form>
+  <hr />
+  <div *ngIf="preferences" class="row mt-2">
+    <div class="col-12">
+      <h2 stlTranslate="company.preferences.import-info.title">Last import data</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span stlTranslate="company.preferences.import-info.remaning">Remaining imports</span>
+          <span
+            [class.badge-danger]="preferences.remainingImports! <= 0"
+            [class.badge-primary]="preferences.remainingImports! > 0"
+            class="badge badge-pill"
+            >{{ preferences.remainingImports }}</span
+          >
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span stlTranslate="company.preferences.import-info.user">Last person to update the products</span>
+          <span class="badge badge-primary badge-pill">{{ preferences.lastImportBy }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span stlTranslate="company.preferences.import-info.time">last time that the products were updated</span>
+          <span class="badge badge-primary badge-pill">{{ preferences.lastImportTimestamp }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

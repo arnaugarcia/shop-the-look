@@ -1,0 +1,36 @@
+<div class="card earnings-card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h4 class="card-title mb-1">Most clicked product</h4>
+        <h5 class="mb-1" *ngIf="product?.name">{{ product?.name }}</h5>
+        <h5 class="mb-1" *ngIf="!product?.name">No Data</h5>
+      </div>
+      <div class="col-6">
+        <div id="earnings-donut-chart" #earningChartOptionsRef>
+          <!-- Apexchart component-->
+          <apx-chart
+            #chartElement
+            [chart]="{
+              type: 'donut',
+              height: 120,
+              width: earningChartOptionsRef.offsetWidth,
+              toolbar: {
+                show: false
+              }
+            }"
+            [dataLabels]="chartOptions.dataLabels"
+            [series]="chartOptions.series"
+            [legend]="chartOptions.legend"
+            [labels]="chartOptions.labels"
+            [grid]="chartOptions.grid"
+            [noData]="chartOptions.noData"
+            [plotOptions]="chartOptions.plotOptions"
+          >
+          </apx-chart>
+          <!-- / Apexchart component-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

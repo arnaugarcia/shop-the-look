@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="20220412134927-1" author="arnaugarcia97">
+        <dropColumn tableName="product" columnName="description"/>
+        <dropColumn tableName="product" columnName="additional_image_link"/>
+        <dropColumn tableName="product" columnName="image_link"/>
+        <dropColumn tableName="product" columnName="availability"/>
+        <dropColumn tableName="product" columnName="category"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,44 @@
+.dot {
+  z-index: 100;
+  right: -25px;
+  position: absolute;
+  transition: border-color 250ms ease-in-out, opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+  transform: translateX(-1rem) translateY(-1rem) scale(0.999);
+  padding: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid transparent;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 64px;
+  line-height: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot:before {
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  display: block;
+}
+
+.dot:after {
+  content: '';
+  transition: transform 250ms ease-in-out;
+  position: relative;
+  display: block;
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 55%);
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 64px;
+}
+
+.dot:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.4);
+}

@@ -1,0 +1,36 @@
+{
+  "menu": {
+    "account": {
+      "authorities": {
+        "ROLE_ADMIN": "Administrador",
+        "ROLE_MANAGER": "Manager",
+        "ROLE_USER": "Usuario",
+        "empty": "No hay rol ???"
+      },
+      "logout": "Cerrar sesión",
+      "profile": "Perfil"
+    },
+    "admin": {
+      "apidocs": "API",
+      "configuration": "Configuración",
+      "database": "Base de datos",
+      "health": "Salud",
+      "logs": "Logs",
+      "main": "Administración",
+      "metrics": "Métricas",
+      "tracker": "Registro de usuarios",
+      "userManagement": "Gestión de usuarios"
+    },
+    "analytics": "Analítica",
+    "companies": "Empresas",
+    "employees": "Empleados",
+    "home": "Inicio",
+    "my-company": "Mi empresa",
+    "products": {
+      "all": "Todos los productos",
+      "import": "Importar",
+      "title": "Productos"
+    },
+    "spaces": "Espacios"
+  }
+}

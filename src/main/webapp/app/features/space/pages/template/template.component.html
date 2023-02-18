@@ -1,0 +1,73 @@
+<section id="knowledge-base-search">
+  <div class="row">
+    <div class="col-12">
+      <div class="card knowledge-base-bg text-center" style="background-image: url('/content/images/banner/banner.png')">
+        <div class="card-body">
+          <h2 class="text-primary" stlTranslate="spaces.studio.step2.title">Select one of our templates</h2>
+          <p class="card-text mb-2">
+            <span [innerHTML]="'spaces.studio.step2.subtitle' | translate"
+              >If you want a customized space for you, <a href="mailto:soporte@weareklai.com">contact us</a></span
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="knowledge-base-content">
+  <div class="row kb-search-content-info match-height">
+    <div class="col-md-4 col-sm-6 col-12">
+      <div class="card" [class.active]="selectedTemplate === StudioTemplates.ONE_PHOTO" (click)="selectOption(StudioTemplates.ONE_PHOTO)">
+        <a>
+          <div class="p-2">
+            <img src="/content/images/spaces/space1.svg" class="card-img-top" alt="knowledge-base-image" />
+          </div>
+          <div class="card-body text-center">
+            <h4 stlTranslate="spaces.studio.step2.templates.template1.title">One Photo</h4>
+            <p class="text-body mt-1 mb-0" stlTranslate="spaces.studio.step2.templates.template1.subtitle">
+              A layout with a custom title, description, photo and button
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-12">
+      <div class="card" (click)="selectOption(StudioTemplates.TWO_PHOTO)" [class.active]="selectedTemplate === StudioTemplates.TWO_PHOTO">
+        <a>
+          <div class="p-2">
+            <img src="/content/images/spaces/space2.svg" class="card-img-top" alt="knowledge-base-image" [height]="300" />
+          </div>
+          <div class="card-body text-center">
+            <h4 stlTranslate="spaces.studio.step2.templates.template2.title">One Photo</h4>
+            <p class="text-body mt-1 mb-0" stlTranslate="spaces.studio.step2.templates.template2.subtitle">
+              A layout with a custom title, description, photo and button
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-12">
+      <div class="card">
+        <a href="mailto:soporte@weareklai.com" target="_blank">
+          <div class="p-2">
+            <img [height]="300" alt="knowledge-base-image" class="card-img-top" src="/content/images/spaces/custom.svg" />
+          </div>
+          <div class="card-body text-center">
+            <h4 stlTranslate="spaces.studio.step2.templates.custom.title">One Photo</h4>
+            <p class="text-body mt-1 mb-0" stlTranslate="spaces.studio.step2.templates.custom.subtitle">
+              A layout with a custom title, description, photo and button
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="d-flex justify-content-between">
+  <button rippleeffect class="btn btn-outline-secondary btn-prev waves-effect" [routerLink]="'../../create'">
+    <span class="align-middle d-sm-inline-block d-none" stlTranslate="spaces.studio.navigation.previous">Previous</span>
+  </button>
+  <button type="submit" rippleeffect class="btn btn-primary btn-next waves-effect waves-float waves-light" [routerLink]="'../customize'">
+    <span class="align-middle d-sm-inline-block d-none" stlTranslate="spaces.studio.navigation.next">Next</span>
+  </button>
+</div>

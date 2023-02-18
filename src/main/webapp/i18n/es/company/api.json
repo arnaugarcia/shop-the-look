@@ -1,0 +1,13 @@
+{
+  "company": {
+    "api": {
+      "title": "Clave API",
+      "subtitle": "Esta es tu clave de API. Tiene que importar este script a su sitio para habilitar espacios en su sitio.",
+      "regenerate": "Regenerar clave",
+      "error": {
+        "title": "Error",
+        "subtitle": "Error leyendo los datos de la empresa"
+      }
+    }
+  }
+}

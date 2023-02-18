@@ -1,0 +1,29 @@
+{
+  "reset": {
+    "finish": {
+      "form": {
+        "button": "Validate new password"
+      },
+      "messages": {
+        "error": "Your password couldn't be reset. Remember a password request is only valid for 24 hours.",
+        "info": "Choose a new password",
+        "keymissing": "The reset key is missing.",
+        "success": "<strong>Your password has been reset.</strong> Please "
+      },
+      "title": "Reset password",
+      "welcome": ""
+    },
+    "request": {
+      "back": "< Back to login",
+      "form": {
+        "button": "Reset password"
+      },
+      "messages": {
+        "info": "Enter the email address you used to register",
+        "success": "Check your emails for details on how to reset your password."
+      },
+      "title": "Reset your password",
+      "welcome": "Reset Password 🔒"
+    }
+  }
+}

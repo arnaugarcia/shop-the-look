@@ -1,0 +1,31 @@
+{
+  "login": {
+    "form": {
+      "button": "Iniciar sesión",
+      "password": {
+        "label": "Contraseña",
+        "placeholder": "Su contraseña"
+      },
+      "rememberme": "Iniciar la sesión automáticamente",
+      "username": {
+        "label": "Usuario",
+        "placeholder": "Su usuario"
+      }
+    },
+    "messages": {
+      "error": {
+        "authentication": "<strong>¡El inicio de sesión ha fallado!</strong> Por favor, revise las credenciales e intente de nuevo."
+      }
+    },
+    "noaccount": {
+      "create": "Registrarse",
+      "label": "¿Aún no tienes una cuenta?"
+    },
+    "password": {
+      "forgot": "¿Ha olvidado su contraseña?"
+    },
+    "subtitle": "Inicie sesión en su cuenta para empezar la aventura",
+    "title": "Iniciar sesión",
+    "welcome": "¡Bienvenido a Shop the Look! 👋"
+  }
+}

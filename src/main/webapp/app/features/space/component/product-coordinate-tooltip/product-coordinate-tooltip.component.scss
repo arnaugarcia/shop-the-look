@@ -1,0 +1,61 @@
+.tooltip__content-inner {
+  transition: transform 250ms ease-in-out;
+  width: 100%;
+  background: #fff;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #000;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 55%);
+}
+
+.tooltip__content--invisible {
+  display: none;
+}
+
+.tooltip__content--wrapper {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.tooltip__content {
+  text-decoration: none;
+  color: #000;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 10px 6px 10px 15px;
+  width: 100%;
+}
+
+.tooltip__content--left {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-top: 0.25rem;
+  max-width: 135px;
+}
+
+.tooltip__footer {
+  padding-top: 1rem;
+}
+
+.tooltip__header__title--small {
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+.tooltip__header__title--small {
+  font-size: 0.875rem;
+  line-height: 1.42857;
+}

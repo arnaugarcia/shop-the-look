@@ -1,0 +1,150 @@
+<!-- Menu header -->
+<div class="navbar-header">
+  <ul class="nav navbar-nav flex-row">
+    <li class="nav-item mr-auto">
+      <!-- App Branding -->
+      <a [routerLink]="['/']" class="navbar-brand">
+        <span class="brand-logo">
+          <img alt="brand-logo" src="/content/images/logo/logo.svg" />
+        </span>
+        <h2 class="brand-text mb-0">Klai</h2>
+      </a>
+    </li>
+
+    <!-- Menu Toggler -->
+    <li class="nav-item nav-toggle">
+      <a (click)="toggleSidebarCollapsible()" class="nav-link modern-nav-toggle d-none d-xl-block pr-0">
+        <i
+          [ngClass]="isCollapsed === true ? 'icon-circle' : 'icon-disc'"
+          class="toggle-icon feather font-medium-4 collapse-toggle-icon text-primary"
+        >
+        </i>
+      </a>
+      <a (click)="toggleSidebar()" class="nav-link modern-nav-toggle d-block d-xl-none pr-0">
+        <i [data-feather]="'x'" class="font-medium-4 text-primary toggle-icon"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+<!--/ Menu header -->
+
+<!-- Navbar shadow -->
+<div [ngClass]="{ 'd-block': isScrolled }" class="shadow-bottom"></div>
+
+<!-- Main menu -->
+<div (scroll)="onSidebarScroll()" [perfectScrollbar] class="main-menu-content" *ngIf="account">
+  <ul class="navigation navigation-main">
+    <li [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'active'">
+      <a (click)="collapseMenus()" [routerLink]="'/'" class="d-flex align-items-center">
+        <span [data-feather]="'home'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.home">Home</span>
+      </a>
+    </li>
+    <li [class.open]="!productsMenuCollapsed" [ngbCollapse]="false" class="nav-item has-sub">
+      <a (click)="productsMenuCollapsed = !productsMenuCollapsed" class="d-flex align-items-center">
+        <span [data-feather]="'package'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.products.title">Products</span>
+      </a>
+      <ul class="menu-content">
+        <li [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+          <a [routerLink]="'/products'" class="d-flex align-items-center">
+            <span [data-feather]="'package'"></span>
+            <span class="menu-title text-truncate" stlTranslate="menu.products.all">All products</span>
+          </a>
+        </li>
+        <li [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+          <a [routerLink]="'/products/import'" class="d-flex align-items-center">
+            <span [data-feather]="'upload'"></span>
+            <span class="menu-title text-truncate" stlTranslate="menu.products.import">Import</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li *stlHasAnyAuthority="['ROLE_MANAGER', 'ROLE_ADMIN']" [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/employees'" class="d-flex align-items-center">
+        <span [data-feather]="'users'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.employees">Employees</span>
+      </a>
+    </li>
+    <li *stlHasAnyAuthority="'ROLE_MANAGER'" [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/company'" class="d-flex align-items-center">
+        <span [data-feather]="'briefcase'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.my-company">My company</span>
+      </a>
+    </li>
+    <li *stlHasAnyAuthority="'ROLE_ADMIN'" [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/companies'" class="d-flex align-items-center">
+        <span [data-feather]="'briefcase'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.companies">Companies</span>
+      </a>
+    </li>
+    <li [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/spaces'" class="d-flex align-items-center">
+        <span [data-feather]="'grid'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.spaces">Spaces</span>
+      </a>
+    </li>
+    <li [ngbCollapse]="false" class="nav-item" routerLinkActive="active">
+      <a [routerLink]="'/analytics'" class="d-flex align-items-center">
+        <span [data-feather]="'activity'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.analytics">Analytics</span>
+      </a>
+    </li>
+    <li
+      *stlHasAnyAuthority="'ROLE_ADMIN'"
+      [class.open]="!adminMenuCollapsed"
+      [ngbCollapse]="false"
+      [routerLinkActive]="['active', 'open']"
+      class="nav-item has-sub"
+    >
+      <a (click)="adminMenuCollapsed = !adminMenuCollapsed" class="d-flex align-items-center">
+        <span [data-feather]="'settings'"></span>
+        <span class="menu-title text-truncate" stlTranslate="menu.admin.main">Administration</span>
+      </a>
+      <ul class="menu-content">
+        <li routerLinkActive="active">
+          <a class="d-flex align-items-center" routerLink="admin/user-management" routerLinkActive="active">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="menu.admin.userManagement">User Management</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a class="d-flex align-items-center" routerLink="admin/metrics" routerLinkActive="active">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="menu.admin.metrics">Metrics</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a class="d-flex align-items-center" routerLink="admin/health" routerLinkActive="active">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="menu.admin.health">Health</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a class="d-flex align-items-center" routerLink="admin/configuration" routerLinkActive="active">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="menu.admin.configuration">Configuration</span>
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a class="d-flex align-items-center" routerLink="admin/logs" routerLinkActive="active">
+            <span [data-feather]="'circle'"></span>
+            <span class="menu-title text-truncate" stlTranslate="menu.admin.logs">Logs</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li
+      *stlHasAnyAuthority="['ROLE_MANAGER', 'ROLE_ADMIN']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [routerLinkActive]="'active'"
+      class="nav-item"
+    >
+      <a (click)="collapseMenus()" [routerLink]="'/api-docs'" class="nav-link" routerLinkActive="active">
+        <span [data-feather]="'tool'"></span>
+        <span stlTranslate="menu.admin.apidocs">API</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<!--/ Main menu -->

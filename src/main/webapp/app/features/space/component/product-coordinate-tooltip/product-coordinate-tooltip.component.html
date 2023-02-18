@@ -1,0 +1,16 @@
+<div [ngStyle]="{ left: coordinate.x + 3 + '%', top: coordinate.y - 3 + '%', position: 'absolute' }" role="tooltip">
+  <div class="tooltip__content-inner" [class.tooltip__content--invisible]="!visible">
+    <a class="tooltip__content" [href]="coordinate.product.link" target="_blank">
+      <div class="tooltip__content--wrapper">
+        <div class="tooltip__content--left">
+          <div class="tooltip__header">
+            <div class="tooltip__header__title--small">{{ coordinate.product.name }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="tooltip__footer">
+        <span class="tooltip__footer-price--small"> {{ coordinate.product.price }} €</span>
+      </div>
+    </a>
+  </div>
+</div>

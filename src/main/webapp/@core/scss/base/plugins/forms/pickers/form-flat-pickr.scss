@@ -1,0 +1,118 @@
+// @import '../../../bootstrap-extended/include'; // Bootstrap includes
+// @import '../../../components/include'; // Components includes
+// Removed due to css exceeding the limit of the css-loader
+
+.flatpickr-calendar {
+  .flatpickr-day {
+    color: #212529ff;
+    &.today {
+      border-color: #007bffff;
+      &:hover {
+        background: transparent;
+        color: #212529ff;
+      }
+    }
+
+    &.selected,
+    &.selected:hover {
+      background: #007bffff;
+      color: #ffffffff;
+      border-color: #007bffff;
+    }
+
+    &.inRange,
+    &.inRange:hover {
+      background: lighten($color: #007bffff, $amount: 30%);
+      border-color: lighten($color: #007bffff, $amount: 30%);
+      box-shadow: -5px 0 0 lighten($color: #007bffff, $amount: 30%), 5px 0 0 lighten($color: #007bffff, $amount: 30%);
+    }
+    &.startRange,
+    &.endRange,
+    &.startRange:hover,
+    &.endRange:hover {
+      background: #007bffff;
+      color: #ffffffff;
+      border-color: #007bffff;
+    }
+
+    &.selected.startRange + .endRange:not(:nth-child(7n + 1)),
+    &.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
+    &.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
+      box-shadow: -10px 0 0 #007bffff;
+    }
+
+    &.flatpickr-disabled,
+    &.prevMonthDay,
+    &.nextMonthDay {
+      color: #dee2e6ff;
+    }
+
+    &:hover {
+      background: #f6f6f6ff;
+    }
+  }
+  &:after,
+  &:before {
+    display: none;
+  }
+
+  .flatpickr-months {
+    .flatpickr-prev-month,
+    .flatpickr-next-month {
+      top: -5px;
+      &:hover i,
+      &:hover svg {
+        fill: #007bffff;
+      }
+    }
+  }
+  .flatpickr-current-month span.cur-month {
+    font-weight: 300;
+  }
+  &.open {
+    z-index: 1051;
+  }
+  &.hasTime.open {
+    .flatpickr-time {
+      height: auto;
+    }
+  }
+}
+
+// Time picker hover & focus bg color
+.flatpickr-time input:hover,
+.flatpickr-time .flatpickr-am-pm:hover,
+.flatpickr-time input:focus,
+.flatpickr-time .flatpickr-am-pm:focus {
+  background: #ffffffff;
+}
+
+// ? Added bg color for flatpickr input only as it has default readonly attribute
+.flatpickr-input[readonly],
+.flatpickr-input ~ .form-control[readonly],
+.flatpickr-human-friendly[readonly] {
+  background-color: inherit;
+  opacity: 1 !important;
+}
+
+.flatpickr-weekdays {
+  margin-top: 8px;
+}
+
+.flatpickr-current-month {
+  .flatpickr-monthDropdown-months {
+    -webkit-appearance: none;
+  }
+
+  .flatpickr-monthDropdown-months,
+  .numInputWrapper {
+    font-size: 1.1rem;
+    border-radius: 4px;
+    padding: 2px;
+    transition: all 0.15s ease-out;
+
+    span {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,48 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+    <!-- users edit start -->
+    <section class="app-user-edit">
+      <div class="card">
+        <div class="card-body">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a [routerLinkActive]="'active'" [routerLink]="'overview'" class="d-flex align-items-center nav-link">
+                <i [data-feather]="'user'" class="mr-sm-50"></i>
+                <span class="d-none d-sm-block" stlTranslate="company.tabs.information">Information</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLinkActive]="'active'" [routerLink]="'billing'" class="d-flex align-items-center nav-link">
+                <i [data-feather]="'user'" class="mr-sm-50"></i>
+                <span class="d-none d-sm-block" stlTranslate="company.tabs.billing">Billing</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLinkActive]="'active'" [routerLink]="'preferences'" class="d-flex align-items-center nav-link">
+                <i [data-feather]="'sliders'" class="mr-sm-50"></i>
+                <span class="d-none d-sm-block" stlTranslate="company.tabs.preferences">Preferences</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLinkActive]="'active'" [routerLink]="'subscription'" class="d-flex align-items-center nav-link">
+                <i [data-feather]="'rss'" class="mr-sm-50"></i>
+                <span class="d-none d-sm-block" stlTranslate="company.tabs.subscription">Subscription</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLinkActive]="'active'" [routerLink]="'api-key'" class="d-flex align-items-center nav-link">
+                <i [data-feather]="'key'" class="mr-sm-50"></i>
+                <span class="d-none d-sm-block" stlTranslate="company.tabs.api">API Key</span>
+              </a>
+            </li>
+          </ul>
+          <div class="mt-2">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- users edit ends -->
+  </div>
+</div>

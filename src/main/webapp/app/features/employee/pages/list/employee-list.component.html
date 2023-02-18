@@ -1,0 +1,216 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <stl-content-header [contentHeader]="contentHeader"></stl-content-header>
+    <!-- User List -->
+    <section class="users-list-wrapper">
+      <!-- users filter start -->
+      <div class="card">
+        <h5 class="card-header" stlTranslate="employees.filter.title">Search Filter</h5>
+        <div class="card-body">
+          <div class="users-list-filter">
+            <form>
+              <div class="row">
+                <div *stlHasAnyAuthority="'ROLE_ADMIN'" class="col-12 col-md-4">
+                  <fieldset class="form-group">
+                    <select
+                      (ngModelChange)="companySelected.next($event)"
+                      [(ngModel)]="companySearch"
+                      class="form-control"
+                      name="companySearch"
+                    >
+                      <option [ngValue]="undefined" stlTranslate="employees.filter.company.placeholder">Select a company</option>
+                      <option *ngFor="let company of companies" [ngValue]="company.reference">{{ company.name }}</option>
+                    </select>
+                  </fieldset>
+                </div>
+                <div class="col-12 col-md-4">
+                  <fieldset class="form-group">
+                    <select class="form-control">
+                      <option stlTranslate="employees.filter.role.placeholder">Role</option>
+                      <option stlTranslate="employees.filter.role.user" value="user">User</option>
+                      <option stlTranslate="employees.filter.role.manager" value="maintainer">Manager</option>
+                    </select>
+                  </fieldset>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label class="d-flex">
+                    <input
+                      (ngModelChange)="searchTextChanged.next($event)"
+                      [(ngModel)]="searchText"
+                      class="form-control ml-25"
+                      name="searchValue"
+                      placeholder="{{ 'employees.filter.search.placeholder' | translate }}"
+                      type="text"
+                    />
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- users filter end -->
+
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex justify-content-between align-items-center m-1">
+              <label class="d-flex align-items-center"
+                >Show
+                <select [(ngModel)]="selectedOption" class="form-control mx-25">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                entries</label
+              >
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button (click)="sidebar.toggleOpen()" class="btn btn-primary ml-1" rippleEffect>
+                <i class="d-sm-none d-inline-block mr-0 mr-sm-1" data-feather="plus"></i
+                ><span class="d-none d-sm-inline-block" stlTranslate="employees.add.button">Add New User</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">
+                  <span stlTranslate="employees.list.table.column.name">Name</span>
+                </th>
+                <th scope="col">
+                  <span stlTranslate="employees.list.table.column.email">Email</span>
+                </th>
+                <th scope="col">
+                  <span stlTranslate="employees.list.table.column.role">Role</span>
+                </th>
+                <th scope="col">
+                  <span stlTranslate="employees.list.table.column.status">Status</span>
+                </th>
+                <th *stlHasAnyAuthority="'ROLE_ADMIN'" scope="col">
+                  <span stlTranslate="employees.list.table.column.company">Company</span>
+                </th>
+                <th scope="col">
+                  <span stlTranslate="employees.list.table.column.actions">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employee of employees" data-cy="entityTable">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div *ngIf="employee!.imageUrl; else customAvatar">
+                      <img alt="datatable-avatar" class="rounded-circle mr-1" height="32" src="{{ employee!.imageUrl }}" width="32" />
+                    </div>
+                    <ng-template #customAvatar>
+                      <div
+                        [ngClass]="{
+                          'bg-light-success': employee!.status == AccountStatus.ACTIVE,
+                          'bg-light-warning': employee!.status == AccountStatus.PENDING,
+                          'bg-light-danger': employee!.status == AccountStatus.DISABLED
+                        }"
+                        class="avatar mr-1 ml-0"
+                      >
+                        <div class="avatar-content">{{ employee.firstName! | initials }}{{ employee.lastName! | initials }}</div>
+                      </div>
+                    </ng-template>
+                    <div class="cell-line-height">
+                      <a class="font-medium-1 d-block">
+                        <span class="font-weight-bold">{{ employee?.firstName }} {{ employee?.lastName }}</span>
+                      </a>
+                      <span class="text-muted font-small-2"> @{{ employee?.login }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ employee.email }}</td>
+                <td>
+                  <i
+                    [ngClass]="{
+                      'icon-user text-primary': isUser(employee.authorities!),
+                      'icon-settings text-warning': isManager(employee.authorities!),
+                      'icon-slack text-danger': isAdmin(employee.authorities!)
+                    }"
+                    class="feather font-medium-3"
+                  ></i>
+                  {{ employee.authorities | stlRoleName | translate }}
+                </td>
+                <td>
+                  <div
+                    [ngClass]="{
+                      'badge-light-success': employee.status == AccountStatus.ACTIVE,
+                      'badge-light-danger': employee.status == AccountStatus.DISABLED,
+                      'badge-light-warning': employee.status == AccountStatus.PENDING
+                    }"
+                    class="badge badge-pill"
+                  >
+                    {{ employee.status }}
+                  </div>
+                </td>
+                <td *stlHasAnyAuthority="'ROLE_ADMIN'">
+                  <a [routerLink]="['/companies', employee.companyReference, 'view']">{{ employee.companyReference }}</a>
+                </td>
+                <td>
+                  <div container="body" ngbDropdown>
+                    <button class="btn icon-btn btn-sm hide-arrow" ngbDropdownToggle rippleEffect type="button">
+                      <span [class]="'cursor-pointer'" [data-feather]="'more-vertical'"></span>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <a (click)="toggleManager(employee)" *ngIf="isUser(employee.authorities!)" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'user-plus'" [size]="'16'"></span>
+                        {{ 'employees.list.table.actions.manager' | translate }}
+                      </a>
+                      <a (click)="toggleManager(employee)" *ngIf="isManager(employee.authorities!)" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'user-minus'" [size]="'16'"></span>
+                        {{ 'employees.list.table.actions.user' | translate }}
+                      </a>
+                      <a [routerLink]="[employee.login, 'edit']" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'edit'" [size]="'16'"></span>
+                        {{ 'employees.list.table.actions.edit' | translate }}
+                      </a>
+                      <a (click)="removeEmployee(employee)" ngbDropdownItem>
+                        <span [class]="'mr-50'" [data-feather]="'trash'" [size]="'16'"></span>
+                        {{ 'employees.list.table.actions.remove' | translate }}
+                      </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <ngb-pagination
+            (pageChange)="loadPage($event)"
+            *ngIf="totalItems > itemsPerPage"
+            [(page)]="ngbPaginationPage"
+            [boundaryLinks]="true"
+            [collectionSize]="totalItems"
+            [maxSize]="10"
+            [rotate]="true"
+            class="float-right"
+          >
+            <ng-template ngbPaginationFirst>First</ng-template>
+            <ng-template ngbPaginationPrevious>
+              <span [class]="'font-weight-bolder'" [data-feather]="'chevron-left'"></span>Prev
+            </ng-template>
+            <ng-template ngbPaginationNext>
+              Next
+              <span [class]="'font-weight-bolder'" [data-feather]="'chevron-right'"></span>
+            </ng-template>
+            <ng-template ngbPaginationLast>Last</ng-template>
+          </ngb-pagination>
+        </div>
+      </div>
+    </section>
+    <!--/ User List -->
+  </div>
+  <!-- New User Sidebar -->
+  <core-sidebar class="modal modal-slide-in sidebar-todo-modal fade" name="new-user-sidebar" overlayClass="modal-backdrop">
+    <stl-employee-add-sidebar></stl-employee-add-sidebar>
+  </core-sidebar>
+  <!--/ New User Sidebar -->
+</div>

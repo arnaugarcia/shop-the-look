@@ -1,0 +1,55 @@
+<div class="navbar-container d-flex content">
+  <div class="bookmark-wrapper d-flex align-items-center">
+    <!-- Menu Toggler | Menu icon will be hidden in case of layout without menu -->
+    <ul *ngIf="!coreConfig?.layout?.menu?.hidden" class="nav navbar-nav d-xl-none">
+      <li class="nav-item">
+        <a (click)="toggleSidebar('menu')" class="nav-link menu-toggle">
+          <span [data-feather]="'menu'" [class]="'ficon'"></span>
+        </a>
+      </li>
+    </ul>
+    <!--/ Menu Toggler -->
+  </div>
+
+  <ul class="nav navbar-nav align-items-center ml-auto">
+    <!-- User Dropdown -->
+    <li class="nav-item dropdown-user" ngbDropdown>
+      <a
+        aria-expanded="false"
+        aria-haspopup="true"
+        ngbDropdownToggle
+        class="nav-link dropdown-toggle dropdown-user-link"
+        id="dropdown-user"
+      >
+        <div class="user-nav d-sm-flex d-none">
+          <span class="user-name font-weight-bolder">{{ account?.firstName }} {{ account?.lastName }}</span>
+          <span class="user-status">{{ account?.authorities | stlRoleName | translate }}</span>
+        </div>
+        <span class="avatar">
+          <img *ngIf="account?.imageUrl" [src]="account?.imageUrl" alt="avatar" class="round" height="40" width="40" />
+          <img
+            *ngIf="!account?.imageUrl"
+            alt="avatar"
+            class="round"
+            height="40"
+            src="/content/images/profile/unknown-user.png"
+            width="40"
+          />
+          <span class="avatar-status-online"></span>
+        </span>
+      </a>
+      <div aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+        <a ngbDropdownItem routerLink="account/settings" routerLinkActive="active">
+          <span [data-feather]="'user'" [class]="'mr-50'"></span>
+          <span stlTranslate="menu.account.profile">Profile</span>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a (click)="logout()" ngbDropdownItem>
+          <span [class]="'mr-50'" [data-feather]="'power'"></span>
+          <span stlTranslate="menu.account.logout">Logout</span>
+        </a>
+      </div>
+    </li>
+    <!--/ User Dropdown -->
+  </ul>
+</div>

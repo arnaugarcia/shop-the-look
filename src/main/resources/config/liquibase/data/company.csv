@@ -1,0 +1,3 @@
+id;name;commercial_name;nif;logo;vat;url;phone;email;type;token;reference;industry;company_size;subscription_plan_id;preferences_id
+1 ;Klai;Klai           ;B42951921;https://weareklai.com/wp-content/themes/wp-klai-theme/images/klai-logo.svg;VAT;https://weareklai.com;692464645;hello@weareklai.com;PRIVATE;jYIiS0kf48WLdZGf1G5i;ATLTK3JVUH;TECHNOLOGICAL_ELECTRONIC;STARTUP     ;1                   ;1
+2;Oeky;Oeky;48102291E;;VAT;https://oeky.io;692464645;hello@oeky.io;PRIVATE;KhI4qkhXItT40X5;US7VYZBFCI;TECHNOLOGICAL_ELECTRONIC;STARTUP;1;2

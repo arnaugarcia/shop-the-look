@@ -1,0 +1,34 @@
+{
+  "home": {
+    "title": "Welcome to Shop the look!",
+    "widget": {
+      "spaces": {
+        "empty": {
+          "button": "Go to space studio!",
+          "subtitle": "You can create a new space using our Space Studio!",
+          "title": "No spaces created"
+        },
+        "table": {
+          "coordinates": "Coordinates",
+          "description": "Description",
+          "name": "Name",
+          "photos": "Photos"
+        }
+      },
+      "statistics": {
+        "employees": "Employees",
+        "error": "We're having problem loading your statistics.  Please, try again later.",
+        "photos": "Photos",
+        "products": "Products",
+        "spaces": "Spaces",
+        "title": "Company statistics"
+      },
+      "subscription": {
+        "missing": "You're missing some of the great opportunities that offers a subscription",
+        "nosubscription": "You don't have any active subscription :(",
+        "see": "See available subscriptions",
+        "title": "<b>Congratulations!</b> You have the {{ plan }} subscription!"
+      }
+    }
+  }
+}

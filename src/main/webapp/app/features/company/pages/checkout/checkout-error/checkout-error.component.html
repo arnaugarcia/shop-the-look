@@ -1,0 +1,23 @@
+<div class="row">
+  <!-- Congratulations Card -->
+  <div class="col-12 col-md-12 col-lg-12">
+    <div class="card card-error">
+      <div class="card-body text-center">
+        <div class="avatar avatar-xl bg-danger shadow">
+          <div class="avatar-content">
+            <i [data-feather]="'award'" class="font-large-1"></i>
+          </div>
+        </div>
+        <div class="text-center">
+          <h1 class="mb-1 text-white">Error :(</h1>
+          <p class="card-text m-auto">
+            {{ 'company.subscription.modal.error.body' | translate }}
+            There is been an error checking out your subscription, please
+            <a href="mailto:weareaklai.com" style="color: black">{{ 'company.subscription.modal.error.contact' | translate }}</a
+            >.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

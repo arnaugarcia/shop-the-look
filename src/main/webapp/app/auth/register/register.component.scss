@@ -1,0 +1,9 @@
+@import '~@core/scss/base/pages/page-auth.scss';
+
+.auth-wrapper .auth-bg {
+  background-color: $white;
+}
+
+.dark-bg {
+  background-color: $theme-dark-card-bg !important;
+}

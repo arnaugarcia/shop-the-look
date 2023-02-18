@@ -1,0 +1,35 @@
+<ng-container *ngIf="product">
+  <td
+    [class.bg-danger]="isEmpty(product.sku) || isEmpty(product.link)"
+    [disableTooltip]="!isEmpty(product.link) && !isEmpty(product.sku)"
+    [ngbTooltip]="'products.import.table.row.error.sku-link' | translate"
+    container="body"
+    placement="top"
+  >
+    <a *ngIf="product.link" [href]="product.link" target="_blank">{{ product.sku }}</a>
+    <span *ngIf="!product.link">{{ product.sku }}</span>
+  </td>
+  <td
+    [class.bg-danger]="isEmpty(product.name)"
+    [disableTooltip]="!isEmpty(product.name)"
+    [ngbTooltip]="'products.import.table.row.error.name' | translate"
+    container="body"
+    placement="top"
+  >
+    {{ product.name }}
+  </td>
+  <td
+    [class.bg-danger]="isEmpty(product.price)"
+    [disableTooltip]="!isEmpty(product.price)"
+    [ngbTooltip]="'products.import.table.row.error.price' | translate"
+    container="body"
+    placement="top"
+  >
+    {{ product.price }}
+  </td>
+  <td nowrap>
+    <button (click)="remove.emit(product)" [disabled]="loading" class="btn btn-raised btn-outline-danger btn-sm" type="button">
+      <i [data-feather]="'trash'"></i>
+    </button>
+  </td>
+</ng-container>
